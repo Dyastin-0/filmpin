@@ -21,9 +21,9 @@ const Signin = () => {
     e.preventDefault();
     const { email, password } = credentials;
     try {
-      const response = await axios.post('/sign-in', { email, password });
-      setToken(response.data.accessToken);
-      setUser(response.data.user);
+      const { data } = await axios.post('/sign-in', { email, password });
+      setToken(data.accessToken);
+      setUser(data.user);
       toast.success('Signed in!');
       setCredentials({ email: '', password: '' });
       navigate('/dashboard');
@@ -39,14 +39,14 @@ const Signin = () => {
         <input
           type="email"
           autoComplete='true'
-          className="rounded-md text-slate-100 p-2"
+          className="rounded-md text-slate-900 bg-slate-100 p-2"
           value={credentials.email}
           onChange={(e) => setCredentials({ ...credentials, email: e.target.value })}
         />
         <label htmlFor="password">Password</label>
         <input
           type="password"
-          className="rounded-md text-slate-100 p-2"
+          className="rounded-md text-slate-900 bg-slate-100 p-2"
           value={credentials.password}
           onChange={(e) => setCredentials({ ...credentials, password: e.target.value })}
         />

@@ -10,7 +10,7 @@ const test = (req, res) => {
 const handleSignup = async (req, res) => {
 	try {
 		const { username, email, password } = req.body;
-		console.log(username, email, password);
+	
 		if (!username) return res.status(400).json({message: 'Bad request. Missing input: Username.'});
 		if (!email) return res.json({ error: 'Bad request. Missing input: Email.'});
 		const emailExist = await Users.findOne({email});
@@ -19,13 +19,31 @@ const handleSignup = async (req, res) => {
 
 		const hashedPassword = await hash(password);
 
-		Users.create({
+		await Users.create({
 			username,
 			email,
 			password: hashedPassword
 		});
 
-		res.json({username, email});
+		const accessToken = jwt.sign(
+			{ username: username },
+			process.env.ACCESS_TOKEN_SECRET,
+			{ expiresIn: '15m' }
+		);
+
+		const refreshToken = jwt.sign(
+			{ username: username },
+			process.env.REFRESH_TOKEN_SECRET,
+			{ expiresIn: '30d' }
+		);
+
+		await Users.updateOne({ email }, { $set: { refreshToken: refreshToken } })
+
+		res.cookie('jwt', refreshToken, { httpOnly: true, maxAge: 30 * 24 * 60 * 60 * 1000 });
+		res.status(200).json({
+			accessToken, 
+			user: { username: username, email: email } 
+		});
 	} catch (error) {
 		console.error(error);
 		throw error;
@@ -44,7 +62,7 @@ const handleSignin = async (req, res) => {
 			const accessToken = jwt.sign(
 				{ username: user.username },
 				process.env.ACCESS_TOKEN_SECRET,
-				{ expiresIn: '5s' }
+				{ expiresIn: '15m' }
 			);
 
 			const refreshToken = jwt.sign(
@@ -87,7 +105,7 @@ const handleRefreshAccessToken = async (req, res) => {
 				const accessToken = jwt.sign(
 					{ username: user.username },
 					process.env.ACCESS_TOKEN_SECRET,
-					{ expiresIn: '5s' }
+					{ expiresIn: '15m' }
 				);
 				res.status(200).json({
 					accessToken, 
