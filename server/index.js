@@ -11,8 +11,9 @@ mongoose.connect(process.env.DB_URL)
 const app = express();
 
 app.use(express.json());
-app.use('/signup', require('./routes/auth'));
 app.use('/', require('./routes/auth'));
+app.use('/signup', require('./routes/auth'));
+app.use('/signin', require('./routes/auth'));
 
 const port = 3000;
 app.listen(port, () => {
