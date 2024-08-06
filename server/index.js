@@ -1,7 +1,10 @@
 const express = require('express');
 const dotenv = require('dotenv').config();
 const cors = require('cors');
+const cookieParser = require('cookie-parser');
 const { mongoose } = require('mongoose');
+const credentials = require('./middlewares/credentials');
+const corsOptions = require('./config/corsOption');
 
 //database connection
 mongoose.connect(process.env.DB_URL)
@@ -10,10 +13,17 @@ mongoose.connect(process.env.DB_URL)
 
 const app = express();
 
+// app.use(credentials);
+// app.use(cors(corsOptions));
 app.use(express.json());
+app.use(express.urlencoded({extended: false}));
+app.use(cookieParser());
+
 app.use('/', require('./routes/auth'));
-app.use('/signup', require('./routes/auth'));
-app.use('/signin', require('./routes/auth'));
+app.use('/sign-up', require('./routes/auth'));
+app.use('/sign-in', require('./routes/auth'));
+app.use('/refreshAccessToken', require('./routes/auth'));
+app.use('/log-out', require('./routes/auth'));
 
 const port = 3000;
 app.listen(port, () => {

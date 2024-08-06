@@ -19,8 +19,8 @@ function App() {
 		<Navbar />
     <Toaster position='bottom-left' toastOptions={{duration: 2000}} />
     <Routes>
-      <Route path='/signin' element={<Signin />}></Route>
-      <Route path='/signup' element={<Signup />}></Route>
+      <Route path='/sign-in' element={<Signin />}></Route>
+      <Route path='/sign-up' element={<Signup />}></Route>
       <Route path='/dashboard' element={<Dashboard />}></Route>
     </Routes>
 	</>

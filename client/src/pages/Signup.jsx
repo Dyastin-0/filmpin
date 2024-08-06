@@ -1,11 +1,18 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { toast } from 'react-hot-toast';
 
 import axios from 'axios';
+import { useAuth } from '../contexts/auth';
 
 const Signup = () => {
   const navigate = useNavigate();
+  const { user } = useAuth();
+
+  useEffect(() => {
+    user && navigate('/dashboard');
+  }, [user]);
+
   const [credentials, setCredentials] = useState({
     username: '',
     email: '',

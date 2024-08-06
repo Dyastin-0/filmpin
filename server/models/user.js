@@ -12,6 +12,9 @@ const userSchema = new Schema({
 	password: {
 		type: String
 	},
+	refreshToken: {
+		type: String
+	}
 });
 
 const UserModel = mongoose.model('User', userSchema);
