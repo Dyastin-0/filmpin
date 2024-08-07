@@ -6,6 +6,7 @@ const { mongoose } = require('mongoose');
 const credentials = require('./middlewares/credentials');
 const corsOptions = require('./config/corsOption');
 const { verifyJsonWebToken } = require('./middlewares/verifyJsonWebToken');
+const { verifyJsonWebToken } = require('./middlewares/verifyJsonWebToken');
 
 //database connection
 mongoose.connect(process.env.DB_URL)
@@ -14,6 +15,8 @@ mongoose.connect(process.env.DB_URL)
 
 const app = express();
 
+app.use(credentials);
+app.use(cors(corsOptions));
 app.use(credentials);
 app.use(cors(corsOptions));
 app.use(express.json());

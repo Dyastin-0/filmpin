@@ -28,7 +28,7 @@ const Navbar = () => {
   ]
   return (
     <div className='flex justify-center p-4 gap-4'>
-      {routes.map((route, index) => (
+      { user && routes.map((route, index) => (
         <Link className={`text-lg
           transition-all duration-300
           hover:cursor-pointer hover:text-slate-400

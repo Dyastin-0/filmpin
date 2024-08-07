@@ -2,6 +2,7 @@ import { useNavigate } from "react-router";
 import { useAuth } from "../contexts/auth"
 import { useEffect } from "react";
 import axios from "axios";
+import axios from "axios";
 
 const Dashboard = () => {
   const navigate = useNavigate();
