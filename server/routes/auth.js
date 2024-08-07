@@ -1,25 +1,13 @@
 const express = require('express');
 const router = express.Router();
-const cors = require('cors');
+const { handleAuth } = require('../controllers/auth');
+const handleRefreshAccessToken = require('../controllers/refreshAccessToken');
+const handleSignup = require('../controllers/signup');
+const handleSignout = require('../controllers/signout');
 
-const { test, 
-	handleSignin, 
-	handleSignup, 
-	handleRefreshAccessToken,
-	handleSignout
- } = require('../controllers/auth');
-const { verifyJsonWebToken } = require('../middlewares/verifyJsonWebToken');
-
-//middleware
-router.use(cors({
-	credentials: true,
-	origin: 'http://localhost:5173'
-}));
-
-router.get('/test', verifyJsonWebToken, test);
 router.get('/refreshAccessToken', handleRefreshAccessToken);
 router.post('/sign-out', handleSignout);
 router.post('/sign-up', handleSignup);
-router.post('/sign-in', handleSignin);
+router.post('/sign-in', handleAuth);
 
 module.exports = router;
