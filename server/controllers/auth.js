@@ -4,7 +4,7 @@ const dotenv = require('dotenv').config();
 const { hash, compare } = require('../helpers/hash');
 
 const test = (req, res) => {
-	return res.json('API is working.');
+	res.json('API is working.');
 }
 
 const handleSignup = async (req, res) => {
@@ -19,14 +19,19 @@ const handleSignup = async (req, res) => {
 
 		const hashedPassword = await hash(password);
 
-		await Users.create({
+		const user = await Users.create({
 			username,
 			email,
 			password: hashedPassword
 		});
 
 		const accessToken = jwt.sign(
-			{ username: username },
+			{ 
+				userInfo: {
+					username: user.username,
+					roles: user.roles
+				} 
+			},
 			process.env.ACCESS_TOKEN_SECRET,
 			{ expiresIn: '15m' }
 		);
@@ -66,7 +71,12 @@ const handleSignin = async (req, res) => {
 			);
 
 			const refreshToken = jwt.sign(
-				{ username: user.username },
+				{ 
+					userInfo: {
+						username: user.username,
+						roles: user.roles
+					} 
+				},
 				process.env.REFRESH_TOKEN_SECRET,
 				{ expiresIn: '30d' }
 			);
@@ -103,7 +113,12 @@ const handleRefreshAccessToken = async (req, res) => {
 			(error, decoded) => {
 				if (error || user.username !== decoded.username) return res.sendStatus(403);
 				const accessToken = jwt.sign(
-					{ username: user.username },
+					{ 
+						userInfo: {
+							username: user.username,
+							roles: user.roles
+						} 
+					},
 					process.env.ACCESS_TOKEN_SECRET,
 					{ expiresIn: '15m' }
 				);

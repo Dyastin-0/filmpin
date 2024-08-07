@@ -9,6 +9,7 @@ const { test,
 	handleSignout
  } = require('../controllers/auth');
 const { verifyJsonWebToken } = require('../middlewares/verifyJsonWebToken');
+const verifyRoles = require('../middlewares/verifyRoles');
 
 //middleware
 router.use(cors({
@@ -16,7 +17,8 @@ router.use(cors({
 	origin: 'http://localhost:5173'
 }));
 
-router.get('/test', verifyJsonWebToken, test);
+router.get('/', test);
+router.get('/admin', verifyRoles, test);
 router.get('/refreshAccessToken', handleRefreshAccessToken);
 router.post('/sign-out', handleSignout);
 router.post('/sign-up', handleSignup);
