@@ -1,4 +1,3 @@
-const Users = require('../../models/user');
 const api = require('../../helpers/tmdbApi');
 
 const handleGetMovies = async (req, res) => {

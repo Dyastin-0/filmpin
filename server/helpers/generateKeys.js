@@ -2,18 +2,50 @@ const fs = require('fs');
 const path = require('path');
 const crypto = require('crypto');
 
+const getSecret = require('../helpers/getSecret');
+
 const envFilePath = path.join(__dirname, '../.env');
 
-const accessKey = crypto.randomBytes(64).toString('hex');
-const refreshKey = crypto.randomBytes(64).toString('hex');
+const generateKeys = async () => {
+  try {
+    const accessKey = crypto.randomBytes(64).toString('hex');
+    const refreshKey = crypto.randomBytes(64).toString('hex');
 
-const dbUrlLine = 'MONGODB_URL=mongodb+srv://filmpinadmin:afd221b33A!%40%40!@filmpin.o7sdrgz.mongodb.net/?retryWrites=true&w=majority&appName=filmpin\n';
-const accessKeyLine = `ACCESS_TOKEN_SECRET=${accessKey}\n`;
-const refreshKeyLine = `REFRESH_TOKEN_SECRET=${refreshKey}\n`;
-const tmDbKeyLine = 'TMDB_ACCESS_KEY=eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiIzYzg4OWI5ODRmODFlY2UzZjdjYjY4NjEzNGFiMjg2NSIsIm5iZiI6MTcyMzA4NTU1NC4xMDY1MjYsInN1YiI6IjYzZmIzOWJiOTZlMzBiMDA4MzI2NzFhNyIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.Z6RbAUM5IH8CrX_1sKYyCKq0dJHjeML_VCt7BAIrscU';
+    let envContent = '';
+    if (fs.existsSync(envFilePath)) {
+      envContent = fs.readFileSync(envFilePath, { encoding: 'utf8' });
+    }
 
-const envContent = `${dbUrlLine}${accessKeyLine}${refreshKeyLine}${tmDbKeyLine}`;
+    const dbUrl = await getSecret('MDB_ACCESS_URI');
+    const tmDbKey = await getSecret('TMDB_ACCESS_KEY');
 
-fs.writeFileSync(envFilePath, envContent, { encoding: 'utf8' });
+    const envMap = envContent.split('\n').reduce((map, line) => {
+      const [key, value] = line.split('=');
+      if (key) map[key.trim()] = value ? value.trim() : '';
+      return map;
+    }, {});
 
-console.log(`Successfully created ${envFilePath} with secrets.`);
+    const newVariables = {
+      MONGODB_URL: dbUrl,
+      TMBD_ACCESS_KEY: tmDbKey,
+      ACCESS_TOKEN_SECRET: accessKey,
+      REFRESH_TOKEN_SECRET: refreshKey
+    };
+
+    Object.keys(newVariables).forEach(key => {
+      envMap[key] = newVariables[key];
+    });
+
+    const updatedEnvContent = Object.entries(envMap)
+      .map(([key, value]) => `${key}=${value}`)
+      .join('\n') + '\n';
+
+    fs.writeFileSync(envFilePath, updatedEnvContent, { encoding: 'utf8' });
+
+    console.log(`Successfully updated ${envFilePath} with new secrets.`);
+  } catch (error) {
+    console.error('Error generating keys or updating .env file:', error);
+  }
+}
+
+generateKeys();

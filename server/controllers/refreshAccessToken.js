@@ -47,10 +47,8 @@ const handleRefreshAccessToken = async (req, res) => {
 				process.env.REFRESH_TOKEN_SECRET,
 				{ expiresIn: '1d' }
 			);
-			console.log(newRefreshToken);
 			await Users.updateOne({ email: user.email }, { $set: { refreshToken: [...newRefreshTokens, newRefreshToken] } });
 			res.cookie('jwt', newRefreshToken, { httpOnly: true, sameSite: 'None', secure: true, maxAge: 30 * 24 * 60 * 60 * 1000 });
-			console.log('test');
 			res.json({
 				accessToken,
 				user: { username: user.username, email: user.email, roles: user.roles } 

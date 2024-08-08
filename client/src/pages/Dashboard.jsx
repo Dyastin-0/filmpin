@@ -13,7 +13,8 @@ const Dashboard = () => {
   const handleGetTopMovies = async () => {
     const response = await axios.get('/movies/top-rated', {
       headers: {
-        Authorization: `Bearer ${token}`
+        Authorization: `Bearer ${token}`,
+        "Content-Type": 'application/json'
       }
     });
     setTopMovies(response.data.results);
