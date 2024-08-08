@@ -8,7 +8,7 @@ const corsOptions = require('./config/corsOption');
 const { verifyJsonWebToken } = require('./middlewares/verifyJsonWebToken');
 
 //database connection
-mongoose.connect(process.env.DB_URL)
+mongoose.connect(process.env.MONGODB_URL)
 .then(() => console.log("Connected."))
 .catch((err) => console.log(err))
 
@@ -27,7 +27,7 @@ app.use('/refreshAccessToken', require('./routes/auth'));
 app.use('/log-out', require('./routes/auth'));
 
 app.use(verifyJsonWebToken);
-app.use('/movies', require('./routes/api/users'));
+app.use('/movies', require('./routes/api/movies'));
 
 const port = 3000;
 app.listen(port, () => {

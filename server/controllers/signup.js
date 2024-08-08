@@ -40,7 +40,7 @@ const handleSignup = async (req, res) => {
 
 		await Users.updateOne({ email }, { $set: { refreshToken: refreshToken } })
 
-		res.cookie('jwt', refreshToken, { httpOnly: true, maxAge: 30 * 24 * 60 * 60 * 1000 });
+		res.cookie('jwt', refreshToken, { httpOnly: true, sameSite: 'None', secure: true, maxAge: 30 * 24 * 60 * 60 * 1000 });
 		res.status(200).json({
 			accessToken, 
 			user: { username: username, email: email } 
