@@ -15,15 +15,16 @@ const handleAuth = async (req, res) => {
 			{ 
 				UserInfo: {
 					username: user.username,
+					email: user.email,
 					roles: user.roles
 				}
-				},
+			},
 			process.env.ACCESS_TOKEN_SECRET,
 			{ expiresIn: '15m' }
 		);
 
 		const newRefreshToken = jwt.sign(
-			{ username: user.username },
+			{ username: user.username, email: user.email },
 			process.env.REFRESH_TOKEN_SECRET,
 			{ expiresIn: '1d' }
 		);

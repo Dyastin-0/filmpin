@@ -7,11 +7,11 @@ const handleSignup = async (req, res) => {
 	try {
 		const { username, email, password } = req.body;
 	
-		if (!username) return res.status(400).json({message: 'Bad request. Missing input: Username.'});
-		if (!email) return res.json({ error: 'Bad request. Missing input: Email.'});
+		if (!username) return res.status(400).json({message: 'Bad request. Username missing.'});
+		if (!email) return res.json({ message: 'Bad request. Email missing.'});
 		const emailExist = await Users.findOne({email});
-		if (emailExist) return res.status(400).json({message: 'Bad request. Email already used.'});
-		if (!password || password < 6) return res.status(400).json({message: 'Bad request. Missing input: Password.'});
+		if (emailExist) return res.status(400).json({message: `Bad request. Email ${email} is already used.`});
+		if (!password) return res.status(400).json({message: 'Bad request. Password missing.'});
 
 		const hashedPassword = await hash(password);
 
@@ -25,17 +25,18 @@ const handleSignup = async (req, res) => {
 			{ 
 				UserInfo: {
 					username: user.username,
+					email: user.email,
 					roles: user.roles
 				}
-			 },
+			},
 			process.env.ACCESS_TOKEN_SECRET,
 			{ expiresIn: '15m' }
 		);
 
 		const refreshToken = jwt.sign(
-			{ username: username },
+			{ username: username, email: email },
 			process.env.REFRESH_TOKEN_SECRET,
-			{ expiresIn: '30d' }
+			{ expiresIn: '1d' }
 		);
 
 		await Users.updateOne({ email }, { $set: { refreshToken: refreshToken } })

@@ -8,12 +8,12 @@ const handleSignout = async (req, res) => {
 	const user = await Users.findOne({ refreshToken });
 
 	if (!user) {
-		res.clearCookie('jwt', { httpOnly: true, sameSite: 'None', secure: true, maxAge: 30 * 24 * 60 * 60 * 1000 });
+		res.clearCookie('jwt', { httpOnly: true, sameSite: 'None', secure: true });
 		return res.sendStatus(204);
 	}
 
 	await Users.updateOne({ refreshToken }, { $set: {refreshToken: user.refreshToken.filter(rt => rt !== refreshToken)} });
-	res.cookie('jwt', refreshToken, { httpOnly: true, sameSite: 'None', secure: true });
+	res.clearCookie('jwt', { httpOnly: true, sameSite: 'None', secure: true });
 	res.sendStatus(204);
 }
 

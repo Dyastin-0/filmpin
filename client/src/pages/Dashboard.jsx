@@ -1,5 +1,5 @@
 import { useNavigate } from "react-router";
-import { useAuth } from "../contexts/auth"
+import { useAuth } from "../hooks/useAuth"
 import { useEffect, useState } from "react";
 import axios from "axios";
 import Movie from "../components/Movie";
@@ -8,16 +8,16 @@ const Dashboard = () => {
   const navigate = useNavigate();
   const { user, token } = useAuth();
 
-  const [topMovies, setTopMovies] = useState(null);
+  const [movies, setMovies] = useState(null);
 
   const handleGetTopMovies = async () => {
-    const response = await axios.get('/movies/top-rated', {
+    const response = await axios.get('/movies/list/popular/page=1', {
       headers: {
         Authorization: `Bearer ${token}`,
         "Content-Type": 'application/json'
       }
     });
-    setTopMovies(response.data.results);
+    setMovies(response.data.results);
   }
 
   useEffect(() => {
@@ -33,8 +33,8 @@ const Dashboard = () => {
       > Top Movies </button>
       <div className='flex flex-wrap-reverse gap-4 justify-center'>
         { 
-          topMovies && topMovies.map(movie => (
-              <Movie info={movie} />
+          movies && movies.map((movie, index) => (
+              <Movie key={index} info={movie} />
             )
           )
         }

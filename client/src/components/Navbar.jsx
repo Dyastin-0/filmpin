@@ -1,6 +1,6 @@
 import React from 'react'
 import { Link, useLocation, useNavigate } from 'react-router-dom';
-import { useAuth } from '../contexts/auth';
+import { useAuth } from '../hooks/useAuth';
 import axios from 'axios';
 
 const Navbar = () => {
@@ -28,15 +28,17 @@ const Navbar = () => {
   ]
   return (
     <div className='flex justify-center p-4 gap-4'>
-      {routes.map((route, index) => (
-        <Link className={`text-lg
-          transition-all duration-300
-          hover:cursor-pointer hover:text-slate-400
-          ${location.pathname === route.path ? 'text-slate-400' : ''}
-          `}
-          to={route.path} key={index}> {route.name}
-        </Link>
-      ))}
+      { 
+        user && routes.map((route, index) => (
+          <Link className={`text-lg
+            transition-all duration-300
+            hover:cursor-pointer hover:text-slate-400
+            ${location.pathname === route.path ? 'text-slate-400' : ''}
+            `}
+            to={route.path} key={index}> {route.name}
+          </Link>
+        ))
+      }
       {
         !user && authRoutes.map((route, index) => (
           <Link className={`text-lg

@@ -14,7 +14,8 @@ const handleRefreshAccessToken = async (req, res) => {
 			process.env.REFRESH_TOKEN_SECRET,
 			async (error, decoded) => {
 				if (error) return res.sendStatus(403);
-				const hackedUser = await Users.findOne({ username: decoded.username });
+				console.log(decoded);
+				const hackedUser = await Users.findOne({ username: decoded.email });
 				await Users.updateOne({ email: hackedUser.email }, { $set: { refreshToken: [] } });
 			}
 		);
@@ -30,20 +31,21 @@ const handleRefreshAccessToken = async (req, res) => {
 			if (error) {
 				await Users.updateOne({ email: user.email }, { $set: {refreshToken: [...newRefreshTokens]} });
 			}
-			if (error || user.username !== decoded.username) return res.sendStatus(403);
+			if (error || user.email !== decoded.email) return res.sendStatus(403);
 			const accessToken = jwt.sign(
 				{ 
 					UserInfo: {
 						username: user.username,
+						email: user.email,
 						roles: user.roles
 					}
-					},
+				},
 				process.env.ACCESS_TOKEN_SECRET,
 				{ expiresIn: '15m' }
 			);
 
 			const newRefreshToken = jwt.sign(
-				{ username: user.username },
+				{ username: user.username, email: user.email },
 				process.env.REFRESH_TOKEN_SECRET,
 				{ expiresIn: '1d' }
 			);

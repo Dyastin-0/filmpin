@@ -1,12 +1,9 @@
 import { Routes, Route } from 'react-router-dom';
-
+import { Toaster } from 'react-hot-toast';
 import Signin from './pages/Signin';
 import Signup from './pages/Signup';
 import Dashboard from './pages/Dashboard';
 import Navbar from './components/Navbar';
-
-import { Toaster } from 'react-hot-toast';
-
 import axios from 'axios';
 
 axios.defaults.baseURL = 'http://localhost:3000';
