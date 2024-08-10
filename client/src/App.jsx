@@ -6,7 +6,7 @@ import Dashboard from './pages/Dashboard';
 import Navbar from './components/Navbar';
 import axios from 'axios';
 
-axios.defaults.baseURL = 'http://localhost:3000';
+axios.defaults.baseURL = 'https://filmpin.vercel.app';
 axios.defaults.withCredentials = true;
 
 function App() {
