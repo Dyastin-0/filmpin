@@ -4,7 +4,7 @@ const path = require('path');
 const envFilePath = path.join(__dirname, '../.env');
 
 const initializeEnvironment = () => {
-  const initialVariable = 'GOOGLE_APPLICATION_CREDENTIALS=../../secretsaccesor.json\n';
+  const initialVariable = 'GOOGLE_APPLICATION_CREDENTIALS=./secretsaccesor.json';
   if (!fs.existsSync(envFilePath)) {
     fs.writeFileSync(envFilePath, `${initialVariable}\n`, { encoding: 'utf8' });
     console.log(`Created ${envFilePath} with initial variable.`);
