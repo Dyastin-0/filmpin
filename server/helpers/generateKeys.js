@@ -13,38 +13,21 @@ const generateKeys = async () => {
     const dbUrl = await getSecret('MDB_ACCESS_URI');
     const tmDbKey = await getSecret('TMDB_ACCESS_KEY');
 
-    const newVariables = {
-      MONGODB_URL: dbUrl,
-      TMBD_ACCESS_KEY: tmDbKey,
-      ACCESS_TOKEN_SECRET: accessKey,
-      REFRESH_TOKEN_SECRET: refreshKey
-    };
+    // Create the new variables as strings
+    const newVariables = [
+      `MONGODB_URL=${dbUrl}`,
+      `TMBD_ACCESS_KEY=${tmDbKey}`,
+      `ACCESS_TOKEN_SECRET=${accessKey}`,
+      `REFRESH_TOKEN_SECRET=${refreshKey}`
+    ];
 
-    let envContent = '';
-    if (fs.existsSync(envFilePath)) {
-      envContent = fs.readFileSync(envFilePath, { encoding: 'utf8' });
-    }
+    // Add the variables to the .env file
+    fs.appendFileSync(envFilePath, newVariables.join('\n') + '\n', { encoding: 'utf8' });
 
-    const envMap = envContent.split('\n').reduce((map, line) => {
-      const [key, value] = line.split('=');
-      if (key) map[key.trim()] = value ? value.trim() : '';
-      return map;
-    }, {});
-
-    Object.keys(newVariables).forEach(key => {
-      envMap[key] = newVariables[key];
-    });
-
-    const updatedEnvContent = Object.entries(envMap)
-      .map(([key, value]) => `${key}=${value}`)
-      .join('\n') + '\n';
-
-    fs.writeFileSync(envFilePath, updatedEnvContent, { encoding: 'utf8' });
-
-    console.log(`Successfully updated ${envFilePath} with new secrets.`);
+    console.log(`Successfully added new secrets to ${envFilePath}.`);
   } catch (error) {
     console.error('Error generating keys or updating .env file:', error);
   }
-}
+};
 
 generateKeys();
