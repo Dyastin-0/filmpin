@@ -4,6 +4,7 @@
   "description": "JWT auth",
   "main": "index.js",
   "scripts": {
+    "start": "node index.js",
     "dev": "nodemon index.js",
     "init": "node ./helpers/generateServiceAccount.js && node ./helpers/initializeEnvironment.js && node ./helpers/generateKeys.js"
   },
