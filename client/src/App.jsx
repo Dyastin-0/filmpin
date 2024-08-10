@@ -6,7 +6,7 @@ import Dashboard from './pages/Dashboard';
 import Navbar from './components/Navbar';
 import axios from 'axios';
 
-axios.defaults.baseURL = 'https://filmpin.vercel.app';
+axios.defaults.baseURL = 'https://jwt-auth-wuhj.onrender.com';
 axios.defaults.withCredentials = true;
 
 function App() {
