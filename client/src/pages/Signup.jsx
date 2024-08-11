@@ -5,6 +5,8 @@ import axios from 'axios';
 import { useAuth } from '../hooks/useAuth';
 import { testEmail, testPassword, testUsername } from '../helpers/regex';
 import ProgressBar from '../components/ProgressBar';
+import Input from '../components/ui/Input';
+import Button from '../components/ui/Button';
 
 const Signup = () => {
   const navigate = useNavigate();
@@ -55,46 +57,51 @@ const Signup = () => {
     }
   }
   return (
-    <div className='flex justify-center items-center h-full w-full'>
-      <form className='flex flex-col gap-2 text-sm' 
+    <div className='flex flex-col p-4 justify-center items-center h-screen w-full
+      text-primary
+      bg-primary rounded-xl'
+    >
+      <form className='flex flex-col w-[250px] p-4  text-xs text-primary-foreground bg-accent
+        rounded-md'
         onSubmit={submit}>
-        <label>Username</label>
-        <input
+        <h2 className='w-full text-center pb-4 text-lg font-bold' >Create your account</h2>
+        <Input
           ref={usernameRef}
-          required
+          placeholder='Username'
+          required={true}
           id='username'
           type='text'
           autoComplete='off'
           className='rounded-md text-slate-900 bg-slate-100 p-2'
           value={credentials.username} onChange={(e) => setCredentials({...credentials, username: e.target.value})}
         />
-        <label>Email</label>
-        <input
-          required
+        <Input
+          placeholder='Email'
+          required={true}
           id='email'
           type='email'
           autoComplete='on'
           className='rounded-md text-slate-900 bg-slate-100 p-2'
           value={credentials.email} onChange={(e) => setCredentials({...credentials, email: e.target.value})}
         />
-        <label>Password</label>
-        <input
-          required
+        <Input
+          placeholder='Password'
+          required={true}
           id='password'
           type='password'
           className='rounded-md text-slate-900 bg-slate-100 p-2'
           value={credentials.password} onChange={(e) => setCredentials({...credentials, password: e.target.value})}
         />
         { <ProgressBar value={passwordStrength.strength} text={passwordStrength.message} visible={credentials.password} /> }
-        <label>Confirm password</label>
-        <input
-          required
+        <Input
+          placeholder='Confirm password'
+          required={true}
           id='confirm_password'
           type='password'
           className='rounded-md text-slate-900 bg-slate-100 p-2'
           value={confirmedPassword} onChange={(e) => setConfirmedPassword(e.target.value)}
         />
-        <button type='submit'>Sign up</button>
+        <Button type='submit' text='Sign up' />
       </form>
     </div>
   )

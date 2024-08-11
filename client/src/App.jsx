@@ -2,7 +2,7 @@ import { Routes, Route } from 'react-router-dom';
 import { Toaster } from 'react-hot-toast';
 import Signin from './pages/Signin';
 import Signup from './pages/Signup';
-import Dashboard from './pages/Dashboard';
+import Home from './pages/Home';
 import Navbar from './components/Navbar';
 import axios from 'axios';
 
@@ -18,7 +18,7 @@ function App() {
     <Routes>
       <Route path='/sign-in' element={<Signin />}></Route>
       <Route path='/sign-up' element={<Signup />}></Route>
-      <Route path='/dashboard' element={<Dashboard />}></Route>
+      <Route path='/dashboard' element={<Home />}></Route>
     </Routes>
 	</>
   );

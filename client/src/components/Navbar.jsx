@@ -27,13 +27,13 @@ const Navbar = () => {
     {path: '/sign-up', name: 'Sign up'}
   ]
   return (
-    <div className='flex justify-center p-4 gap-4'>
+    <div className='flex justify-center bg-primary rounded-lg w-full p-4 gap-4 drop-shadow-sm'>
       { 
         user && routes.map((route, index) => (
-          <Link className={`text-lg
-            transition-all duration-300
-            hover:cursor-pointer hover:text-slate-400
-            ${location.pathname === route.path ? 'text-slate-400' : ''}
+          <Link className={`text-sm text-primary-foreground font-semibold
+            transition-all duration-300 
+            hover:cursor-pointer hover:text-primary-highlight
+            ${location.pathname === route.path ? 'text-primary-highlight' : ''}
             `}
             to={route.path} key={index}> {route.name}
           </Link>
@@ -41,18 +41,18 @@ const Navbar = () => {
       }
       {
         !user && authRoutes.map((route, index) => (
-          <Link className={`text-lg
-            transition-all duration-300
-            hover:cursor-pointer hover:text-slate-400
-            ${location.pathname === route.path ? 'text-slate-400' : ''}
+          <Link className={`text-sm text-primary-foreground font-semibold
+            transition-all duration-300 
+            hover:cursor-pointer hover:text-primary-highlight
+            ${location.pathname === route.path ? 'text-primary-highlight' : ''}
             `}
             to={route.path} key={index}> {route.name}
           </Link>
         ))
       }
-      { user && <button className={`text-lg
+      { user && <button className={`text-sm text-primary-foreground font-semibold
         transition-all duration-300
-        hover:cursor-pointer hover:text-slate-400`}
+        hover:cursor-pointer hover:text-primary-highlight`}
         onClick={handleSignout}>
           Sign out
        </button>

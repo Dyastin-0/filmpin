@@ -3,13 +3,15 @@ import { useNavigate } from 'react-router-dom';
 import { toast } from 'react-hot-toast';
 import axios from 'axios';
 import { useAuth } from '../hooks/useAuth';
+import Input from '../components/ui/Input';
+import Button from '../components/ui/Button';
 
 const Signin = () => {
   const emailRef = useRef(null);
   const navigate = useNavigate();
   const { setToken, setUser, user } = useAuth();
 
-  const previousPath = location.state?.from?.pathname || "/dashboard";
+  const previousPath = location.state?.from?.pathname || '/dashboard';
 
   useEffect(() => {
     user && navigate('/dashboard');
@@ -40,27 +42,30 @@ const Signin = () => {
   };
 
   return (
-    <div className='flex justify-center items-center'>
-      <form className='flex flex-col gap-2 text-sm' onSubmit={submit}>
-        <label htmlFor='email'>Email</label>
-        <input
-          ref={emailRef}
-          id='email'
+    <div className='flex flex-col p-4 justify-center items-center h-screen w-full
+      text-primary
+      bg-primary rounded-xl'
+    >
+      <form className='flex flex-col w-[250px] p-4  text-xs text-primary-foreground bg-accent
+        rounded-md'
+        onSubmit={submit}>
+        <h2 className='w-full text-center pb-4 text-lg font-bold' >Log in to Filmpin</h2>
+        <Input
           type='email'
-          autoComplete='on'
-          className='rounded-md text-slate-900 bg-slate-100 p-2'
+          placeholder='Email'
+          id='email'
+          ref={emailRef}
           value={credentials.email}
           onChange={(e) => setCredentials({ ...credentials, email: e.target.value })}
         />
-        <label htmlFor="password">Password</label>
-        <input
-          id='password'
+        <Input
           type='password'
-          className='rounded-md text-slate-900 bg-slate-100 p-2'
-          value={credentials.password}
+          placeholder='Password'
+          id='password'
           onChange={(e) => setCredentials({ ...credentials, password: e.target.value })}
+          value={credentials.password}
         />
-        <button type='submit'>Sign in</button>
+        <Button type='submit' text='Sign in' />
       </form>
     </div>
   );

@@ -26,12 +26,16 @@ const Movie = ({info}) => {
 		getDetails();
 	}, []);
 		
-	return (
-		<motion.div className='flex flex-col rounded-lg gap-3 w-[300px] h-[550px]'>
-			<img className='rounded-md w-[300px] h-[400px] object-cover self-center' src={`https://image.tmdb.org/t/p/w200/${details.poster_path}`} alt={`${details.original_title} poster`} />
-			<h4 className='text-lg font-semibold'> {details.original_title} </h4>
+	return (	
+		<motion.div className='flex flex-col rounded-md drop-shadow-sm gap-1 p-2 w-[200px] h-[350px]
+			text-primary-foreground bg-secondary
+			transition-transform
+			hover:scale-95 hover:cursor-pointer mouse-in
+			'>
+			<img className='rounded-md w-[200px] h-[250px] object-cover self-center' src={`https://image.tmdb.org/t/p/w200/${details.poster_path}`} alt={`${details.original_title} poster`} />
+			<h4 className='text-md font-semibold'> {details.original_title} </h4>
 			<h4 className='text-sm' >{details.release_date?.split('-')[0]}</h4>
-			<h4>{ `${details.runtime} minutes` }</h4>
+			<h4 className='text-xs'>{ `${details.runtime} minutes` }</h4>
 		</motion.div>
 	)
 }
