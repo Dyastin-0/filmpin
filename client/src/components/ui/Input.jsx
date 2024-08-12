@@ -5,7 +5,7 @@ const Input = React.forwardRef(({ onChange, type, value, id, placeholder, requir
 	const [focus, setFocus] = useState(false);
 
 	return (
-    <div className='flex flex-col justify-center h-[60px]'>
+    <div className='relative flex flex-col justify-center h-[60px]'>
 			<motion.label
 				animate={{
 					y: focus || value ? -25 : 0,
