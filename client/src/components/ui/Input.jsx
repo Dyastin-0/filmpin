@@ -12,7 +12,7 @@ const Input = React.forwardRef(({ onChange, type, value, id, placeholder, requir
 					x: focus || value ? 0 : 5
 				}}
 				transition={{duration: 0.3, ease: 'easeInOut'}}
-				className='fixed text-xs text-primary-foreground font-semibold'
+				className='absolute text-xs text-primary-foreground font-semibold'
 				htmlFor={id}>{placeholder}
 			</motion.label>
 			<input
