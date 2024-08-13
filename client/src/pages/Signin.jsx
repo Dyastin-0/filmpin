@@ -42,7 +42,7 @@ const Signin = () => {
   };
 
   return (
-    <div className='flex flex-col p-4 justify-center items-center h-screen w-full
+    <div className='flex flex-col p-4 justify-center items-center h-full w-full
       text-primary
       bg-primary rounded-xl'
     >
