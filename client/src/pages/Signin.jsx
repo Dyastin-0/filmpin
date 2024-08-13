@@ -46,8 +46,8 @@ const Signin = () => {
       text-primary
       bg-primary rounded-xl'
     >
-      <form className='flex flex-col w-[250px] p-4  text-xs text-primary-foreground bg-accent
-        rounded-md'
+      <form className='flex flex-col w-[250px] p-4  text-xs text-primary-foreground
+      bg-accent drop-shadow-sm rounded-md'
         onSubmit={submit}>
         <h2 className='w-full text-center pb-4 text-lg font-bold' >Log in to Filmpin</h2>
         <Input

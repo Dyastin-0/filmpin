@@ -4,6 +4,13 @@ import { useEffect, useState } from "react";
 import axios from "axios";
 import Movie from "../components/Movie";
 
+import 'swiper/css';
+import 'swiper/css/pagination';
+import 'swiper/css/navigation';
+
+import { SwiperSlide, Swiper } from "swiper/react";
+import { Pagination, Navigation, Autoplay } from 'swiper/modules';
+
 const Home = () => {
   const navigate = useNavigate();
   const { user, token } = useAuth();
@@ -30,10 +37,33 @@ const Home = () => {
 
   return (
     <div className="flex flex-col bg-primary rounded-lg gap-1 p-4 justify-center items-center h-full w-full">
-      <section className='flex flex-wrap justify-center gap-4 w-full'>
-        {
-          movies && movies.map((movie, index) => <Movie key={index} info={movie} />)
-        }
+      <section className='container bg-transparent overflow-hidden'>
+        <h1 className='text-primary-foreground text-lg font-semibold'> Top rated </h1>
+        <Swiper
+          speed={1000}
+          loop={true}
+          // spaceBetween={18}
+          centeredSlides
+          breakpointsBase="container"
+          slidesPerGroup={5}
+
+          autoplay={{
+            delay: 2500,
+            disableOnInteraction: false,
+          }}
+          navigation
+          modules={[Pagination, Navigation, Autoplay]}
+        >
+          {
+            movies && movies.map((movie, index) => {
+              return (
+                <SwiperSlide key={index} >
+                  <Movie info={movie} />
+                </SwiperSlide>
+              )
+            })
+          }
+        </Swiper>
       </section>
     </div>
   )

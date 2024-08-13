@@ -10,7 +10,7 @@ const initializeEnvironment = () => {
     console.log(`Created ${envFilePath} with initial variable.`);
   } else {
     const envContent = fs.readFileSync(envFilePath, { encoding: 'utf8' });
-    if (!envContent.includes('INITIAL_VARIABLE=')) {
+    if (!envContent.includes('GOOGLE_APPLICATION_CREDENTIALS=')) {
       fs.appendFileSync(envFilePath, `${initialVariable}\n`, { encoding: 'utf8' });
       console.log(`Added initial variable to ${envFilePath}.`);
     }

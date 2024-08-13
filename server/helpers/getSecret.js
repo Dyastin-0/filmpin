@@ -1,6 +1,6 @@
-require('dotenv').config();
+const dotenv = require('dotenv').config();
 
-const {SecretManagerServiceClient} = require('@google-cloud/secret-manager');
+const { SecretManagerServiceClient } = require('@google-cloud/secret-manager');
 
 const client = new SecretManagerServiceClient();
 
@@ -10,7 +10,6 @@ async function getSecret(secretName) {
     name: name
   });
   const payload = version.payload.data.toString('utf8');
-  console.log(payload);
   return payload;
 }
 
