@@ -57,7 +57,7 @@ const Signup = () => {
     }
   }
   return (
-    <div className='flex flex-col p-4 justify-center items-center h-[100%] w-full
+    <div className='flex flex-col p-4 justify-center items-center h-[84vh] w-full
       text-primary
       bg-primary rounded-xl'
     >

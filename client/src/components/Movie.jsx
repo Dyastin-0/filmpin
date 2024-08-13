@@ -3,27 +3,29 @@ import { useEffect, useState } from 'react';
 import axios from 'axios';
 import { useAuth } from '../hooks/useAuth';
 
+const fetchDetails = async (token, id) => {
+	try {
+		const response = await axios.get(`/movies/details/${id}`, {
+			headers: {
+				Authorization: `Bearer ${token}`,
+				"Content-Type": 'application/json'
+			}
+		});
+
+		return response.data;
+	} catch (error) {
+		console.error(`Failed to fetch details for ${id}` ,error);
+		return null;
+	}
+}
+
 const Movie = ({info}) => {
 	const { token } = useAuth();
 
 	const [details, setDetails] = useState({});
 	
 	useEffect(() => {
-		const getDetails = async () => {
-			try {
-				const response = await axios.get(`/movies/details/${info.id}`, {
-					headers: {
-						Authorization: `Bearer ${token}`,
-						"Content-Type": 'application/json'
-					}
-				});
-				setDetails(response.data);
-				console.log(response.data);
-			} catch (error) {
-				console.error(error);
-			}	
-		}
-		getDetails();
+		fetchDetails(token, info.id).then(details => setDetails(details))
 	}, []);
 		
 	return (	
