@@ -42,7 +42,7 @@ const fetchMovies = async (token) => {
 }
 
 const SwiperSection = ({ title, movies }) => (
-  <section className='container bg-transparent overflow-hidden gap-4'>
+  <section className='w-full ml-4 mr-4 mb-4 bg-transparent overflow-hidden gap-4'>
     <h1 className='text-primary-foreground pb-4 text-lg font-semibold'>{title}</h1>
     <Swiper {...swiperConfig}>
       {movies.map((movie, index) => (
@@ -55,7 +55,7 @@ const SwiperSection = ({ title, movies }) => (
 );
 
 const LoadingSwiperSection = ({ title }) => (
-  <section className='container bg-transparent overflow-hidden gap-4'>
+  <section className='w-full m-4 bg-transparent overflow-hidden gap-4'>
     <h1 className='text-primary-foreground pb-4 text-lg font-semibold'>{title}</h1>
     <Swiper {...swiperConfig}>
       {Array(10).fill(null).map((_, index) => (
