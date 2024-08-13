@@ -7,6 +7,10 @@ const Input = React.forwardRef(({ onChange, type, value, id, placeholder, requir
 	return (
     <div className='relative flex flex-col justify-center h-[60px]'>
 			<motion.label
+				initial={{
+					y: 0,
+					x: 5
+				}}
 				animate={{
 					y: focus || value ? -25 : 0,
 					x: focus || value ? 0 : 5
