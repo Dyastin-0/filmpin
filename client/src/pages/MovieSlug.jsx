@@ -35,11 +35,10 @@ const MovieSlug = () => {
 					<h4 className='text-primary-foreground text-xs'> {movie?.release_date.split('-')[0]} </h4>
 					<div className='flex gap-1'>
 						{
-							movie.genres.map((genre, index) => {
-								return (
+							movie.genres.map((genre, index) => (
 									<p className='text-primary-foreground text-xs' key={index}>{`${index === movie.genres.length - 1 ? genre.name : `${genre.name},` }`}</p>
 								)
-							})
+							)
 						}
 					</div>
 					<p className='text-primary-foreground text-xs'> {`${movie.runtime} minutes`} </p>

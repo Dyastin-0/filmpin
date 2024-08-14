@@ -9,17 +9,15 @@ export default {
       colors: {
         primary: {
           DEFAULT: "var(--bg-primary)",
-          foreground: {
-            DEFAULT: "var(--text-primary)",
-            secondary: "var(--text-secondary)"
-          },
+          foreground: "var(--text-primary)",
           highlight: "var(--highlight)"
         },
         secondary: {
-          DEFAULT: "var(--bg-secondary)"
+          DEFAULT: "var(--bg-secondary)",
+          foreground: "var(--text-secondary)"
         },
         accent: "var(--accent)"
-      }
+      },
     },
   },
   plugins: [],
