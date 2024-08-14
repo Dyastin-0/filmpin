@@ -4,7 +4,7 @@ import { toast } from 'react-hot-toast';
 import axios from 'axios';
 import { useAuth } from '../hooks/useAuth';
 import { testEmail, testPassword, testUsername } from '../helpers/regex';
-import ProgressBar from '../components/ProgressBar';
+import ProgressBar from '../components//ui/ProgressBar';
 import Input from '../components/ui/Input';
 import Button from '../components/ui/Button';
 
@@ -57,7 +57,7 @@ const Signup = () => {
     }
   }
   return (
-    <div className='flex flex-col p-4 justify-center items-center h-[84vh] w-full
+    <div className='flex flex-col p-4 justify-center items-center h-full w-full
       text-primary
       bg-primary rounded-xl'
     >
@@ -107,4 +107,4 @@ const Signup = () => {
   )
 }
 
-export default Signup
+export default Signup;

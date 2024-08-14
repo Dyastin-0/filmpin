@@ -22,4 +22,4 @@ const ProgressBar = ({value, text, visible}) => {
 	);
 }
 
-export default ProgressBar
+export default ProgressBar;

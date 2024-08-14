@@ -2,6 +2,7 @@ import { motion } from 'framer-motion';
 import { useEffect, useState } from 'react';
 import axios from 'axios';
 import { useAuth } from '../hooks/useAuth';
+import { useNavigate } from 'react-router-dom';
 
 const fetchDetails = async (token, id) => {
 	try {
@@ -20,18 +21,23 @@ const fetchDetails = async (token, id) => {
 }
 
 const Movie = ({info}) => {
+	const navigate = useNavigate();
 	const { token } = useAuth();
-
 	const [details, setDetails] = useState({});
-	
+
 	useEffect(() => {
 		fetchDetails(token, info.id).then(details => setDetails(details))
 	}, []);
-		
+
+	const handleClick = () => {
+		navigate(`/movies/${info.original_title.toLowerCase().replace(' ', '_')}`, { state: {movie: details} });
+	}
+
 	return (	
 		<motion.div className='flex flex-col rounded-md drop-shadow-sm gap-1 p-4 w-[200px] h-[370px]
 			text-primary-foreground bg-accent
 			hover:scale-95 hover:cursor-pointer duration-300'
+			onClick={handleClick}
 		>
 			<img
 				loading='lazy'
@@ -40,8 +46,8 @@ const Movie = ({info}) => {
 				alt={`${info.original_title} poster`}
 			/>
 			<h4 className='text-md font-semibold'> {details.original_title} </h4>
-			<h4 className='text-sm' >{details.release_date?.split('-')[0]}</h4>
-			<h4 className='text-xs'>{ `${details.runtime} minutes` }</h4>
+			<h4 className='text-sm' > {details.release_date?.split('-')[0]} </h4>
+			<h4 className='text-xs'> { `${details.runtime} minutes` } </h4>
 		</motion.div>
 	)
 }
@@ -70,4 +76,4 @@ export const MovieDummy = () => {
 	);
 }
 
-export default Movie
+export default Movie;
