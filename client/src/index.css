@@ -38,11 +38,25 @@ body {
 
 #root {
   display: flex;
-  flex: 1;  
+  flex: 1;
   flex-direction: column;
   max-width: 1500px;
   width: 100%;
   gap: 1rem;
+}
+
+.video-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh; /* Set the height of the container to the height of the 
+viewport */
+}
+
+.video-container iframe {
+  width: 80%; /* Set the width of the iframe */
+  height: 45vw; /* Set the height of the iframe based on the aspect ratio 
+*/
 }
 
 .progress-bar {
