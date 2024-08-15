@@ -7,7 +7,7 @@ import Navbar from './components/Navbar';
 import axios from 'axios';
 import MovieSlug from './pages/MovieSlug';
 
-axios.defaults.baseURL = 'http://localhost:3000';
+axios.defaults.baseURL = 'https://jwt-auth-wuhj.onrender.com/';
 axios.defaults.withCredentials = true;
 
 function App() {
