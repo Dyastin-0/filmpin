@@ -9,7 +9,7 @@ const verifyJsonWebToken = (req, res, next) => {
 		token,
 		process.env.ACCESS_TOKEN_SECRET,
 		(error, decoded) => {
-			if (error) return res.sendStatus(403); //invalid token
+			if (error) return res.sendStatus(403);
 			req.username = decoded.UserInfo.username;
 			req.email = decoded.UserInfo.email;
 			req.roles = decoded.UserInfo.roles;

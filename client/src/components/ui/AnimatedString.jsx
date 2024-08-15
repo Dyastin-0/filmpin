@@ -2,6 +2,8 @@ import React from 'react';
 import { motion } from 'framer-motion';
 
 const AnimatedString = ({ text }) => {
+  if (!text) return;
+
   const words = text.split(' ');
 
   const wordVariants = {
