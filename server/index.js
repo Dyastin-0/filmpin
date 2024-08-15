@@ -33,7 +33,7 @@ app.use('/log-out', require('./routes/auth'));
 app.use(verifyJsonWebToken);
 app.use('/movies', require('./routes/api/movies'));
 
-if (!process.env.SERVER_URL) {
+if (process.env.SERVER_URL) {
 	cron.schedule('*/14 * * * *', async () => {
 		try {
 			await axios.get(`${process.env.SERVER_URL}`);
