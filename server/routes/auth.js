@@ -4,7 +4,9 @@ const { handleAuth } = require('../controllers/auth');
 const handleRefreshAccessToken = require('../controllers/refreshAccessToken');
 const handleSignup = require('../controllers/signup');
 const handleSignout = require('../controllers/signout');
+const handleRoot = require('../controllers/root');
 
+router.get('/', handleRoot);
 router.get('/refreshAccessToken', handleRefreshAccessToken);
 router.post('/sign-out', handleSignout);
 router.post('/sign-up', handleSignup);
