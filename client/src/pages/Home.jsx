@@ -27,8 +27,8 @@ const swiperConfig = {
 const fetchMovies = async (token) => {
   try {
     const [topRatedResponse, popularResponse, upcomingResponse, nowPlayingResponse] = await Promise.all([
-      axios.get('/movies/list/latest/page=1', { headers: { Authorization: `Bearer ${token}`, "Content-Type": 'application/json' } }),
       axios.get('/movies/list/top_rated/page=1', { headers: { Authorization: `Bearer ${token}`, "Content-Type": 'application/json' } }),
+      axios.get('/movies/list/popular/page=1', { headers: { Authorization: `Bearer ${token}`, "Content-Type": 'application/json' } }),
       axios.get('/movies/list/upcoming/page=1', { headers: { Authorization: `Bearer ${token}`, "Content-Type": 'application/json' } }),
       axios.get('/movies/list/now_playing/page=1', { headers: { Authorization: `Bearer ${token}`, "Content-Type": 'application/json' } }),
     ]);
