@@ -12,11 +12,10 @@ import { SwiperSlide, Swiper } from "swiper/react";
 import { Navigation } from 'swiper/modules';
 import MovieTrailer from "../components/MovieTrailer";
 
-// Centralized Swiper Configuration
 const swiperConfig = {
   speed: 1000,
   loop: true,
-  spaceBetween: 18,
+  spaceBetween: 14,
   centeredSlides: true,
   slidesPerView: 'auto',
   navigation: true,
@@ -77,20 +76,22 @@ const Home = () => {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    if (!user) {
-      navigate('/sign-in');
-    } else {
-      fetchMovies(token).then(data => {
-        setMoviesData(data);
-        setLoading(false);
-      });
+    if (token) {
+      if (!user) {
+        navigate('/sign-in');
+      } else {
+        fetchMovies(token).then(data => {
+          setMoviesData(data);
+          setLoading(false);
+        });
+      }
     }
-  }, []);
+  }, [token]);
 
   const { topMovies, popularMovies, upcomingMovies, nowPlayingMovies } = moviesData;
 
   return (
-    <div className="flex flex-col bg-primary rounded-lg gap-4 p-4 justify-center items-center h-full w-full">
+    <div className='flex flex-col bg-primary rounded-lg gap-4 p-4 justify-center items-center h-full w-full'>
       {loading ? (
         <>
           <LoadingSwiperSection title='Now playing' />
@@ -100,6 +101,7 @@ const Home = () => {
         </>
       ) : (
         <>
+          <MovieTrailer id='HI6gMkfRjE0' title='test' />
           <SwiperSection title='Now playing' movies={nowPlayingMovies} />
           <SwiperSection title='Top rated' movies={topMovies} />
           <SwiperSection title='Popular' movies={popularMovies} />

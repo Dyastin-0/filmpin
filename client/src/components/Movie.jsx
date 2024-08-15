@@ -27,11 +27,13 @@ const Movie = ({info}) => {
 	const [details, setDetails] = useState({});
 
 	useEffect(() => {
-		fetchDetails(token, info.id).then(details => setDetails(details))
+		if (token) {
+			fetchDetails(token, info.id).then(details => setDetails(details));
+		}
 	}, [token, info.id]);
 
 	const handleClick = () => {
-		navigate(`/movies/${info.original_title.toLowerCase().replace(' ', '_')}`, { state: {movie: details} });
+		navigate(`/movies/${details.id}_${details.title}`, { state: {movie: details} });
 	}
 
 	return (	
@@ -56,7 +58,7 @@ const Movie = ({info}) => {
 					value={details.vote_average} 
 					max={10}
 				>
-					<CircularProgressLabel>{details.vote_average}</CircularProgressLabel>
+					<CircularProgressLabel>{details.vote_average?.toFixed(1)}</CircularProgressLabel>
 				</CircularProgress>
 			</div>
 		</motion.div>
