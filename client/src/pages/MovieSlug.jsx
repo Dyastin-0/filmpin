@@ -1,18 +1,29 @@
-import React from 'react'
+import { useEffect, useState } from 'react'
 import { useLocation, useParams } from 'react-router-dom';
 import AnimatedString from '../components/ui/AnimatedString';
+import axios from 'axios';
 
 const MovieSlug = () => {
+	const [movie, setMovie] = useState();
   const location = useLocation();
   const { title } = useParams();
-  
-  const state = location.state || {};
-  const movie = state.movie || null;
 
-  console.log(movie);
-
+  useEffect(() => {
+		document.title = title;
+		const movie = location.state.movie;
+		if (!movie) {
+			const getMovie = async () => {
+				const movieTitle = title.replace('/_/g', ' ').replace('/\b\w/g', char => char.toUpperCase());
+				const response = await axios.get(`/movies/search/${movieTitle}`);
+			}
+			getMovie();
+		} else {
+			setMovie(movie);
+		}
+	}, []);
 
 	return (
+		movie !== null ? 
 		<div className="flex flex-col items-center bg-primary rounded-lg gap-4 p-4 h-full w-full">
 			<div className='w-full h-[400px] rounded-lg overflow-hidden'>
 				<img
@@ -45,7 +56,7 @@ const MovieSlug = () => {
 					<p className='text-primary-foreground text-xs'> {`${movie.runtime} minutes`} </p>
 				</div>
 			</div>
-		</div>
+		</div> : <p className='text-primary-foreground text-lg'> not found </p>
 	)
 }
 

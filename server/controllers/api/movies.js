@@ -7,7 +7,7 @@ const handleGetCategory = async (req, res) => {
 		res.json(response.data);
 	} catch (error) {
 		console.error('Failed to fetch list.', error);
-		res.sendStatus(404);
+		res.sendStatus(500);
 	}
 }
 
@@ -18,7 +18,7 @@ const handleGetDetails = async (req, res) => {
 		res.json(response.data);
 	} catch (error) {
 		console.error('Failed to fetch details', error);
-		res.sendStatus(404);
+		res.sendStatus(500);
 	}
 }
 
@@ -29,12 +29,24 @@ const handleGetCredits = async (req, res) => {
 		res.json(response.data);
 	} catch (error) {
 		console.error('Failed to fetch credits.', error);
-		res.sendStatus(404);
+		res.sendStatus(500);
+	}
+}
+
+const handleSearch = async (req, res) => {
+	const { query } = req.params;
+	try {
+		const response = await api.get(`search/movie?original_title=${query}?language=en-US`);
+		res.json(response.data);
+	} catch (error) {
+		console.error('Failed to search.', error);
+		res.sendStatus(500);
 	}
 }
 
 module.exports = {
 	handleGetCategory,
 	handleGetDetails,
-	handleGetCredits
+	handleGetCredits,
+	handleSearch
 };
