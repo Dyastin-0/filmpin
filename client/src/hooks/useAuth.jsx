@@ -30,6 +30,7 @@ export function AuthProvider({ children }) {
     setUser,
     setToken
   }
+  
   return (
     <AuthContext.Provider value={value}>
       { children }

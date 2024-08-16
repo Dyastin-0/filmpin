@@ -44,9 +44,21 @@ const handleSearch = async (req, res) => {
 	}
 }
 
+const handleGetVideo = async (req, res) => {
+	const { movie_id } = req.params;
+	try {
+		const response = await api.get(`movie/${movie_id}/videos?language=en-US`);
+		res.json(response.data);
+	} catch (error) {
+		console.error('Failed to search.', error);
+		res.sendStatus(500);
+	}
+}
+
 module.exports = {
 	handleGetCategory,
 	handleGetDetails,
 	handleGetCredits,
-	handleSearch
+	handleSearch,
+	handleGetVideo
 };

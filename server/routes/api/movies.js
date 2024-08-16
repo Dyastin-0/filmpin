@@ -5,7 +5,8 @@ const userRoles = require('../../models/roleList');
 const { handleGetCategory,
 	handleGetDetails,
 	handleGetCredits,
-	handleSearch
+	handleSearch,
+	handleGetVideo
 } = require('../../controllers/api/movies');
 
 router.route('/list/:category/:page')
@@ -19,5 +20,8 @@ router.route('/credits/:movide_id')
 
 router.route('/search/:query')
 	.get(verifyRoles(userRoles.user, userRoles.admin), handleSearch);
+
+router.route('/videos/:movie_id')
+	.get(verifyRoles(userRoles.user, userRoles.admin), handleGetVideo);
 
 module.exports = router;

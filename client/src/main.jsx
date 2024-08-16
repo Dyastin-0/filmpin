@@ -5,11 +5,14 @@ import './index.css'
 
 import { BrowserRouter } from 'react-router-dom';
 import { AuthProvider } from './hooks/useAuth';
+import { ModalProvider } from './hooks/useModal.jsx';
 
 ReactDOM.createRoot(document.getElementById('root')).render(
   <AuthProvider>
     <BrowserRouter>
-      <App />
+      <ModalProvider>
+        <App />
+      </ModalProvider>
     </BrowserRouter>
   </AuthProvider>
 );
