@@ -1,35 +1,24 @@
-import { useNavigate } from "react-router";
-import { useAuth } from "../hooks/useAuth";
-import { useEffect, useState } from "react";
-import axios from "axios";
-import Movie, { MovieDummy } from "../components/Movie";
-
 import 'swiper/css';
 import 'swiper/css/pagination';
 import 'swiper/css/navigation';
-
-import { SwiperSlide, Swiper } from "swiper/react";
-import { Navigation } from 'swiper/modules';
-import MovieTrailer from "../components/MovieTrailer";
-
-const swiperConfig = {
-  speed: 1000,
-  loop: true,
-  spaceBetween: 14,
-  centeredSlides: true,
-  slidesPerView: 'auto',
-  navigation: true,
-  modules: [Navigation],
-  className: 'swiper-slide',
-};
+import { useNavigate } from 'react-router';
+import { useAuth } from '../hooks/useAuth';
+import { useEffect, useState } from 'react';
+import axios from 'axios';
+import Movie from '../components/Movie';
+import { SwiperSlide, Swiper } from 'swiper/react';
+import { swiperConfig } from '../configs/swiperConfig';
+import MovieTrailer from '../components/MovieTrailer';
+import { LoadingMovieSection } from '../components/loaders/MovieLoaders';
+import { LoadingTrailerSection } from '../components/loaders/TrailerLoaders';
 
 const fetchMovies = async (token) => {
   try {
     const [topRatedResponse, popularResponse, upcomingResponse, nowPlayingResponse] = await Promise.all([
-      axios.get('/movies/list/top_rated/page=1', { headers: { Authorization: `Bearer ${token}`, "Content-Type": 'application/json' } }),
-      axios.get('/movies/list/popular/page=1', { headers: { Authorization: `Bearer ${token}`, "Content-Type": 'application/json' } }),
-      axios.get('/movies/list/upcoming/page=1', { headers: { Authorization: `Bearer ${token}`, "Content-Type": 'application/json' } }),
-      axios.get('/movies/list/now_playing/page=1', { headers: { Authorization: `Bearer ${token}`, "Content-Type": 'application/json' } }),
+      axios.get('/movies/list/top_rated/page=1', { headers: { Authorization: `Bearer ${token}`, 'Content-Type': 'application/json' } }),
+      axios.get('/movies/list/popular/page=1', { headers: { Authorization: `Bearer ${token}`, 'Content-Type': 'application/json' } }),
+      axios.get('/movies/list/upcoming/page=1', { headers: { Authorization: `Bearer ${token}`, 'Content-Type': 'application/json' } }),
+      axios.get('/movies/list/now_playing/page=1', { headers: { Authorization: `Bearer ${token}`, 'Content-Type': 'application/json' } }),
     ]);
     return {
       topMovies: topRatedResponse.data.results,
@@ -43,7 +32,7 @@ const fetchMovies = async (token) => {
   }
 }
 
-const SwiperSection = ({ title, movies }) => (
+const MovieSection = ({ title, movies }) => (
   <section className='w-full ml-4 mr-4 mb-4 bg-transparent overflow-hidden gap-4'>
     <h1 className='text-primary-foreground pb-4 text-lg font-semibold'>{title}</h1>
     <Swiper {...swiperConfig} >
@@ -56,18 +45,20 @@ const SwiperSection = ({ title, movies }) => (
   </section>
 );
 
-const LoadingSwiperSection = ({ title }) => (
-  <section className='w-full m-4 bg-transparent overflow-hidden gap-4'>
-    <h1 className='text-primary-foreground pb-4 text-lg font-semibold'>{title}</h1>
-    <Swiper {...swiperConfig}>
-      {Array(10).fill(null).map((_, index) => (
-        <SwiperSlide key={index}>
-          <MovieDummy />
-        </SwiperSlide>
-      ))}
-    </Swiper>
-  </section>
-);
+const TrailerSection = ({title, movies}) => {
+  return (
+    <section className='w-full h-fit ml-4 mr-4 mb-4 bg-transparent overflow-hidden gap-4'>
+      <h1 className='text-primary-foreground pb-4 text-lg font-semibold'>{title}</h1>
+      <Swiper {...swiperConfig} >
+        {movies.map((movie, index) => (
+          <SwiperSlide className='max-h-fit' key={index}>
+            <MovieTrailer id={movie.id} title={movie.title} />
+          </SwiperSlide>
+        ))}
+      </Swiper>
+    </section>
+  )
+};
 
 const Home = () => {
   const navigate = useNavigate();
@@ -94,18 +85,19 @@ const Home = () => {
     <div className='flex flex-col bg-primary rounded-lg gap-4 p-4 justify-center items-center h-full w-full'>
       {loading ? (
         <>
-          <LoadingSwiperSection title='Now playing' />
-          <LoadingSwiperSection title='Top rated' />
-          <LoadingSwiperSection title='Popular' />
-          <LoadingSwiperSection title='Upcoming' />
+          <LoadingTrailerSection title='Latest trailers' />
+          <LoadingMovieSection title='Now playing' />
+          <LoadingMovieSection title='Top rated' />
+          <LoadingMovieSection title='Popular' />
+          <LoadingMovieSection title='Upcoming' />
         </>
       ) : (
         <>
-          <MovieTrailer id='HI6gMkfRjE0' title='test' />
-          <SwiperSection title='Now playing' movies={nowPlayingMovies} />
-          <SwiperSection title='Top rated' movies={topMovies} />
-          <SwiperSection title='Popular' movies={popularMovies} />
-          <SwiperSection title='Upcoming' movies={upcomingMovies} />
+          <TrailerSection title='Latest trailers' movies={upcomingMovies} />
+          <MovieSection title='Now playing' movies={nowPlayingMovies} />
+          <MovieSection title='Top rated' movies={topMovies} />
+          <MovieSection title='Popular' movies={popularMovies} />
+          <MovieSection title='Upcoming' movies={upcomingMovies} />
         </>
       )}
     </div>
