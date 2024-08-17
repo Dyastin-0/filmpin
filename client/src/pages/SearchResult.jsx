@@ -31,33 +31,26 @@ const SearchResult = () => {
 	const [results, setResults] = useState(null);
 
 	useEffect(() => {
-		if (token && query !== currentPage) {
-			setCurrentQuery(query);
+		setCurrentQuery(prevQuery => query !== prevQuery ? query : prevQuery);
+		if (token && query !== currentQuery) {
 			const get = async () => {
-				await getPage(token, query, 1).then(response => {
-					setCurrentPage(response.page);
-					setTotalPages(response.total_pages);
-					setResults( [response.results]);
-				});
-			}
+				const response = await getPage(token, query, 1);
+				setCurrentPage(response.page);
+				setTotalPages(response.total_pages);
+				setResults([response.results]);
+			};
 			get();
-		}
-		if (token) {
-			setCurrentQuery(query);
+		} else {
 			const get = async () => {
-				await getPage(token, query, 1).then(response => {
-					setCurrentPage(response.page);
-					setTotalPages(response.total_pages);
-					setResults(prevResults => prevResults ? [...prevResults, response.results] : [response.results]);
-				});
-			}
-			get();
+				const response = await getPage(token, query, 1);
+				setCurrentPage(response.page);
+				setTotalPages(response.total_pages);
+				setResults(prevResults => prevResults ? [...prevResults, response.results] : [response.results]);
+			};
+			token && get();
 		}
 	}, [token, query]);
-
-	useEffect(() => {
-		console.log(results);
-	}, [results]);
+	
 
 	const next = async () => {
 		if (currentPage === totalPages) return;

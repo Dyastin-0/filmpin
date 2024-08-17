@@ -64,21 +64,25 @@ const Navbar = () => {
         ))
       }
       <div className='max-w-full'>
-      <SearchInput
-        onSubmit={handleSearch}
-        type='text'
-        id='search'
-        placeholder='Search'
-        onChange={(e) => setQuery(e.target.value)}
-      />
+        { user &&
+          <SearchInput
+            onSubmit={handleSearch}
+            type='text'
+            id='search'
+            placeholder='Search'
+            onChange={(e) => setQuery(e.target.value)}
+          />
+        }
       </div>
       </div>
       <div className='flex w-fit gap-3 justify-center items-center'>
-        <Dropdown name={user?.username}>
+        { user &&
+          <Dropdown name={user?.username}>
             <DropdownItem onClick={handleSignout}>
               Sign out
             </DropdownItem>
-        </Dropdown>
+          </Dropdown>
+        }
       </div>
     </div>
   )
