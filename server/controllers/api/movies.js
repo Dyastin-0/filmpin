@@ -36,7 +36,7 @@ const handleGetCredits = async (req, res) => {
 const handleSearch = async (req, res) => {
 	const { query, page } = req.params;
 	try {
-		const response = await api.get(`search/movie?query=${query}&include_adult=true&language=en-US&${page}`);
+		const response = await api.get(`search/movie?query=${query}&include_adult=false&video=false&language=en-US&${page}`);
 		res.json(response.data);
 	} catch (error) {
 		console.error('Failed to search.', error);
