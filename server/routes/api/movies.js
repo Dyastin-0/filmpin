@@ -21,7 +21,7 @@ router.route('/details/:movie_id')
 router.route('/credits/:movide_id')
 	.get(verifyRoles(userRoles.user, userRoles.admin), cache('10 minutes'), handleGetCredits);
 
-router.route('/search/:query')
+router.route('/search/:query/:page')
 	.get(verifyRoles(userRoles.user, userRoles.admin), cache('10 minutes'), handleSearch);
 
 router.route('/videos/:movie_id')

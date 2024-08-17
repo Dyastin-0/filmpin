@@ -1,9 +1,10 @@
-import React from 'react'
-import { Link, useLocation, useNavigate } from 'react-router-dom';
+import React from 'react';
+import { useLocation, useNavigate } from 'react-router-dom';
 import { useAuth } from '../hooks/useAuth';
 import axios from 'axios';
-import Input, { SearchInput } from './ui/Input';
+import { SearchInput } from './ui/Input';
 import Button from './ui/Button';
+import { Dropdown, DropdownItem } from './ui/Dropdown';
 
 const Navbar = () => {
   const navigate = useNavigate();
@@ -29,7 +30,9 @@ const Navbar = () => {
     {path: '/sign-up', name: 'Sign up'}
   ]
   return (
-    <div className='flex justify-center bg-primary rounded-lg w-full p-4 gap-4 drop-shadow-sm'>
+    <div className='flex justify-between bg-primary rounded-lg w-full p-3 gap-3 drop-shadow-sm z-50'>
+      <div></div>
+      <div className='flex w-fit gap-3'>
       { 
         user && routes.map((route, index) => (
           <Button
@@ -52,11 +55,17 @@ const Navbar = () => {
           />
         ))
       }
-      { user && <Button onClick={handleSignout} variant='link' text='Sign out' />
-       }
-       <form>
-          <SearchInput placeholder='Search' />
-       </form>
+      <div className='w-[200px] max-w-full'>
+        <SearchInput placeholder='Search' />
+      </div>
+      </div>
+      <div className='flex w-fit gap-3 justify-center items-center'>
+        <Dropdown name={user?.username}>
+            <DropdownItem onClick={handleSignout}>
+              Sign out
+            </DropdownItem>
+        </Dropdown>
+      </div>
     </div>
   )
 }

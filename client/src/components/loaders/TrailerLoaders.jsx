@@ -15,8 +15,8 @@ export const TrailerDummy = () => (
 );
 
 export const LoadingTrailerSection = ({ title }) => (
-  <section className='w-full m-4 bg-transparent overflow-hidden gap-4'>
-    <h1 className='text-primary-foreground pb-4 text-lg font-semibold'>{title}</h1>
+  <section className='w-full h-fit ml-4 mr-4 mb-4 bg-transparent overflow-hidden gap-4'>
+    <h1 className='text-primary-foreground pb-4 text-sm font-semibold'>{title}</h1>
     <Swiper {...swiperConfig}>
       {Array(10).fill(null).map((_, index) => (
         <SwiperSlide key={index}>

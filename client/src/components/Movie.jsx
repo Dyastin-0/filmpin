@@ -4,7 +4,7 @@ import axios from 'axios';
 import { useAuth } from '../hooks/useAuth';
 import { useNavigate } from 'react-router-dom';
 import { CircularProgress, CircularProgressLabel } from '@chakra-ui/react';
-import { MovieDummy, ImageDummy } from './loaders/MovieLoaders';
+import { MovieDummy, ImageDummy, TitleDummy, YearDummy, GenresDummy } from './loaders/MovieLoaders';
 
 const fetchDetails = async (token, id) => {
 	try {
@@ -49,7 +49,7 @@ const Movie = ({info}) => {
 	}
 
 	return (	
-		details ? <motion.div className='flex flex-col rounded-lg drop-shadow-sm gap-1 p-4 w-[200px] h-[370px]
+		<motion.div className='flex flex-col rounded-lg drop-shadow-sm gap-1 p-4 w-[200px] h-[370px]
 			text-primary-foreground bg-accent
 			hover:scale-95 hover:cursor-pointer duration-300'
 			onClick={handleClick}
@@ -65,9 +65,19 @@ const Movie = ({info}) => {
 				/> : 
 				<ImageDummy />
 			}
-			<h4 className='text-md font-semibold'> {details.original_title} </h4>
-			<h4 className='text-sm'> {details.release_date?.split('-')[0]} </h4>
-			<h4 className='text-xs'> { `${details.runtime} minutes` } </h4>
+			{
+				details.original_title ?
+				<>
+					<h4 className='text-md font-semibold'> {details.original_title} </h4>
+					<h4 className='text-sm'> {details.release_date?.split('-')[0]} </h4>
+					<h4 className='text-xs'> { `${details.runtime} minutes` } </h4>
+				</> :
+				<>
+					<TitleDummy />
+					<YearDummy />
+					<GenresDummy />
+				</>
+			}
 			<div className='absolute bottom-4 right-4'>
 				<CircularProgress 
 					size='40px' 
@@ -78,7 +88,7 @@ const Movie = ({info}) => {
 					<CircularProgressLabel>{details.vote_average?.toFixed(1)}</CircularProgressLabel>
 				</CircularProgress>
 			</div>
-		</motion.div> : <MovieDummy />
+		</motion.div>
 	)
 }
 

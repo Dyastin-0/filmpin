@@ -44,13 +44,11 @@ export const SearchInput = ({ onChange, type, value, id, placeholder, required }
 		type={type}
 		required={required}
 		placeholder={placeholder}
-		className={`bg-primary text-primary-foreground placeholder-primary-foreground rounded-full text-sm outline-none
-			max-w-fit
+		className={`bg-accent drop-shadow-sm text-primary-foreground placeholder-primary-foreground rounded-md text-xs outline-none
+			w-full
 			transition-all duration-300
-			shadow-[var(--highlight)_0_2px_0_0]
-			focus:bg-transparent focus:text-primary-foreground focus:placeholder-primary-foreground focus:shadow-[var(--highlight)_0_0_0_2px]
-			hover:bg-transparent hover:text-primary-foreground hover:placeholder-primary-foreground hover:shadow-[var(--highlight)_0_0_0_2px]
-			pl-2 pr-2 pt-1 pb-1`}
+			focus:shadow-[var(--highlight)_0_0_0_2px]
+			pl-2 pr-2 pt-2 pb-2`}
 		/>
 	);
 }

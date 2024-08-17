@@ -8,3 +8,14 @@ export const blinkVariants = {
     }
   }
 };
+
+export const blinkOpacity = {
+  blink: {
+    opacity: [0.5, 1],
+    transition: {
+      duration: 0.5,
+      repeat: Infinity,
+      repeatType: 'reverse',
+    }
+  }
+};

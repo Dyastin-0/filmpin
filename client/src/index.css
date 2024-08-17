@@ -70,4 +70,6 @@ body {
   transition: width 0.5s;
 }
 
-.swiper-slide { width: auto; }
+.swiper-slide {
+  width: auto;
+}
