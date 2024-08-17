@@ -4,7 +4,7 @@ import axios from 'axios';
 import { useAuth } from '../hooks/useAuth';
 import { useNavigate } from 'react-router-dom';
 import { CircularProgress, CircularProgressLabel } from '@chakra-ui/react';
-import { MovieDummy, ImageDummy, TitleDummy, YearDummy, GenresDummy } from './loaders/MovieLoaders';
+import { ImageDummy, TitleDummy, YearDummy, GenresDummy } from './loaders/MovieLoaders';
 
 const fetchDetails = async (token, id) => {
 	try {
@@ -68,7 +68,7 @@ const Movie = ({info}) => {
 			{
 				details.original_title ?
 				<>
-					<h4 className='text-md font-semibold'> {details.original_title} </h4>
+					<h4 className='text-md font-semibold'> {details.title} </h4>
 					<h4 className='text-sm'> {details.release_date?.split('-')[0]} </h4>
 					<h4 className='text-xs'> { `${details.runtime} minutes` } </h4>
 				</> :

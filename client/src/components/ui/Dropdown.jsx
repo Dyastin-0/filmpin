@@ -9,7 +9,7 @@ export const Dropdown = ({ name, className, children }) => {
   }
 
   return (
-    <div className="relative flex justify-end z-50">
+    <div className="relative flex items-center justify-end z-50">
       <Button
 				variant='ghost'
 				text={name}

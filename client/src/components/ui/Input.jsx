@@ -1,5 +1,8 @@
-import React, { useRef, useState } from 'react';
+import React, { useState } from 'react';
 import { motion } from 'framer-motion';
+ 
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faSearch } from '@fortawesome/free-solid-svg-icons';
 
 const Input = React.forwardRef(({ onChange, type, value, id, placeholder, required }, ref) => {
 	const [focus, setFocus] = useState(false);
@@ -37,19 +40,22 @@ const Input = React.forwardRef(({ onChange, type, value, id, placeholder, requir
   );
 });
 
-export const SearchInput = ({ onChange, type, value, id, placeholder, required }) => {
+export const SearchInput = ({ onChange, type, value, id, placeholder, required, onSubmit }) => {
 	return (
-		<input
-		id={id}
-		type={type}
-		required={required}
-		placeholder={placeholder}
-		className={`bg-accent drop-shadow-sm text-primary-foreground placeholder-primary-foreground rounded-md text-xs outline-none
-			w-full
-			transition-all duration-300
-			focus:shadow-[var(--highlight)_0_0_0_2px]
-			pl-2 pr-2 pt-2 pb-2`}
-		/>
+		<form className='flex gap-2 text-primary-foreground bg-accent pl-2 pr-2 rounded-full' onSubmit={onSubmit}>
+			<input
+				value={value}
+				id={id}
+				type={type}
+				onChange={onChange}
+				required={required}
+				placeholder={placeholder}
+				className={`bg-transparent text-primary-foreground placeholder-primary-foreground rounded-md text-xs outline-none
+					w-full
+					pr-2 pt-2 pb-2`}
+			/>
+			<button type='submit'><FontAwesomeIcon icon={faSearch} /></button>
+		</form>
 	);
 }
 

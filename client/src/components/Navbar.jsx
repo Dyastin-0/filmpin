@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { useAuth } from '../hooks/useAuth';
 import axios from 'axios';
@@ -6,10 +6,20 @@ import { SearchInput } from './ui/Input';
 import Button from './ui/Button';
 import { Dropdown, DropdownItem } from './ui/Dropdown';
 
+const routes = [
+  {path: '/dashboard', name: 'Dashboard'}
+];
+const authRoutes = [
+  {path: '/sign-in', name: 'Sign in'},
+  {path: '/sign-up', name: 'Sign up'}
+];
+
+
 const Navbar = () => {
   const navigate = useNavigate();
   const location = useLocation();
   const { setToken, setUser, user } = useAuth();
+  const [query, setQuery] = useState(null);
 
   const handleSignout = async () => {
     try {
@@ -22,13 +32,11 @@ const Navbar = () => {
     }
   }
 
-  const routes = [
-    {path: '/dashboard', name: 'Dashboard'}
-  ]
-  const authRoutes = [
-    {path: '/sign-in', name: 'Sign in'},
-    {path: '/sign-up', name: 'Sign up'}
-  ]
+  const handleSearch = (e) => {
+    e.preventDefault();
+    if (query) navigate(`/movies/search/${query.replace(/[_\s]/g, '+')}`);
+  }
+
   return (
     <div className='flex justify-between bg-primary rounded-lg w-full p-3 gap-3 drop-shadow-sm z-50'>
       <div></div>
@@ -55,8 +63,14 @@ const Navbar = () => {
           />
         ))
       }
-      <div className='w-[200px] max-w-full'>
-        <SearchInput placeholder='Search' />
+      <div className='max-w-full'>
+      <SearchInput
+        onSubmit={handleSearch}
+        type='text'
+        id='search'
+        placeholder='Search'
+        onChange={(e) => setQuery(e.target.value)}
+      />
       </div>
       </div>
       <div className='flex w-fit gap-3 justify-center items-center'>
