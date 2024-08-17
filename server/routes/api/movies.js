@@ -9,19 +9,22 @@ const { handleGetCategory,
 	handleGetVideo
 } = require('../../controllers/api/movies');
 
+const cacheService = require('express-api-cache');
+const cache = cacheService.cache;
+
 router.route('/list/:category/:page')
-	.get(verifyRoles(userRoles.user, userRoles.admin), handleGetCategory);
+	.get(verifyRoles(userRoles.user, userRoles.admin), cache('10 minutes'), handleGetCategory);
 
 router.route('/details/:movie_id')
-	.get(verifyRoles(userRoles.user, userRoles.admin), handleGetDetails);
+	.get(verifyRoles(userRoles.user, userRoles.admin), cache('10 minutes'), handleGetDetails);
 
 router.route('/credits/:movide_id')
-	.get(verifyRoles(userRoles.user, userRoles.admin), handleGetCredits);
+	.get(verifyRoles(userRoles.user, userRoles.admin), cache('10 minutes'), handleGetCredits);
 
 router.route('/search/:query')
-	.get(verifyRoles(userRoles.user, userRoles.admin), handleSearch);
+	.get(verifyRoles(userRoles.user, userRoles.admin), cache('10 minutes'), handleSearch);
 
 router.route('/videos/:movie_id')
-	.get(verifyRoles(userRoles.user, userRoles.admin), handleGetVideo);
+	.get(verifyRoles(userRoles.user, userRoles.admin), cache('10 minutes'), handleGetVideo);
 
 module.exports = router;
