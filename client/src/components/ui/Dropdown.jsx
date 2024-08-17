@@ -35,7 +35,6 @@ export const DropdownItem = ({onClick, children, asChild}) => {
 	return (
 		asChild ? children :
 		<button
-			focusable={true}
 			className='text-right text-nowrap text-primary-foreground text-xs outline-none
 			pb-1'
 			onClick={onClick}>

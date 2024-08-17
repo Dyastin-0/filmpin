@@ -11,11 +11,7 @@ const Signin = () => {
   const navigate = useNavigate();
   const { setToken, setUser, user } = useAuth();
 
-  const previousPath = location.state?.from?.pathname || '/dashboard';
-
-  useEffect(() => {
-    user && navigate('/dashboard');
-  }, [user]);
+  const previousPath = location.state?.from?.pathname || '/home';
 
   useEffect(() => {
     emailRef.current.focus();

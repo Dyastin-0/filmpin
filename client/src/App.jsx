@@ -6,7 +6,7 @@ import Home from './pages/Home';
 import Navbar from './components/Navbar';
 import axios from 'axios';
 import MovieSlug from './pages/MovieSlug';
-import SearchResult from './pages/SearchResult';
+import SearchSlug from './pages/SearchSlug';
 
 axios.defaults.baseURL = import.meta.env.VITE_BASE_API_URL;
 axios.defaults.withCredentials = true;
@@ -18,11 +18,12 @@ function App() {
 		<Navbar />
     <Toaster position='bottom-left' toastOptions={{duration: 2000}} />
     <Routes>
+      <Route path='/' element={<Signin />}></Route>
       <Route path='/sign-in' element={<Signin />}></Route>
       <Route path='/sign-up' element={<Signup />}></Route>
-      <Route path='/dashboard' element={<Home />}></Route>
+      <Route path='/home' element={<Home />}></Route>
       <Route path='/movies/:id' element={<MovieSlug />}> </Route>
-      <Route path='/movies/search/:query' element={<SearchResult />}></Route>
+      <Route path='/movies/search/:query' element={<SearchSlug />}></Route>
     </Routes>
 	</>
   );

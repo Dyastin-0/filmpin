@@ -13,12 +13,15 @@ export const swiperConfig = {
 
 export const swiperGridConfig = {
   speed: 1000,
-  loop: true,
   spaceBetween: 14,
   centeredSlides: true,
   slidesPerView: 1,
   pagination: {
-    clickable: true
-},
+    el: 'swiper-custom-pagination',
+    clickable: true,
+    renderBullet: (index, className) => {
+      return '<span class="' + className + '">' + (index + 1) + "</span>";
+     },
+  },
   modules: [Pagination],
 };

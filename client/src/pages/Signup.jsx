@@ -51,7 +51,7 @@ const Signup = () => {
       setCredentials({ username: '', email: '', password: '' });
       setConfirmedPassword('');
       toast.success('Sign up success!');
-      navigate('/dashboard');
+      navigate('/home');
     } catch (error) {
       toast.error(error?.response?.data?.message);
     }

@@ -7,7 +7,7 @@ import Button from './ui/Button';
 import { Dropdown, DropdownItem } from './ui/Dropdown';
 
 const routes = [
-  {path: '/dashboard', name: 'Dashboard'}
+  {path: '/home', name: 'Home'}
 ];
 const authRoutes = [
   {path: '/sign-in', name: 'Sign in'},
@@ -78,7 +78,7 @@ const Navbar = () => {
       <div className='flex w-fit gap-3 justify-center items-center'>
         { user &&
           <Dropdown name={user?.username}>
-            <DropdownItem onClick={handleSignout}>
+            <DropdownItem onClick={handleSignout} >
               Sign out
             </DropdownItem>
           </Dropdown>
