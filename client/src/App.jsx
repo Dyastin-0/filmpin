@@ -8,7 +8,7 @@ import axios from 'axios';
 import MovieSlug from './pages/MovieSlug';
 import SearchResult from './pages/SearchResult';
 
-axios.defaults.baseURL = process.env.BASE_API_URL;
+axios.defaults.baseURL = import.meta.env.BASE_API_URL;
 axios.defaults.withCredentials = true;
 
 function App() {
