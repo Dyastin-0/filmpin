@@ -6,6 +6,7 @@ import Home from './pages/Home';
 import Navbar from './components/Navbar';
 import axios from 'axios';
 import MovieSlug from './pages/MovieSlug';
+import SearchResult from './pages/SearchResult';
 
 axios.defaults.baseURL = 'https://filmpin-api.onrender.com';
 axios.defaults.withCredentials = true;
@@ -21,6 +22,7 @@ function App() {
       <Route path='/sign-up' element={<Signup />}></Route>
       <Route path='/dashboard' element={<Home />}></Route>
       <Route path='/movies/:id' element={<MovieSlug />}> </Route>
+      <Route path='/movies/search/:query' element={<SearchResult />}></Route>
     </Routes>
 	</>
   );

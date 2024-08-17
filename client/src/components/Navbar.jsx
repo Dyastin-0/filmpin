@@ -2,6 +2,8 @@ import React from 'react'
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { useAuth } from '../hooks/useAuth';
 import axios from 'axios';
+import Input, { SearchInput } from './ui/Input';
+import Button from './ui/Button';
 
 const Navbar = () => {
   const navigate = useNavigate();
@@ -30,33 +32,31 @@ const Navbar = () => {
     <div className='flex justify-center bg-primary rounded-lg w-full p-4 gap-4 drop-shadow-sm'>
       { 
         user && routes.map((route, index) => (
-          <Link className={`text-sm text-primary-foreground font-semibold
-            transition-all duration-300 
-            hover:cursor-pointer hover:text-primary-highlight
-            ${location.pathname === route.path ? 'text-primary-highlight' : ''}
-            `}
-            to={route.path} key={index}> {route.name}
-          </Link>
+          <Button
+            key={index}
+            onClick={() => navigate(route.path)}
+            variant='link'
+            text={route.name}
+            className={`${route.path === location.pathname ? 'text-primary-highlight shadow-[var(--highlight)_0_2px_0_0]' : ''}`}
+          />
         ))
       }
       {
         !user && authRoutes.map((route, index) => (
-          <Link className={`text-sm text-primary-foreground font-semibold
-            transition-all duration-300 
-            hover:cursor-pointer hover:text-primary-highlight
-            ${location.pathname === route.path ? 'text-primary-highlight' : ''}
-            `}
-            to={route.path} key={index}> {route.name}
-          </Link>
+          <Button
+            key={index}
+            onClick={() => navigate(route.path)}
+            variant='link'
+            text={route.name}
+            className={`${route.path === location.pathname ? 'text-primary-highlight shadow-[var(--highlight)_0_2px_0_0]' : ''}`}
+          />
         ))
       }
-      { user && <button className={`text-sm text-primary-foreground font-semibold
-        transition-all duration-300
-        hover:cursor-pointer hover:text-primary-highlight`}
-        onClick={handleSignout}>
-          Sign out
-       </button>
+      { user && <Button onClick={handleSignout} variant='link' text='Sign out' />
        }
+       <form>
+          <SearchInput placeholder='Search' />
+       </form>
     </div>
   )
 }

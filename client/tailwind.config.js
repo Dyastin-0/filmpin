@@ -10,7 +10,10 @@ export default {
         primary: {
           DEFAULT: "var(--bg-primary)",
           foreground: "var(--text-primary)",
-          highlight: "var(--highlight)"
+          highlight: {
+            DEFAULT: "var(--highlight)",
+            foreground: "var(--text-highlight)"
+          }
         },
         secondary: {
           DEFAULT: "var(--bg-secondary)",
