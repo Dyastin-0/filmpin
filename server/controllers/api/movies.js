@@ -36,7 +36,7 @@ const handleGetCredits = async (req, res) => {
 const handleSearch = async (req, res) => {
 	const { query, page } = req.params;
 	try {
-		const response = await api.get(`search/movie?query=${query}&include_adult=false&video=false&language=en-US&${page}&sort_by=vote_average.desc`);
+		const response = await api.get(`search/movie?query=${query}&include_adult=false&video=false&language=en-US&${page}`);
 		res.json(response.data);
 	} catch (error) {
 		console.error('Failed to search.', error);
@@ -55,10 +55,22 @@ const handleGetVideo = async (req, res) => {
 	}
 }
 
+const handleDiscover = async (req, res) => {
+	const { query } = req.params;
+	try {
+		const response = await api.get(`/discover/movie?include_adult=false&language=en-US${query}`);
+		res.json(response.data);
+	} catch (error) {
+		console.error('Failed to search.', error);
+		res.sendStatus(500);
+	}
+}
+
 module.exports = {
 	handleGetCategory,
 	handleGetDetails,
 	handleGetCredits,
 	handleSearch,
-	handleGetVideo
+	handleGetVideo,
+	handleDiscover
 };
