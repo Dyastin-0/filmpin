@@ -83,27 +83,25 @@ const DiscoverSlug = () => {
     <div className='flex flex-col bg-primary rounded-lg gap-4 p-4 items-center h-full w-full'>
       <div className='flex justify-start items-center w-full gap-2'>
         <h1 className='text-primary-foreground text-sm text-start font-semibold'>
-          Create your discoveries
+          Discover movies
         </h1>
       </div>
       <Selector items={genres} selectedGenres={selectedGenres} setSelectedGenres={setSelectedGenres} />
       { results[currentPage] ?
         <div className='flex flex-col items-center gap-4'>
           <h1 className='w-full text-primary-foreground text-sm text-start font-semibold'>
-            Your discoveries
+            Results
           </h1>
-          <section className='relative w-full h-fit ml-4 mr-4 mb-4 bg-transparent overflow-hidden gap-4'> ? 
           <div className='flex flex-wrap justify-center gap-3 w-full h-full'>
             {results[currentPage].map((movie, index) => (
               <Movie key={index} info={movie} />
             ))}
           </div>
-          </section>
           { totalPages > 1 && 
             <Pagination currentPage={currentPage} totalPages={totalPages} onPageChange={onPageChange} />
           }
         </div> :
-        <LoadingDiscover title='Your discoveries' />
+        <LoadingDiscover title='Results' />
       }
     </div>
   );
