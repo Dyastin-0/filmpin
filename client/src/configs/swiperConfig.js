@@ -1,4 +1,4 @@
-import { Navigation, Pagination } from 'swiper/modules';
+import { Navigation } from 'swiper/modules';
 
 export const swiperConfig = {
   speed: 1000,
@@ -7,21 +7,7 @@ export const swiperConfig = {
   centeredSlides: true,
   slidesPerView: 'auto',
   navigation: true,
+  lazy: 'true',
   modules: [Navigation],
   className: 'swiper-slide',
-};
-
-export const swiperGridConfig = {
-  speed: 1000,
-  spaceBetween: 14,
-  centeredSlides: true,
-  slidesPerView: 1,
-  pagination: {
-    el: 'swiper-custom-pagination',
-    clickable: true,
-    renderBullet: (index, className) => {
-      return '<span class="' + className + '">' + (index + 1) + "</span>";
-     },
-  },
-  modules: [Pagination],
 };

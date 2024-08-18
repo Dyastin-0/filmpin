@@ -57,10 +57,9 @@ const Movie = ({info}) => {
 			{
 				imageLoaded ? 
 				<img
-					decoding='async'
-					fetchpriority='high'
+					loading='lazy'
 					className='rounded-md w-[200px] h-[250px] object-cover self-center'
-					src={`https://image.tmdb.org/t/p/w154/${details.poster_path}`}
+					src={`https://image.tmdb.org/t/p/w200/${details.poster_path}`}
 					alt={`${info.original_title} poster`}
 				/> : 
 				<ImageDummy />

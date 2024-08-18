@@ -1,7 +1,7 @@
 import { blinkOpacity, blinkVariants } from '../../configs/motionConfig';
 import { motion } from 'framer-motion';
 import { Swiper, SwiperSlide } from 'swiper/react';
-import { swiperConfig, swiperGridConfig } from '../../configs/swiperConfig';
+import { swiperConfig } from '../../configs/swiperConfig';
 import { CircularProgress } from '@chakra-ui/react';
 
 export const ImageDummy = () => <motion.div className='rounded-md w-full h-[250px] bg-secondary' variants={blinkVariants} animate='blink' />;

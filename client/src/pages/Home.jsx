@@ -1,7 +1,3 @@
-import 'swiper/css';
-import 'swiper/css/pagination';
-import 'swiper/css/navigation';
-
 import { useAuth } from '../hooks/useAuth';
 import { useEffect, useState } from 'react';
 import axios from 'axios';

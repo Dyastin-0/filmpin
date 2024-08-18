@@ -73,8 +73,6 @@ const MovieTrailer = ({id, title}) => {
 		{
 			imageLoaded ?
 				<img
-					decoding='async'
-					fetchpriority='high'
 					loading='lazy'
 					className='aspect-video object-cover rounded-md'
 					src={`https://img.youtube.com/vi/${trailerYoutubeKey}/hqdefault.jpg`}
