@@ -17,6 +17,10 @@ const Signin = () => {
     emailRef.current.focus();
   }, []);
 
+  useEffect(() => {
+    user && navigate('/home');
+  }, [user]);
+
   const [credentials, setCredentials] = useState({
     email: '',
     password: ''

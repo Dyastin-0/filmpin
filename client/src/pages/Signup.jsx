@@ -30,7 +30,7 @@ const Signup = () => {
   }, [credentials.password]);
 
   useEffect(() => {
-    user && navigate('/dashboard');
+    user && navigate('/home');
   }, [user]);
 
   const submit = async (e) => {
