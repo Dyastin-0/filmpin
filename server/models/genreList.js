@@ -1,4 +1,4 @@
-export const movieGenres = {
+const movieGenres = {
   'Action': 28,
   'Adventure': 12,
   'Animation': 16,
@@ -18,4 +18,8 @@ export const movieGenres = {
   'Thriller': 53,
   'War': 10752,
   'Western': 37
+};
+
+module.exports = {
+	movieGenres
 };
