@@ -61,7 +61,7 @@ const handleDiscover = async (req, res) => {
 		const response = await api.get(`/discover/movie?include_adult=false&language=en-US${query}`);
 		res.json(response.data);
 	} catch (error) {
-		console.error('Failed to search.', error);
+		console.error('Failed to get discover.', error);
 		res.sendStatus(500);
 	}
 }
