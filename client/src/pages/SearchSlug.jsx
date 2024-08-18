@@ -71,23 +71,21 @@ const SearchResult = () => {
     window.scrollTo({ top: 0, left: 0, behavior: 'smooth' });
   }, [currentPage]);
 
-  return  (
+  return  ( results[currentPage] ?
     <div className='flex flex-col bg-primary rounded-lg gap-4 p-4 items-center h-full w-full'>
       <h1 className='text-primary-foreground text-sm text-start w-full font-semibold'>Results</h1>
       <section className='relative w-full h-fit ml-4 mr-4 mb-4 bg-transparent overflow-hidden gap-4'>
-        { results[currentPage] ?
-					<div className='flex flex-wrap justify-center gap-3 w-full h-full'>
-						{results[currentPage].map((movie, index) => (
-							<Movie key={index} info={movie} />
-						))}
-					</div> :
-					<LoadingSearchResult title='Results' />	
-				}
+			<div className='flex flex-wrap justify-center gap-3 w-full h-full'>
+				{results[currentPage].map((movie, index) => (
+					<Movie key={index} info={movie} />
+				))}
+			</div>
       </section>
       {totalPages > 1 && (
         <Pagination currentPage={currentPage} totalPages={totalPages} onPageChange={onPageChange} />
       )}
-    </div>
+    </div> :
+		<LoadingSearchResult title={'Results'} />
   )
 };
 

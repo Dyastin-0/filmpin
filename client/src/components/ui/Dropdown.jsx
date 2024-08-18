@@ -21,7 +21,7 @@ export const Dropdown = ({ name, className, children }) => {
 					w-fit max-h-[200px] overflow-auto
 					opacity-0 transform -translate-y-1/2 scale-y-0
 					p-2 pb-1 gap-1 shadow-md rounded-md
-					transition-all duration-300 ease-in-out
+					transition-all duration-300
 					${className} 
 					${isOpen ? 'translate-y-0 scale-y-100 opacity-100' : ''}`}
 			>

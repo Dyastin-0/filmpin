@@ -1,12 +1,12 @@
 import { useEffect, useState } from 'react';
 import Selector from '../components/ui/Selector';
-import Button from '../components/ui/Button';
+import {Dropdown, DropdownItem } from '../components/ui/Dropdown';
 import axios from 'axios';
 import { useAuth } from '../hooks/useAuth';
 import Movie from '../components/Movie';
 import Pagination from '../components/ui/Pagination';
 import { useNavigate, useSearchParams } from 'react-router-dom';
-import { LoadingSearchResult } from '../components/loaders/MovieLoaders';
+import { LoadingDiscover } from '../components/loaders/MovieLoaders';
 
 const genres = [
   'action', 'adventure', 'animation', 'comedy', 'crime', 'documentary', 
@@ -35,6 +35,7 @@ const DiscoverSlug = () => {
 
   const { token } = useAuth();
   const [selectedGenres, setSelectedGenres] = useState([]);
+  const [selectedFilter, setSelectedFiler] = useState('Vote count');
   const [currentPage, setCurrentPage] = useState(1);
   const [totalPages, setTotalPages] = useState(0);
   const [results, setResults] = useState({});
@@ -86,25 +87,24 @@ const DiscoverSlug = () => {
         </h1>
       </div>
       <Selector items={genres} selectedGenres={selectedGenres} setSelectedGenres={setSelectedGenres} />
-      <div className='flex flex-col items-center gap-4'>
-        <h1 className='w-full text-primary-foreground text-sm text-start font-semibold'>
-          Your discoveries
-        </h1>
-        <section className='relative w-full h-fit ml-4 mr-4 mb-4 bg-transparent overflow-hidden gap-4'>
-          {
-            results[currentPage] ? 
-            <div className='flex flex-wrap justify-center gap-3 w-full h-full'>
-              {results[currentPage].map((movie, index) => (
-                <Movie key={index} info={movie} />
-              ))}
-            </div> :
-            <LoadingSearchResult title={'Your discoveries'} />
+      { results[currentPage] ?
+        <div className='flex flex-col items-center gap-4'>
+          <h1 className='w-full text-primary-foreground text-sm text-start font-semibold'>
+            Your discoveries
+          </h1>
+          <section className='relative w-full h-fit ml-4 mr-4 mb-4 bg-transparent overflow-hidden gap-4'> ? 
+          <div className='flex flex-wrap justify-center gap-3 w-full h-full'>
+            {results[currentPage].map((movie, index) => (
+              <Movie key={index} info={movie} />
+            ))}
+          </div>
+          </section>
+          { totalPages > 1 && 
+            <Pagination currentPage={currentPage} totalPages={totalPages} onPageChange={onPageChange} />
           }
-        </section>
-        { totalPages > 1 && 
-          <Pagination currentPage={currentPage} totalPages={totalPages} onPageChange={onPageChange} />
-        }
-      </div>
+        </div> :
+        <LoadingDiscover title='Your discoveries' />
+      }
     </div>
   );
 };

@@ -49,8 +49,8 @@ export const LoadingMovieSection = ({ title }) => (
 
 export const LoadingSearchResult = ({ title }) => (
   <div className="flex flex-col bg-primary rounded-lg gap-4 p-4 items-center h-full w-full">
+    <h1 className="text-primary-foreground pb-4 text-sm w-full font-semibold">{title}</h1>
     <section className="w-full h-fit ml-4 mr-4 mb-4 bg-transparent overflow-hidden gap-4">
-      <h1 className="text-primary-foreground pb-4 text-sm font-semibold">{title}</h1>
         <div className="flex flex-wrap gap-3 justify-center w-full h-full">
           {Array(20).fill(null).map((_, index) => (
             <MovieDummy key={index} />
@@ -59,3 +59,18 @@ export const LoadingSearchResult = ({ title }) => (
     </section>
   </div>
 );
+
+export const LoadingDiscover = ({ title }) => {
+  <div className='flex flex-col items-center gap-4'>
+    <h1 className='w-full text-primary-foreground text-sm text-start font-semibold'>
+      {title}
+    </h1>
+    <section className='relative w-full h-fit ml-4 mr-4 mb-4 bg-transparent overflow-hidden gap-4'>
+        <div className='flex flex-wrap justify-center gap-3 w-full h-full'>
+          {Array(20).fill(null).map((_, index) => (
+            <MovieDummy key={index} />
+          ))}
+        </div>
+    </section>
+  </div>
+}

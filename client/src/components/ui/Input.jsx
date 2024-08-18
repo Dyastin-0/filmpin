@@ -42,7 +42,7 @@ const Input = React.forwardRef(({ onChange, type, value, id, placeholder, requir
 
 export const SearchInput = ({ onChange, type, value, id, placeholder, required, onSubmit }) => {
 	return (
-		<form className='flex gap-2 shadow-sm text-primary-foreground bg-accent pt-1 pb-1 pl-2 pr-2 rounded-full' onSubmit={onSubmit}>
+		<form className='flex gap-2 shadow-sm text-primary-foreground bg-accent pt-1 pb-1 pl-3 pr-3 rounded-full' onSubmit={onSubmit}>
 			<input
 				value={value}
 				id={id}
