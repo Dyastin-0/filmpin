@@ -29,10 +29,6 @@ const Signup = () => {
     credentials.password && setPasswordStrength(testPassword(credentials.password));
   }, [credentials.password]);
 
-  useEffect(() => {
-    user && navigate('/home');
-  }, [user]);
-
   const submit = async (e) => {
     e.preventDefault();
     const {username, email, password} = credentials;
