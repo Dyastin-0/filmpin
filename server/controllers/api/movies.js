@@ -64,7 +64,7 @@ const handleDiscover = async (req, res) => {
 	const sortBy = sort_by.toLowerCase();
 
 	try {
-		const response = await api.get(`/discover/movie?include_adult=false&language=en-US&with_genre=${genreKeys}&sort_by=${sortBy}`);
+		const response = await api.get(`/discover/movie?include_adult=false&language=en-US&with_genres=${genreKeys}&sort_by=${sortBy}`);
 		res.json(response.data);
 	} catch (error) {
 		console.error('Failed to get discover.', error);
