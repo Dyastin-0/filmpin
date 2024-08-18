@@ -42,7 +42,7 @@ const DiscoverSlug = () => {
 				<h1 className='text-primary-foreground text-sm text-start font-semibold'>
 					Create your discoveries
 				</h1>
-				<Button text='Create' className='shadow-sm bg-accent pb-1 pt-1' />
+				<Button onClick={handleCreate} text='Create' className='shadow-sm bg-accent pb-1 pt-1' />
 			</div>
       <Selector items={genres} selectedGenres={selectedGenres} setSelectedGenres={setSelectedGenres} />
 			<div>

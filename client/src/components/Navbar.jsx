@@ -8,7 +8,7 @@ import { Dropdown, DropdownItem } from './ui/Dropdown';
 
 const routes = [
   {path: '/home', name: 'Home'},
-  {path: '/discover', name: 'Discover'}
+  {path: '/movies/discover', name: 'Discover'}
 ];
 const authRoutes = [
   {path: '/sign-in', name: 'Sign in'},
