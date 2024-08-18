@@ -10,7 +10,7 @@ import Button from '../components/ui/Button';
 
 const Signup = () => {
   const navigate = useNavigate();
-  const { setToken, setUser, user } = useAuth();
+  const { setToken, setUser } = useAuth();
   const usernameRef = useRef(null);
 
   const [credentials, setCredentials] = useState({
