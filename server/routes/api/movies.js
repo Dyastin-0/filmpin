@@ -30,7 +30,7 @@ router.route('/search/:query/:page')
 router.route('/videos/:movie_id')
 	.get(cache('10 minutes'), handleGetVideo);
 
-router.route('/discover/:genres/:sort_by')
+router.route('/discover/:genres/:sort_by/:page')
 	.get(cache('10 minutes'), handleDiscover)
 
 module.exports = router;

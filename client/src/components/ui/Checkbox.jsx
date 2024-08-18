@@ -4,7 +4,7 @@ import { motion } from 'framer-motion';
 
 const Checkbox = ({ name, onChecked, value = false }) => {
 	return (
-		<div className='flex pl-2 pr-2 pt-1 pb-1 gap-1 justify-center items-center	
+		<div className='flex pl-2 pr-2 pt-1 pb-1 gap-1 rounded-md justify-center items-center	
 			bg-accent text-primary-foreground shadow-sm
 			hover:cursor-pointer'
 			onClick={onChecked}

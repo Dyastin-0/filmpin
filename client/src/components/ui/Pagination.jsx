@@ -46,7 +46,7 @@ const Pagination = ({ currentPage, totalPages, onPageChange }) => {
           onClick={() => onPageChange(page)}
           disabled={page === currentPage || page === '...'}
           className={`px-2 py-1 text-xs rounded-md ${
-            page === currentPage
+            page == currentPage
               ? 'bg-primary-highlight text-primary-highlight-foreground'
               : 'bg-accent shadow-sm text-primary-foreground'
           }`}

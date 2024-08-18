@@ -25,7 +25,7 @@ function App() {
       <Route element={<ProtectedRoute />}>
         <Route path='/home' element={<Home />}></Route>
         <Route path='/movies/:id' element={<MovieSlug />}> </Route>
-        <Route path='/movies/search/:query' element={<SearchSlug />}></Route>
+        <Route path='/movies/search' element={<SearchSlug />}></Route>
         <Route path='/movies/discover' element={<DiscoverSlug />} />
       </Route>
     </Routes>

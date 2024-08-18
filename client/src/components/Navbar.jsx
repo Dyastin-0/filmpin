@@ -35,7 +35,7 @@ const Navbar = () => {
 
   const handleSearch = (e) => {
     e.preventDefault();
-    if (query) navigate(`/movies/search/${query.replace(/[_\s]/g, '+')}`);
+    if (query) navigate(`/movies/search?query=${query.replace(/[_\s]/g, '+')}&page=${1}`);
   }
 
   return (

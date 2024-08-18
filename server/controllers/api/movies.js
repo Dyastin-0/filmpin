@@ -57,14 +57,14 @@ const handleGetVideo = async (req, res) => {
 }
 
 const handleDiscover = async (req, res) => {
-	const { genres, sort_by } = req.params;
-	const genresArray = genres.split('_');
+	const { genres, sort_by, page } = req.params;
 
-	const genreKeys = genresArray.map((name) => movieGenres[name]).join(',');
-	const sortBy = sort_by.toLowerCase();
+	const genresArray = genres.split('_');
+	const genreKeys = genresArray.map(genre => movieGenres[genre]);
+	const joinedKeys = genreKeys.join(',');
 
 	try {
-		const response = await api.get(`/discover/movie?include_adult=false&language=en-US&with_genres=${genreKeys}&sort_by=${sortBy}`);
+		const response = await api.get(`/discover/movie?include_adult=false&language=en-US&with_genres=${joinedKeys}&sort_by=${sort_by}.desc&${page}`);
 		res.json(response.data);
 	} catch (error) {
 		console.error('Failed to get discover.', error);
