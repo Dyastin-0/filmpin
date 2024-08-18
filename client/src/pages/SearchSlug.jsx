@@ -63,7 +63,7 @@ const SearchResult = () => {
 			<h1 className='text-primary-foreground text-sm text-start w-full font-semibold'>Results</h1>
 			<section className='relative w-full h-fit ml-4 mr-4 mb-4 bg-transparent overflow-hidden gap-4'>
 					<div className='flex flex-wrap justify-center gap-3 w-full h-full'>
-						{results[currentPage] && results[currentPage].map((movie, index) => (
+						{results[currentPage].map((movie, index) => (
 							<Movie key={index} info={movie} />
 						))}
 					</div>

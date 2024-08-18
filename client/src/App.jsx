@@ -7,12 +7,13 @@ import Navbar from './components/Navbar';
 import axios from 'axios';
 import MovieSlug from './pages/MovieSlug';
 import SearchSlug from './pages/SearchSlug';
+import ProtectedRoute from './utils/protectedRoute';
+import DiscoverSlug from './pages/DiscoverSlug';
 
 axios.defaults.baseURL = import.meta.env.VITE_BASE_API_URL;
 axios.defaults.withCredentials = true;
 
 function App() {
-
   return (
 	<>
 		<Navbar />
@@ -21,9 +22,12 @@ function App() {
       <Route path='/' element={<Signin />}></Route>
       <Route path='/sign-in' element={<Signin />}></Route>
       <Route path='/sign-up' element={<Signup />}></Route>
-      <Route path='/home' element={<Home />}></Route>
-      <Route path='/movies/:id' element={<MovieSlug />}> </Route>
-      <Route path='/movies/search/:query' element={<SearchSlug />}></Route>
+      <Route element={<ProtectedRoute />}>
+        <Route path='/home' element={<Home />}></Route>
+        <Route path='/movies/:id' element={<MovieSlug />}> </Route>
+        <Route path='/movies/search/:query' element={<SearchSlug />}></Route>
+        <Route path='/movies/discover/:query' element={<DiscoverSlug />} />
+      </Route>
     </Routes>
 	</>
   );

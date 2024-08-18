@@ -1,7 +1,7 @@
 import 'swiper/css';
 import 'swiper/css/pagination';
 import 'swiper/css/navigation';
-import { useNavigate } from 'react-router';
+
 import { useAuth } from '../hooks/useAuth';
 import { useEffect, useState } from 'react';
 import axios from 'axios';
@@ -61,22 +61,15 @@ const TrailerSection = ({title, movies}) => {
 };
 
 const Home = () => {
-  const navigate = useNavigate();
-  const { user, token } = useAuth();
+  const { token } = useAuth();
   const [moviesData, setMoviesData] = useState({ topMovies: [], popularMovies: [], upcomingMovies: [], nowPlayingMovies: [] });
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    if (token) {
-      if (!user) {
-        navigate('/sign-in');
-      } else {
-        fetchMovies(token).then(data => {
-          setMoviesData(data);
-          setLoading(false);
-        });
-      }
-    }
+    fetchMovies(token).then(data => {
+      setMoviesData(data);
+      setLoading(false);
+    });
   }, [token]);
 
   const { topMovies, popularMovies, upcomingMovies, nowPlayingMovies } = moviesData;

@@ -1,4 +1,5 @@
 const api = require('../../helpers/tmdbApi');
+const { movieGenres } = require('../../models/genreList');
 
 const handleGetCategory = async (req, res) => {
 	const { category, page } = req.params;
@@ -56,9 +57,14 @@ const handleGetVideo = async (req, res) => {
 }
 
 const handleDiscover = async (req, res) => {
-	const { query } = req.params;
+	const { genres, sort_by } = req.params;
+	const genresArray = genres.split('_');
+
+	const genreKeys = genresArray.map((name) => movieGenres[name]).join(',');
+	const sortBy = sort_by.toLowerCase();
+
 	try {
-		const response = await api.get(`/discover/movie?include_adult=false&language=en-US${query}`);
+		const response = await api.get(`/discover/movie?include_adult=false&language=en-US&with_genre=${genreKeys}&sort_by=${sortBy}`);
 		res.json(response.data);
 	} catch (error) {
 		console.error('Failed to get discover.', error);

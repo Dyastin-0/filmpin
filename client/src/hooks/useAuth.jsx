@@ -6,7 +6,7 @@ const AuthContext = createContext();
 export const useAuth = () => useContext(AuthContext);
 
 export function AuthProvider({ children }) {
-  const [signingIn, setSigningIn] = useState(false);
+  const [signingIn, setSigningIn] = useState(true);
   const [user, setUser] = useState(null);
   const [token, setToken] = useState(null);
 
@@ -16,9 +16,11 @@ export function AuthProvider({ children }) {
         const response = await axios.get('/refreshAccessToken');
         setToken(response.data.accessToken);
         setUser(response.data.user);
+        setSigningIn(false);
       } catch (error) {
         console.log(error);
         setToken(null);
+        setSigningIn(false);
       }
     }
     getToken();
@@ -28,7 +30,8 @@ export function AuthProvider({ children }) {
     token,
     user,
     setUser,
-    setToken
+    setToken,
+    signingIn
   }
   
   return (

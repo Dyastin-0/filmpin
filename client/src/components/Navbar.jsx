@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { useAuth } from '../hooks/useAuth';
 import axios from 'axios';
@@ -7,7 +7,8 @@ import Button from './ui/Button';
 import { Dropdown, DropdownItem } from './ui/Dropdown';
 
 const routes = [
-  {path: '/home', name: 'Home'}
+  {path: '/home', name: 'Home'},
+  {path: '/discover', name: 'Discover'}
 ];
 const authRoutes = [
   {path: '/sign-in', name: 'Sign in'},
