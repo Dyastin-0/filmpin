@@ -1,6 +1,5 @@
 import { useEffect, useState } from 'react';
 import Selector from '../components/ui/Selector';
-import {Dropdown, DropdownItem } from '../components/ui/Dropdown';
 import axios from 'axios';
 import { useAuth } from '../hooks/useAuth';
 import Movie from '../components/Movie';
@@ -35,7 +34,6 @@ const DiscoverSlug = () => {
 
   const { token } = useAuth();
   const [selectedGenres, setSelectedGenres] = useState([]);
-  const [selectedFilter, setSelectedFiler] = useState('Vote count');
   const [currentPage, setCurrentPage] = useState(1);
   const [totalPages, setTotalPages] = useState(0);
   const [results, setResults] = useState({});
