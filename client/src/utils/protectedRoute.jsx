@@ -1,11 +1,10 @@
-import { Outlet } from 'react-router-dom';
+import { Navigate, Outlet } from 'react-router-dom';
 import { useAuth } from '../hooks/useAuth';
-import Signin from '../pages/Signin';
 
 const ProtectedRoute = () => {
 	const { token, signingIn } = useAuth();
 	if (signingIn) return;
-	return token ? <Outlet /> : <Signin />
+	return token ? <Outlet /> : <Navigate to='/home' />
 }
 
 export default ProtectedRoute;

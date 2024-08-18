@@ -70,7 +70,7 @@ const Home = () => {
       setMoviesData(data);
       setLoading(false);
     });
-  }, [token]);
+  }, []);
 
   const { topMovies, popularMovies, upcomingMovies, nowPlayingMovies } = moviesData;
 

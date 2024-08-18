@@ -42,7 +42,8 @@ const Signup = () => {
       const { data } = await axios.post('/sign-up', {
         username, email, password
       });
-      setToken(data.token);
+      console.log(data.token);
+      setToken(data.accessToken);
       setUser(data.user);
       setCredentials({ username: '', email: '', password: '' });
       setConfirmedPassword('');
