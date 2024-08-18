@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import Selector from '../components/ui/Selector';
 import Button from '../components/ui/Button';
 import axios from 'axios';
@@ -13,7 +13,7 @@ const genres = [
 
 const getDiscovery = async (token, genres, sortBy) => {
   try {
-    const response = await axios.get(`/movies/discovery/${genres}/${sortBy}`, {
+    const response = await axios.get(`/movies/discover/${genres}/${sortBy}`, {
       headers: {
         Authorization: `Bearer ${token}`,
         'Content-Type': 'application/json',
@@ -31,10 +31,14 @@ const DiscoverSlug = () => {
   const [selectedGenres, setSelectedGenres] = useState([]);
 
   const handleCreate = async () => {
-    const genres = selectedGenres.join('_');
+    const genres = selectedGenres.join('_').toLocaleLowerCase();
     const sortBy = 'popularity';
     getDiscovery(token, genres, sortBy);
   }
+
+  useEffect(() => {
+    console.log(selectedGenres)
+  }, [selectedGenres]);
 
   return (
     <div className='flex flex-col bg-primary rounded-lg gap-4 p-4 items-center h-full w-full'>
