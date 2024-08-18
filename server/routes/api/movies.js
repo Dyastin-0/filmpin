@@ -13,28 +13,24 @@ const { handleGetCategory,
 const cacheService = require('express-api-cache');
 const cache = cacheService.cache;
 
-const cacheKey = (req) => {
-  return req.originalUrl;
-};
-
 router.use(verifyRoles(userRoles.user, userRoles.admin));
 
 router.route('/list/:category/:page')
-	.get(cache(cacheKey, '10 minutes'), handleGetCategory);
+	.get(cache('10 minutes'), handleGetCategory);
 
 router.route('/details/:movie_id')
-.get(cache(cacheKey, '10 minutes'), handleGetDetails);
+	.get(cache('10 minutes'), handleGetDetails);
 
 router.route('/credits/:movide_id')
-.get(cache(cacheKey, '10 minutes'), handleGetCredits);
+	.get(cache('10 minutes'), handleGetCredits);
 
 router.route('/search/:query/:page')
-.get(cache(cacheKey, '10 minutes'), handleSearch);
+	.get(cache('10 minutes'), handleSearch);
 
 router.route('/videos/:movie_id')
-.get(cache(cacheKey, '10 minutes'), handleGetVideo);
+	.get(cache('10 minutes'), handleGetVideo);
 
 router.route('/discover/:genres/:sort_by')
-.get(cache(cacheKey, '10 minutes'), handleDiscover)
+	.get(cache('10 minutes'), handleDiscover)
 
 module.exports = router;
