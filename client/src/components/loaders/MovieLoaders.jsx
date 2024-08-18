@@ -1,7 +1,7 @@
 import { blinkOpacity, blinkVariants } from '../../configs/motionConfig';
 import { motion } from 'framer-motion';
 import { Swiper, SwiperSlide } from 'swiper/react';
-import { swiperConfig } from '../../configs/swiperConfig';
+import { swiperConfig, swiperGridConfig } from '../../configs/swiperConfig';
 import { CircularProgress } from '@chakra-ui/react';
 
 export const ImageDummy = () => <motion.div className='rounded-md w-full h-[250px] bg-secondary' variants={blinkVariants} animate='blink' />;
@@ -45,4 +45,17 @@ export const LoadingMovieSection = ({ title }) => (
       ))}
     </Swiper>
   </section>
+);
+
+export const LoadingSearchResult = ({ title }) => (
+  <div className="flex flex-col bg-primary rounded-lg gap-4 p-4 items-center h-full w-full">
+    <section className="w-full h-fit ml-4 mr-4 mb-4 bg-transparent overflow-hidden gap-4">
+      <h1 className="text-primary-foreground pb-4 text-sm font-semibold">{title}</h1>
+        <div className="flex flex-wrap gap-3 justify-center w-full h-full">
+          {Array(20).fill(null).map((_, index) => (
+            <MovieDummy key={index} />
+          ))}
+        </div>
+    </section>
+  </div>
 );

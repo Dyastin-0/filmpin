@@ -68,9 +68,9 @@ const Movie = ({info}) => {
 			{
 				details.original_title ?
 				<>
-					<h4 className='text-md font-semibold'> {details.title} </h4>
-					<h4 className='text-sm'> {details.release_date?.split('-')[0]} </h4>
-					<h4 className='text-xs'> { `${details.runtime} minutes` } </h4>
+					<h4 className='text-sm font-semibold line-clamp-2 text-ellipsis'> {details.title} </h4>
+					<h4 className='text-xs'> {details.release_date?.split('-')[0]} </h4>
+					<h4 className='text-xs'> { `${Math.floor(details?.runtime / 60)}h ${details?.runtime % 60}m` } </h4>
 				</> :
 				<>
 					<TitleDummy />

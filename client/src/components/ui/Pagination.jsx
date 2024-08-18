@@ -4,7 +4,7 @@ import { faChevronLeft, faChevronRight } from '@fortawesome/free-solid-svg-icons
 const Pagination = ({ currentPage, totalPages, onPageChange }) => {
   const getPageNumbers = () => {
     const pageNumbers = [];
-    const maxPages = 5;
+    const maxPages = 3;
     const startPage = Math.max(1, currentPage - Math.floor(maxPages / 2));
     const endPage = Math.min(totalPages, startPage + maxPages - 1);
 
