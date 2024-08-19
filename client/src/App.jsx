@@ -1,6 +1,5 @@
 import { lazy, Suspense } from 'react';
 import { Routes, Route } from 'react-router-dom';
-import { Toaster } from 'react-hot-toast';
 import Navbar from './components/Navbar';
 import axios from 'axios';
 import ProtectedRoute from './utils/protectedRoute';
@@ -23,7 +22,6 @@ function App() {
   return (
 	<>
 		<Navbar />
-    <Toaster position='bottom-left' toastOptions={{duration: 2000}} />
     <Suspense>
       <Routes>
         <Route path='/' element={<Signin />}></Route>
