@@ -4,7 +4,7 @@ import axios from 'axios';
 import { useAuth } from '../hooks/useAuth';
 import Movie from '../components/Movie';
 import Pagination from '../components/ui/Pagination';
-import { useSearchParams } from 'react-router-dom';
+import { useNavigate, useSearchParams } from 'react-router-dom';
 import { LoadingDiscover } from '../components/loaders/MovieLoaders';
 
 const genres = [
@@ -30,7 +30,7 @@ const getDiscovery = async (token, genres, sortBy, page) => {
 
 const DiscoverSlug = () => {
   const [searchParams] = useSearchParams();
-
+  const navigate = useNavigate();
   const { token } = useAuth();
   const [selectedGenres, setSelectedGenres] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
@@ -44,7 +44,7 @@ const DiscoverSlug = () => {
 
   useEffect(() => {
     if (selectedGenres.length > 0) {
-      handleCreate(currentPage, false);
+      handleCreate(currentPage);
     }
   }, [selectedGenres]);
 
@@ -55,7 +55,7 @@ const DiscoverSlug = () => {
     setCurrentPage(pageFromParams);
   }, [searchParams]);
 
-  const handleCreate = async (page = 1, navigate = true) => {
+  const handleCreate = async (page = 1) => {
     const genresString = selectedGenres.join('_').toLowerCase();
     const sortBy = 'vote_count';
 
@@ -69,7 +69,10 @@ const DiscoverSlug = () => {
       setLoading(false);
     });
 
-    navigate && navigate(`/movies/discover?genres=${genresString}&sort_by=${sortBy}&page=${page}`);
+    const URL = `/movies/discover?genres=${genresString}&sort_by=${sortBy}&page=${page}`;
+    if (location.pathname !== URL) {
+      navigate(URL);
+    }
   };
 
   const onPageChange = async (page) => {
