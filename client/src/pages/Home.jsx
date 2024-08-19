@@ -8,25 +8,17 @@ import MovieTrailer from '../components/MovieTrailer';
 import { LoadingMovieSection } from '../components/loaders/MovieLoaders';
 import { LoadingTrailerSection } from '../components/loaders/TrailerLoaders';
 
-const fetchMovies = async (token) => {
+const fetchMovies = async (token, category) => {
   try {
-    const [topRatedResponse, popularResponse, upcomingResponse, nowPlayingResponse] = await Promise.all([
-      axios.get('/movies/list/top_rated/page=1', { headers: { Authorization: `Bearer ${token}`, 'Content-Type': 'application/json' } }),
-      axios.get('/movies/list/popular/page=1', { headers: { Authorization: `Bearer ${token}`, 'Content-Type': 'application/json' } }),
-      axios.get('/movies/list/upcoming/page=1', { headers: { Authorization: `Bearer ${token}`, 'Content-Type': 'application/json' } }),
-      axios.get('/movies/list/now_playing/page=1', { headers: { Authorization: `Bearer ${token}`, 'Content-Type': 'application/json' } }),
-    ]);
-    return {
-      topMovies: topRatedResponse.data.results,
-      popularMovies: popularResponse.data.results,
-      upcomingMovies: upcomingResponse.data.results,
-      nowPlayingMovies: nowPlayingResponse.data.results,
-    };
+    const response = await axios.get(`/movies/list/${category}/page=1`, {
+      headers: { Authorization: `Bearer ${token}`, 'Content-Type': 'application/json' }
+    });
+    return response.data.results;
   } catch (error) {
-    console.error('Failed to fetch movies', error);
-    return { topMovies: [], popularMovies: [], upcomingMovies: [], nowPlayingMovies: [] };
+    console.error('Failed to fetch top rated movies', error);
+    return [];
   }
-}
+};
 
 const MovieSection = ({ title, movies }) => (
   <section className='w-full ml-4 mr-4 mb-4 bg-transparent overflow-hidden gap-4'>
@@ -58,38 +50,54 @@ const TrailerSection = ({title, movies}) => {
 
 const Home = () => {
   const { token } = useAuth();
-  const [moviesData, setMoviesData] = useState({ topMovies: [], popularMovies: [], upcomingMovies: [], nowPlayingMovies: [] });
-  const [loading, setLoading] = useState(true);
+  const [topMovies, setTopMovies] = useState([]);
+  const [popularMovies, setPopularMovies] = useState([]);
+  const [upcomingMovies, setUpcomingMovies] = useState([]);
+  const [nowPlayingMovies, setNowPlayingMovies] = useState([]);
+
+  const [loadingTopMovies, setLoadingTopMovies] = useState(true);
+  const [loadingPopularMovies, setLoadingPopularMovies] = useState(true);
+  const [loadingUpcomingMovies, setLoadingUpcomingMovies] = useState(true);
+  const [loadingNowPlayingMovies, setLoadingNowPlayingMovies] = useState(true);
 
   useEffect(() => {
-    fetchMovies(token).then(data => {
-      setMoviesData(data);
-      setLoading(false);
-    });
     document.title = 'Home';
   }, []);
 
-  const { topMovies, popularMovies, upcomingMovies, nowPlayingMovies } = moviesData;
+  useEffect(() => {
+    const fetchData = async () => {
+      setLoadingTopMovies(true);
+      setLoadingPopularMovies(true);
+      setLoadingUpcomingMovies(true);
+      setLoadingNowPlayingMovies(true);
+
+      const fetchedTopMovies = await fetchMovies(token, 'top_rated');
+      setTopMovies(fetchedTopMovies);
+      setLoadingTopMovies(false);
+
+      const fetchedPopularMovies = await fetchMovies(token, 'popular');
+      setPopularMovies(fetchedPopularMovies);
+      setLoadingPopularMovies(false);
+
+      const fetchedUpcomingMovies = await fetchMovies(token, 'upcoming');
+      setUpcomingMovies(fetchedUpcomingMovies);
+      setLoadingUpcomingMovies(false);
+
+      const fetchedNowPlayingMovies = await fetchMovies(token, 'now_playing');
+      setNowPlayingMovies(fetchedNowPlayingMovies);
+      setLoadingNowPlayingMovies(false);
+    };
+
+    fetchData();
+  }, [token]);
 
   return (
-    <div className='flex flex-col bg-primary rounded-lg gap-4 p-4 justify-center items-center h-full w-full'>
-      {loading ? (
-        <>
-          <LoadingTrailerSection title='Latest trailers' />
-          <LoadingMovieSection title='Now playing' />
-          <LoadingMovieSection title='Top rated' />
-          <LoadingMovieSection title='Popular' />
-          <LoadingMovieSection title='Upcoming' />
-        </>
-      ) : (
-        <>
-          <TrailerSection title='Latest trailers' movies={upcomingMovies} />
-          <MovieSection title='Now playing' movies={nowPlayingMovies} />
-          <MovieSection title='Top rated' movies={topMovies} />
-          <MovieSection title='Popular' movies={popularMovies} />
-          <MovieSection title='Upcoming' movies={upcomingMovies} />
-        </>
-      )}
+  <div className='flex flex-col bg-primary rounded-lg gap-4 p-4 justify-center items-center h-full w-full'>
+        {loadingUpcomingMovies ? <LoadingTrailerSection title='Latest trailers' /> : <TrailerSection title='Latest trailers' movies={upcomingMovies} />}
+        {loadingNowPlayingMovies ? <LoadingMovieSection title='Now playing' /> : <MovieSection title='Now playing' movies={nowPlayingMovies} />}
+        {loadingTopMovies ? <LoadingMovieSection title='Top rated' /> : <MovieSection title='Top rated' movies={topMovies} />}
+        {loadingPopularMovies ? <LoadingMovieSection title='Popular' /> : <MovieSection title='Popular' movies={popularMovies} />}
+        {loadingUpcomingMovies ? <LoadingMovieSection title='Upcoming' /> : <MovieSection title='Upcoming' movies={upcomingMovies} />}
     </div>
   );
 };
