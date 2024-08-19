@@ -16,7 +16,6 @@ export const testEmail = (email) => {
 export const testPassword = (password) => {
 	let result = {
 		strength: 0,
-		color: 'red',
 		message: 'Empty'
 	};
 
@@ -30,13 +29,11 @@ export const testPassword = (password) => {
 	if (length > 5) {
 		result = {
 			strength: 25,
-			color: 'red',
 			message: 'Weak'
 		};
 		if (hasUpperCase && hasLowerCase && hasNumbers && hasSpecialChars) {
 			result = {
 				strength: 100,
-				color: 'green',
 				message: 'Excellent'
 			};
 		} else if ((hasUpperCase && hasLowerCase && hasNumbers) ||
@@ -44,7 +41,6 @@ export const testPassword = (password) => {
 								(hasLowerCase && hasNumbers && hasSpecialChars)) {
 									result = {
 										strength: 75,
-										color: 'dark-green',
 										message: 'Very good'
 									};
 		} else if ((hasUpperCase && hasLowerCase) ||
@@ -52,14 +48,12 @@ export const testPassword = (password) => {
 								(hasLowerCase && hasSpecialChars)) {
 									result = {
 										strength: 50,
-										color: 'orange',
 										message: 'Good'
 									};
 		}
 	} else {
 		result = {
 			strength: 10,
-			color: 'red',
 			message: 'Very weak'
 		};  
 	}

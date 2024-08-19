@@ -4,7 +4,7 @@ import { motion } from 'framer-motion';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faSearch } from '@fortawesome/free-solid-svg-icons';
 
-const Input = React.forwardRef(({ onChange, type, value, id, placeholder, required }, ref) => {
+const Input = React.forwardRef(({ onChange, type, value, id, placeholder, required, className }, ref) => {
 	const [focus, setFocus] = useState(false);
 
 	return (
@@ -32,7 +32,7 @@ const Input = React.forwardRef(({ onChange, type, value, id, placeholder, requir
 				className={`bg-transparent rounded-md p-2 outline-none text-primary-foreground
 				transition-all duration-300
 				focus:shadow-[var(--highlight)_0_2px_0_0]
-				${value ? 'shadow-[var(--highlight)_2px_2px_0_0px]' : 'shadow-[var(--highlight)_0px_2px_0_0]'}`}
+				${value ? 'shadow-[var(--highlight)_2px_2px_0_0px]' : 'shadow-[var(--highlight)_0px_2px_0_0]'} ${className}`}
 				value={value}
 				onChange={(e) => onChange(e)}
 			/>
@@ -41,8 +41,12 @@ const Input = React.forwardRef(({ onChange, type, value, id, placeholder, requir
 });
 
 export const SearchInput = ({ onChange, type, value, id, placeholder, required, onSubmit }) => {
+	const [focus, setFocus] = useState(false);
 	return (
-		<form className='flex gap-2 shadow-sm text-primary-foreground bg-accent pt-1 pb-1 pl-3 pr-3 rounded-full' onSubmit={onSubmit}>
+		<form className={`flex gap-2 shadow-sm text-primary-foreground bg-accent pt-1 pb-1 pl-3 pr-3 rounded-full
+			transition-all duration-300
+			${focus ? 'shadow-[var(--highlight)_0_0_0_2px]' : ''}`}
+			onSubmit={onSubmit}>
 			<input
 				value={value}
 				id={id}
@@ -50,10 +54,13 @@ export const SearchInput = ({ onChange, type, value, id, placeholder, required, 
 				onChange={onChange}
 				required={required}
 				placeholder={placeholder}
+				onFocus={() => setFocus(true)}
+				onBlur={() => setFocus(false)}
 				className={`bg-transparent text-primary-foreground placeholder-primary-foreground rounded-md text-xs outline-none
 					w-full`}
 			/>
-			<button type='submit'><FontAwesomeIcon className='transition-all duration-300 ease-in-out hover:scale-110 hover:text-primary-highlight' icon={faSearch} /></button>
+			<button type='submit'><FontAwesomeIcon className={`transition-all duration-300 ease-in-out hover:scale-110 hover:text-primary-highlight
+				${focus ? 'text-primary-highlight' : ''}`} icon={faSearch} /></button>
 		</form>
 	);
 }

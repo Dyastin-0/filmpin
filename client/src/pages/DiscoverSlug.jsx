@@ -89,7 +89,7 @@ const DiscoverSlug = () => {
       </div>
       <Selector items={genres} selectedGenres={selectedGenres} setSelectedGenres={setSelectedGenres} />
       { loading ?
-        <LoadingDiscover title='Results' />
+        selectedGenres.length > 0 && <LoadingDiscover title='Results' />
         :
         <div className='flex flex-col items-center gap-4'>
           <h1 className='w-full text-primary-foreground text-sm text-start font-semibold'>

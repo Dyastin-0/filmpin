@@ -1,5 +1,5 @@
 import { motion } from 'framer-motion';
-import { useModal } from '../hooks/useModal';
+import { useModal } from './hooks/useModal';
 import { useEffect, useState } from 'react';
 import axios from 'axios';
 import { useAuth } from '../hooks/useAuth';

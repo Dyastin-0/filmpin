@@ -23,6 +23,9 @@
   --text-highlight: #FFFFFF;
   --text-secondary: #373A40;
   --text-primary: #686D76;
+
+  --error: red;
+  --success: green;
 }
 
 body {
