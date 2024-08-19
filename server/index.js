@@ -9,7 +9,6 @@ const credentials = require('./middlewares/credentials');
 const corsOptions = require('./config/corsOption');
 const { verifyJsonWebToken } = require('./middlewares/verifyJsonWebToken');
 
-//database connection
 mongoose.connect(process.env.MONGODB_URL)
 .then(() => console.log("Connected."))
 .catch((err) => console.log(err))

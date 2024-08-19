@@ -37,6 +37,7 @@ const DiscoverSlug = () => {
   const [currentPage, setCurrentPage] = useState(1);
   const [totalPages, setTotalPages] = useState(0);
   const [results, setResults] = useState({});
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     if (selectedGenres.length > 0) {
@@ -63,12 +64,14 @@ const DiscoverSlug = () => {
       }));
       setTotalPages(response.total_pages);
       setCurrentPage(response.page);
+      setLoading(false);
     }
 
     navigate(`/movies/discover?genres=${genresString}&sort_by=${sortBy}&page=${page}`);
   };
 
   const onPageChange = async (page) => {
+    setLoading(true);
     setCurrentPage(page);
     handleCreate(page);
   };
@@ -85,7 +88,9 @@ const DiscoverSlug = () => {
         </h1>
       </div>
       <Selector items={genres} selectedGenres={selectedGenres} setSelectedGenres={setSelectedGenres} />
-      { results[currentPage] ?
+      { loading ?
+        <LoadingDiscover title='Results' />
+        :
         <div className='flex flex-col items-center gap-4'>
           <h1 className='w-full text-primary-foreground text-sm text-start font-semibold'>
             Results
@@ -98,8 +103,7 @@ const DiscoverSlug = () => {
           { totalPages > 1 && 
             <Pagination currentPage={currentPage} totalPages={totalPages} onPageChange={onPageChange} />
           }
-        </div> :
-        <LoadingDiscover title='Results' />
+        </div>
       }
     </div>
   );

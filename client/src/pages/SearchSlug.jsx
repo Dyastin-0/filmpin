@@ -29,6 +29,7 @@ const SearchResult = () => {
   const [totalPages, setTotalPages] = useState(0);
   const [currentPage, setCurrentPage] = useState(1);
   const [results, setResults] = useState({});
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     const query = searchParams.get('query') || '';
@@ -40,6 +41,7 @@ const SearchResult = () => {
   useEffect(() => {
     if (currentQuery && token) {
       const fetchResults = async () => {
+        setLoading(true);
         const response = await getPage(token, currentQuery, currentPage);
         if (response) {
           setResults((prevResults) => ({
@@ -48,6 +50,7 @@ const SearchResult = () => {
           }));
           setTotalPages(response.total_pages);
         }
+        setLoading(false);
       };
       fetchResults();
     }
@@ -55,6 +58,7 @@ const SearchResult = () => {
 
   const onPageChange = async (page) => {
     if (!results[page]) {
+      setLoading(true);
       const response = await getPage(token, currentQuery, page);
       if (response) {
         setResults((prevResults) => ({
@@ -62,6 +66,7 @@ const SearchResult = () => {
           [page]: response.results,
         }));
       }
+      setLoading(false);
     }
     setCurrentPage(page);
     navigate(`/movies/search?query=${currentQuery}&page=${page}`);
@@ -71,22 +76,23 @@ const SearchResult = () => {
     window.scrollTo({ top: 0, left: 0, behavior: 'smooth' });
   }, [currentPage]);
 
-  return  ( results[currentPage] ?
+  return loading ? (
+    <LoadingSearchResult title={'Results'} />
+  ) : (
     <div className='flex flex-col bg-primary rounded-lg gap-4 p-4 items-center h-full w-full'>
       <h1 className='text-primary-foreground text-sm text-start w-full font-semibold'>Results</h1>
       <section className='relative w-full h-fit ml-4 mr-4 mb-4 bg-transparent overflow-hidden gap-4'>
-			<div className='flex flex-wrap justify-center gap-3 w-full h-full'>
-				{results[currentPage].map((movie, index) => (
-					<Movie key={index} info={movie} />
-				))}
-			</div>
+        <div className='flex flex-wrap justify-center gap-3 w-full h-full'>
+          {results[currentPage].map((movie, index) => (
+            <Movie key={index} info={movie} />
+          ))}
+        </div>
       </section>
       {totalPages > 1 && (
         <Pagination currentPage={currentPage} totalPages={totalPages} onPageChange={onPageChange} />
       )}
-    </div> :
-		<LoadingSearchResult title={'Results'} />
-  )
+    </div>
+  );
 };
 
 export default SearchResult;

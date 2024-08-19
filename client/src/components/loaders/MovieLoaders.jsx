@@ -60,7 +60,7 @@ export const LoadingSearchResult = ({ title }) => (
   </div>
 );
 
-export const LoadingDiscover = ({ title }) => {
+export const LoadingDiscover = ({ title }) => (
   <div className='flex flex-col items-center gap-4'>
     <h1 className='w-full text-primary-foreground text-sm text-start font-semibold'>
       {title}
@@ -73,4 +73,4 @@ export const LoadingDiscover = ({ title }) => {
         </div>
     </section>
   </div>
-}
+);
