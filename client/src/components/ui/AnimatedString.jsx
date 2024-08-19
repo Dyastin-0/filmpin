@@ -12,7 +12,7 @@ const AnimatedString = ({ text }) => {
   };
 
   return (
-    <div className='flex gap-1 text-xl text-primary-foreground'>
+    <div className='flex flex-wrap gap-1 text-xs text-primary-foreground'>
       {words.map((word, index) => (
         <motion.span
           key={index}

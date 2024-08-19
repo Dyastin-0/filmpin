@@ -16,6 +16,7 @@ const Signin = () => {
   const previousPath = location.state?.from?.pathname || '/home';
 
   useEffect(() => {
+    document.title = 'Sign in';
     emailRef.current.focus();
   }, []);
 
@@ -56,7 +57,7 @@ const Signin = () => {
         onSubmit={submit}
       >
         <h2 className='w-full text-center pb-4 text-lg font-bold'>
-          Log in to Filmpin
+          Sign in to Filmpin
         </h2>
         <Input
           type='email'

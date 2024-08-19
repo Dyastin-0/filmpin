@@ -45,7 +45,7 @@ const Movie = ({info}) => {
 	}, [token, info.id]);
 
 	const handleClick = () => {
-		navigate(`/movies/${details.id}_${details.title}`, { state: {movie: details} });
+		navigate(`/movies?id=${details.id}_${details.title}`);
 	}
 
 	return (	

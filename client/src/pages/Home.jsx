@@ -66,6 +66,7 @@ const Home = () => {
       setMoviesData(data);
       setLoading(false);
     });
+    document.title = 'Home';
   }, []);
 
   const { topMovies, popularMovies, upcomingMovies, nowPlayingMovies } = moviesData;

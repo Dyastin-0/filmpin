@@ -32,6 +32,7 @@ const Signup = () => {
 
   useEffect(() => {
     usernameRef.current.focus();
+    document.title = 'Sign up';
   }, []);
 
   useEffect(() => {

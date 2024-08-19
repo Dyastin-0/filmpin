@@ -32,6 +32,10 @@ const SearchResult = () => {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
+    document.title = 'Search';
+  }, []);
+
+  useEffect(() => {
     const query = searchParams.get('query') || '';
     const page = parseInt(searchParams.get('page')) || 1;
     setCurrentQuery(query);

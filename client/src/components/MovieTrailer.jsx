@@ -5,7 +5,7 @@ import axios from 'axios';
 import { useAuth } from '../hooks/useAuth';
 import { TrailerImageDummy } from './loaders/TrailerLoaders';
 
-const getVideos = async (id, token) => {
+export const getVideos = async (id, token) => {
 	try {
 		const videos = await axios.get(`/movies/videos/${id}`, {
 			headers: {
@@ -19,7 +19,7 @@ const getVideos = async (id, token) => {
 	}
 }
 
-const Frame = ({youtubeKey, title}) => {
+export const Frame = ({youtubeKey, title}) => {
 	return (
 		<div className='w-full max-w-[100%] lg:max-w-[70%] m-4 aspect-video'>
 			<iframe
