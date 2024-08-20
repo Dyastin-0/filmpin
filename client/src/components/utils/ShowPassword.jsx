@@ -1,5 +1,5 @@
-import { faEye, faEyeSlash } from "@fortawesome/free-solid-svg-icons";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faEye, faEyeSlash } from '@fortawesome/free-solid-svg-icons';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
 export const ShowPassword = ({showPassword, setShowPassword}) => (
 	<div
@@ -8,9 +8,7 @@ export const ShowPassword = ({showPassword, setShowPassword}) => (
 	>
 		<FontAwesomeIcon
 			icon={showPassword ? faEye : faEyeSlash}
-			className={`text-primary-foreground transition-transform duration-300 ${
-				showPassword ? 'rotate-0' : 'rotate-180'
-			}`}
+			className='text-primary-foreground'
 		/>
 	</div>
 );

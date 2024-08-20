@@ -14,7 +14,7 @@ const genres = [
   'war', 'western'
 ];
 
-const getDiscovery = async (token, genres, sortBy, page) => {
+export const getDiscovery = async (token, genres, sortBy, page) => {
   try {
     const response = await axios.get(`/movies/discover/${genres}/${sortBy}/page=${page}`, {
       headers: {
@@ -44,6 +44,7 @@ const DiscoverSlug = () => {
 
   useEffect(() => {
     if (selectedGenres.length > 0) {
+      setCurrentPage(1);
       handleCreate(currentPage);
     }
   }, [selectedGenres]);
@@ -64,7 +65,7 @@ const DiscoverSlug = () => {
         ...prevResults,
         [response.page]: response.results,
       }));
-      setTotalPages(response.total_pages);
+      setTotalPages(response.total_pages > 500 ? 500 : response.total_pages);
       setCurrentPage(response.page);
       setLoading(false);
     });

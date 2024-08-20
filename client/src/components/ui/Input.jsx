@@ -45,7 +45,7 @@ export const SearchInput = ({ onChange, type, value, id, placeholder, required, 
 	return (
 		<form className={`flex gap-2 shadow-sm text-primary-foreground bg-accent pt-1 pb-1 pl-3 pr-3 rounded-full
 			transition-all duration-300
-			${focus ? 'shadow-[var(--highlight)_0_0_0_2px]' : ''}`}
+			${focus ? 'shadow-[0_0_0_2px] shadow-primary-highlight' : ''}`}
 			onSubmit={onSubmit}>
 			<input
 				value={value}

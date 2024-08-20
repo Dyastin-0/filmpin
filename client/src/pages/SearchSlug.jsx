@@ -52,7 +52,7 @@ const SearchResult = () => {
             ...prevResults,
             [response.page]: response.results,
           }));
-          setTotalPages(response.total_pages);
+          setTotalPages(response.total_pages > 500 ? 500 : response.total_pages);
         }
         setLoading(false);
       };

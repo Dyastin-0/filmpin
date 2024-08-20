@@ -88,7 +88,7 @@ const Signup = () => {
           required
           type='email'
           autoComplete='on'
-          className={`${!testEmail(credentials.email) && credentials.email !== '' ? 'shadow-[var(--error)_0px_2px_0_0]' : ''}`}
+          className={`${!testEmail(credentials.email) && credentials.email !== '' ? 'shadow-[0px_2px_0_0] shadow-error' : ''}`}
           value={credentials.email}
           onChange={(e) => setCredentials({ ...credentials, email: e.target.value })}
         />
@@ -100,7 +100,7 @@ const Signup = () => {
             id='password'
             type={showPassword ? 'text' : 'password'}
             value={credentials.password}
-            className={`${!isPasswordmatched && credentials.password ? 'shadow-[var(--error)_0px_2px_0_0]' : ''}`}
+            className={`${!isPasswordmatched && credentials.password ? 'shadow-[2px_2px_0_0] shadow-error' : ''}`}
             onChange={(e) => setCredentials({ ...credentials, password: e.target.value })}
           />
           <ShowPassword showPassword={showPassword} setShowPassword={setShowPassword} />
@@ -115,7 +115,7 @@ const Signup = () => {
             id='confirm_password'
             type={showConfirmPassword ? 'text' : 'password'}
             value={confirmedPassword}
-            className={`${!isPasswordmatched && confirmedPassword ? 'shadow-[var(--error)_0px_2px_0_0]' : ''}`}
+            className={`${!isPasswordmatched && confirmedPassword ? 'shadow-[2px_2px_0_0] shadow-error' : ''}`}
             onChange={(e) => setConfirmedPassword(e.target.value)}
           />
           <ShowPassword showPassword={showConfirmPassword} setShowPassword={setShowConfirmPassword} />

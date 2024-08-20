@@ -9,6 +9,10 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faPlay } from '@fortawesome/free-solid-svg-icons';
 import { useModal } from '../components/hooks/useModal';
 import { Frame, getVideos } from '../components/MovieTrailer';
+import { getDiscovery } from './DiscoverSlug';
+import { MovieSection } from './Home';
+import Movie from '../components/Movie';
+import { swiperConfig } from '../configs/swiperConfig';
 
 const fetchMovie = async (token, id) => {
 	try {
@@ -34,7 +38,17 @@ const MovieSlug = () => {
 	const { setModal, setOpen } = useModal();
 	const [ trailerYoutubeKey, setTrailerYoutubeKey ] = useState(null);
 	const [videos, setVideos] = useState(null);
+	const [similarMovies, setSimilarMovies] = useState(null);
 	const id = searchParams.get('id');
+
+	useEffect(() => {
+		if (movie) {
+			const genres = movie.genres.map(genre => genre.name).join('_').toLowerCase();
+			getDiscovery(token, genres, 'vote_count', 1).then(response => {
+				setSimilarMovies(response.results);
+			});
+		}
+	}, [movie]);
 
   useEffect(() => {
 		if (token && id) {
@@ -71,7 +85,7 @@ const MovieSlug = () => {
 		</div>
 		<motion.div
 			initial={{y: -120}}
-			className='flex md:flex-row flex-col bg-accent p-4 rounded-md max-w-full w-[90%] gap-4'
+			className='flex md:flex-row flex-col bg-accent p-4 rounded-md max-w-full w-[90%] gap-4 shadow-sm'
 		>
 			<div className='flex flex-col gap-3'>
 				<img
@@ -111,6 +125,23 @@ const MovieSlug = () => {
 				</div>
 				<p className='text-primary-foreground text-xs'> {`${movie?.runtime} minutes`} </p>
 			</div>
+		</motion.div>
+		{/* <motion.div
+			initial={{marginTop: -120}}
+			className='flex flex-col w-[90%] rounded-lg bg-accent p-4 text-primary-foreground'
+		>
+			<h1 className='text-primary-foreground pb-4 text-xs font-semibold'>Credits</h1>
+			<ul>
+				<li className='text-primary-foreground pb-4 text-xs'>{}</li>
+				<li className='text-primary-foreground pb-4 text-xs'>{}</li>
+				<li className='text-primary-foreground pb-4 text-xs'>{}</li>
+			</ul>
+		</motion.div> */}
+		<motion.div 
+			initial={{marginTop: -120}}
+			className='flex flex-col bg-accent rounded-lg gap-4 p-4 items-center w-[90%]'
+		>
+			<MovieSection title='Recommendations' movies={similarMovies?.filter(similarMovie => similarMovie.title !== movie.title)} />
 		</motion.div>
 	</div>
 	)

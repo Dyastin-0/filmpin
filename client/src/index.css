@@ -24,8 +24,8 @@
   --text-secondary: #373A40;
   --text-primary: #686D76;
 
-  --error: red;
-  --success: green;
+  --error: #D2042D;
+  --success: #3CB371;
 }
 
 body {

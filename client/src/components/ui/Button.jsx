@@ -9,7 +9,7 @@ const variants = {
 const Button = ({text, type, onClick, variant = 'default', className}) => {
 	return (
 		<button
-			className={`flex items-center justify-center text-xs outline-none ${variants[variant]} ${className}`}
+			className={`flex items-center justify-center text-xs outline-none font-semibold ${variants[variant]} ${className}`}
 			type={type}
 			onClick={onClick}
 		>{ text }</button>
