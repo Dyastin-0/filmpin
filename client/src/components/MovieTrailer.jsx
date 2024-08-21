@@ -4,6 +4,8 @@ import { useEffect, useState } from 'react';
 import axios from 'axios';
 import { useAuth } from '../hooks/useAuth';
 import { TrailerImageDummy } from './loaders/TrailerLoaders';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faPlay } from '@fortawesome/free-solid-svg-icons';
 
 export const getVideos = async (id, token) => {
 	try {
@@ -72,13 +74,18 @@ const MovieTrailer = ({id, title}) => {
 		>
 		{
 			imageLoaded ?
-				<img
-					loading='lazy'
-					className='aspect-video object-cover rounded-md'
-					src={`https://img.youtube.com/vi/${trailerYoutubeKey}/hqdefault.jpg`}
-					alt={`${title} trailer thumbnail`}
-				/> :
-				<TrailerImageDummy />
+				<div className='relative group'>
+					<img
+						loading='lazy'
+						className='aspect-video object-cover rounded-md'
+						src={`https://img.youtube.com/vi/${trailerYoutubeKey}/hqdefault.jpg`}
+						alt={`${title} trailer thumbnail`}
+					/>
+					<div className='absolute inset-0 rounded-md bg-transparent hover:bg-[#0000004D] flex justify-center items-center transition-colors duration-300'>
+						<FontAwesomeIcon icon={faPlay} className='text-primary-highlight text-xl' />
+					</div>
+				</div>
+				: <TrailerImageDummy />
 		}
 		</motion.div>
 	)

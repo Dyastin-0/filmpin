@@ -6,6 +6,7 @@ import Movie from '../components/Movie';
 import Pagination from '../components/ui/Pagination';
 import { useNavigate, useSearchParams } from 'react-router-dom';
 import { LoadingDiscover } from '../components/loaders/MovieLoaders';
+import { useLoading } from '../components/hooks/useLoading';
 
 const genres = [
   'action', 'adventure', 'animation', 'comedy', 'crime', 'documentary', 
@@ -32,11 +33,12 @@ const DiscoverSlug = () => {
   const [searchParams] = useSearchParams();
   const navigate = useNavigate();
   const { token } = useAuth();
+  const { setLoading } = useLoading();
   const [selectedGenres, setSelectedGenres] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
   const [totalPages, setTotalPages] = useState(0);
   const [results, setResults] = useState({});
-  const [loading, setLoading] = useState(true);
+  const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
     document.title = 'Discover';
@@ -45,16 +47,23 @@ const DiscoverSlug = () => {
   useEffect(() => {
     if (selectedGenres.length > 0) {
       setCurrentPage(1);
-      handleCreate(currentPage);
+      setIsLoading(true);
+      setLoading(true);
+      handleCreate();
     }
   }, [selectedGenres]);
-
+  
   useEffect(() => {
     const genresFromParams = searchParams.get('genres')?.split('_') || [];
     const pageFromParams = parseInt(searchParams.get('page')) || 1;
-    setSelectedGenres(genresFromParams);
+
+    if (JSON.stringify(selectedGenres) != JSON.stringify(genresFromParams)) {
+      setSelectedGenres(genresFromParams);
+    }
+  
     setCurrentPage(pageFromParams);
   }, [searchParams]);
+  
 
   const handleCreate = async (page = 1) => {
     const genresString = selectedGenres.join('_').toLowerCase();
@@ -66,7 +75,8 @@ const DiscoverSlug = () => {
         [response.page]: response.results,
       }));
       setTotalPages(response.total_pages > 500 ? 500 : response.total_pages);
-      setCurrentPage(response.page);
+      setCurrentPage(page);
+      setIsLoading(false);
       setLoading(false);
     });
 
@@ -77,6 +87,7 @@ const DiscoverSlug = () => {
   };
 
   const onPageChange = async (page) => {
+    setIsLoading(true);
     setLoading(true);
     setCurrentPage(page);
     handleCreate(page);
@@ -94,7 +105,7 @@ const DiscoverSlug = () => {
         </h1>
       </div>
       <Selector items={genres} selectedGenres={selectedGenres} setSelectedGenres={setSelectedGenres} />
-      { loading ?
+      { isLoading ?
         selectedGenres.length > 0 && <LoadingDiscover title='Results' />
         :
         <div className='flex flex-col items-center gap-4'>

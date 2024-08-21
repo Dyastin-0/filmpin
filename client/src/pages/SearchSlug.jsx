@@ -5,6 +5,7 @@ import { useAuth } from '../hooks/useAuth';
 import Movie from '../components/Movie';
 import Pagination from '../components/ui/Pagination';
 import { LoadingSearchResult } from '../components/loaders/MovieLoaders';
+import { useLoading } from '../components/hooks/useLoading';
 
 const getPage = async (token, query, page) => {
   try {
@@ -24,12 +25,12 @@ const SearchResult = () => {
   const [searchParams] = useSearchParams();
   const navigate = useNavigate();
   const { token } = useAuth();
-
+  const { setLoading } = useLoading();
   const [currentQuery, setCurrentQuery] = useState('');
   const [totalPages, setTotalPages] = useState(0);
   const [currentPage, setCurrentPage] = useState(1);
   const [results, setResults] = useState({});
-  const [loading, setLoading] = useState(true);
+  const [isLoading, setIsloading] = useState(true);
 
   useEffect(() => {
     document.title = 'Search';
@@ -45,6 +46,7 @@ const SearchResult = () => {
   useEffect(() => {
     if (currentQuery && token) {
       const fetchResults = async () => {
+        setIsloading(true);
         setLoading(true);
         const response = await getPage(token, currentQuery, currentPage);
         if (response) {
@@ -54,6 +56,7 @@ const SearchResult = () => {
           }));
           setTotalPages(response.total_pages > 500 ? 500 : response.total_pages);
         }
+        setIsloading(false);
         setLoading(false);
       };
       fetchResults();
@@ -61,7 +64,9 @@ const SearchResult = () => {
   }, [token, currentQuery, currentPage]);
 
   const onPageChange = async (page) => {
+    setCurrentPage(page);
     if (!results[page]) {
+      setIsloading(true);
       setLoading(true);
       const response = await getPage(token, currentQuery, page);
       if (response) {
@@ -70,9 +75,9 @@ const SearchResult = () => {
           [page]: response.results,
         }));
       }
+      setIsloading(false);
       setLoading(false);
     }
-    setCurrentPage(page);
     navigate(`/movies/search?query=${currentQuery}&page=${page}`);
   };
 
@@ -80,7 +85,7 @@ const SearchResult = () => {
     window.scrollTo({ top: 0, left: 0, behavior: 'smooth' });
   }, [currentPage]);
 
-  return loading ? (
+  return isLoading ? (
     <LoadingSearchResult title={'Results'} />
   ) : (
     <div className='flex flex-col bg-primary rounded-lg gap-4 p-4 items-center h-full w-full'>
