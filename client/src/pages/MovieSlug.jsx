@@ -1,6 +1,5 @@
 import { useEffect, useState } from 'react'
 import { Link, useLocation, useSearchParams } from 'react-router-dom';
-import AnimatedString from '../components/ui/AnimatedString';
 import axios from 'axios';
 import { useAuth } from '../hooks/useAuth';
 import { motion } from 'framer-motion';
@@ -9,8 +8,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faPlay } from '@fortawesome/free-solid-svg-icons';
 import { useModal } from '../components/hooks/useModal';
 import { Frame, getVideos } from '../components/MovieTrailer';
-import { getDiscovery } from './DiscoverSlug';
-import { MovieSection } from './Home';
+import { MovieSection } from '../components/sections/MovieSection';
 import { LoadingMovieSection } from '../components/loaders/MovieLoaders';
 import { useLoading } from '../components/hooks/useLoading';
 import { MovieSlugLoader } from '../components/loaders/MovieSlugLoader';
@@ -30,6 +28,20 @@ const fetchMovie = async (token, id) => {
 		return null;
 	}
 }
+
+const getDiscovery = async (token, genres, sortBy, page) => {
+  try {
+    const response = await axios.get(`/movies/discover/${genres}/${sortBy}/page=${page}`, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+        'Content-Type': 'application/json',
+      },
+    });
+    return response.data;
+  } catch (error) {
+    console.error('Failed to get discovery.', error);
+  }
+};
 
 const MovieSlug = () => {
 	const [searchParams] = useSearchParams();
@@ -118,7 +130,7 @@ const MovieSlug = () => {
 							/>
 						</div>
 						<div className='flex flex-col gap-2 w-full'>
-							<AnimatedString text={movie?.tagline} />
+							<p className='text-primary-foreground text-xs'>{movie?.tagline}</p>
 							<h1 className='text-primary-foreground text-4xl font-semibold'> {movie?.title} </h1>
 							<p className='text-primary-foreground text-md'> {movie?.overview} </p>
 							<h4 className='text-primary-foreground text-xs'> {movie?.release_date.split('-')[0]} </h4>

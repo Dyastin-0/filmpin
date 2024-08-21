@@ -15,7 +15,7 @@ const genres = [
   'war', 'western'
 ];
 
-export const getDiscovery = async (token, genres, sortBy, page) => {
+const getDiscovery = async (token, genres, sortBy, page) => {
   try {
     const response = await axios.get(`/movies/discover/${genres}/${sortBy}/page=${page}`, {
       headers: {

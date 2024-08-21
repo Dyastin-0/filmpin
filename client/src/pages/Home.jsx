@@ -1,13 +1,11 @@
 import { useAuth } from '../hooks/useAuth';
 import { useEffect, useState } from 'react';
 import axios from 'axios';
-import Movie from '../components/Movie';
-import { SwiperSlide, Swiper } from 'swiper/react';
-import { swiperConfig } from '../configs/swiperConfig';
-import MovieTrailer from '../components/MovieTrailer';
 import { LoadingMovieSection } from '../components/loaders/MovieLoaders';
 import { LoadingTrailerSection } from '../components/loaders/TrailerLoaders';
 import { useLoading } from '../components/hooks/useLoading';
+import { MovieSection } from '../components/sections/MovieSection';
+import { TrailerSection } from '../components/sections/TrailerSection';
 
 const fetchMovies = async (token, category) => {
   try {
@@ -20,32 +18,6 @@ const fetchMovies = async (token, category) => {
     return [];
   }
 };
-
-export const MovieSection = ({ title, movies }) => (
-  <section className='w-full ml-4 mr-4 mb-4 bg-transparent overflow-hidden gap-4'>
-    <h1 className='text-primary-foreground pb-4 text-sm font-semibold'>{title}</h1>
-    <Swiper {...swiperConfig}>
-      {movies.map((movie, index) => (
-        <SwiperSlide key={index}>
-          <Movie info={movie} />
-        </SwiperSlide>
-      ))}
-    </Swiper>
-  </section>
-);
-
-const TrailerSection = ({ title, movies }) => (
-  <section className='w-full h-fit ml-4 mr-4 mb-4 bg-transparent overflow-hidden gap-4'>
-    <h1 className='text-primary-foreground pb-4 text-sm font-semibold'>{title}</h1>
-    <Swiper {...swiperConfig}>
-      {movies.map((movie, index) => (
-        <SwiperSlide className='max-h-fit' key={index}>
-          <MovieTrailer id={movie.id} title={movie.title} />
-        </SwiperSlide>
-      ))}
-    </Swiper>
-  </section>
-);
 
 const Home = () => {
   const { token } = useAuth();
