@@ -15,7 +15,7 @@ export const MovieSlugLoader = () => {
 				</div>
 				<div className='flex flex-col gap-2 w-full'>
 				<div className='rounded-md bg-secondary h-[10px] w-[100px]' ></div>
-					<motion.div className='rounded-md bg-secondary h-[30px] w-[400px]' ></motion.div>
+					<motion.div className='rounded-md bg-secondary h-[30px] w-[400px] max-w-full' ></motion.div>
 					<motion.div className='rounded-md bg-secondary h-[10px] w-full' ></motion.div>
 					<motion.div className='rounded-md bg-secondary h-[10px] w-full' ></motion.div>
 					<motion.div className='rounded-md bg-secondary h-[10px] w-full' ></motion.div>
