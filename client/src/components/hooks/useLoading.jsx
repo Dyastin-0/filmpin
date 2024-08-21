@@ -20,7 +20,7 @@ export function LoadingProvider({ children }) {
 			<motion.div
 				initial={{ y: 50, opacity: 0 }}
 				animate={{ y: loading ? 85 : 50, opacity: loading ? 1 : 0 }}
-				className='fixed left-1/2 transform -translate-x-1/2 z-50'
+				className='absolute self-center z-50'
 			>
 				<FontAwesomeIcon className={`text-primary-highlight text-[30px] animate-spin`} icon={faSpinner} />
 			</motion.div>

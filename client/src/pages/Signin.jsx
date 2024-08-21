@@ -10,6 +10,7 @@ import { useToast } from '../components/hooks/useToast';
 const Signin = () => {
   const emailRef = useRef(null);
   const navigate = useNavigate();
+  const [signingIn, setSigningIn] = useState(false);
   const { setToken, setUser, user } = useAuth();
   const { toastError, toastSuccess } = useToast();
 
@@ -33,6 +34,7 @@ const Signin = () => {
 
   const submit = async (e) => {
     e.preventDefault();
+    setSigningIn(true);
     const { email, password } = credentials;
     try {
       const { data } = await axios.post('/sign-in', { email, password });
@@ -43,6 +45,8 @@ const Signin = () => {
       navigate(previousPath, { replace: true });
     } catch (error) {
       toastError('Invalid credentials.');
+    } finally {
+      setSigningIn(false);
     }
   };
 
@@ -81,7 +85,7 @@ const Signin = () => {
           />
         <ShowPassword showPassword={showPassword} setShowPassword={setShowPassword} />
         </div>
-        <Button type='submit' text='Sign in' />
+        <Button type='submit' disabled={signingIn} text={`${signingIn ? 'Signing in...' : 'Sign in'}`} />
       </form>
     </div>
   );

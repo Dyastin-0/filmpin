@@ -6,9 +6,10 @@ const variants = {
 	ghost: 'text-primary-foreground bg-accent rounded-md shadow-sm p-2 focus:shadow-[var(--highlight)_0_2px_0_0] transition-all duration-300'
 }
 
-const Button = ({text, type, onClick, variant = 'default', className}) => {
+const Button = ({text, type, onClick, variant = 'default', className, disabled}) => {
 	return (
 		<button
+			disabled={disabled}
 			className={`flex items-center justify-center text-xs outline-none font-semibold ${variants[variant]} ${className}`}
 			type={type}
 			onClick={onClick}

@@ -25,6 +25,7 @@ const Signup = () => {
   const [passwordStrength, setPasswordStrength] = useState({ strength: 0, color: 'red', message: 'Very weak' });
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
+  const [signingUp, setSigningUp] = useState(false);
 
   useEffect(() => {
     setIsPasswordMatched(confirmedPassword === credentials.password);
@@ -41,6 +42,7 @@ const Signup = () => {
 
   const submit = async (e) => {
     e.preventDefault();
+    setSigningUp(true);
     const { username, email, password } = credentials;
 
     if (!testUsername(credentials.username)) return toastError('Invalid username.');
@@ -60,6 +62,8 @@ const Signup = () => {
       navigate('/home');
     } catch (error) {
       toastError('Email already used.');
+    } finally {
+      setSigningUp(false);
     }
   };
 
@@ -121,7 +125,7 @@ const Signup = () => {
           <ShowPassword showPassword={showConfirmPassword} setShowPassword={setShowConfirmPassword} />
         </div>
 
-        <Button type='submit' text='Sign up' />
+        <Button type='submit' disabled={signingUp} text={`${signingUp ? 'Signing up...' : 'Sign up'}`} />
       </form>
     </div>
   );
