@@ -9,7 +9,7 @@ import { faPlay } from '@fortawesome/free-solid-svg-icons';
 
 export const getVideos = async (id, token) => {
 	try {
-		const videos = await axios.get(`/movies/videos/${id}`, {
+		const videos = await axios.get(`/movies/videos?movie_id=${id}`, {
 			headers: {
 				Authorization: `Bearer ${token}`,
 				"Content-Type": 'application/json'

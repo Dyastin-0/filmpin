@@ -1,33 +1,31 @@
 const api = require('../../helpers/tmdbApi');
-const { movieGenres } = require('../../models/genreList');
 
 const handleGetCategory = async (req, res) => {
 	const { category, page } = req.query;
-
 	try {
-		const response = await api.get(`movie/${category}?language=en-US&${page}&sort_by=popularity.desc`);
+		const response = await api.get(`tv/${category}?language=en-US&${page}&sort_by=popularity.desc`);
 		res.json(response.data);
 	} catch (error) {
-		console.error('Failed to fetch list.', error);
+		console.error('Failed to fetch tv list.', error);
 		res.sendStatus(500);
 	}
 }
 
 const handleGetDetails = async (req, res) => {
-	const { movie_id } = req.query;
+	const { show_id } = req.query;
 	try {
-		const response = await api.get(`movie/${movie_id}?language=en-US`);
+		const response = await api.get(`tv/${show_id}?language=en-US`);
 		res.json(response.data);
 	} catch (error) {
-		console.error('Failed to fetch details', error);
+		console.error('Failed to fetch tv details', error);
 		res.sendStatus(500);
 	}
 }
 
 const handleGetCredits = async (req, res) => {
-	const { movie_id } = req.query;
+	const { show_id } = req.query;
 	try {
-		const response = await api.get(`movie/${movie_id}/credits?language=en-US`);
+		const response = await api.get(`movie/${show_id}/credits?language=en-US`);
 		res.json(response.data);
 	} catch (error) {
 		console.error('Failed to fetch credits.', error);
@@ -38,7 +36,7 @@ const handleGetCredits = async (req, res) => {
 const handleSearch = async (req, res) => {
 	const { query, page } = req.query;
 	try {
-		const response = await api.get(`search/movie?query=${query}&include_adult=false&video=false&language=en-US&${page}`);
+		const response = await api.get(`search/tv?query=${query}&include_adult=false&video=false&language=en-US&${page}`);
 		res.json(response.data);
 	} catch (error) {
 		console.error('Failed to search.', error);
@@ -47,9 +45,9 @@ const handleSearch = async (req, res) => {
 }
 
 const handleGetVideo = async (req, res) => {
-	const { movie_id } = req.query;
+	const {  } = req.query;
 	try {
-		const response = await api.get(`movie/${movie_id}/videos?language=en-US`);
+		const response = await api.get(`tv/${show_id}/videos?language=en-US`);
 		res.json(response.data);
 	} catch (error) {
 		console.error('Failed to search.', error);
@@ -65,7 +63,7 @@ const handleDiscover = async (req, res) => {
 	const joinedKeys = genreKeys.join(',');
 
 	try {
-		const response = await api.get(`/discover/movie?include_adult=false&language=en-US&with_genres=${joinedKeys}&sort_by=${sort_by}.desc&${page}`);
+		const response = await api.get(`/discover/tv?include_adult=false&language=en-US&with_genres=${joinedKeys}&sort_by=${sort_by}.desc&${page}`);
 		res.json(response.data);
 	} catch (error) {
 		console.error('Failed to get discover.', error);
@@ -77,7 +75,7 @@ module.exports = {
 	handleGetCategory,
 	handleGetDetails,
 	handleGetCredits,
+	handleDiscover,
 	handleSearch,
-	handleGetVideo,
-	handleDiscover
-};
+	handleGetVideo
+}

@@ -17,7 +17,7 @@ const genres = [
 
 const getDiscovery = async (token, genres, sortBy, page) => {
   try {
-    const response = await axios.get(`/movies/discover/${genres}/${sortBy}/page=${page}`, {
+    const response = await axios.get(`/movies/discover?genres=${genres}&sort_by=${sortBy}&page=${page}`, {
       headers: {
         Authorization: `Bearer ${token}`,
         'Content-Type': 'application/json',

@@ -8,7 +8,7 @@ import { ImageDummy, TitleDummy, YearDummy, GenresDummy } from './loaders/MovieL
 
 const fetchDetails = async (token, id) => {
 	try {
-		const response = await axios.get(`/movies/details/${id}`, {
+		const response = await axios.get(`/movies/details?movie_id=${id}`, {
 			headers: {
 				Authorization: `Bearer ${token}`,
 				"Content-Type": 'application/json'

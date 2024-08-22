@@ -9,7 +9,7 @@ import { TrailerSection } from '../components/sections/TrailerSection';
 
 const fetchMovies = async (token, category) => {
   try {
-    const response = await axios.get(`/movies/list/${category}/page=1`, {
+    const response = await axios.get(`/movies/list?category=${category}&page=1`, {
       headers: { Authorization: `Bearer ${token}`, 'Content-Type': 'application/json' }
     });
     return response.data.results;

@@ -9,7 +9,7 @@ import { useLoading } from '../components/hooks/useLoading';
 
 const getPage = async (token, query, page) => {
   try {
-    const response = await axios.get(`/movies/search/${query}/page=${page}`, {
+    const response = await axios.get(`/movies/search?query=${query}&page=${page}`, {
       headers: {
         Authorization: `Bearer ${token}`,
         'Content-Type': 'application/json',
