@@ -1,36 +1,30 @@
 import { useNavigate, useSearchParams } from 'react-router-dom';
-import axios from 'axios';
 import { useEffect, useState } from 'react';
-import { useAuth } from '../hooks/useAuth';
 import Movie from '../components/Movie';
 import Pagination from '../components/ui/Pagination';
 import { LoadingSearchResult } from '../components/loaders/MovieLoaders';
 import { useLoading } from '../components/hooks/useLoading';
-
-const getPage = async (token, query, page) => {
-  try {
-    const response = await axios.get(`/movies/search?query=${query}&page=${page}`, {
-      headers: {
-        Authorization: `Bearer ${token}`,
-        'Content-Type': 'application/json',
-      },
-    });
-    return response.data;
-  } catch (error) {
-    console.error('Failed to get query.', error);
-  }
-};
+import useAxios from '../hooks/useAxios';
 
 const SearchResult = () => {
   const [searchParams] = useSearchParams();
   const navigate = useNavigate();
-  const { token } = useAuth();
+  const api = useAxios();
   const { setLoading } = useLoading();
   const [currentQuery, setCurrentQuery] = useState('');
   const [totalPages, setTotalPages] = useState(0);
   const [currentPage, setCurrentPage] = useState(1);
   const [results, setResults] = useState({});
   const [isLoading, setIsloading] = useState(true);
+
+  const getPage = async (query, page) => {
+    try {
+      const response = await api.get(`/movies/search?query=${query}&page=${page}`);
+      return response.data;
+    } catch (error) {
+      console.error('Failed to get query.', error);
+    }
+  };
 
   useEffect(() => {
     document.title = 'Search';
@@ -44,11 +38,11 @@ const SearchResult = () => {
   }, [searchParams]);
 
   useEffect(() => {
-    if (currentQuery && token) {
+    if (currentQuery) {
       const fetchResults = async () => {
         setIsloading(true);
         setLoading(true);
-        const response = await getPage(token, currentQuery, currentPage);
+        const response = await getPage(currentQuery, currentPage);
         if (response) {
           setResults((prevResults) => ({
             ...prevResults,
@@ -61,14 +55,14 @@ const SearchResult = () => {
       };
       fetchResults();
     }
-  }, [token, currentQuery, currentPage]);
+  }, [currentQuery, currentPage]);
 
   const onPageChange = async (page) => {
     setCurrentPage(page);
     if (!results[page]) {
       setIsloading(true);
       setLoading(true);
-      const response = await getPage(token, currentQuery, page);
+      const response = await getPage(currentQuery, page);
       if (response) {
         setResults((prevResults) => ({
           ...prevResults,

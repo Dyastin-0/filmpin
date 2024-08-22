@@ -1,12 +1,11 @@
 import { useEffect, useState } from 'react';
 import Selector from '../components/ui/Selector';
-import axios from 'axios';
-import { useAuth } from '../hooks/useAuth';
 import Pagination from '../components/ui/Pagination';
 import { useNavigate, useSearchParams, useLocation } from 'react-router-dom';
 import { LoadingDiscover } from '../components/loaders/MovieLoaders';
 import { useLoading } from '../components/hooks/useLoading';
 import TvShow from '../components/TvShow';
+import useAxios from '../hooks/useAxios';
 
 const genres = [
   'action and adventure', 'animation', 'comedy', 'crime',
@@ -15,31 +14,26 @@ const genres = [
   'war and politics', 'western'
 ];
 
-const getDiscovery = async (token, genres, sortBy, page) => {
-  try {
-    const response = await axios.get(`/tvshows/discover?genres=${genres}&sort_by=${sortBy}&page=${page}`, {
-      headers: {
-        Authorization: `Bearer ${token}`,
-        'Content-Type': 'application/json',
-      },
-    });
-    return response.data;
-  } catch (error) {
-    console.error('Failed to get discovery.', error);
-  }
-};
-
 const DiscoverTvShowSlug = () => {
   const [searchParams] = useSearchParams();
   const location = useLocation();
   const navigate = useNavigate();
-  const { token } = useAuth();
+  const api = useAxios();
   const { setLoading } = useLoading();
   const [selectedGenres, setSelectedGenres] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
   const [totalPages, setTotalPages] = useState(0);
   const [results, setResults] = useState({});
   const [isLoading, setIsLoading] = useState(true);
+
+  const getDiscovery = async (genres, sortBy, page) => {
+    try {
+      const response = await api.get(`/tvshows/discover?genres=${genres}&sort_by=${sortBy}&page=${page}`);
+      return response.data;
+    } catch (error) {
+      console.error('Failed to get discovery.', error);
+    }
+  };
 
   useEffect(() => {
     document.title = 'Discover';
@@ -69,7 +63,7 @@ const DiscoverTvShowSlug = () => {
     const genresString = selectedGenres.join('_').toLowerCase();
     const sortBy = 'vote_count';
 
-    getDiscovery(token, genresString, sortBy, page).then((response) => {
+    getDiscovery(genresString, sortBy, page).then((response) => {
       setResults(prevResults => ({
         ...prevResults,
         [response.page]: response.results,

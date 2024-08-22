@@ -1,7 +1,5 @@
 import { useEffect, useState } from 'react'
 import { Link, useLocation, useSearchParams } from 'react-router-dom';
-import axios from 'axios';
-import { useAuth } from '../hooks/useAuth';
 import { motion } from 'framer-motion';
 import Button from '../components/ui/Button';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
@@ -12,40 +10,11 @@ import { MovieSection } from '../components/sections/MovieSection';
 import { LoadingMovieSection } from '../components/loaders/MovieLoaders';
 import { useLoading } from '../components/hooks/useLoading';
 import { MovieSlugLoader } from '../components/loaders/MovieSlugLoader';
-
-const fetchMovie = async (token, id) => {
-	try {
-		const response = await axios.get(`/movies/details?movie_id=${id}`, {
-			headers: {
-				Authorization: `Bearer ${token}`,
-				"Content-Type": 'application/json'
-			}
-		});
-
-		return response.data;
-	} catch (error) {
-		console.error(`Failed to fetch details for ${id}`, error);
-		return null;
-	}
-}
-
-const getDiscovery = async (token, genres, sortBy, page) => {
-  try {
-    const response = await axios.get(`/movies/discover?genres=${genres}&sort_by=${sortBy}&page=${page}`, {
-      headers: {
-        Authorization: `Bearer ${token}`,
-        'Content-Type': 'application/json',
-      },
-    });
-    return response.data;
-  } catch (error) {
-    console.error('Failed to get discovery.', error);
-  }
-};
+import useAxios from '../hooks/useAxios';
 
 const MovieSlug = () => {
 	const [searchParams] = useSearchParams();
-	const { token } = useAuth();
+	const api = useAxios();
 	const { setLoading } = useLoading();
 	const [movie, setMovie] = useState(null);
 	const location = useLocation();
@@ -56,12 +25,31 @@ const MovieSlug = () => {
 	const [isLoading, setIsLoading] = useState(true);
 	const id = searchParams.get('id');
 
+	const fetchMovie = async (id) => {
+		try {
+			const response = await api.get(`/movies/details?movie_id=${id}`);
+			return response.data;
+		} catch (error) {
+			console.error(`Failed to fetch details for ${id}`, error);
+			return null;
+		}
+	}
+	
+	const getDiscovery = async (genres, sortBy, page) => {
+		try {
+			const response = await api.get(`/movies/discover?genres=${genres}&sort_by=${sortBy}&page=${page}`);
+			return response.data;
+		} catch (error) {
+			console.error('Failed to get discovery.', error);
+		}
+	};
+
 	useEffect(() => {
 		if (movie) {
 			setIsLoading(true);
 			setLoading(true);
 			const genres = movie.genres.map(genre => genre.name).join('_').toLowerCase();
-			getDiscovery(token, genres, 'vote_count', 1).then(response => {
+			getDiscovery(genres, 'vote_count', 1).then(response => {
 				setSimilarMovies(response.results);
 				setIsLoading(false);
 				setLoading(false);
@@ -70,23 +58,23 @@ const MovieSlug = () => {
 	}, [movie]);
 
 	useEffect(() => {
-		if (token && id) {
+		if (id) {
 			const stateMovie = location.state?.movie;
 			if (!stateMovie) {
-				fetchMovie(token, id.split('_')[0]).then(movie => setMovie(movie));
+				fetchMovie(id.split('_')[0]).then(movie => setMovie(movie));
 			} else {
 				setMovie(stateMovie);
 			}
 		}
-	}, [token, id]);
+	}, [id]);
 
 	useEffect(() => {
 		if (movie) document.title = movie.title;
 	}, [movie]);
 
 	useEffect(() => {
-		token && token && getVideos(id, token).then(videos => setVideos(videos.results));
-	}, [id, token]);
+		id && getVideos(id).then(videos => setVideos(videos.results));
+	}, [id]);
 
 	useEffect(() => {
 		videos && setTrailerYoutubeKey(videos.find(video => video.type == 'Trailer')?.key);

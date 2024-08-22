@@ -58,16 +58,9 @@ const handleGetVideo = async (req, res) => {
 
 const handleDiscover = async (req, res) => {
 	const { genres, sort_by, page } = req.query;
-	console.log(genres)
 	const genresArray = genres?.split('_');
-	console.log(genresArray)
-	const genreKeys = genresArray?.map(genre => {
-		console.log(genre);
-		return tvGenres[genre.toString()]
-	});
-	console.log(genreKeys)
+	const genreKeys = genresArray?.map(genre => tvGenres[genre]);
 	const joinedKeys = genreKeys?.join(',');
-	console.log(joinedKeys);
 	try {
 		const response = await api.get(`/discover/tv?include_adult=false&language=en-US$&with_genres=${joinedKeys}&sort_by=${sort_by}.desc&page=${page}`);
 		res.json(response.data);

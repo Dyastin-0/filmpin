@@ -1,7 +1,5 @@
 import { useEffect, useState } from 'react'
 import { Link, useLocation, useSearchParams } from 'react-router-dom';
-import axios from 'axios';
-import { useAuth } from '../hooks/useAuth';
 import { motion } from 'framer-motion';
 import Button from '../components/ui/Button';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
@@ -12,54 +10,11 @@ import { TvShowSection } from '../components/sections/tvShowSection';
 import { LoadingMovieSection } from '../components/loaders/MovieLoaders';
 import { useLoading } from '../components/hooks/useLoading';
 import { MovieSlugLoader } from '../components/loaders/MovieSlugLoader';
-
-const fetchShow = async (token, id) => {
-	try {
-		const response = await axios.get(`/tvshows/details?show_id=${id}`, {
-			headers: {
-				Authorization: `Bearer ${token}`,
-				"Content-Type": 'application/json'
-			}
-		});
-
-		return response.data;
-	} catch (error) {
-		console.error(`Failed to fetch details for ${id}`, error);
-		return null;
-	}
-}
-
-export const getVideos = async (id, token) => {
-	try {
-		const videos = await axios.get(`/tvshows/videos?show_id=${id}`, {
-			headers: {
-				Authorization: `Bearer ${token}`,
-				"Content-Type": 'application/json'
-			}
-		});
-		return videos.data;
-	} catch (error) {
-		console.error(`Failed to get videos for show with id '${id}'`, error);
-	}
-}
-
-const getDiscovery = async (token, genres, sortBy, page) => {
-  try {
-    const response = await axios.get(`/tvshows/discover?genres=${genres}&sort_by=${sortBy}&page=${page}`, {
-      headers: {
-        Authorization: `Bearer ${token}`,
-        'Content-Type': 'application/json',
-      },
-    });
-    return response.data;
-  } catch (error) {
-    console.error('Failed to get discovery.', error);
-  }
-};
+import useAxios from '../hooks/useAxios';
 
 const TvShowSlug = () => {
 	const [searchParams] = useSearchParams();
-	const { token } = useAuth();
+	const api = useAxios();
 	const { setLoading } = useLoading();
 	const [show, setShow] = useState(null);
 	const location = useLocation();
@@ -70,12 +25,40 @@ const TvShowSlug = () => {
 	const [isLoading, setIsLoading] = useState(true);
 	const id = searchParams.get('id');
 
+	const fetchShow = async (id) => {
+		try {
+			const response = await api.get(`/tvshows/details?show_id=${id}`);
+			return response.data;
+		} catch (error) {
+			console.error(`Failed to fetch details for ${id}`, error);
+			return null;
+		}
+	}
+	
+	const getVideos = async (id) => {
+		try {
+			const videos = await api.get(`/tvshows/videos?show_id=${id}`);
+			return videos.data;
+		} catch (error) {
+			console.error(`Failed to get videos for show with id '${id}'`, error);
+		}
+	}
+	
+	const getDiscovery = async (genres, sortBy, page) => {
+		try {
+			const response = await api.get(`/tvshows/discover?genres=${genres}&sort_by=${sortBy}&page=${page}`);
+			return response.data;
+		} catch (error) {
+			console.error('Failed to get discovery.', error);
+		}
+	};
+
 	useEffect(() => {
 		if (show) {
 			setIsLoading(true);
 			setLoading(true);
 			const genres = show.genres.map(genre => genre.name).join('_').toLowerCase();
-			getDiscovery(token, genres, 'vote_count', 1).then(response => {
+			getDiscovery(genres, 'vote_count', 1).then(response => {
 				setSimilarShows(response.results);
 				setIsLoading(false);
 				setLoading(false);
@@ -84,23 +67,23 @@ const TvShowSlug = () => {
 	}, [show]);
 
 	useEffect(() => {
-		if (token && id) {
+		if (id) {
 			const stateShow = location.state?.show;
 			if (!stateShow) {
-				fetchShow(token, id.split('_')[0]).then(show => setShow(show));
+				fetchShow(id.split('_')[0]).then(show => setShow(show));
 			} else {
 				setShow(stateShow);
 			}
 		}
-	}, [token, id]);
+	}, [id]);
 
 	useEffect(() => {
 		if (show) document.title = show.name; //state missing
 	}, [show]);
 
 	useEffect(() => {
-		token && token && getVideos(id, token).then(videos => setVideos(videos.results));
-	}, [id, token]);
+		id && getVideos(id).then(videos => setVideos(videos.results));
+	}, [id]);
 
 	useEffect(() => {
 		videos && setTrailerYoutubeKey(videos.find(video => video.type == 'Trailer')?.key);
@@ -153,7 +136,7 @@ const TvShowSlug = () => {
 									show?.genres.map((genre, index) => (
 										<Link
 											key={index}
-											to={`/tvshows/discover?genres=${genre.name.toLowerCase()}&sort_by=vote_count&page=1`}
+											to={`/discover/tvshows?genres=${genre.name.toLowerCase()}&sort_by=vote_count&page=1`}
 											className='underline underline-offset-2 text-primary-highlight text-xs'
 										>
 											{`${index === show?.genres.length - 1 ? genre.name : `${genre.name},`}`}

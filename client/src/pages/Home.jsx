@@ -1,39 +1,14 @@
-import { useAuth } from '../hooks/useAuth';
 import { useEffect, useState } from 'react';
-import axios from 'axios';
 import { LoadingMovieSection } from '../components/loaders/MovieLoaders';
 import { LoadingTrailerSection } from '../components/loaders/TrailerLoaders';
 import { useLoading } from '../components/hooks/useLoading';
 import { MovieSection } from '../components/sections/MovieSection';
 import { TrailerSection } from '../components/sections/TrailerSection';
 import { TvShowSection } from '../components/sections/tvShowSection';
-
-const fetchMovies = async (token, category) => {
-  try {
-    const response = await axios.get(`/movies/list?category=${category}&page=1`, {
-      headers: { Authorization: `Bearer ${token}`, 'Content-Type': 'application/json' }
-    });
-    return response.data.results;
-  } catch (error) {
-    console.error(`Failed to fetch ${category} movies`, error);
-    return [];
-  }
-};
-
-const fetchTvShows = async (token, category) => {
-  try {
-    const response = await axios.get(`/tvshows/discover?genres=[]&sort_by=vote_count&page=1`, {
-      headers: { Authorization: `Bearer ${token}`, 'Content-Type': 'application/json' }
-    });
-    return response.data.results;
-  } catch (error) {
-    console.error(`Failed to fetch ${category} movies`, error);
-    return [];
-  }
-};
+import useAxios from '../hooks/useAxios';
 
 const Home = () => {
-  const { token } = useAuth();
+  const api = useAxios();
   const { setLoading } = useLoading();
   const [topMovies, setTopMovies] = useState([]);
   const [popularMovies, setPopularMovies] = useState([]);
@@ -42,6 +17,26 @@ const Home = () => {
   const [topTvShows, setTopTvShow] = useState([]);
   
   const [isLoading, setIsLoading] = useState(true);
+
+  const fetchMovies = async (category) => {
+    try {
+      const response = await api.get(`/movies/list?category=${category}&page=1`);
+      return response.data.results;
+    } catch (error) {
+      console.error(`Failed to fetch ${category} movies`, error);
+      return [];
+    }
+  };
+  
+  const fetchTvShows = async (category) => {
+    try {
+      const response = await api.get(`/tvshows/discover?genres=[]&sort_by=vote_count&page=1`);
+      return response.data.results;
+    } catch (error) {
+      console.error(`Failed to fetch ${category} movies`, error);
+      return [];
+    }
+  };
 
   useEffect(() => {
     document.title = 'Home';
@@ -54,11 +49,11 @@ const Home = () => {
 
       try {
         const [fetchedTopMovies, fetchedPopularMovies, fetchedUpcomingMovies, fetchedNowPlayingMovies, fetchedTopTvShows] = await Promise.all([
-          fetchMovies(token, 'top_rated'),
-          fetchMovies(token, 'popular'),
-          fetchMovies(token, 'upcoming'),
-          fetchMovies(token, 'now_playing'),
-          fetchTvShows(token, 'popular')
+          fetchMovies('top_rated'),
+          fetchMovies('popular'),
+          fetchMovies('upcoming'),
+          fetchMovies('now_playing'),
+          fetchTvShows('popular')
         ]);
 
         setTopMovies(fetchedTopMovies);
@@ -76,7 +71,7 @@ const Home = () => {
     };
 
     fetchData();
-  }, [token]);
+  }, []);
 
   return (
     <div className='flex flex-col bg-primary rounded-lg gap-4 p-4 justify-center items-center h-full w-full'>

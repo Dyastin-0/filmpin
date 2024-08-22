@@ -1,37 +1,31 @@
-import axios from 'axios';
 import  Button  from '../components/ui/Button';
 import { useNavigate } from 'react-router-dom';
-import { useAuth } from '../hooks/useAuth';
 import { useEffect, useState } from 'react';
 import { AnimatePresence, motion } from 'framer-motion';
-
-const getMostVoted = async (category, token) => {
-	try {
-		const response = await axios.get(`/${category}/discover?genres=[]&sort_by=vote_count&page=1`, {
-			headers: {
-				Authorization: `Bearer ${token}`,
-				"Content-Type": 'application/json'
-			}
-		});
-		return response.data;
-	} catch (error) {
-		console.error('Failed to get top movies.', error);
-	}
-}
+import useAxios from '../hooks/useAxios';
 
 const Discover = () => {
-	const { token } = useAuth();
+	const api = useAxios();
 	const navigate = useNavigate();
 	const [movies, setMovies] = useState([]);
 	const [shows, setShows] = useState([]);
 	const [imageIndex, setImageIndex] = useState(0);
 	const [isMovieHovered, setIsMovieHovered] = useState(false);
 
+	const getMostVoted = async (category) => {
+		try {
+			const response = await api.get(`/${category}/discover?genres=[]&sort_by=vote_count&page=1`);
+			return response.data;
+		} catch (error) {
+			console.error('Failed to get top movies.', error);
+		}
+	}
+
 	useEffect(() => {
-		getMostVoted('tvshows', token).then((response) => {
+		getMostVoted('tvshows').then((response) => {
 			setShows(response.results);
 		})
-		getMostVoted('movies', token).then((response) => {
+		getMostVoted('movies').then((response) => {
 			setMovies(response.results);
 		})
 	}, []);
