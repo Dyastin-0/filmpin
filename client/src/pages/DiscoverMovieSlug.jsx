@@ -29,7 +29,7 @@ const getDiscovery = async (token, genres, sortBy, page) => {
   }
 };
 
-const DiscoverSlug = () => {
+const DiscoverMovieSlug = () => {
   const [searchParams] = useSearchParams();
   const navigate = useNavigate();
   const { token } = useAuth();
@@ -80,9 +80,9 @@ const DiscoverSlug = () => {
       setLoading(false);
     });
 
-    const URL = `/movies/discover?genres=${genresString}&sort_by=${sortBy}&page=${page}`;
+    const URL = `/discover/movies?genres=${genresString}&sort_by=${sortBy}&page=${page}`;
     if (location.pathname !== URL) {
-      navigate(URL);
+      navigate(URL, { replace: true });
     }
   };
 
@@ -126,4 +126,4 @@ const DiscoverSlug = () => {
   );
 };
 
-export default DiscoverSlug;
+export default DiscoverMovieSlug;

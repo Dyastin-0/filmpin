@@ -6,11 +6,12 @@ const variants = {
 	ghost: 'text-primary-foreground bg-accent rounded-md shadow-sm p-2 focus:shadow-[var(--highlight)_0_0_0_2px] transition-all duration-300'
 }
 
-const Button = ({text, type, onClick, onBlur, variant = 'default', className, disabled}) => {
+const Button = ({text, type, onClick, onBlur, variant = 'default', className, onMouseEnter, disabled}) => {
 	return (
 		<button
 			disabled={disabled}
-			className={`flex items-center justify-center text-xs outline-none font-semibold ${variants[variant]} ${className}`}
+			onMouseEnter={onMouseEnter}
+			className={`flex h-fit items-center justify-center text-xs outline-none font-semibold ${variants[variant]} ${className}`}
 			type={type}
 			onClick={onClick}
 			onBlur={onBlur}

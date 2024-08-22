@@ -7,12 +7,15 @@ import ProtectedRoute from './utils/protectedRoute';
 import 'swiper/css';
 import 'swiper/css/pagination';
 import 'swiper/css/navigation';
+import Discover from './pages/Discover';
 
 const Signin = lazy(() => import('./pages/Signin'));
 const Signup = lazy(() => import('./pages/Signup'));
 const Home = lazy(() => import('./pages/Home'));
-const DiscoverSlug = lazy(() => import('./pages/DiscoverSlug'));
+const DiscoverMovieSlug = lazy(() => import('./pages/DiscoverMovieSlug'));
+const DiscoverTvShowSlug = lazy(() => import('./pages/DiscoverTvShowSlug'));
 const MovieSlug = lazy(() => import('./pages/MovieSlug'));
+const TvShowSlug = lazy(() => import('./pages/TvShowSlug'))
 const SearchSlug = lazy(() => import('./pages/SearchSlug'));
 
 axios.defaults.baseURL = import.meta.env.VITE_BASE_API_URL;
@@ -24,14 +27,17 @@ function App() {
 		<Navbar />
     <Suspense>
       <Routes>
-        <Route path='/' element={<Signin />}></Route>
-        <Route path='/sign-in' element={<Signin />}></Route>
-        <Route path='/sign-up' element={<Signup />}></Route>
+        <Route path='/' element={<Signin /> } />
+        <Route path='/sign-in' element={<Signin />} />
+        <Route path='/sign-up' element={<Signup />} />
         <Route element={<ProtectedRoute />}>
-          <Route path='/home' element={<Home />}></Route>
-          <Route path='/movies' element={<MovieSlug />}> </Route>
-          <Route path='/movies/search' element={<SearchSlug />}></Route>
-          <Route path='/movies/discover' element={<DiscoverSlug />} />
+          <Route path='/home' element={<Home />} />
+          <Route path='/movies' element={<MovieSlug />} />
+          <Route path='/movies/search' element={<SearchSlug />} />
+          <Route path='/discover' element={<Discover />} />
+          <Route path='/discover/movies' element={<DiscoverMovieSlug />} />
+          <Route path='/tvshows' element={<TvShowSlug />} />
+          <Route path='/discover/tvshows' element={<DiscoverTvShowSlug />} />
         </Route>
       </Routes>
     </Suspense>

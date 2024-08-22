@@ -8,7 +8,7 @@ import { ImageDummy, TitleDummy, YearDummy, GenresDummy } from './loaders/MovieL
 
 const fetchDetails = async (token, id) => {
 	try {
-		const response = await axios.get(`/movies/details?movie_id=${id}`, {
+		const response = await axios.get(`/tvshows/details?show_id=${id}`, {
 			headers: {
 				Authorization: `Bearer ${token}`,
 				"Content-Type": 'application/json'
@@ -22,7 +22,7 @@ const fetchDetails = async (token, id) => {
 	}
 }
 
-const Movie = ({info}) => {
+const TvShow = ({info}) => {
 	const navigate = useNavigate();
 	const { token } = useAuth();
 	const [details, setDetails] = useState({});
@@ -45,7 +45,7 @@ const Movie = ({info}) => {
 	}, [token, info.id]);
 
 	const handleClick = () => {
-		navigate(`/movies?id=${details.id}_${details.title}`);
+		navigate(`/tvshows?id=${details.id}_${details.name}`); //state missing
 	}
 
 	return (	
@@ -65,11 +65,11 @@ const Movie = ({info}) => {
 				<ImageDummy />
 			}
 			{
-				details.title ?
+				details.name ?
 				<>
-					<h4 className='text-sm font-semibold line-clamp-2 text-ellipsis'> {details.title} </h4>
-					<h4 className='text-xs'> {details.release_date?.split('-')[0]} </h4>
-					<h4 className='text-xs'> { `${Math.floor(details?.runtime / 60)}h ${details?.runtime % 60}m` } </h4>
+					<h4 className='text-sm font-semibold line-clamp-2 text-ellipsis'> {details.name} </h4>
+					<h4 className='text-xs'> {`${details.first_air_date?.split('-')[0]}-${details.last_air_date?.split('-')[0]}`} </h4>
+					<h4 className='text-xs'> { `${details.number_of_seasons} seasons` } </h4>
 				</> :
 				<>
 					<TitleDummy />
@@ -91,4 +91,4 @@ const Movie = ({info}) => {
 	)
 }
 
-export default Movie;
+export default TvShow;

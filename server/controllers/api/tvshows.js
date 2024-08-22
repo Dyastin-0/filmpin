@@ -1,9 +1,10 @@
 const api = require('../../helpers/tmdbApi');
+const { tvGenres } = require('../../models/genreList');
 
 const handleGetCategory = async (req, res) => {
 	const { category, page } = req.query;
 	try {
-		const response = await api.get(`tv/${category}?language=en-US&${page}&sort_by=popularity.desc`);
+		const response = await api.get(`tv/${category}?language=en-US&${page}&sort_by=vote_count.desc`);
 		res.json(response.data);
 	} catch (error) {
 		console.error('Failed to fetch tv list.', error);
@@ -36,7 +37,7 @@ const handleGetCredits = async (req, res) => {
 const handleSearch = async (req, res) => {
 	const { query, page } = req.query;
 	try {
-		const response = await api.get(`search/tv?query=${query}&include_adult=false&video=false&language=en-US&${page}`);
+		const response = await api.get(`search?query=${query}&include_adult=false&video=false&language=en-US&${page}`);
 		res.json(response.data);
 	} catch (error) {
 		console.error('Failed to search.', error);
@@ -45,7 +46,7 @@ const handleSearch = async (req, res) => {
 }
 
 const handleGetVideo = async (req, res) => {
-	const {  } = req.query;
+	const { show_id } = req.query;
 	try {
 		const response = await api.get(`tv/${show_id}/videos?language=en-US`);
 		res.json(response.data);
@@ -57,13 +58,18 @@ const handleGetVideo = async (req, res) => {
 
 const handleDiscover = async (req, res) => {
 	const { genres, sort_by, page } = req.query;
-
-	const genresArray = genres.split('_');
-	const genreKeys = genresArray.map(genre => movieGenres[genre]);
-	const joinedKeys = genreKeys.join(',');
-
+	console.log(genres)
+	const genresArray = genres?.split('_');
+	console.log(genresArray)
+	const genreKeys = genresArray?.map(genre => {
+		console.log(genre);
+		return tvGenres[genre.toString()]
+	});
+	console.log(genreKeys)
+	const joinedKeys = genreKeys?.join(',');
+	console.log(joinedKeys);
 	try {
-		const response = await api.get(`/discover/tv?include_adult=false&language=en-US&with_genres=${joinedKeys}&sort_by=${sort_by}.desc&${page}`);
+		const response = await api.get(`/discover/tv?include_adult=false&language=en-US$&with_genres=${joinedKeys}&sort_by=${sort_by}.desc&page=${page}`);
 		res.json(response.data);
 	} catch (error) {
 		console.error('Failed to get discover.', error);

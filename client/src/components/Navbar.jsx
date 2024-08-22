@@ -8,7 +8,7 @@ import { Dropdown, DropdownItem } from './ui/Dropdown';
 
 const routes = [
   {path: '/home', name: 'Home'},
-  {path: '/movies/discover', name: 'Discover'}
+  {path: '/discover', name: 'Discover'}
 ];
 const authRoutes = [
   {path: '/sign-in', name: 'Sign in'},
@@ -41,7 +41,7 @@ const Navbar = () => {
   return (
     <div className='flex justify-between bg-primary rounded-lg w-full p-3 gap-3 drop-shadow-sm z-50'>
       <div></div>
-      <div className='flex w-fit gap-3'>
+      <div className='flex w-fit items-center gap-3'>
       { 
         user && routes.map((route, index) => (
           <Button

@@ -6,10 +6,23 @@ import { LoadingTrailerSection } from '../components/loaders/TrailerLoaders';
 import { useLoading } from '../components/hooks/useLoading';
 import { MovieSection } from '../components/sections/MovieSection';
 import { TrailerSection } from '../components/sections/TrailerSection';
+import { TvShowSection } from '../components/sections/tvShowSection';
 
 const fetchMovies = async (token, category) => {
   try {
     const response = await axios.get(`/movies/list?category=${category}&page=1`, {
+      headers: { Authorization: `Bearer ${token}`, 'Content-Type': 'application/json' }
+    });
+    return response.data.results;
+  } catch (error) {
+    console.error(`Failed to fetch ${category} movies`, error);
+    return [];
+  }
+};
+
+const fetchTvShows = async (token, category) => {
+  try {
+    const response = await axios.get(`/tvshows/discover?genres=[]&sort_by=vote_count&page=1`, {
       headers: { Authorization: `Bearer ${token}`, 'Content-Type': 'application/json' }
     });
     return response.data.results;
@@ -26,6 +39,7 @@ const Home = () => {
   const [popularMovies, setPopularMovies] = useState([]);
   const [upcomingMovies, setUpcomingMovies] = useState([]);
   const [nowPlayingMovies, setNowPlayingMovies] = useState([]);
+  const [topTvShows, setTopTvShow] = useState([]);
   
   const [isLoading, setIsLoading] = useState(true);
 
@@ -39,17 +53,20 @@ const Home = () => {
       setLoading(true);
 
       try {
-        const [fetchedTopMovies, fetchedPopularMovies, fetchedUpcomingMovies, fetchedNowPlayingMovies] = await Promise.all([
+        const [fetchedTopMovies, fetchedPopularMovies, fetchedUpcomingMovies, fetchedNowPlayingMovies, fetchedTopTvShows] = await Promise.all([
           fetchMovies(token, 'top_rated'),
           fetchMovies(token, 'popular'),
           fetchMovies(token, 'upcoming'),
           fetchMovies(token, 'now_playing'),
+          fetchTvShows(token, 'popular')
         ]);
 
         setTopMovies(fetchedTopMovies);
         setPopularMovies(fetchedPopularMovies);
         setUpcomingMovies(fetchedUpcomingMovies);
         setNowPlayingMovies(fetchedNowPlayingMovies);
+        setTopTvShow(fetchedTopTvShows);
+
       } catch (error) {
         console.error('Failed to fetch movies', error);
       } finally {
@@ -70,6 +87,7 @@ const Home = () => {
           <LoadingMovieSection title='Top rated' />
           <LoadingMovieSection title='Popular' />
           <LoadingMovieSection title='Upcoming' />
+          <LoadingMovieSection title='Top rated TV shows' />
         </>
       ) : (
         <>
@@ -78,6 +96,7 @@ const Home = () => {
           <MovieSection title='Top rated' movies={topMovies} />
           <MovieSection title='Popular' movies={popularMovies} />
           <MovieSection title='Upcoming' movies={upcomingMovies} />
+          <TvShowSection title='Top rated TV shows' shows={topTvShows} />
         </>
       )}
     </div>

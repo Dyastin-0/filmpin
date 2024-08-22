@@ -38,7 +38,7 @@ const handleGetCredits = async (req, res) => {
 const handleSearch = async (req, res) => {
 	const { query, page } = req.query;
 	try {
-		const response = await api.get(`search/movie?query=${query}&include_adult=false&video=false&language=en-US&${page}`);
+		const response = await api.get(`search/movie?query=${query}&include_adult=false&video=false&language=en-US&page=${page}`);
 		res.json(response.data);
 	} catch (error) {
 		console.error('Failed to search.', error);
@@ -65,7 +65,7 @@ const handleDiscover = async (req, res) => {
 	const joinedKeys = genreKeys.join(',');
 
 	try {
-		const response = await api.get(`/discover/movie?include_adult=false&language=en-US&with_genres=${joinedKeys}&sort_by=${sort_by}.desc&${page}`);
+		const response = await api.get(`/discover/movie?include_adult=false&language=en-US&with_genres=${joinedKeys}&sort_by=${sort_by}.desc&page=${page}`);
 		res.json(response.data);
 	} catch (error) {
 		console.error('Failed to get discover.', error);
