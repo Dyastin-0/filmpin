@@ -11,7 +11,7 @@ const Button = ({text, type, onClick, onBlur, variant = 'default', className, on
 		<button
 			disabled={disabled}
 			onMouseEnter={onMouseEnter}
-			className={`flex h-fit items-center justify-center text-xs outline-none font-semibold ${variants[variant]} ${className}`}
+			className={`transition-all duration-300 flex h-fit items-center justify-center text-xs outline-none font-semibold ${variants[variant]} ${className}`}
 			type={type}
 			onClick={onClick}
 			onBlur={onBlur}

@@ -60,8 +60,18 @@ const Discover = () => {
 					/>
 				</AnimatePresence>
 				<div className='flex rounded-md p-2 gap-2 z-20 bg-accent self-center'>
-					<Button text='TV Shows' className='text-xl' onClick={() => navigate('/discover/tvshows')} onMouseEnter={() => setIsMovieHovered(false)} />
-					<Button text='Movies' className='text-xl' onClick={() => navigate('/discover/movies')} onMouseEnter={() => setIsMovieHovered(true)} />
+					<Button
+						text='TV Shows'
+						className={`text-xl ${isMovieHovered ? 'bg-accent text-primary-foreground' : 'bg-primary-highlight text-primary-highlight-foreground'}`}
+						onClick={() => navigate('/discover/tvshows')}
+						onMouseEnter={() => setIsMovieHovered(false)}
+					/>
+					<Button
+						text='Movies'
+						className={`text-xl ${isMovieHovered ? 'bg-primary-highlight text-primary-highlight-foreground' : 'bg-accent text-primary-foreground'}`}
+						onClick={() => navigate('/discover/movies')}
+						onMouseEnter={() => setIsMovieHovered(true)}
+					/>
 				</div>
 			</div>
 		</div>
