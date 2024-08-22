@@ -59,8 +59,11 @@ export const SearchInput = ({ onChange, type, value, id, placeholder, required, 
 				className={`bg-transparent text-primary-foreground placeholder-primary-foreground rounded-md text-xs outline-none
 					w-full`}
 			/>
-			<button type='submit'><FontAwesomeIcon className={`transition-all duration-300 ease-in-out hover:scale-110 hover:text-primary-highlight
-				${focus ? 'text-primary-highlight' : ''}`} icon={faSearch} /></button>
+			<button type='submit' onFocus={() => setFocus(true)} onBlur={() => setFocus(false)} className='outline-none'>
+				<FontAwesomeIcon
+					className={`transition-all duration-300 ease-in-out hover:scale-110 hover:text-primary-highlight
+					${focus ? 'text-primary-highlight scale-110' : ''}`} icon={faSearch} />
+			</button>
 		</form>
 	);
 }

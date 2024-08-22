@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import { useAuth } from '../hooks/useAuth';
 import Input from '../components/ui/Input';
@@ -10,11 +10,12 @@ import { useToast } from '../components/hooks/useToast';
 const Signin = () => {
   const emailRef = useRef(null);
   const navigate = useNavigate();
+  const location = useLocation();
   const [signingIn, setSigningIn] = useState(false);
   const { setToken, setUser, user } = useAuth();
   const { toastError, toastSuccess } = useToast();
 
-  const previousPath = location.state?.from?.pathname || '/home';
+  const previousPath = location.state?.from || '/home';
 
   useEffect(() => {
     document.title = 'Sign in';

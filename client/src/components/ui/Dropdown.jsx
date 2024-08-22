@@ -14,6 +14,7 @@ export const Dropdown = ({ name, className, children }) => {
 				variant='ghost'
 				text={name}
         onClick={toggle}
+				onBlur={() => setIsOpen(false)}
       />
 			<ul
 				className={`absolute flex flex-col top-full mt-2 right-0 z-50
