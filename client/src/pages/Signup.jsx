@@ -42,7 +42,6 @@ const Signup = () => {
 
   const submit = async (e) => {
     e.preventDefault();
-    setSigningUp(true);
     const { username, email, password } = credentials;
 
     if (!testUsername(credentials.username)) return toastError('Invalid username.');
@@ -50,6 +49,8 @@ const Signup = () => {
     if (passwordStrength.strength < 25) return toastError(`Password should at least be 'Good.'`);
     if (!isPasswordmatched) return toastError('Passwords do not match.');
 
+    setSigningUp(true);
+    
     try {
       const { data } = await axios.post('/sign-up', {
         username, email, password,
@@ -70,7 +71,7 @@ const Signup = () => {
   return (
     <div className='flex flex-col p-4 justify-center items-center h-full w-full text-primary bg-primary rounded-xl'>
       <form
-        className='flex flex-col w-[250px] p-4 text-xs text-primary-foreground bg-accent drop-shadow-sm rounded-md'
+        className='flex flex-col w-[250px] max-w-full p-4 text-xs text-primary-foreground bg-accent drop-shadow-sm rounded-md'
         onSubmit={submit}
       >
         <h2 className='w-full text-center pb-4 text-lg font-bold'>Create your account</h2>
@@ -107,7 +108,9 @@ const Signup = () => {
             className={`${!isPasswordmatched && credentials.password ? 'shadow-[2px_2px_0_0] shadow-error' : ''}`}
             onChange={(e) => setCredentials({ ...credentials, password: e.target.value })}
           />
-          <ShowPassword showPassword={showPassword} setShowPassword={setShowPassword} />
+          {
+            credentials.password && <ShowPassword showPassword={showPassword} setShowPassword={setShowPassword} />
+          }
         </div>
 
         <ProgressBar value={passwordStrength.strength} text={passwordStrength.message} visible={credentials.password} />
@@ -122,7 +125,9 @@ const Signup = () => {
             className={`${!isPasswordmatched && confirmedPassword ? 'shadow-[2px_2px_0_0] shadow-error' : ''}`}
             onChange={(e) => setConfirmedPassword(e.target.value)}
           />
-          <ShowPassword showPassword={showConfirmPassword} setShowPassword={setShowConfirmPassword} />
+          {
+            confirmedPassword && <ShowPassword showPassword={showConfirmPassword} setShowPassword={setShowConfirmPassword} />
+          }
         </div>
 
         <Button type='submit' disabled={signingUp} text={`${signingUp ? 'Signing up...' : 'Sign up'}`} />

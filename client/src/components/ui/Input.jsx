@@ -12,14 +12,26 @@ const Input = React.forwardRef(({ onChange, type, value, id, placeholder, requir
 			<motion.label
 				initial={{
 					y: 0,
-					x: 5
+					x: 5,
+					fontSize: '0.75rem'
 				}}
-				animate={{
-					y: focus || value ? -25 : 0,
-					x: focus || value ? 0 : 5
-				}}
+				animate={
+					value || focus ?
+					{
+						y: -25,
+						x: 0,
+						fontSize: '0.65rem',
+						color: 'var(--highlight)'
+					} :
+					{
+						y: 0,
+						x: 5,
+						fontSize: '0.75rem',
+						color: 'var(--text-primary)'
+					}
+				}
 				transition={{duration: 0.3, ease: 'easeInOut'}}
-				className='absolute text-xs text-primary-foreground font-semibold'
+				className={`absolute font-semibold`}
 				htmlFor={id}>{placeholder}
 			</motion.label>
 			<input

@@ -35,8 +35,8 @@ const Signin = () => {
 
   const submit = async (e) => {
     e.preventDefault();
-    setSigningIn(true);
     const { email, password } = credentials;
+    setSigningIn(true);
     try {
       const { data } = await axios.post('/sign-in', { email, password });
       setToken(data.accessToken);
@@ -57,7 +57,7 @@ const Signin = () => {
       text-primary bg-primary rounded-xl'
     >
       <form
-        className='flex flex-col w-[250px] p-4 text-xs text-primary-foreground
+        className='flex flex-col w-[250px] max-w-full p-4 text-xs text-primary-foreground
         bg-accent drop-shadow-sm rounded-md'
         onSubmit={submit}
       >
@@ -65,6 +65,7 @@ const Signin = () => {
           Sign in to Filmpin
         </h2>
         <Input
+          required={true}
           type='email'
           placeholder='Email'
           id='email'
@@ -76,6 +77,7 @@ const Signin = () => {
         />
         <div className="relative">
           <Input
+            required={true}
             type={showPassword ? 'text' : 'password'}
             placeholder='Password'
             id='password'
@@ -84,7 +86,9 @@ const Signin = () => {
             }
             value={credentials.password}
           />
-        <ShowPassword showPassword={showPassword} setShowPassword={setShowPassword} />
+          {
+            credentials.password && <ShowPassword showPassword={showPassword} setShowPassword={setShowPassword} />
+          }
         </div>
         <Button type='submit' disabled={signingIn} text={`${signingIn ? 'Signing in...' : 'Sign in'}`} />
       </form>
