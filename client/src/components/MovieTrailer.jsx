@@ -1,25 +1,10 @@
 import { motion } from 'framer-motion';
 import { useModal } from './hooks/useModal';
 import { useEffect, useState } from 'react';
-import axios from 'axios';
-import { useAuth } from '../hooks/useAuth';
 import { TrailerImageDummy } from './loaders/TrailerLoaders';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faPlay } from '@fortawesome/free-solid-svg-icons';
-
-export const getVideos = async (id, token) => {
-	try {
-		const videos = await axios.get(`/movies/videos?movie_id=${id}`, {
-			headers: {
-				Authorization: `Bearer ${token}`,
-				"Content-Type": 'application/json'
-			}
-		});
-		return videos.data;
-	} catch (error) {
-		console.error(`Failed to get videos for movie with id '${id}'`, error);
-	}
-}
+import useAxios from '../hooks/useAxios';
 
 export const Frame = ({ youtubeKey, title }) => {
 	return (
@@ -35,11 +20,20 @@ export const Frame = ({ youtubeKey, title }) => {
 }
 
 const MovieTrailer = ({ id, title }) => {
-	const { token } = useAuth();
+	const api = useAxios();
 	const { setModal, setOpen } = useModal();
 	const [trailerYoutubeKey, setTrailerYoutubeKey] = useState(null);
 	const [videos, setVideos] = useState(null);
 	const [imageLoaded, setImageLoaded] = useState(false);
+
+	const getVideos = async (id) => {
+		try {
+			const videos = await api.get(`/movies/videos?movie_id=${id}`);
+			return videos.data;
+		} catch (error) {
+			console.error(`Failed to get videos for movie with id '${id}'`, error);
+		}
+	}
 
 	useEffect(() => {
 		if (trailerYoutubeKey) {
@@ -52,11 +46,11 @@ const MovieTrailer = ({ id, title }) => {
 	}, [trailerYoutubeKey]);
 
 	useEffect(() => {
-		token && token && getVideos(id, token).then(videos => setVideos(videos.results));
-	}, [id, token]);
+		getVideos(id).then(videos => setVideos(videos.results));
+	}, []);
 
 	useEffect(() => {
-		videos && setTrailerYoutubeKey(videos.find(video => video.type == 'Trailer')?.key);
+		videos && setTrailerYoutubeKey(videos.find(video => video.type === 'Trailer')?.key);
 	}, [videos]);
 
 	const handleClick = () => {
@@ -77,12 +71,12 @@ const MovieTrailer = ({ id, title }) => {
 					<div className='relative group'>
 						<img
 							loading='lazy'
-							className='aspect-video object-cover rounded-md'
+							className='aspect-video object-cover rounded-md w-full h-full'
 							src={`https://img.youtube.com/vi/${trailerYoutubeKey}/hqdefault.jpg`}
 							alt={`${title} trailer thumbnail`}
 						/>
-						<div className='absolute inset-0 rounded-md bg-transparent hover:bg-[#0000004D] flex justify-center items-center transition-colors duration-300'>
-							<FontAwesomeIcon icon={faPlay} className='text-primary-highlight text-xl' />
+						<div className='absolute inset-0 flex justify-center items-center bg-transparent rounded-md transition-colors duration-300 group-hover:bg-[#0000004D]'>
+							<FontAwesomeIcon icon={faPlay} className='text-accent text-2xl' />
 						</div>
 					</div>
 					: <TrailerImageDummy />

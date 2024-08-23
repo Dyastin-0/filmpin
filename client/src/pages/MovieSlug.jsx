@@ -5,7 +5,7 @@ import Button from '../components/ui/Button';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faPlay } from '@fortawesome/free-solid-svg-icons';
 import { useModal } from '../components/hooks/useModal';
-import { Frame, getVideos } from '../components/MovieTrailer';
+import { Frame } from '../components/MovieTrailer';
 import { MovieSection } from '../components/sections/MovieSection';
 import { LoadingMovieSection } from '../components/loaders/MovieLoaders';
 import { useLoading } from '../components/hooks/useLoading';
@@ -24,6 +24,15 @@ const MovieSlug = () => {
 	const [similarMovies, setSimilarMovies] = useState(null);
 	const [isLoading, setIsLoading] = useState(true);
 	const id = searchParams.get('id');
+
+	const getVideos = async (id) => {
+		try {
+			const videos = await api.get(`/movies/videos?movie_id=${id}`);
+			return videos.data;
+		} catch (error) {
+			console.error(`Failed to get videos for movie with id '${id}'`, error);
+		}
+	}
 
 	const fetchMovie = async (id) => {
 		try {

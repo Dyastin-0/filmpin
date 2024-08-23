@@ -30,7 +30,7 @@ const Home = () => {
 
   const fetchTvShows = async (category) => {
     try {
-      const response = await api.get(`/tvshows/discover?genres=[]&sort_by=vote_count&page=1`);
+      const response = await  api.get(`/tvshows/list?category=${category}&page=1`);
       return response.data.results;
     } catch (error) {
       console.error(`Failed to fetch ${category} movies`, error);
@@ -53,7 +53,7 @@ const Home = () => {
           fetchMovies('popular'),
           fetchMovies('upcoming'),
           fetchMovies('now_playing'),
-          fetchTvShows('popular')
+          fetchTvShows('top_rated')
         ]);
 
         setTopMovies(fetchedTopMovies);
