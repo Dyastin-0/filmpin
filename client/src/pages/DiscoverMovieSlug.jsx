@@ -8,9 +8,9 @@ import { useLoading } from '../components/hooks/useLoading';
 import useAxios from '../hooks/useAxios';
 
 const genres = [
-  'action', 'adventure', 'animation', 'comedy', 'crime', 'documentary', 
-  'drama', 'family', 'fantasy', 'history', 'horror', 'music', 
-  'mystery', 'romance', 'science fiction', 'tv movie', 'thriller', 
+  'action', 'adventure', 'animation', 'comedy', 'crime', 'documentary',
+  'drama', 'family', 'fantasy', 'history', 'horror', 'music',
+  'mystery', 'romance', 'science fiction', 'tv movie', 'thriller',
   'war', 'western'
 ];
 
@@ -46,7 +46,7 @@ const DiscoverMovieSlug = () => {
       handleCreate();
     }
   }, [selectedGenres]);
-  
+
   useEffect(() => {
     const genresFromParams = searchParams.get('genres')?.split('_') || [];
     const pageFromParams = parseInt(searchParams.get('page')) || 1;
@@ -54,10 +54,10 @@ const DiscoverMovieSlug = () => {
     if (JSON.stringify(selectedGenres) != JSON.stringify(genresFromParams)) {
       setSelectedGenres(genresFromParams);
     }
-  
+
     setCurrentPage(pageFromParams);
   }, [searchParams]);
-  
+
 
   const handleCreate = async (page = 1) => {
     const genresString = selectedGenres.join('_').toLowerCase();
@@ -99,7 +99,7 @@ const DiscoverMovieSlug = () => {
         </h1>
       </div>
       <Selector items={genres} selectedGenres={selectedGenres} setSelectedGenres={setSelectedGenres} />
-      { isLoading ?
+      {isLoading ?
         selectedGenres.length > 0 && <LoadingDiscover title='Results' />
         :
         <div className='flex flex-col items-center gap-4'>
@@ -111,7 +111,7 @@ const DiscoverMovieSlug = () => {
               <Movie key={index} info={movie} />
             ))}
           </div>
-          { totalPages > 1 && 
+          {totalPages > 1 &&
             <Pagination currentPage={currentPage} totalPages={totalPages} onPageChange={onPageChange} />
           }
         </div>

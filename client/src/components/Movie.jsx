@@ -17,12 +17,12 @@ const fetchDetails = async (token, id) => {
 
 		return response.data;
 	} catch (error) {
-		console.error(`Failed to fetch details for ${id}` ,error);
+		console.error(`Failed to fetch details for ${id}`, error);
 		return null;
 	}
 }
 
-const Movie = ({info}) => {
+const Movie = ({ info }) => {
 	const navigate = useNavigate();
 	const { token } = useAuth();
 	const [details, setDetails] = useState({});
@@ -48,40 +48,40 @@ const Movie = ({info}) => {
 		navigate(`/movies?id=${details.id}_${details.title}`);
 	}
 
-	return (	
+	return (
 		<motion.div className='flex flex-col rounded-lg drop-shadow-sm gap-1 p-4 w-[200px] h-[370px]
 			text-primary-foreground bg-accent
 			hover:scale-95 hover:cursor-pointer duration-300'
 			onClick={handleClick}
 		>
 			{
-				imageLoaded ? 
-				<img
-					loading='lazy'
-					className='rounded-md w-[200px] h-[250px] object-cover self-center'
-					src={`https://image.tmdb.org/t/p/w200/${details.poster_path}`}
-					alt={`${info.title} poster`}
-				/> : 
-				<ImageDummy />
+				imageLoaded ?
+					<img
+						loading='lazy'
+						className='rounded-md w-[200px] h-[250px] object-cover self-center'
+						src={`https://image.tmdb.org/t/p/w200/${details.poster_path}`}
+						alt={`${info.title} poster`}
+					/> :
+					<ImageDummy />
 			}
 			{
 				details.title ?
-				<>
-					<h4 className='text-sm font-semibold line-clamp-2 text-ellipsis'> {details.title} </h4>
-					<h4 className='text-xs'> {details.release_date?.split('-')[0]} </h4>
-					<h4 className='text-xs'> { `${Math.floor(details?.runtime / 60)}h ${details?.runtime % 60}m` } </h4>
-				</> :
-				<>
-					<TitleDummy />
-					<YearDummy />
-					<GenresDummy />
-				</>
+					<>
+						<h4 className='text-sm font-semibold line-clamp-2 text-ellipsis'> {details.title} </h4>
+						<h4 className='text-xs'> {details.release_date?.split('-')[0]} </h4>
+						<h4 className='text-xs'> {`${Math.floor(details?.runtime / 60)}h ${details?.runtime % 60}m`} </h4>
+					</> :
+					<>
+						<TitleDummy />
+						<YearDummy />
+						<GenresDummy />
+					</>
 			}
 			<div className='absolute bottom-4 right-4'>
-				<CircularProgress 
-					size='40px' 
-					color='var(--highlight)' 
-					value={details.vote_average} 
+				<CircularProgress
+					size='40px'
+					color='var(--highlight)'
+					value={details.vote_average}
 					max={10}
 				>
 					<CircularProgressLabel>{details.vote_average?.toFixed(1)}</CircularProgressLabel>

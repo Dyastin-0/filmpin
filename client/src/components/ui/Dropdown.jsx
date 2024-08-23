@@ -2,20 +2,20 @@ import { useState } from 'react';
 import Button from './Button';
 
 export const Dropdown = ({ name, className, children }) => {
-  const [isOpen, setIsOpen] = useState(false);
+	const [isOpen, setIsOpen] = useState(false);
 
-  const toggle = () => {
-    setIsOpen(!isOpen);
-  }
+	const toggle = () => {
+		setIsOpen(!isOpen);
+	}
 
-  return (
-    <div className="relative flex items-center justify-end z-50">
-      <Button
+	return (
+		<div className="relative flex items-center justify-end z-50">
+			<Button
 				variant='ghost'
 				text={name}
-        onClick={toggle}
+				onClick={toggle}
 				onBlur={() => setIsOpen(false)}
-      />
+			/>
 			<ul
 				className={`absolute flex flex-col top-full mt-2 right-0 z-50
 					text-primary-foreground text-xs bg-accent
@@ -27,19 +27,19 @@ export const Dropdown = ({ name, className, children }) => {
 					${isOpen ? 'translate-y-0 scale-y-100 opacity-100' : ''}`}
 			>
 				{children}
-				</ul>
-    </div>
-  );
+			</ul>
+		</div>
+	);
 };
 
-export const DropdownItem = ({onClick, children, asChild}) => {
+export const DropdownItem = ({ onClick, children, asChild }) => {
 	return (
 		asChild ? children :
-		<button
-			className='text-right text-nowrap text-primary-foreground text-xs outline-none
+			<button
+				className='text-right text-nowrap text-primary-foreground text-xs outline-none
 			pb-1'
-			onClick={onClick}>
-			{children}
-		</button>
+				onClick={onClick}>
+				{children}
+			</button>
 	);
 }

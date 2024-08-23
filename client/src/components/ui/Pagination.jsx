@@ -45,11 +45,10 @@ const Pagination = ({ currentPage, totalPages, onPageChange }) => {
           key={index}
           onClick={() => onPageChange(page)}
           disabled={page === currentPage || page === '...'}
-          className={`px-2 py-1 text-xs rounded-md ${
-            page == currentPage
+          className={`px-2 py-1 text-xs rounded-md ${page == currentPage
               ? 'bg-primary-highlight text-primary-highlight-foreground'
               : 'bg-accent shadow-sm text-primary-foreground'
-          }`}
+            }`}
         >
           {page}
         </button>

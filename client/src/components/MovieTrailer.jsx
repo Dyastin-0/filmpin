@@ -21,7 +21,7 @@ export const getVideos = async (id, token) => {
 	}
 }
 
-export const Frame = ({youtubeKey, title}) => {
+export const Frame = ({ youtubeKey, title }) => {
 	return (
 		<div className='w-full max-w-[100%] lg:max-w-[70%] m-4 aspect-video'>
 			<iframe
@@ -29,15 +29,15 @@ export const Frame = ({youtubeKey, title}) => {
 				src={`https://youtube.com/embed/${youtubeKey}`}
 				title={title}
 				allowFullScreen
-			></iframe>
+			/>
 		</div>
 	);
 }
 
-const MovieTrailer = ({id, title}) => {
+const MovieTrailer = ({ id, title }) => {
 	const { token } = useAuth();
 	const { setModal, setOpen } = useModal();
-	const [ trailerYoutubeKey, setTrailerYoutubeKey ] = useState(null);
+	const [trailerYoutubeKey, setTrailerYoutubeKey] = useState(null);
 	const [videos, setVideos] = useState(null);
 	const [imageLoaded, setImageLoaded] = useState(false);
 
@@ -72,21 +72,21 @@ const MovieTrailer = ({id, title}) => {
 			hover:scale-95 hover:cursor-pointer duration-300'
 			onClick={handleClick}
 		>
-		{
-			imageLoaded ?
-				<div className='relative group'>
-					<img
-						loading='lazy'
-						className='aspect-video object-cover rounded-md'
-						src={`https://img.youtube.com/vi/${trailerYoutubeKey}/hqdefault.jpg`}
-						alt={`${title} trailer thumbnail`}
-					/>
-					<div className='absolute inset-0 rounded-md bg-transparent hover:bg-[#0000004D] flex justify-center items-center transition-colors duration-300'>
-						<FontAwesomeIcon icon={faPlay} className='text-primary-highlight text-xl' />
+			{
+				imageLoaded ?
+					<div className='relative group'>
+						<img
+							loading='lazy'
+							className='aspect-video object-cover rounded-md'
+							src={`https://img.youtube.com/vi/${trailerYoutubeKey}/hqdefault.jpg`}
+							alt={`${title} trailer thumbnail`}
+						/>
+						<div className='absolute inset-0 rounded-md bg-transparent hover:bg-[#0000004D] flex justify-center items-center transition-colors duration-300'>
+							<FontAwesomeIcon icon={faPlay} className='text-primary-highlight text-xl' />
+						</div>
 					</div>
-				</div>
-				: <TrailerImageDummy />
-		}
+					: <TrailerImageDummy />
+			}
 		</motion.div>
 	)
 }

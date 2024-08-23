@@ -2,14 +2,14 @@ const express = require('express');
 const router = express.Router();
 const verifyRoles = require('../../middlewares/verifyRoles');
 const userRoles = require('../../models/roleList');
-const { 
+const {
 	handleGetCategory,
 	handleGetDetails,
 	handleGetCredits,
 	handleSearch,
 	handleGetVideo,
 	handleDiscover
- } = require('../../controllers/api/tvshows');
+} = require('../../controllers/api/tvshows');
 
 const cacheService = require('express-api-cache');
 const cache = cacheService.cache;

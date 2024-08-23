@@ -14,7 +14,7 @@ export const MovieSlugLoader = () => {
 					<motion.div variants={blinkOpacity} animate='blink' className='rounded-md bg-secondary h-[32px] w-[80px]' ></motion.div>
 				</div>
 				<div className='flex flex-col gap-2 w-full'>
-				<div className='rounded-md bg-secondary h-[10px] w-[100px]' ></div>
+					<div className='rounded-md bg-secondary h-[10px] w-[100px]' ></div>
 					<motion.div variants={blinkOpacity} animate='blink' className='rounded-md bg-secondary h-[30px] w-[400px] max-w-full' ></motion.div>
 					<motion.div variants={blinkOpacity} animate='blink' className='rounded-md bg-secondary h-[13px] w-full' ></motion.div>
 					<motion.div variants={blinkOpacity} animate='blink' className='rounded-md bg-secondary h-[13px] w-full' ></motion.div>

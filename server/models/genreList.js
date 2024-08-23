@@ -41,6 +41,6 @@ const tvGenres = {
 
 
 module.exports = {
-	movieGenres,
+  movieGenres,
   tvGenres
 };

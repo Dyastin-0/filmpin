@@ -6,12 +6,12 @@ import { swiperConfig } from '../../configs/swiperConfig';
 export const TrailerImageDummy = () => <motion.div className='w-full aspect-video rounded-md bg-secondary' variants={blinkVariants} animate='blink'></motion.div>;
 
 export const TrailerDummy = () => (
-	<motion.div className='flex flex-col rounded-md drop-shadow-sm gap-1 p-3 w-[270px] h-fit
+  <motion.div className='flex flex-col rounded-md drop-shadow-sm gap-1 p-3 w-[270px] h-fit
 		text-primary-foreground bg-accent
 		hover:scale-95 hover:cursor-pointer duration-300'
-	>
-		<TrailerImageDummy />
-	</motion.div>
+  >
+    <TrailerImageDummy />
+  </motion.div>
 );
 
 export const LoadingTrailerSection = ({ title }) => (

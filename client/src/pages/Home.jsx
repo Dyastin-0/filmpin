@@ -15,7 +15,7 @@ const Home = () => {
   const [upcomingMovies, setUpcomingMovies] = useState([]);
   const [nowPlayingMovies, setNowPlayingMovies] = useState([]);
   const [topTvShows, setTopTvShow] = useState([]);
-  
+
   const [isLoading, setIsLoading] = useState(true);
 
   const fetchMovies = async (category) => {
@@ -27,7 +27,7 @@ const Home = () => {
       return [];
     }
   };
-  
+
   const fetchTvShows = async (category) => {
     try {
       const response = await api.get(`/tvshows/discover?genres=[]&sort_by=vote_count&page=1`);

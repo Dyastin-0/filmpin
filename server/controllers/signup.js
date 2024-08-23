@@ -6,12 +6,12 @@ const { hash } = require('../helpers/hash');
 const handleSignup = async (req, res) => {
 	try {
 		const { username, email, password } = req.body;
-	
-		if (!username) return res.status(400).json({message: 'Bad request. Username missing.'});
-		if (!email) return res.json({ message: 'Bad request. Email missing.'});
-		const emailExist = await Users.findOne({email});
-		if (emailExist) return res.status(400).json({message: `Bad request. Email ${email} is already used.`});
-		if (!password) return res.status(400).json({message: 'Bad request. Password missing.'});
+
+		if (!username) return res.status(400).json({ message: 'Bad request. Username missing.' });
+		if (!email) return res.json({ message: 'Bad request. Email missing.' });
+		const emailExist = await Users.findOne({ email });
+		if (emailExist) return res.status(400).json({ message: `Bad request. Email ${email} is already used.` });
+		if (!password) return res.status(400).json({ message: 'Bad request. Password missing.' });
 
 		const hashedPassword = await hash(password);
 
@@ -22,7 +22,7 @@ const handleSignup = async (req, res) => {
 		});
 
 		const accessToken = jwt.sign(
-			{ 
+			{
 				UserInfo: {
 					username: user.username,
 					email: user.email,
@@ -43,8 +43,8 @@ const handleSignup = async (req, res) => {
 
 		res.cookie('jwt', refreshToken, { httpOnly: true, sameSite: 'None', secure: true, maxAge: 30 * 24 * 60 * 60 * 1000 });
 		res.status(200).json({
-			accessToken, 
-			user: { username: username, email: email } 
+			accessToken,
+			user: { username: username, email: email }
 		});
 	} catch (error) {
 		console.error(error);

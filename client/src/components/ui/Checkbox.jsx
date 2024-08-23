@@ -11,13 +11,13 @@ const Checkbox = ({ name, onChecked, value = false }) => {
 		>
 			<div className={`flex justify-center items-center rounded-sm pr-1 pl-1 h-3.5 w-3.5
 				transition-all duration-300
-				${value ? 'bg-primary-highlight text-primary-highlight-foreground': 'bg-secondary'}`}
-				>
+				${value ? 'bg-primary-highlight text-primary-highlight-foreground' : 'bg-secondary'}`}
+			>
 				<motion.button
 					className='flex justify-center items-center'
-					initial={{opacity: 0}}
-					animate={{opacity: value ? 1 : 0}}
-					>
+					initial={{ opacity: 0 }}
+					animate={{ opacity: value ? 1 : 0 }}
+				>
 					<FontAwesomeIcon className='text-xs' size='xs' icon={faCheck} />
 				</motion.button>
 			</div>

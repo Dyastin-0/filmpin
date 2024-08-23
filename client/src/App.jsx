@@ -23,25 +23,25 @@ axios.defaults.withCredentials = true;
 
 function App() {
   return (
-	<>
-		<Navbar />
-    <Suspense>
-      <Routes>
-        <Route path='/' element={<Signin /> } />
-        <Route path='/sign-in' element={<Signin />} />
-        <Route path='/sign-up' element={<Signup />} />
-        <Route element={<ProtectedRoute />}>
-          <Route path='/home' element={<Home />} />
-          <Route path='/movies' element={<MovieSlug />} />
-          <Route path='/movies/search' element={<SearchSlug />} />
-          <Route path='/discover' element={<Discover />} />
-          <Route path='/discover/movies' element={<DiscoverMovieSlug />} />
-          <Route path='/tvshows' element={<TvShowSlug />} />
-          <Route path='/discover/tvshows' element={<DiscoverTvShowSlug />} />
-        </Route>
-      </Routes>
-    </Suspense>
-	</>
+    <>
+      <Navbar />
+      <Suspense>
+        <Routes>
+          <Route path='/' element={<Signin />} />
+          <Route path='/sign-in' element={<Signin />} />
+          <Route path='/sign-up' element={<Signup />} />
+          <Route element={<ProtectedRoute />}>
+            <Route path='/home' element={<Home />} />
+            <Route path='/movies' element={<MovieSlug />} />
+            <Route path='/movies/search' element={<SearchSlug />} />
+            <Route path='/discover' element={<Discover />} />
+            <Route path='/discover/movies' element={<DiscoverMovieSlug />} />
+            <Route path='/tvshows' element={<TvShowSlug />} />
+            <Route path='/discover/tvshows' element={<DiscoverTvShowSlug />} />
+          </Route>
+        </Routes>
+      </Suspense>
+    </>
   );
 }
 

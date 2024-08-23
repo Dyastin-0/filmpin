@@ -15,7 +15,7 @@ export function ModalProvider({ children }) {
   };
 
   useEffect(() => {
-		open ? document.body.style.overflow = 'hidden' : document.body.style.overflow = '';
+    open ? document.body.style.overflow = 'hidden' : document.body.style.overflow = '';
     return () => {
       document.body.style.overflow = '';
     };
@@ -26,8 +26,8 @@ export function ModalProvider({ children }) {
       {children}
       {open && ReactDOM.createPortal(
         <div className='fixed inset-0 flex justify-center items-center bg-black z-50 bg-opacity-30'
-				onClick={() => setOpen(false)}
-				>
+          onClick={() => setOpen(false)}
+        >
           {modal}
         </div>,
         document.body

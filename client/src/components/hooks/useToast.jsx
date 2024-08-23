@@ -7,28 +7,28 @@ import Button from '../ui/Button';
 const ToastContext = createContext();
 
 export const ToastProvider = ({ children }) => {
-  const [toasts, setToasts] = useState([]);
+	const [toasts, setToasts] = useState([]);
 
-  const addToast = (message, color) => {
-    const id = Date.now();
-    setToasts((prevToasts) => [
-      ...prevToasts,
-      { id, message, color }
-    ]);
+	const addToast = (message, color) => {
+		const id = Date.now();
+		setToasts((prevToasts) => [
+			...prevToasts,
+			{ id, message, color }
+		]);
 
-    setTimeout(() => {
-      setToasts((prevToasts) => prevToasts.filter(toast => toast.id !== id));
-    }, 4000);
-  };
+		setTimeout(() => {
+			setToasts((prevToasts) => prevToasts.filter(toast => toast.id !== id));
+		}, 4000);
+	};
 
-  const removeToast = (id) => {
-    setToasts((prevToasts) => prevToasts.filter(toast => toast.id !== id));
-  };
+	const removeToast = (id) => {
+		setToasts((prevToasts) => prevToasts.filter(toast => toast.id !== id));
+	};
 
-  return (
-    <ToastContext.Provider value={{ addToast }}>
-      {children}
-      <div className='fixed flex flex-col bottom-4 gap-3 right-4 z-50'>
+	return (
+		<ToastContext.Provider value={{ addToast }}>
+			{children}
+			<div className='fixed flex flex-col bottom-4 gap-3 right-4 z-50'>
 				<AnimatePresence>
 					{toasts.map(toast => (
 						<Toast
@@ -40,23 +40,23 @@ export const ToastProvider = ({ children }) => {
 						/>
 					))}
 				</AnimatePresence>
-      </div>
-    </ToastContext.Provider>
-  );
+			</div>
+		</ToastContext.Provider>
+	);
 };
 
 export const useToast = () => {
-  const { addToast } = useContext(ToastContext);
-  
-  const toastSuccess = (message) => addToast(message, 'text-success');
-  const toastError = (message) => addToast(message, 'text-error');
-  const toastInfo = (message) => addToast(message);
+	const { addToast } = useContext(ToastContext);
 
-  return { toastSuccess, toastError, toastInfo };
+	const toastSuccess = (message) => addToast(message, 'text-success');
+	const toastError = (message) => addToast(message, 'text-error');
+	const toastInfo = (message) => addToast(message);
+
+	return { toastSuccess, toastError, toastInfo };
 };
 
 const Toast = ({ message, onClose, id, color = 'text-primary-foreground' }) => {
-  return (
+	return (
 		<motion.div
 			key={id}
 			initial={{
@@ -77,5 +77,5 @@ const Toast = ({ message, onClose, id, color = 'text-primary-foreground' }) => {
 				text={<FontAwesomeIcon className='text-primary-foreground text-[0.5rem]' icon={faX} />}
 			/>
 		</motion.div>
-  );
+	);
 };

@@ -7,12 +7,12 @@ import Button from './ui/Button';
 import { Dropdown, DropdownItem } from './ui/Dropdown';
 
 const routes = [
-  {path: '/home', name: 'Home'},
-  {path: '/discover', name: 'Discover'}
+  { path: '/home', name: 'Home' },
+  { path: '/discover', name: 'Discover' }
 ];
 const authRoutes = [
-  {path: '/sign-in', name: 'Sign in'},
-  {path: '/sign-up', name: 'Sign up'}
+  { path: '/sign-in', name: 'Sign in' },
+  { path: '/sign-up', name: 'Sign up' }
 ];
 
 
@@ -42,42 +42,42 @@ const Navbar = () => {
     <div className='flex justify-between bg-primary rounded-lg w-full p-3 gap-3 drop-shadow-sm z-50'>
       <div></div>
       <div className='flex w-fit items-center gap-3'>
-      { 
-        user && routes.map((route, index) => (
-          <Button
-            key={index}
-            onClick={() => navigate(route.path)}
-            variant='link'
-            text={route.name}
-            className={`${route.path === location.pathname ? 'text-primary-highlight shadow-[var(--highlight)_0_2px_0_0]' : ''}`}
-          />
-        ))
-      }
-      {
-        !user && authRoutes.map((route, index) => (
-          <Button
-            key={index}
-            onClick={() => navigate(route.path)}
-            variant='link'
-            text={route.name}
-            className={`${route.path === location.pathname ? 'text-primary-highlight shadow-[var(--highlight)_0_2px_0_0]' : ''}`}
-          />
-        ))
-      }
-      <div className='max-w-full'>
-        { user &&
-          <SearchInput
-            onSubmit={handleSearch}
-            type='text'
-            id='search'
-            placeholder='Search'
-            onChange={(e) => setQuery(e.target.value)}
-          />
+        {
+          user && routes.map((route, index) => (
+            <Button
+              key={index}
+              onClick={() => navigate(route.path)}
+              variant='link'
+              text={route.name}
+              className={`${route.path === location.pathname ? 'text-primary-highlight shadow-[var(--highlight)_0_2px_0_0]' : ''}`}
+            />
+          ))
         }
-      </div>
+        {
+          !user && authRoutes.map((route, index) => (
+            <Button
+              key={index}
+              onClick={() => navigate(route.path)}
+              variant='link'
+              text={route.name}
+              className={`${route.path === location.pathname ? 'text-primary-highlight shadow-[var(--highlight)_0_2px_0_0]' : ''}`}
+            />
+          ))
+        }
+        <div className='max-w-full'>
+          {user &&
+            <SearchInput
+              onSubmit={handleSearch}
+              type='text'
+              id='search'
+              placeholder='Search'
+              onChange={(e) => setQuery(e.target.value)}
+            />
+          }
+        </div>
       </div>
       <div className='flex w-fit gap-3 justify-center items-center'>
-        { user &&
+        {user &&
           <Dropdown name={user?.username}>
             <DropdownItem onClick={handleSignout} >
               Sign out

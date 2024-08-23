@@ -19,7 +19,7 @@ export const testPassword = (password) => {
 		message: 'Empty'
 	};
 
-	if (!password) return result;	
+	if (!password) return result;
 
 	const hasUpperCase = /[A-Z]/.test(password);
 	const hasLowerCase = /[a-z]/.test(password);
@@ -37,25 +37,25 @@ export const testPassword = (password) => {
 				message: 'Excellent'
 			};
 		} else if ((hasUpperCase && hasLowerCase && hasNumbers) ||
-								(hasUpperCase && hasLowerCase && hasSpecialChars) ||
-								(hasLowerCase && hasNumbers && hasSpecialChars)) {
-									result = {
-										strength: 75,
-										message: 'Very good'
-									};
+			(hasUpperCase && hasLowerCase && hasSpecialChars) ||
+			(hasLowerCase && hasNumbers && hasSpecialChars)) {
+			result = {
+				strength: 75,
+				message: 'Very good'
+			};
 		} else if ((hasUpperCase && hasLowerCase) ||
-								(hasLowerCase && hasNumbers) ||
-								(hasLowerCase && hasSpecialChars)) {
-									result = {
-										strength: 50,
-										message: 'Good'
-									};
+			(hasLowerCase && hasNumbers) ||
+			(hasLowerCase && hasSpecialChars)) {
+			result = {
+				strength: 50,
+				message: 'Good'
+			};
 		}
 	} else {
 		result = {
 			strength: 10,
 			message: 'Very weak'
-		};  
+		};
 	}
 	return result;
 };

@@ -12,7 +12,7 @@ const handleAuth = async (req, res) => {
 	const matched = await compare(password, user.password);
 	if (matched) {
 		const accessToken = jwt.sign(
-			{ 
+			{
 				UserInfo: {
 					username: user.username,
 					email: user.email,
@@ -29,7 +29,7 @@ const handleAuth = async (req, res) => {
 			{ expiresIn: '1d' }
 		);
 
-		let newRefreshTokens = !cookies?.jwt ? 
+		let newRefreshTokens = !cookies?.jwt ?
 			user.refreshToken : user.refreshToken.filter(rt => rt !== cookies.jwt);
 
 		if (cookies?.jwt) {
@@ -46,7 +46,7 @@ const handleAuth = async (req, res) => {
 
 		res.cookie('jwt', newRefreshToken, { httpOnly: true, sameSite: 'None', secure: true, maxAge: 30 * 24 * 60 * 60 * 1000 });
 		res.json({
-			accessToken, 
+			accessToken,
 			user: { username: user.username, email: user.email }
 		});
 	} else {

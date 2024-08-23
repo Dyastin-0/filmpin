@@ -11,7 +11,7 @@ export const GenresDummy = () => <motion.div className='rounded-md w-1/3 h-[10px
 export const RatingDummy = () => {
   return (
     <motion.div variants={blinkOpacity} animate='blink' className='absolute bottom-4 right-4'>
-      <CircularProgress 
+      <CircularProgress
         size='40px'
         ringColor={'var(--bg-primary)'}
       >
@@ -21,17 +21,17 @@ export const RatingDummy = () => {
 }
 
 export const MovieDummy = () => {
-	return (
+  return (
     <motion.div className='flex flex-col rounded-lg drop-shadow-sm gap-1 p-4 w-[200px] h-[370px]
     text-primary-foreground bg-accent
     hover:scale-95 hover:cursor-pointer duration-300'>
- 			<ImageDummy />
+      <ImageDummy />
       <TitleDummy />
       <YearDummy />
       <GenresDummy />
       <RatingDummy />
-		</motion.div>
-	);
+    </motion.div>
+  );
 }
 
 export const LoadingMovieSection = ({ title }) => (
@@ -51,11 +51,11 @@ export const LoadingSearchResult = ({ title }) => (
   <div className="flex flex-col bg-primary rounded-lg gap-4 p-4 items-center h-full w-full">
     <h1 className="text-primary-foreground pb-4 text-sm w-full font-semibold">{title}</h1>
     <section className="w-full h-fit ml-4 mr-4 mb-4 bg-transparent overflow-hidden gap-4">
-        <div className="flex flex-wrap gap-3 justify-center w-full h-full">
-          {Array(20).fill(null).map((_, index) => (
-            <MovieDummy key={index} />
-          ))}
-        </div>
+      <div className="flex flex-wrap gap-3 justify-center w-full h-full">
+        {Array(20).fill(null).map((_, index) => (
+          <MovieDummy key={index} />
+        ))}
+      </div>
     </section>
   </div>
 );
@@ -66,11 +66,11 @@ export const LoadingDiscover = ({ title }) => (
       {title}
     </h1>
     <section className='relative w-full h-fit ml-4 mr-4 mb-4 bg-transparent overflow-hidden gap-4'>
-        <div className='flex flex-wrap justify-center gap-3 w-full h-full'>
-          {Array(20).fill(null).map((_, index) => (
-            <MovieDummy key={index} />
-          ))}
-        </div>
+      <div className='flex flex-wrap justify-center gap-3 w-full h-full'>
+        {Array(20).fill(null).map((_, index) => (
+          <MovieDummy key={index} />
+        ))}
+      </div>
     </section>
   </div>
 );

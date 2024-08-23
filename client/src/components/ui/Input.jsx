@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { motion } from 'framer-motion';
- 
+
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faSearch } from '@fortawesome/free-solid-svg-icons';
 
@@ -8,7 +8,7 @@ const Input = React.forwardRef(({ onChange, type, value, id, placeholder, requir
 	const [focus, setFocus] = useState(false);
 
 	return (
-    <div className='relative flex flex-col justify-center h-[60px]'>
+		<div className='relative flex flex-col justify-center h-[60px]'>
 			<motion.label
 				initial={{
 					y: 0,
@@ -17,20 +17,20 @@ const Input = React.forwardRef(({ onChange, type, value, id, placeholder, requir
 				}}
 				animate={
 					value || focus ?
-					{
-						y: -25,
-						x: 0,
-						fontSize: '0.65rem',
-						color: 'var(--highlight)'
-					} :
-					{
-						y: 0,
-						x: 5,
-						fontSize: '0.75rem',
-						color: 'var(--text-primary)'
-					}
+						{
+							y: -25,
+							x: 0,
+							fontSize: '0.65rem',
+							color: 'var(--highlight)'
+						} :
+						{
+							y: 0,
+							x: 5,
+							fontSize: '0.75rem',
+							color: 'var(--text-primary)'
+						}
 				}
-				transition={{duration: 0.3, ease: 'easeInOut'}}
+				transition={{ duration: 0.3, ease: 'easeInOut' }}
 				className={`absolute font-semibold`}
 				htmlFor={id}>{placeholder}
 			</motion.label>
@@ -49,7 +49,7 @@ const Input = React.forwardRef(({ onChange, type, value, id, placeholder, requir
 				onChange={(e) => onChange(e)}
 			/>
 		</div>
-  );
+	);
 });
 
 export const SearchInput = ({ onChange, type, value, id, placeholder, required, onSubmit }) => {

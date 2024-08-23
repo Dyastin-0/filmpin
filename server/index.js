@@ -10,15 +10,15 @@ const corsOptions = require('./config/corsOption');
 const { verifyJsonWebToken } = require('./middlewares/verifyJsonWebToken');
 
 mongoose.connect(process.env.MONGODB_URL)
-.then(() => console.log("Connected."))
-.catch((err) => console.log(err))
+	.then(() => console.log("Connected."))
+	.catch((err) => console.log(err))
 
 const app = express();
 
 app.use(credentials);
 app.use(cors(corsOptions));
 app.use(express.json());
-app.use(express.urlencoded({extended: false}));
+app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 
 app.use('/', require('./routes/auth'));

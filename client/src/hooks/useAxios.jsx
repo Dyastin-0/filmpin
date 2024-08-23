@@ -16,16 +16,16 @@ const useAxios = () => {
 
   api.interceptors.request.use(
     async (config) => {
-			const decodedAccessToken = jwtDecode(token);
-			const isExpired = dayjs.unix(decodedAccessToken.exp).diff(dayjs()) < 1;
-			if (!isExpired) {
-				config.headers.Authorization = `Bearer ${token}`;
-				return config;
-			}
+      const decodedAccessToken = jwtDecode(token);
+      const isExpired = dayjs.unix(decodedAccessToken.exp).diff(dayjs()) < 1;
+      if (!isExpired) {
+        config.headers.Authorization = `Bearer ${token}`;
+        return config;
+      }
 
-			const response = await axios.get('/refreshAccessToken');
-			setToken(response.data.accessToken);
-			config.headers.Authorization = `Bearer ${response.data.accessToken}`;
+      const response = await axios.get('/refreshAccessToken');
+      setToken(response.data.accessToken);
+      config.headers.Authorization = `Bearer ${response.data.accessToken}`;
 
       return config;
     },

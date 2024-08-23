@@ -98,7 +98,7 @@ const DiscoverTvShowSlug = () => {
         </h1>
       </div>
       <Selector items={genres} selectedGenres={selectedGenres} setSelectedGenres={setSelectedGenres} />
-      { isLoading ?
+      {isLoading ?
         selectedGenres.length > 0 && <LoadingDiscover title='Results' />
         :
         <div className='flex flex-col items-center gap-4'>
@@ -110,7 +110,7 @@ const DiscoverTvShowSlug = () => {
               <TvShow key={index} info={show} />
             ))}
           </div>
-          { totalPages > 1 && 
+          {totalPages > 1 &&
             <Pagination currentPage={currentPage} totalPages={totalPages} onPageChange={onPageChange} />
           }
         </div>

@@ -34,7 +34,7 @@ const MovieSlug = () => {
 			return null;
 		}
 	}
-	
+
 	const getDiscovery = async (genres, sortBy, page) => {
 		try {
 			const response = await api.get(`/movies/discover?genres=${genres}&sort_by=${sortBy}&page=${page}`);
@@ -86,7 +86,7 @@ const MovieSlug = () => {
 
 	return (
 		<div className="flex flex-col items-center bg-primary rounded-lg gap-4 p-4 h-full w-full">
-			{ !isLoading ?
+			{!isLoading ?
 				<>
 					<div className='w-full h-[300px] rounded-lg overflow-hidden'>
 						<img

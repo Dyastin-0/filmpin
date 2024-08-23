@@ -50,7 +50,7 @@ const Signup = () => {
     if (!isPasswordmatched) return toastError('Passwords do not match.');
 
     setSigningUp(true);
-    
+
     try {
       const { data } = await axios.post('/sign-up', {
         username, email, password,
@@ -75,7 +75,7 @@ const Signup = () => {
         onSubmit={submit}
       >
         <h2 className='w-full text-center pb-4 text-lg font-bold'>Create your account</h2>
-        
+
         <Input
           ref={usernameRef}
           placeholder='Username'

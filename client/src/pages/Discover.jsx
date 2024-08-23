@@ -1,11 +1,13 @@
-import  Button  from '../components/ui/Button';
+import Button from '../components/ui/Button';
 import { useNavigate } from 'react-router-dom';
 import { useEffect, useState } from 'react';
 import { AnimatePresence, motion } from 'framer-motion';
 import useAxios from '../hooks/useAxios';
+import { useLoading } from '../components/hooks/useLoading';
 
 const Discover = () => {
 	const api = useAxios();
+	const { setLoading } = useLoading();
 	const navigate = useNavigate();
 	const [movies, setMovies] = useState([]);
 	const [shows, setShows] = useState([]);
@@ -22,12 +24,18 @@ const Discover = () => {
 	}
 
 	useEffect(() => {
-		getMostVoted('tvshows').then((response) => {
-			setShows(response.results);
-		})
-		getMostVoted('movies').then((response) => {
-			setMovies(response.results);
-		})
+		const fetchMostVoted = async () => {
+			setLoading(true);
+			await getMostVoted('tvshows').then((response) => {
+				setShows(response.results);
+			});
+
+			await getMostVoted('movies').then((response) => {
+				setMovies(response.results);
+			});
+			setLoading(false);
+		}
+		fetchMostVoted();
 	}, []);
 
 	useEffect(() => {
@@ -45,7 +53,7 @@ const Discover = () => {
 		: shows[imageIndex]?.backdrop_path;
 
 	return (
-<div className='flex flex-col bg-primary rounded-lg gap-4 p-4 items-center h-full w-full'>
+		<div className='flex flex-col bg-primary rounded-lg gap-4 p-4 items-center h-full w-full'>
 			<h1 className='text-primary-foreground text-md font-bold'> Discover movies and TV shows </h1>
 			<div className='relative flex h-full w-full justify-center rounded-lg bg-accent gap-4'>
 				<AnimatePresence>

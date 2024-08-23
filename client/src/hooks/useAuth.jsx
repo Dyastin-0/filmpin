@@ -33,10 +33,10 @@ export function AuthProvider({ children }) {
     setToken,
     signingIn
   }
-  
+
   return (
     <AuthContext.Provider value={value}>
-      { children }
+      {children}
     </AuthContext.Provider>
   );
 }

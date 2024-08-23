@@ -34,7 +34,7 @@ const TvShowSlug = () => {
 			return null;
 		}
 	}
-	
+
 	const getVideos = async (id) => {
 		try {
 			const videos = await api.get(`/tvshows/videos?show_id=${id}`);
@@ -43,7 +43,7 @@ const TvShowSlug = () => {
 			console.error(`Failed to get videos for show with id '${id}'`, error);
 		}
 	}
-	
+
 	const getDiscovery = async (genres, sortBy, page) => {
 		try {
 			const response = await api.get(`/tvshows/discover?genres=${genres}&sort_by=${sortBy}&page=${page}`);
@@ -95,7 +95,7 @@ const TvShowSlug = () => {
 
 	return (
 		<div className="flex flex-col items-center bg-primary rounded-lg gap-4 p-4 h-full w-full">
-			{ !isLoading ?
+			{!isLoading ?
 				<>
 					<div className='w-full h-[300px] rounded-lg overflow-hidden'>
 						<img

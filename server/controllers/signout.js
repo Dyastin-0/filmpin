@@ -12,7 +12,7 @@ const handleSignout = async (req, res) => {
 		return res.sendStatus(204);
 	}
 
-	await Users.updateOne({ refreshToken }, { $set: {refreshToken: user.refreshToken.filter(rt => rt !== refreshToken)} });
+	await Users.updateOne({ refreshToken }, { $set: { refreshToken: user.refreshToken.filter(rt => rt !== refreshToken) } });
 	res.clearCookie('jwt', { httpOnly: true, sameSite: 'None', secure: true });
 	res.sendStatus(204);
 }
