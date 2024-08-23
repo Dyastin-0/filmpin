@@ -26,7 +26,7 @@ const handleGetDetails = async (req, res) => {
 const handleGetCredits = async (req, res) => {
 	const { show_id } = req.query;
 	try {
-		const response = await api.get(`movie/${show_id}/credits?language=en-US`);
+		const response = await api.get(`tv/${show_id}/credits?language=en-US`);
 		res.json(response.data);
 	} catch (error) {
 		console.error('Failed to fetch credits.', error);
@@ -37,7 +37,7 @@ const handleGetCredits = async (req, res) => {
 const handleSearch = async (req, res) => {
 	const { query, page } = req.query;
 	try {
-		const response = await api.get(`search?query=${query}&include_adult=false&video=false&language=en-US&${page}`);
+		const response = await api.get(`search/tv?query=${query}&include_adult=false&video=false&language=en-US&${page}`);
 		res.json(response.data);
 	} catch (error) {
 		console.error('Failed to search.', error);
@@ -62,7 +62,7 @@ const handleDiscover = async (req, res) => {
 	const genreKeys = genresArray?.map(genre => tvGenres[genre]);
 	const joinedKeys = genreKeys?.join(',');
 	try {
-		const response = await api.get(`/discover/tv?include_adult=false&language=en-US$&with_genres=${joinedKeys}&sort_by=${sort_by}.desc&page=${page}`);
+		const response = await api.get(`discover/tv?include_adult=false&language=en-US$&with_genres=${joinedKeys}&sort_by=${sort_by}.desc&page=${page}`);
 		res.json(response.data);
 	} catch (error) {
 		console.error('Failed to get discover.', error);

@@ -77,3 +77,14 @@ body {
 .swiper-slide {
   width: auto;
 }
+
+.swiper-button-next,
+.swiper-button-prev {
+  color: var(--highlight);
+}
+
+
+.swiper-button-next::after,
+.swiper-button-prev::after {
+  font-size: 2rem;
+}
