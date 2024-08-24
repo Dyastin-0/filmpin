@@ -10,12 +10,12 @@ const Selector = ({ items, selectedGenres, setSelectedGenres }) => {
   };
 
   return (
-    <div className='flex flex-wrap justify-center gap-3'>
+    <div className='flex flex-wrap justify-center gap-2'>
       {items.map((item, index) => (
         <Checkbox
           key={index}
           name={item}
-          value={selectedGenres.includes(item)}
+          value={selectedGenres?.includes(item)}
           onChecked={() => handleCheckboxChange(item)}
         />
       ))}

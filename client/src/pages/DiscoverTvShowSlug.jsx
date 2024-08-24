@@ -6,6 +6,7 @@ import { LoadingDiscover } from '../components/loaders/MovieLoaders';
 import { useLoading } from '../components/hooks/useLoading';
 import TvShow from '../components/TvShow';
 import useAxios from '../hooks/useAxios';
+import Accordion from '../components/ui/Accordion';
 
 const genres = [
   'action and adventure', 'animation', 'comedy', 'crime',
@@ -37,10 +38,11 @@ const DiscoverTvShowSlug = () => {
 
   useEffect(() => {
     document.title = 'Discover';
+    handleCreate();
   }, []);
 
   useEffect(() => {
-    const genresFromParams = searchParams.get('genres')?.split('_') || [];
+    const genresFromParams = searchParams.get('genres') !== '' ? searchParams.get('genres')?.split('_') : [];
     const pageFromParams = parseInt(searchParams.get('page')) || 1;
 
     if (JSON.stringify(selectedGenres) !== JSON.stringify(genresFromParams)) {
@@ -51,7 +53,7 @@ const DiscoverTvShowSlug = () => {
   }, [searchParams]);
 
   useEffect(() => {
-    if (selectedGenres.length > 0) {
+    if (selectedGenres?.length > 0) {
       setCurrentPage(1);
       setIsLoading(true);
       setLoading(true);
@@ -97,14 +99,13 @@ const DiscoverTvShowSlug = () => {
           Discover TV shows
         </h1>
       </div>
-      <Selector items={genres} selectedGenres={selectedGenres} setSelectedGenres={setSelectedGenres} />
+      <Accordion title={<div className='gap-2'><FontAwesomeIcon icon={faFilter} /> Filter </div>}>
+        <Selector items={genres} selectedGenres={selectedGenres} setSelectedGenres={setSelectedGenres} />
+      </Accordion>
       {isLoading ?
-        selectedGenres.length > 0 && <LoadingDiscover title='Results' />
+        selectedGenres && <LoadingDiscover />
         :
         <div className='flex flex-col items-center gap-4'>
-          <h1 className='w-full text-primary-foreground text-sm text-start font-semibold'>
-            Results
-          </h1>
           <div className='flex flex-wrap justify-center gap-3 w-full h-full'>
             {results[currentPage]?.map((show, index) => (
               <TvShow key={index} info={show} />
