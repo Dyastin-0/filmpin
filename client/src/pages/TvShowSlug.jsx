@@ -153,6 +153,12 @@ const TvShowSlug = () => {
 			}
 			<motion.div
 				initial={{ marginTop: -120 }}
+				className='flex flex-col bg-accent rounded-lg gap-4 p-4 w-[90%]'
+			>
+				<h1 className='text-primary-foreground pb-4 text-start text-sm font-semibold'>Seasons</h1>
+
+			</motion.div>
+			<motion.div
 				className='flex flex-col bg-accent rounded-lg gap-4 p-4 items-center w-[90%]'
 			>
 				{similarShows ?

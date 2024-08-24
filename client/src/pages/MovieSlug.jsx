@@ -136,7 +136,7 @@ const MovieSlug = () => {
 									movie?.genres.map((genre, index) => (
 										<Link
 											key={index}
-											to={`/movies/discover?genres=${genre.name.toLowerCase()}&sort_by=vote_count&page=1`}
+											to={`/discover/movies?genres=${genre.name.toLowerCase()}&sort_by=vote_count&page=1`}
 											className='underline underline-offset-2 text-primary-highlight text-xs'
 										>
 											{`${index === movie?.genres.length - 1 ? genre.name : `${genre.name},`}`}
