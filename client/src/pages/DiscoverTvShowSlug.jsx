@@ -7,6 +7,8 @@ import { useLoading } from '../components/hooks/useLoading';
 import TvShow from '../components/TvShow';
 import useAxios from '../hooks/useAxios';
 import Accordion from '../components/ui/Accordion';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faFilter } from '@fortawesome/free-solid-svg-icons';
 
 const genres = [
   'action and adventure', 'animation', 'comedy', 'crime',
