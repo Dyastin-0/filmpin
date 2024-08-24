@@ -70,11 +70,24 @@ const handleDiscover = async (req, res) => {
 	}
 }
 
+const handleGetSeason = async (req, res) => {
+	const { tvshow_id, season_number } = req.query;
+
+	try {
+		const response = await api.get(`tv/${tvshow_id}/season/${season_number}?language=en-US`);
+		return res.json(response.data);
+	} catch (error) {
+		console.log('Failed fetching seasons.', error);
+		res.sendStatus(500);
+	}
+}
+
 module.exports = {
 	handleGetCategory,
 	handleGetDetails,
 	handleGetCredits,
 	handleDiscover,
 	handleSearch,
-	handleGetVideo
+	handleGetVideo,
+	handleGetSeason
 }

@@ -53,6 +53,16 @@ const TvShowSlug = () => {
 		}
 	};
 
+	const getSeasons = async (showId ,numberOfSeasons) => {
+		try {
+			const response = await api.get(`/tvshows/season?tvshow_id=${showId}&season_number=${numberOfSeasons}`);
+			console.log(response.data);
+			return response.data;
+		} catch (error) {
+			console.log('Failed to get seasons', error);
+		}
+	} 
+
 	useEffect(() => {
 		if (show) {
 			setIsLoading(true);
@@ -63,6 +73,7 @@ const TvShowSlug = () => {
 				setIsLoading(false);
 				setLoading(false);
 			});
+			getSeasons(show.id ,show.number_of_seasons);
 		}
 	}, [show]);
 

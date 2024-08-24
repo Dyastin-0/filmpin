@@ -8,7 +8,8 @@ const {
 	handleGetCredits,
 	handleSearch,
 	handleGetVideo,
-	handleDiscover
+	handleDiscover,
+	handleGetSeason
 } = require('../../controllers/api/tvshows');
 
 const cacheService = require('express-api-cache');
@@ -33,5 +34,8 @@ router.route('/videos')
 
 router.route('/discover')
 	.get(cache('10 minutes'), handleDiscover);
+
+router.route('/season')
+	.get(cache('10 minutes'), handleGetSeason);
 
 module.exports = router;
