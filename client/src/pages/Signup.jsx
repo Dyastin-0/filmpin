@@ -64,7 +64,7 @@ const Signup = () => {
       setCredentials({ username: '', email: '', password: '' });
       setConfirmedPassword('');
       toastSuccess('Sign up success! Check your email for the verification link.');
-      navigate('/account/verify', {state: { from: '/sign-up' }});
+      navigate('/sign-in', {state: { from: '/sign-up' }});
     } catch (error) {
       toastError('Email already used.');
     } finally {
