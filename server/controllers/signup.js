@@ -16,14 +16,14 @@ const handleSignup = async (req, res) => {
 
 		const hashedPassword = await hash(password);
 
-		const user = await Users.create({
+		await Users.create({
 			username,
 			email,
 			password: hashedPassword
 		});
 
 		const verificationToken = jwt.sign(
-			{ username: username, email: email },
+			{ email: email },
 			process.env.EMAIL_TOKEN_SECRET,
 			{ expiresIn: '5m' }
 		);

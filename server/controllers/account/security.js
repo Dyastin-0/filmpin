@@ -9,11 +9,11 @@ const handleSendVerification = async (req, res) => {
 
 	try {
 		const user = await Users.findOne({ email: email });
-		if (!user) return res.status(403).json({message: 'Account not found.'});
-		if (user.verified) return res.status(200).json({message: 'Account is already verified.'});
+		if (!user) return res.status(403).json({ message: 'Account not found.' });
+		if (user.verified) return res.status(200).json({ message: 'Account is already verified.' });
 
 		const verificationToken = jwt.sign(
-			{ username: user.username, email: email },
+			{ email: email },
 			process.env.EMAIL_TOKEN_SECRET,
 			{ expiresIn: '5m' }
 		);
@@ -36,15 +36,34 @@ const handleVerifyEmail = async (req, res) => {
 
 	try {
 		const user = Users.findOne({ verificationToken: verificationToken });
-		if (!user) return res.status(404).send(messageTemplate('Verification', 'Account not found.'));
-		
+		if (!user)
+			return res.status(404).send(
+				messageTemplate(
+					'Verification',
+					'Account not found.'
+				)
+			);
+
 		jwt.verify(
 			verificationToken,
 			process.env.EMAIL_TOKEN_SECRET,
 			async (error, decoded) => {
-				if (error) return res.status(404).send(messageTemplate('Verification', 'Token expired.', 'filmpin.onrender.com/account/verify', 'Send another verification link'));
-				await Users.updateOne({ email: decoded.email }, { $set: {verificationToken: null, verified: true} });
-				res.status(200).send(messageTemplate('Filmpin', 'Your account has been successfully verified!'));
+				if (error)
+					return res.status(404).send(
+						messageTemplate(
+							'Verification',
+							'Token expired.',
+							'filmpin.onrender.com/account/verify',
+							'Send another verification link'
+						)
+					);
+				await Users.updateOne({ email: decoded.email }, { $set: { verificationToken: null, verified: true } });
+				res.status(200).send(
+					messageTemplate(
+						'Filmpin',
+						'Your account has been successfully verified!'
+					)
+				);
 			}
 		);
 
@@ -52,7 +71,7 @@ const handleVerifyEmail = async (req, res) => {
 		console.error('Failed to verify email.', error);
 		res.sendStatus(500);
 	}
- }
+}
 
 module.exports = {
 	handleVerifyEmail,
