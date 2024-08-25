@@ -45,7 +45,8 @@ const Signin = () => {
       setCredentials({ email: '', password: '' });
       navigate(previousPath, { replace: true });
     } catch (error) {
-      toastError('Invalid credentials.');
+      const errorMessage = error.response.data.message;
+      toastError(`${errorMessage}`);
     } finally {
       setSigningIn(false);
     }
@@ -75,7 +76,7 @@ const Signin = () => {
             setCredentials({ ...credentials, email: e.target.value })
           }
         />
-        <div className="relative">
+        <div className='relative'>
           <Input
             required={true}
             type={showPassword ? 'text' : 'password'}

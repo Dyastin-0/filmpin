@@ -17,6 +17,7 @@ const DiscoverTvShowSlug = lazy(() => import('./pages/DiscoverTvShowSlug'));
 const MovieSlug = lazy(() => import('./pages/MovieSlug'));
 const TvShowSlug = lazy(() => import('./pages/TvShowSlug'))
 const SearchSlug = lazy(() => import('./pages/SearchSlug'));
+const Verify = lazy(() => import('./pages/Verify'));
 
 axios.defaults.baseURL = import.meta.env.VITE_BASE_API_URL;
 axios.defaults.withCredentials = true;
@@ -30,6 +31,7 @@ function App() {
           <Route path='/' element={<Signin />} />
           <Route path='/sign-in' element={<Signin />} />
           <Route path='/sign-up' element={<Signup />} />
+          <Route path='/account/verify' element={<Verify />} />
           <Route element={<ProtectedRoute />}>
             <Route path='/home' element={<Home />} />
             <Route path='/movies' element={<MovieSlug />} />

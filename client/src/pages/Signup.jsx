@@ -11,7 +11,7 @@ import { useToast } from '../components/hooks/useToast';
 
 const Signup = () => {
   const navigate = useNavigate();
-  const { setToken, setUser } = useAuth();
+  const { setToken, setUser, user } = useAuth();
   const usernameRef = useRef(null);
   const { toastError, toastSuccess } = useToast();
 
@@ -26,6 +26,10 @@ const Signup = () => {
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const [signingUp, setSigningUp] = useState(false);
+
+  useEffect(() => {
+    user && navigate('/home');
+  }, [user]);
 
   useEffect(() => {
     setIsPasswordMatched(confirmedPassword === credentials.password);
@@ -59,8 +63,8 @@ const Signup = () => {
       setUser(data.user);
       setCredentials({ username: '', email: '', password: '' });
       setConfirmedPassword('');
-      toastSuccess('Sign up success!');
-      navigate('/home');
+      toastSuccess('Sign up success! Check your email for the verification link.');
+      navigate('/account/verify', {state: { from: '/sign-up' }});
     } catch (error) {
       toastError('Email already used.');
     } finally {

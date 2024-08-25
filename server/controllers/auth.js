@@ -8,7 +8,8 @@ const handleAuth = async (req, res) => {
 	if (!email) return res.status(400).json({ error: 'Bad request. Missing input: Email.' });
 	if (!password || password.length < 6) return res.status(400).json({ message: 'Bad request. Invalid input: Password.' });
 	const user = await Users.findOne({ email });
-	if (!user) return res.status(404).json({ message: 'User not found.' });
+	if (!user) return res.status(404).json({ message: 'Account not found.' });
+	if (!user.verified) return res.status(403).json({message: 'Verify your account.'});
 	const matched = await compare(password, user.password);
 	if (matched) {
 		const accessToken = jwt.sign(

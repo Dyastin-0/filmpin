@@ -12,6 +12,13 @@ const userSchema = new Schema({
 	password: {
 		type: String
 	},
+	verificationToken : {
+		type: String
+	},
+	verified: {
+		type: Boolean,
+		default: false
+	},
 	refreshToken: {
 		type: [String]
 	},

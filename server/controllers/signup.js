@@ -1,4 +1,5 @@
 const Users = require('../models/user');
+const { sendTextEmail } = require('../helpers/email');
 const jwt = require('jsonwebtoken');
 const dotenv = require('dotenv').config();
 const { hash } = require('../helpers/hash');
@@ -21,31 +22,19 @@ const handleSignup = async (req, res) => {
 			password: hashedPassword
 		});
 
-		const accessToken = jwt.sign(
-			{
-				UserInfo: {
-					username: user.username,
-					email: user.email,
-					roles: user.roles
-				}
-			},
-			process.env.ACCESS_TOKEN_SECRET,
-			{ expiresIn: '15m' }
-		);
-
-		const refreshToken = jwt.sign(
+		const verificationToken = jwt.sign(
 			{ username: username, email: email },
-			process.env.REFRESH_TOKEN_SECRET,
-			{ expiresIn: '1d' }
+			process.env.EMAIL_TOKEN_SECRET,
+			{ expiresIn: '5m' }
 		);
 
-		await Users.updateOne({ email }, { $set: { refreshToken: refreshToken } })
+		sendTextEmail(
+			email,
+			'Verify your Filmpin account.',
+			`filmpin-api.onrender.com/verify?verificationToken=${verificationToken}`,
+		);
 
-		res.cookie('jwt', refreshToken, { httpOnly: true, sameSite: 'None', secure: true, maxAge: 30 * 24 * 60 * 60 * 1000 });
-		res.status(200).json({
-			accessToken,
-			user: { username: username, email: email }
-		});
+		res.sendStatus(200);
 	} catch (error) {
 		console.error(error);
 		throw error;
