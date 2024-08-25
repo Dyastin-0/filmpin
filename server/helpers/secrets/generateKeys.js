@@ -1,9 +1,9 @@
 const fs = require('fs');
 const path = require('path');
 const crypto = require('crypto');
-const getSecret = require('../helpers/getSecret');
+const getSecret = require('./getSecret');
 
-const envFilePath = path.join(__dirname, '../.env');
+const envFilePath = path.join(__dirname, '../../.env');
 
 const generateKeys = async () => {
   try {
