@@ -13,11 +13,15 @@ const generateKeys = async () => {
 
     const dbUrl = await getSecret('MDB_ACCESS_URI');
     const tmDbKey = await getSecret('TMDB_ACCESS_KEY');
+    const serverEmail = await getSecret('SERVER_EMAIL');
+    const serverEmailPassword = await getSecret('SERVER_EMAIL_PASSWORD');
 
     // Create the new variables as strings
     const newVariables = [
       `MONGODB_URL=${dbUrl}`,
       `TMBD_ACCESS_KEY=${tmDbKey}`,
+      `SERVER_EMAIL=${serverEmail}`,
+      `SERVER_EMAIL_PASSWORD=${serverEmailPassword}`,
       `ACCESS_TOKEN_SECRET=${accessKey}`,
       `REFRESH_TOKEN_SECRET=${refreshKey}`,
       `EMAIL_TOKEN_SECRET=${emailKey}`
