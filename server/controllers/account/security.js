@@ -1,8 +1,9 @@
 const Users = require('../../models/user');
 const dotenv = require('dotenv');
 const jwt = require('jsonwebtoken');
-const { sendTextEmail } = require('../../helpers/email');
-const { messageTemplate } = require('../../templates/email/auth');
+const { sendTextEmail, sendHtmlEmail } = require('../../helpers/email');
+const { messageTemplate } = require('../../templates/auth');
+const { emailTemplate } = require('../../templates/email');
 
 const handleSendVerification = async (req, res) => {
 	const { email } = req.query;
@@ -18,10 +19,15 @@ const handleSendVerification = async (req, res) => {
 			{ expiresIn: '5m' }
 		);
 
-		sendTextEmail(
+		sendHtmlEmail(
 			email,
-			'Verify your Filmpin account.',
-			`filmpin-api.onrender.com/verify?verificationToken=${verificationToken}`,
+			'Verify your Filmpin account',
+			emailTemplate(
+				'Verify your account',
+				'To proceed with accessing our app, please click the link below. You may disregard this email if you did not request for it.',
+				`filmpin-api.onrender.com/verify?verificationToken=${verificationToken}`,
+				'Verify your account'
+			)
 		);
 
 		res.sendStatus(200);

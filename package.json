@@ -4,7 +4,7 @@
   "description": "scripts",
   "scripts": {
     "init": "cd server && npm i && cd .. && cd client && npm i",
-    "devServer": "cd server && node ./helpers/initializeEnvironment.js && node ./helpers/generateKeys.js && npm run dev",
+    "devServer": "cd server && npm run dev",
     "devClient": "cd client && npm run dev"
   },
   "author": "",
