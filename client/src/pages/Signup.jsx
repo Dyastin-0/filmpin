@@ -1,5 +1,5 @@
 import { useState, useEffect, useRef } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import { useAuth } from '../hooks/useAuth';
 import { testEmail, testPassword, testUsername } from '../helpers/regex';
@@ -133,8 +133,11 @@ const Signup = () => {
             confirmedPassword && <ShowPassword showPassword={showConfirmPassword} setShowPassword={setShowConfirmPassword} />
           }
         </div>
-
         <Button type='submit' disabled={signingUp} text={`${signingUp ? 'Signing up...' : 'Sign up'}`} />
+        <Link
+          to={`/sign-in`}
+          className='underline underline-offset-2 text-center pt-1 pb-1 outline-none text-primary-highlight text-xs'
+        > Already have an account? click here. </Link>
       </form>
     </div>
   );

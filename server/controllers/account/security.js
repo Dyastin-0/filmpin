@@ -3,6 +3,7 @@ const dotenv = require('dotenv');
 const jwt = require('jsonwebtoken');
 const { sendHtmlEmail } = require('../../helpers/email');
 const { emailTemplate } = require('../../templates/email');
+const { hash } = require('../../helpers/hash');
 
 const handleSendVerification = async (req, res) => {
 	const { email } = req.query;
@@ -12,12 +13,27 @@ const handleSendVerification = async (req, res) => {
 		if (!user) return res.status(403).json({ message: 'Account not found.' });
 		if (user.verified) return res.status(400).json({ message: 'Account is already verified.' });
 
+		let hasActiveToken = false;
+		if (user.verificationToken) {
+			jwt.verify(
+				user.verificationToken,
+				process.env.EMAIL_TOKEN_SECRET,
+				(error, _) => {
+					if (error) return;
+					hasActiveToken = true;
+				}
+			);
+		}
+
+		if (hasActiveToken)
+			return res.status(400).json({message: `You have a valid verification token, check your email.`});
+
 		const verificationToken = jwt.sign(
 			{ email: email },
 			process.env.EMAIL_TOKEN_SECRET,
 			{ expiresIn: '5m' }
 		);
-		
+
 		await Users.updateOne({ email: email }, { $set: { verificationToken: verificationToken } });
 
 		sendHtmlEmail(
@@ -39,8 +55,8 @@ const handleSendVerification = async (req, res) => {
 
 const handleVerifyEmail = async (req, res) => {
 	const { verificationToken } = req.query;
-	console.log()
-	if (!verificationToken) return res.status(400).json({message: 'Missing verification token.'});
+
+	if (!verificationToken) return res.status(400).json({ message: 'Missing verification token.' });
 
 	try {
 		jwt.verify(
@@ -50,13 +66,13 @@ const handleVerifyEmail = async (req, res) => {
 				if (error)
 					return res.status(404).json({ message: 'Verification token is expired.' });
 
-				const user = await Users.findOne({ email: decoded.email,  verificationToken: verificationToken });
+				const user = await Users.findOne({ email: decoded.email, verificationToken: verificationToken });
 
 				if (!user)
 					return res.status(404).json({ message: 'Account not found.' });
-		
+
 				if (user.verified)
-					return res.status(200).json({ message: 'Your account is already verified.' });
+					return res.status(400).json({ message: 'Your account is already verified.' });
 
 				await Users.updateOne({ email: decoded.email }, { $set: { verificationToken: null, verified: true } });
 				res.status(200).json({ message: 'Your account has been sucessfully verified!' });
@@ -70,11 +86,91 @@ const handleVerifyEmail = async (req, res) => {
 }
 
 const handleRecoverAccount = async (req, res) => {
+	const { recoveryToken } = req.query;
+	const { password } = req.body;
 
+	if (!recoveryToken) return res.status(400).json({ message: 'Missing verification token.' });
+	if (!password) return res.status(400).json({ message: 'Missing password.' });
+
+	try {
+		jwt.verify(
+			recoveryToken,
+			process.env.EMAIL_TOKEN_SECRET,
+			async (error, decoded) => {
+				if (error)
+					return res.status(404).json({ message: 'Recovery token is expired.' });
+
+				const user = await Users.findOne({ email: decoded.email, recoveryToken: recoveryToken });
+
+				if (!user)
+					return res.status(404).json({ message: 'Account not found.' });
+
+				const hashedPassword = await hash(password);
+
+				await Users.updateOne({ email: decoded.email }, { $set: { recoveryToken: null, password: hashedPassword } });
+				res.status(200).json({ message: 'Your account has been sucessfully recovered!' });
+			}
+		);
+	} catch (error) {
+		console.error('Failed to recover account.', error);
+		res.sendStatus(500);
+	}
+}
+
+const handleSendRecovery = async (req, res) => {
+	const { email } = req.query;
+
+	if (!email) return res.status(400).json({ message: 'Missing email.' });
+
+	try {
+		const user = await Users.findOne({ email: email });
+
+		if (!user) return res.status(404).json({ message: 'Account not found.' });
+
+		let hasActiveToken = false;
+		if (user.recoveryToken) {
+			jwt.verify(
+				user.recoveryToken,
+				process.env.EMAIL_TOKEN_SECRET,
+				(error, _) => {
+					if (error) return;
+					hasActiveToken = true;
+				}
+			);
+		}
+
+		if (hasActiveToken)
+			return res.status(400).json({message: `You have a valid recovery token, check your email for the link.`});
+
+		const recoveryToken = jwt.sign(
+			{ email: email },
+			process.env.EMAIL_TOKEN_SECRET,
+			{ expiresIn: '5m' }
+		);
+
+		await Users.updateOne({ email: email }, { $set: { recoveryToken: recoveryToken } });
+
+		sendHtmlEmail(
+			email,
+			'Recovery',
+			emailTemplate(
+				'Recover your account',
+				'To recover your account, click the link below. You may disregard this email if you did not request for it.',
+				`filmpin.onrender.com/account/recover?recoveryToken=${recoveryToken}`,
+				'Recover your account'
+			)
+		);
+
+		res.status(200).json({ message: 'Recovery link sent.' });
+	} catch (error) {
+		console.error('Failed to send account recovery link.', error);
+		res.sendStatus(500);
+	}
 }
 
 module.exports = {
 	handleVerifyEmail,
 	handleSendVerification,
-	handleRecoverAccount
+	handleRecoverAccount,
+	handleSendRecovery
 }

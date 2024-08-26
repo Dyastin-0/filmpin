@@ -16,7 +16,7 @@ const Verification = () => {
 			}
 
 			try {
-				const response = await axios.get(`/email/verify?verificationToken=${verificationToken}`);
+				const response = await axios.post(`/email/verify?verificationToken=${verificationToken}`);
 				setMessage(response.data.message);
 			} catch (error) {
 				console.log('test');

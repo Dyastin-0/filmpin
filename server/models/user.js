@@ -12,7 +12,10 @@ const userSchema = new Schema({
 	password: {
 		type: String
 	},
-	verificationToken : {
+	verificationToken: {
+		type: String
+	},
+	recoveryToken: {
 		type: String
 	},
 	verified: {

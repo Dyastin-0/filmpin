@@ -92,18 +92,18 @@ const Signin = () => {
           }
         </div>
         <Link
-          to={`/account/recovery`}
+          to={`/account/recover`}
           className='underline underline-offset-2 pb-2 outline-none text-primary-highlight text-xs'
         > Forgot password? </Link>
         <Button type='submit' disabled={signingIn} text={`${signingIn ? 'Signing in...' : 'Sign in'}`} />
         <Link
-          to={`/sign-up`}
-          className='underline underline-offset-2 text-center pt-1 pb-1 outline-none text-primary-highlight text-xs'
-        > Don't have an account? click here. </Link>
-        <Link
           to={`/account/verify`}
           className='underline underline-offset-2 text-center pt-1 pb-1 outline-none text-primary-highlight text-xs'
-        > Verify your account. </Link>
+        > Verify your account </Link>
+        <Link
+          to={`/sign-up`}
+          className='underline underline-offset-2 text-center pt-1 pb-1 outline-none text-primary-highlight text-xs'
+        > Don't have an account? click here </Link>
       </form>
     </div>
   );
