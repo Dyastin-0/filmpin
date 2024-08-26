@@ -61,7 +61,7 @@ const messageTemplate = (title, message, link, linkTitle) => {
 					max-width: 250px;
 					margin: 1rem;
 					padding: 1rem;
-					gap: 1rem;
+					gap: 0.5rem;
 					background-color: var(--accent);
 					border-radius: 10px;
 					box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.02);
@@ -69,7 +69,13 @@ const messageTemplate = (title, message, link, linkTitle) => {
 				}
 
 				h1 {
-					font-size: 18px;
+					font-size: 26px;
+					margin: 0;
+					color: var(--text-primary);
+				}
+
+				h2 {
+					font-size: 14px;
 					margin: 0;
 					color: var(--text-primary);
 				}
@@ -92,7 +98,11 @@ const messageTemplate = (title, message, link, linkTitle) => {
 		<body>
 			<div class="parent">
 				<div class="container">
-					<h1>${title}</h1>
+					<div style="display: flex; justify-content: center; font-weight: 600;">
+						<h1 style="display: inline; color: #508C9B; margin: 0;">Film</h1>
+						<h1 style="display: inline; color: #686D76; margin: 0;">pin</h1>
+					</div>
+					<h2>${title}</h2>
 					<p>${message}</p>
 					${link ? `<a href='${link}'>${linkTitle}</a>` : ''}
 				</div>

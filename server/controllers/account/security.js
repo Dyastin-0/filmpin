@@ -1,7 +1,7 @@
 const Users = require('../../models/user');
 const dotenv = require('dotenv');
 const jwt = require('jsonwebtoken');
-const { sendTextEmail, sendHtmlEmail } = require('../../helpers/email');
+const { sendHtmlEmail } = require('../../helpers/email');
 const { messageTemplate } = require('../../templates/auth');
 const { emailTemplate } = require('../../templates/email');
 
@@ -11,7 +11,7 @@ const handleSendVerification = async (req, res) => {
 	try {
 		const user = await Users.findOne({ email: email });
 		if (!user) return res.status(403).json({ message: 'Account not found.' });
-		if (user.verified) return res.status(200).json({ message: 'Account is already verified.' });
+		if (user.verified) return res.status(400).json({ message: 'Account is already verified.' });
 
 		const verificationToken = jwt.sign(
 			{ email: email },
@@ -21,7 +21,7 @@ const handleSendVerification = async (req, res) => {
 
 		sendHtmlEmail(
 			email,
-			'Verify your Filmpin account',
+			'Verification',
 			emailTemplate(
 				'Verify your account',
 				'To proceed with accessing our app, please click the link below. You may disregard this email if you did not request for it.',
@@ -41,15 +41,6 @@ const handleVerifyEmail = async (req, res) => {
 	if (!verificationToken) return res.status(400).send(messageTemplate('Verification', 'Missing verification token.'));
 
 	try {
-		const user = Users.findOne({ verificationToken: verificationToken });
-		if (!user)
-			return res.status(404).send(
-				messageTemplate(
-					'Verification',
-					'Account not found.'
-				)
-			);
-
 		jwt.verify(
 			verificationToken,
 			process.env.EMAIL_TOKEN_SECRET,
@@ -63,10 +54,29 @@ const handleVerifyEmail = async (req, res) => {
 							'Send another verification link'
 						)
 					);
+
+				const user = await Users.findOne({ email: decoded.email,  verificationToken: verificationToken });
+
+				if (!user)
+					return res.status(404).send(
+						messageTemplate(
+							'Verification',
+							'Account not found.'
+						)
+					);
+		
+				if (user.verified)
+					return res.status(200).send(
+						messageTemplate(
+							'Verification',
+							'Your account is already verified.'
+						)
+					);
+
 				await Users.updateOne({ email: decoded.email }, { $set: { verificationToken: null, verified: true } });
 				res.status(200).send(
 					messageTemplate(
-						'Filmpin',
+						'Verification',
 						'Your account has been successfully verified!'
 					)
 				);
