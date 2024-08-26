@@ -19,6 +19,8 @@ const handleSendVerification = async (req, res) => {
 			{ expiresIn: '5m' }
 		);
 
+		Users.updateOne({ email: email }, { $set: { verificationToken: verificationToken } });
+
 		sendHtmlEmail(
 			email,
 			'Verification',
