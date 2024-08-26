@@ -28,6 +28,8 @@ const handleSignup = async (req, res) => {
 			{ expiresIn: '5m' }
 		);
 
+		await Users.updateOne({ email: email }, { $set: { verificationToken: verificationToken } });
+
 		sendHtmlEmail(
 			email,
 			'Verify your Filmpin account',

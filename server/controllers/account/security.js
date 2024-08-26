@@ -18,8 +18,8 @@ const handleSendVerification = async (req, res) => {
 			process.env.EMAIL_TOKEN_SECRET,
 			{ expiresIn: '5m' }
 		);
-
-		Users.updateOne({ email: email }, { $set: { verificationToken: verificationToken } });
+		
+		await Users.updateOne({ email: email }, { $set: { verificationToken: verificationToken } });
 
 		sendHtmlEmail(
 			email,
