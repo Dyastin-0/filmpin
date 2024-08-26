@@ -137,7 +137,7 @@ const MovieSlug = () => {
 										<Link
 											key={index}
 											to={`/discover/movies?genres=${genre.name.toLowerCase()}&sort_by=vote_count&page=1`}
-											className='underline underline-offset-2 text-primary-highlight text-xs'
+											className='underline outline-none underline-offset-2 text-primary-highlight text-xs'
 										>
 											{`${index === movie?.genres.length - 1 ? genre.name : `${genre.name},`}`}
 										</Link>

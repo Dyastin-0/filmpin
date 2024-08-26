@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from 'react';
-import { useLocation, useNavigate } from 'react-router-dom';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import { useAuth } from '../hooks/useAuth';
 import Input from '../components/ui/Input';
@@ -91,7 +91,19 @@ const Signin = () => {
             credentials.password && <ShowPassword showPassword={showPassword} setShowPassword={setShowPassword} />
           }
         </div>
+        <Link
+          to={`/account/recovery`}
+          className='underline underline-offset-2 pb-2 outline-none text-primary-highlight text-xs'
+        > Forgot password? </Link>
         <Button type='submit' disabled={signingIn} text={`${signingIn ? 'Signing in...' : 'Sign in'}`} />
+        <Link
+          to={`/sign-up`}
+          className='underline underline-offset-2 text-center pt-1 pb-1 outline-none text-primary-highlight text-xs'
+        > Don't have an account? click here. </Link>
+        <Link
+          to={`/account/verify`}
+          className='underline underline-offset-2 text-center pt-1 pb-1 outline-none text-primary-highlight text-xs'
+        > Verify your account. </Link>
       </form>
     </div>
   );
