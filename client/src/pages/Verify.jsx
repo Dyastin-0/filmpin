@@ -35,6 +35,7 @@ const Verify = () => {
 			await axios.post(`/verify/sendVerification?email=${email}`);
 			toastSuccess('Verification link sent!');
 			setEmail('');
+			navigate('/sign-in');
 		} catch (error) {
 			const errorMessage = error.response?.data?.message || 'Failed to send verification link.';
 			toastError(`${errorMessage}`);

@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { useLocation, useNavigate } from 'react-router-dom';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { useAuth } from '../hooks/useAuth';
 import axios from 'axios';
 import { SearchInput } from './ui/Input';
@@ -40,7 +40,12 @@ const Navbar = () => {
 
   return (
     <div className='flex justify-between bg-primary rounded-lg w-full p-3 gap-3 drop-shadow-sm z-50'>
-      <div></div>
+      <Link to='/'>
+        <div className='flex font-semibold'>
+          <h1 className='text-primary-highlight'>Film</h1>
+          <h1 className='text-primary-foreground'>pin</h1>
+        </div>
+      </Link>
       <div className='flex w-fit items-center gap-3'>
         {
           user && routes.map((route, index) => (
