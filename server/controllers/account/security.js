@@ -26,7 +26,7 @@ const handleSendVerification = async (req, res) => {
 		}
 
 		if (hasActiveToken)
-			return res.status(400).json({message: `You have a valid verification token, check your email.`});
+			return res.status(400).json({ message: `You have an active verification token, check your email for the link.` });
 
 		const verificationToken = jwt.sign(
 			{ email: email },
@@ -140,7 +140,7 @@ const handleSendRecovery = async (req, res) => {
 		}
 
 		if (hasActiveToken)
-			return res.status(400).json({message: `You have a valid recovery token, check your email for the link.`});
+			return res.status(400).json({ message: `You have an active recovery token, check your email for the link.` });
 
 		const recoveryToken = jwt.sign(
 			{ email: email },
@@ -156,7 +156,7 @@ const handleSendRecovery = async (req, res) => {
 			emailTemplate(
 				'Recover your account',
 				'To recover your account, click the link below. You may disregard this email if you did not request for it.',
-				`filmpin.onrender.com/account/recover?recoveryToken=${recoveryToken}`,
+				`filmpin.onrender.com/account/recovery?recoveryToken=${recoveryToken}`,
 				'Recover your account'
 			)
 		);
