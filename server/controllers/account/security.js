@@ -2,7 +2,6 @@ const Users = require('../../models/user');
 const dotenv = require('dotenv');
 const jwt = require('jsonwebtoken');
 const { sendHtmlEmail } = require('../../helpers/email');
-const { messageTemplate } = require('../../templates/auth');
 const { emailTemplate } = require('../../templates/email');
 
 const handleSendVerification = async (req, res) => {
@@ -27,7 +26,7 @@ const handleSendVerification = async (req, res) => {
 			emailTemplate(
 				'Verify your account',
 				'To proceed with accessing our app, please click the link below. You may disregard this email if you did not request for it.',
-				`filmpin-api.onrender.com/verify?verificationToken=${verificationToken}`,
+				`filmpin.onrender.com/account/verification?verificationToken=${verificationToken}`,
 				'Verify your account'
 			)
 		);
@@ -40,7 +39,8 @@ const handleSendVerification = async (req, res) => {
 
 const handleVerifyEmail = async (req, res) => {
 	const { verificationToken } = req.query;
-	if (!verificationToken) return res.status(400).send(messageTemplate('Verification', 'Missing verification token.'));
+	console.log()
+	if (!verificationToken) return res.status(400).json({message: 'Missing verification token.'});
 
 	try {
 		jwt.verify(
@@ -48,40 +48,18 @@ const handleVerifyEmail = async (req, res) => {
 			process.env.EMAIL_TOKEN_SECRET,
 			async (error, decoded) => {
 				if (error)
-					return res.status(404).send(
-						messageTemplate(
-							'Verification',
-							'Token expired.',
-							'filmpin.onrender.com/account/verify',
-							'Send another verification link'
-						)
-					);
+					return res.status(404).json({ message: 'Verification token is expired.' });
 
 				const user = await Users.findOne({ email: decoded.email,  verificationToken: verificationToken });
 
 				if (!user)
-					return res.status(404).send(
-						messageTemplate(
-							'Verification',
-							'Account not found.'
-						)
-					);
+					return res.status(404).json({ message: 'Account not found.' });
 		
 				if (user.verified)
-					return res.status(200).send(
-						messageTemplate(
-							'Verification',
-							'Your account is already verified.'
-						)
-					);
+					return res.status(200).json({ message: 'Your account is already verified.' });
 
 				await Users.updateOne({ email: decoded.email }, { $set: { verificationToken: null, verified: true } });
-				res.status(200).send(
-					messageTemplate(
-						'Verification',
-						'Your account has been successfully verified!'
-					)
-				);
+				res.status(200).json({ message: 'Your account has been sucessfully verified!' });
 			}
 		);
 
@@ -91,7 +69,12 @@ const handleVerifyEmail = async (req, res) => {
 	}
 }
 
+const handleRecoverAccount = async (req, res) => {
+
+}
+
 module.exports = {
 	handleVerifyEmail,
-	handleSendVerification
+	handleSendVerification,
+	handleRecoverAccount
 }

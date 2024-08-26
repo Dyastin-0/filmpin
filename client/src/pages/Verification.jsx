@@ -1,0 +1,54 @@
+import { useEffect, useState } from 'react';
+import axios from 'axios';
+import { useNavigate, useSearchParams } from 'react-router-dom';
+
+const Verification = () => {
+	const [searchParams] = useSearchParams();
+	const [message, setMessage] = useState(null);
+	const verificationToken = searchParams.get('verificationToken');
+
+	useEffect(() => {
+		document.title = 'Verify Your Account';
+		const verifyAccount = async () => {
+			if (!verificationToken) {
+				setMessage('Missing verification token.');
+				return;
+			}
+
+			try {
+				response = await axios.get(`/email/verify?verificationToken=${verificationToken}`);
+				setMessage(errorMessage);
+			} catch (error) {
+				const errorMessage = error.response?.data?.message || 'Failed to verify your account.';
+				setMessage(errorMessage);
+			}
+		};
+
+		verifyAccount();
+	}, [verificationToken]);
+
+	return (
+		<div
+			className='flex flex-col p-4 justify-center items-center h-full w-full
+      text-primary-foreground bg-primary rounded-xl'
+		>
+			<div
+				className='flex flex-col w-[250px] max-w-full p-4 gap-2 text-xs text-primary-foreground
+        bg-accent drop-shadow-sm rounded-md'
+			>
+				<div className='flex justify-center'>
+					<h1 className='text-primary-highlight text-lg font-bold'>Film</h1>
+					<h1 className='text-primary-foreground text-lg font-bold'>pin</h1>
+				</div>
+				<h2 className='w-full text-center text-md font-semibold'>
+					Account Verification
+				</h2>
+				<p className='text-primary-foreground text-center text-xs'>
+					{ message }
+				</p>
+			</div>
+		</div>
+	);
+};
+
+export default Verification;

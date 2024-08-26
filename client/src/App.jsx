@@ -8,6 +8,7 @@ import 'swiper/css';
 import 'swiper/css/pagination';
 import 'swiper/css/navigation';
 import Discover from './pages/Discover';
+import Verification from './pages/Verification';
 
 const Signin = lazy(() => import('./pages/Signin'));
 const Signup = lazy(() => import('./pages/Signup'));
@@ -17,7 +18,8 @@ const DiscoverTvShowSlug = lazy(() => import('./pages/DiscoverTvShowSlug'));
 const MovieSlug = lazy(() => import('./pages/MovieSlug'));
 const TvShowSlug = lazy(() => import('./pages/TvShowSlug'))
 const SearchSlug = lazy(() => import('./pages/SearchSlug'));
-const Verify = lazy(() => import('./pages/Verify'));
+const AccountVerification = lazy(() => import('./pages/AccountVerification'));
+const AccountRecovery = lazy(() => import('./pages/AccountRecovery'));
 
 axios.defaults.baseURL = import.meta.env.VITE_BASE_API_URL;
 axios.defaults.withCredentials = true;
@@ -31,7 +33,9 @@ function App() {
           <Route path='/' element={<Signin />} />
           <Route path='/sign-in' element={<Signin />} />
           <Route path='/sign-up' element={<Signup />} />
-          <Route path='/account/verify' element={<Verify />} />
+          <Route path='/account/verify' element={<AccountVerification />} />
+          <Route path='/account/verification' element={<Verification />} />
+          <Route path='/account/recovery' element={<AccountRecovery />} />
           <Route element={<ProtectedRoute />}>
             <Route path='/home' element={<Home />} />
             <Route path='/movies' element={<MovieSlug />} />

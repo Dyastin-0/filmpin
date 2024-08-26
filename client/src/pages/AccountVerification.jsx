@@ -6,7 +6,7 @@ import { useToast } from '../components/hooks/useToast';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { useAuth } from '../hooks/useAuth';
 
-const Verify = () => {
+const AccountVerification = () => {
 	const { user } = useAuth();
 	const navigate = useNavigate();
 	const location = useLocation();
@@ -16,8 +16,6 @@ const Verify = () => {
 	const { toastError, toastSuccess } = useToast();
 
 	const previousLocation = location.state?.from;
-
-	console.log(previousLocation)
 
 	useEffect(() => {
 		user && navigate('/home');
@@ -32,7 +30,7 @@ const Verify = () => {
 		e.preventDefault();
 		setSendingLink(true);
 		try {
-			await axios.post(`/verify/sendVerification?email=${email}`);
+			await axios.post(`email/verify/sendVerification?email=${email}`);
 			toastSuccess('Verification link sent!');
 			setEmail('');
 			navigate('/sign-in');
@@ -82,4 +80,4 @@ const Verify = () => {
 	);
 };
 
-export default Verify;
+export default AccountVerification;

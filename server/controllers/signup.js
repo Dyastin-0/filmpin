@@ -36,7 +36,7 @@ const handleSignup = async (req, res) => {
 			emailTemplate(
 				'Filmpin Account Verification',
 				'To continue with our app, click the link below. \n If you ignore this email if you did not request for it.',
-				`filmpin-api.onrender.com/verify?verificationToken=${verificationToken}`,
+				`filmpin.onrender.com/account/verification?verificationToken=${verificationToken}`,
 				'Verify your account'
 			)
 		);

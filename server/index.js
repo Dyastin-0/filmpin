@@ -26,7 +26,8 @@ app.use('/sign-up', require('./routes/auth'));
 app.use('/sign-in', require('./routes/auth'));
 app.use('/refreshAccessToken', require('./routes/auth'));
 app.use('/log-out', require('./routes/auth'));
-app.use('/verify', require('./routes/email'));
+app.use('/email', require('./routes/email'));
+app.use('/recover', require('./routes/email'));
 
 app.use(verifyJsonWebToken);
 app.use('/movies', require('./routes/api/movies'));
