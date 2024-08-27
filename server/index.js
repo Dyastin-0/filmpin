@@ -36,7 +36,7 @@ app.use('/tvshows', require('./routes/api/tvshows'))
 if (process.env.SERVER_URL) {
 	cron.schedule('*/14 * * * *', async () => {
 		try {
-			await axios.get(`${process.env.SERVER_URL}`);
+			await axios.get(`${process.env.BASE_SERVER_URL}`);
 			console.log('Pinged the server.');
 		} catch (error) {
 			console.error('Error pinging the server:', error);

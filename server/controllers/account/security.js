@@ -8,6 +8,8 @@ const { hash } = require('../../helpers/hash');
 const handleSendVerification = async (req, res) => {
 	const { email } = req.query;
 
+	if (!email) return res.status(400).json({ message: 'Missing email.' });
+
 	try {
 		const user = await Users.findOne({ email: email });
 		if (!user) return res.status(403).json({ message: 'Account not found.' });
@@ -42,7 +44,7 @@ const handleSendVerification = async (req, res) => {
 			emailTemplate(
 				'Verify your account',
 				'To proceed with accessing our app, please click the link below. You may disregard this email if you did not request for it.',
-				`filmpin.onrender.com/account/verification?verificationToken=${verificationToken}`,
+				`${process.env.BASE_CLIENT_URL}/account/verification?verificationToken=${verificationToken}`,
 				'Verify your account'
 			)
 		);
@@ -156,7 +158,7 @@ const handleSendRecovery = async (req, res) => {
 			emailTemplate(
 				'Recover your account',
 				'To recover your account, click the link below. You may disregard this email if you did not request for it.',
-				`filmpin.onrender.com/account/recovery?recoveryToken=${recoveryToken}`,
+				`${process.env.BASE_CLIENT_URL}/account/recovery?recoveryToken=${recoveryToken}`,
 				'Recover your account'
 			)
 		);
