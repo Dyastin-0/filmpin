@@ -5,7 +5,7 @@ const handleGetCategory = async (req, res) => {
 	const { category, page } = req.query;
 
 	try {
-		const response = await api.get(`movie/${category}?language=en-US&${page}&sort_by=popularity.desc`);
+		const response = await api.get(`movie/${category}?language=en-US&page=${page}&sort_by=popularity.desc`);
 		res.json(response.data);
 	} catch (error) {
 		console.error('Failed to fetch list.', error);

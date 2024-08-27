@@ -29,6 +29,8 @@ app.use('/log-out', require('./routes/auth'));
 app.use('/email', require('./routes/email'));
 app.use('/recover', require('./routes/email'));
 
+app.use('/public/backdrops', require('./routes/public/backdrops'));
+
 app.use(verifyJsonWebToken);
 app.use('/movies', require('./routes/api/movies'));
 app.use('/tvshows', require('./routes/api/tvshows'))
