@@ -17,7 +17,7 @@ const Signin = () => {
   const [signingIn, setSigningIn] = useState(false);
   const { setToken, setUser, user } = useAuth();
   const { toastError, toastSuccess } = useToast();
-  const [backdrops, setBackdrops] = useState([]);
+  const [backdrops, setBackdrops] = useState(null);
   const [backdropIndex, setBackdropIndex] = useState(0);
 
   const previousPath = location.state?.from || '/home';
@@ -70,7 +70,7 @@ const Signin = () => {
   };
 
   useEffect(() => {
-		if (backdrops?.length > 0) {
+		if (backdrops) {
 			const intervalId = setInterval(() => {
 				setBackdropIndex((prevIndex) => (prevIndex + 1) % backdrops.length);
 			}, 3000);
