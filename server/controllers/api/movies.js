@@ -27,7 +27,7 @@ const handleGetDetails = async (req, res) => {
 const handleGetCredits = async (req, res) => {
 	const { movie_id } = req.query;
 	try {
-		const response = await api.get(`movie/${movie_id}/credits?language=en-US`);
+		const response = await api.get(`movie/${movie_id}/credits?sort_by=popularity&language=en-US`);
 		res.json(response.data);
 	} catch (error) {
 		console.error('Failed to fetch credits.', error);

@@ -41,10 +41,10 @@ const Navbar = () => {
   return (
     <div className='flex justify-between bg-primary rounded-lg w-full p-3 gap-3 drop-shadow-sm z-50'>
       <Link to='/'>
-        <div className='flex font-semibold'>
+        {/* <div className='flex font-semibold'>
           <h1 className='text-primary-highlight'>Film</h1>
           <h1 className='text-primary-foreground'>pin</h1>
-        </div>
+        </div> */}
       </Link>
       <div className='flex w-fit items-center gap-3'>
         {
