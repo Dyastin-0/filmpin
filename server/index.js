@@ -35,7 +35,7 @@ app.use(verifyJsonWebToken);
 app.use('/movies', require('./routes/api/movies'));
 app.use('/tvshows', require('./routes/api/tvshows'))
 
-if (process.env.SERVER_URL) {
+if (process.env.BASE_SERVER_URL) {
 	cron.schedule('*/14 * * * *', async () => {
 		try {
 			await axios.get(`${process.env.BASE_SERVER_URL}`);
