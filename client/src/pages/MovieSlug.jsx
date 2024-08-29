@@ -5,7 +5,7 @@ import Button from '../components/ui/Button';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faPlay } from '@fortawesome/free-solid-svg-icons';
 import { useModal } from '../components/hooks/useModal';
-import { Frame } from '../components/MovieTrailer';
+import Frame from '../components/Frame';
 import { MovieSection } from '../components/sections/MovieSection';
 import { LoadingMovieSection } from '../components/loaders/MovieLoaders';
 import { useLoading } from '../components/hooks/useLoading';
@@ -15,6 +15,7 @@ import Cast from '../components/Cast';
 import Crew from '../components/Crew';
 import CastSection from '../components/sections/CastSection';
 import CrewSection from '../components/sections/CrewSection';
+import { ClipSection } from '../components/sections/ClipSection';
 
 const MovieSlug = () => {
 	const [searchParams] = useSearchParams();
@@ -197,14 +198,19 @@ const MovieSlug = () => {
 				<CastSection title='Full cast' casts={casts} />
 				<CrewSection title='Full crew' crews={crews} />
 			</motion.div>
-			<motion.div
-				className='flex flex-col bg-accent rounded-lg gap-4 p-4 items-center w-[90%]'
-			>
+			<div className='flex flex-col bg-accent rounded-lg gap-4 p-4 items-center w-[90%]'>
 				{similarMovies ?
 					<MovieSection title='Recommendations' movies={similarMovies?.filter(similarMovie => similarMovie.title !== movie.title)} />
 					: <LoadingMovieSection title='Recommendations' />
 				}
-			</motion.div>
+			</div>
+			<div className='flex flex-col bg-accent rounded-lg gap-4 p-4 items-center w-[90%]'>
+				<ClipSection keys={videos?.map((video) => {
+					return { name: video.name, value: video.key }
+				})}
+					title='Videos'
+				/>
+			</div>
 		</div>
 	)
 }

@@ -5,7 +5,7 @@ import Button from '../components/ui/Button';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faPlay } from '@fortawesome/free-solid-svg-icons';
 import { useModal } from '../components/hooks/useModal';
-import { Frame } from '../components/MovieTrailer';
+import Frame from '../components/Frame';
 import { useLoading } from '../components/hooks/useLoading';
 import { MovieSlugLoader } from '../components/loaders/MovieSlugLoader';
 import useAxios from '../hooks/useAxios';
@@ -13,6 +13,7 @@ import CrewSection from '../components/sections/CrewSection';
 import Crew from '../components/Crew';
 import Cast from '../components/Cast';
 import CastSection from '../components/sections/CastSection';
+import { ClipSection } from '../components/sections/ClipSection';
 
 const TvShowEpisodeSlug = () => {
 	const [searchParams] = useSearchParams();
@@ -36,6 +37,7 @@ const TvShowEpisodeSlug = () => {
 	const getVideos = async (id, seasonNumber, episodeNumber) => {
 		try {
 			const videos = await api.get(`/tvshows/season/episode/videos?tvshow_id=${id}&tvshow_season=${seasonNumber}&episode_number=${episodeNumber}`);
+			console.log(videos.data)
 			return videos.data;
 		} catch (error) {
 			console.error(`Failed to get videos for show with id '${id}'`, error);
@@ -54,20 +56,19 @@ const TvShowEpisodeSlug = () => {
 	useEffect(() => {
 		if (id) {
 			const stateDetails = location.state?.details;
-			console.log(stateDetails)
 			if (!stateDetails) {
 				setLoading(true);
 				getDetails(id, seasonNumber, episodeNumber).then(details => {
 					setDetails(details);
 					setCrews(details.crew);
-					setCasts(details.guest_stars);
+					setCasts(details.guest_stars.sort((a, b) => b.popularity - a.popularity));
 					setIsLoading(false);
 					setLoading(false);
 				});
 			} else {
 				setDetails(stateDetails);
 				setCrews(stateDetails.crew);
-				setCasts(stateDetails.guest_stars);
+				setCasts(stateDetails.guest_stars.sort((a, b) => b.popularity - a.popularity));
 				setIsLoading(false);
 				setLoading(false);
 			}
@@ -142,7 +143,7 @@ const TvShowEpisodeSlug = () => {
 						</div>
 					</>
 				)}
-				<h1 className='text-primary-foreground text-xs font-semibold'> Popular cast </h1>
+				<h1 className='text-primary-foreground text-xs font-semibold'> Popular guest </h1>
 				{casts &&
 					<div className='flex flex-wrap gap-4'>
 						<Cast info={casts[0]} />
@@ -152,9 +153,16 @@ const TvShowEpisodeSlug = () => {
 						<Cast info={casts[4]} />
 					</div>
 				}
-				<CastSection title='Full cast' casts={casts} />
+				<CastSection title='Full guest' casts={casts} />
 				<CrewSection title='Full crew' crews={details?.crew} />
 			</motion.div>
+			<div className='flex flex-col bg-accent p-4 rounded-md max-w-full w-[90%] gap-4 shadow-sm'>
+				<ClipSection keys={videos?.map((video) => {
+					return { name: video.name, value: video.key }
+				})}
+					title='Clips'
+				/>
+			</div>
 		</div>
 	)
 }

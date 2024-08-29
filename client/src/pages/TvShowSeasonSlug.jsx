@@ -5,7 +5,7 @@ import Button from '../components/ui/Button';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faPlay } from '@fortawesome/free-solid-svg-icons';
 import { useModal } from '../components/hooks/useModal';
-import { Frame } from '../components/MovieTrailer';
+import Frame from '../components/Frame';
 import { LoadingMovieSection } from '../components/loaders/MovieLoaders';
 import { useLoading } from '../components/hooks/useLoading';
 import { MovieSlugLoader } from '../components/loaders/MovieSlugLoader';
