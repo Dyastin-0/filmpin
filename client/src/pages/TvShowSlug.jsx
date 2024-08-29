@@ -66,7 +66,6 @@ const TvShowSlug = () => {
 			const responses = await Promise.all(seasonPromises);
 
 			const seasonsData = responses.map(response => response.data);
-			console.log(seasonsData)
 			return seasonsData;
 		} catch (error) {
 			console.error('Failed to get seasons', error);

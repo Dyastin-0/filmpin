@@ -40,7 +40,6 @@ const TvShowSeasonSlug = () => {
 	const getDetails = async (showId, seasonNumber) => {
 		try {
 			const response = await api.get(`/tvshows/season?tvshow_id=${showId}&season_number=${seasonNumber}`);
-			console.log(response.data);
 			return response.data;
 		} catch (error) {
 			console.error('Failed to get seasons', error);

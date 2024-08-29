@@ -5,7 +5,6 @@ import Clip from '../Clip';
 import Frame from '../Frame';
 
 export const ClipSection = ({ title, keys }) => {
-	console.log(keys)
 	const { setModal, setOpen } = useModal();
 
 	const handleClick = (key) => {

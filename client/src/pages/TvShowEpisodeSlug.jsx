@@ -37,7 +37,6 @@ const TvShowEpisodeSlug = () => {
 	const getVideos = async (id, seasonNumber, episodeNumber) => {
 		try {
 			const videos = await api.get(`/tvshows/season/episode/videos?tvshow_id=${id}&tvshow_season=${seasonNumber}&episode_number=${episodeNumber}`);
-			console.log(videos.data)
 			return videos.data;
 		} catch (error) {
 			console.error(`Failed to get videos for show with id '${id}'`, error);
