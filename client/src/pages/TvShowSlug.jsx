@@ -171,8 +171,9 @@ const TvShowSlug = () => {
 				className='flex flex-col bg-accent rounded-lg gap-4 p-4 items-center w-[90%]'
 				initial={{ marginTop: -120 }}
 			>
-				{
-					show && <SeasonSection seasons={seasons} title={show.name} showId={show.id} backdropPath={show.backdrop_path} />
+				{show ?
+					<SeasonSection seasons={seasons} title={show.name} showId={show.id} backdropPath={show.backdrop_path} />
+					: <LoadingMovieSection title='Seasons' />
 				}
 			</motion.div>
 			<motion.div

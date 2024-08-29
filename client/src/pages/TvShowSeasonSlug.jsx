@@ -129,7 +129,7 @@ const TvShowSeasonSlug = () => {
 						showId={id}
 						backdropPath={backdrop_path}
 						title={title}
-					/> : <LoadingMovieSection />
+					/> : <LoadingMovieSection title='Episodes' />
 				}
 			</motion.div>
 		</div>
