@@ -129,6 +129,8 @@ const handleSendRecovery = async (req, res) => {
 
 		if (!user) return res.status(404).json({ message: 'Account not found.' });
 
+		if (!user.verified) return res.status(400).json({ message: 'Your account is not verified.' });
+
 		let hasActiveToken = false;
 		if (user.recoveryToken) {
 			jwt.verify(
