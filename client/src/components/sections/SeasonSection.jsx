@@ -19,4 +19,4 @@ const SeasonSection = ({ seasons, showId, title, backdropPath }) => {
 
 
 
-export default SeasonSection
+export default SeasonSection;

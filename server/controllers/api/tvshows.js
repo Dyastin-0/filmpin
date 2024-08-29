@@ -106,6 +106,18 @@ const handleGetSeasonVideo = async (req, res) => {
 	}
 }
 
+const handleGetEpisodeVideo = async (req, res) => {
+	const { tvshow_id, tvshow_season, episode_number } = req.query;
+
+	try {
+		const response = await api.get(`tv/${tvshow_id}/season/${tvshow_season}/episode/${episode_number}/videos?language=en-US`);
+		res.json(response.data);
+	} catch (error) {
+		console.error('Failed to get tv show episode videos.', error);
+		res.sendStatus(500);
+	}
+}
+
 module.exports = {
 	handleGetCategory,
 	handleGetDetails,
@@ -115,5 +127,6 @@ module.exports = {
 	handleGetVideo,
 	handleGetSeason,
 	handleGetEpisode,
-	handleGetSeasonVideo
+	handleGetSeasonVideo,
+	handleGetEpisodeVideo
 }

@@ -22,6 +22,7 @@ const Verification = lazy(() => import('./pages/Verification'));
 const AccountRecovery = lazy(() => import('./pages/AccountRecovery'));
 const Recovery = lazy(() => import('./pages/Recovery'));
 const TvShowSeasonSlug = lazy(() => import('./pages/TvShowSeasonSlug'));
+const TvShowEpisodeSlug = lazy(() => import('./pages/TvShowEpisodeSlug'));
 
 axios.defaults.baseURL = import.meta.env.VITE_BASE_API_URL;
 axios.defaults.withCredentials = true;
@@ -47,6 +48,7 @@ function App() {
             <Route path='/discover/movies' element={<DiscoverMovieSlug />} />
             <Route path='/tvshows' element={<TvShowSlug />} />
             <Route path='/tvshows/:show_id/season' element={<TvShowSeasonSlug />} />
+            <Route path='/tvshows/:show_id/:season/episode' element={<TvShowEpisodeSlug />} />
             <Route path='/discover/tvshows' element={<DiscoverTvShowSlug />} />
           </Route>
         </Routes>

@@ -11,7 +11,8 @@ const {
 	handleDiscover,
 	handleGetSeason,
 	handleGetEpisode,
-	handleGetSeasonVideo
+	handleGetSeasonVideo,
+	handleGetEpisodeVideo
 } = require('../../controllers/api/tvshows');
 
 const cacheService = require('express-api-cache');
@@ -43,7 +44,10 @@ router.route('/season')
 router.route('/season/episode')
 	.get(cache('10 minutes'), handleGetEpisode);
 
-router.route('/season/episode/videos')
+router.route('/season/videos')
 	.get(cache('10 minutes'), handleGetSeasonVideo);
+
+router.route('/season/episode/videos')
+	.get(cache('10 minutes'), handleGetEpisodeVideo);
 
 module.exports = router;

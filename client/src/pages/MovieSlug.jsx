@@ -27,6 +27,7 @@ const MovieSlug = () => {
 	const [videos, setVideos] = useState(null);
 	const [casts, setCasts] = useState(null);
 	const [crews, setCrews] = useState(null);
+	const writers = crews?.filter(crew => crew.job === 'Writer');
 	const [similarMovies, setSimilarMovies] = useState(null);
 	const [isLoading, setIsLoading] = useState(true);
 	const id = searchParams.get('id');
@@ -105,8 +106,6 @@ const MovieSlug = () => {
 	useEffect(() => {
 		window.scrollTo({ top: 0, left: 0, behavior: 'smooth' });
 	}, [movie]);
-
-	const writers = crews?.filter(crew => crew.job === 'Writer');
 
 	return (
 		<div className="flex flex-col items-center bg-primary rounded-lg gap-4 p-4 h-full w-full">
