@@ -76,7 +76,6 @@ const TvShowSlug = () => {
 
 	useEffect(() => {
 		if (show) {
-			setIsLoading(true);
 			setLoading(true);
 			const genres = show.genres.map(genre => genre.name).join('_').toLowerCase();
 			getDiscovery(genres, 'vote_count', 1).then(response => {
@@ -91,7 +90,7 @@ const TvShowSlug = () => {
 	useEffect(() => {
 		if (id) {
 			id && getVideos(id).then(videos => setVideos(videos.results));
-			const stateShow = location.state?.show;
+			const stateShow = location.state?.details;
 			if (!stateShow) {
 				fetchShow(id.split('_')[0]).then(show => setShow(show));
 			} else {

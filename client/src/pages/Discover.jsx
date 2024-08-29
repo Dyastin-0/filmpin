@@ -24,6 +24,7 @@ const Discover = () => {
 	}
 
 	useEffect(() => {
+		document.title = 'Discover';
 		const fetchMostVoted = async () => {
 			setLoading(true);
 			await getMostVoted('tvshows').then((response) => {

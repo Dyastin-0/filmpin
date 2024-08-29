@@ -39,7 +39,7 @@ const DiscoverTvShowSlug = () => {
   };
 
   useEffect(() => {
-    document.title = 'Discover';
+    document.title = 'Discover TV shows';
     handleCreate();
   }, []);
 

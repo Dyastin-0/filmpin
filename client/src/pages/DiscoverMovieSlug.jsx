@@ -38,7 +38,7 @@ const DiscoverMovieSlug = () => {
   };
 
   useEffect(() => {
-    document.title = 'Discover';
+    document.title = 'Discover movies';
     handleCreate();
   }, []);
 
