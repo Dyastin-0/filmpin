@@ -1,20 +1,26 @@
-import { useState } from 'react';
+import { useState, useRef, useEffect } from 'react';
 import Button from './Button';
 
 export const Dropdown = ({ name, className, children }) => {
 	const [isOpen, setIsOpen] = useState(false);
+	const dropdownRef = useRef(null);
 
 	const toggle = () => {
-		setIsOpen(!isOpen);
-	}
+		setIsOpen((prev) => !prev);
+	};
+
+	const handleBlur = (event) => {
+		if (!dropdownRef.current.contains(event.relatedTarget)) {
+			setIsOpen(false);
+		}
+	};
 
 	return (
-		<div className="relative flex items-center justify-end z-50">
+		<div className="relative flex items-center justify-end z-50" ref={dropdownRef}>
 			<Button
-				variant='ghost'
 				text={name}
 				onClick={toggle}
-				onBlur={() => setIsOpen(false)}
+				onBlur={handleBlur}
 			/>
 			<ul
 				className={`absolute flex flex-col top-full mt-2 right-0 z-50
@@ -23,8 +29,9 @@ export const Dropdown = ({ name, className, children }) => {
 					opacity-0 transform -translate-y-1/2 scale-y-0
 					p-2 pb-1 gap-1 shadow-md rounded-md
 					transition-all duration-300
-					${className} 
+					${className}
 					${isOpen ? 'translate-y-0 scale-y-100 opacity-100' : ''}`}
+				onBlur={handleBlur}
 			>
 				{children}
 			</ul>
@@ -33,13 +40,17 @@ export const Dropdown = ({ name, className, children }) => {
 };
 
 export const DropdownItem = ({ onClick, children, asChild }) => {
-	return (
-		asChild ? children :
-			<button
-				className='text-right text-nowrap text-primary-foreground text-xs outline-none
-			pb-1'
-				onClick={onClick}>
-				{children}
-			</button>
+	return asChild ? (
+		children
+	) : (
+		<button
+			className="text-right text-nowrap text-primary-foreground text-xs outline-none pb-1"
+			onClick={(e) => {
+				e.stopPropagation();
+				onClick();
+			}}
+		>
+			{children}
+		</button>
 	);
-}
+};

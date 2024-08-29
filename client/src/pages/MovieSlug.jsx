@@ -45,7 +45,7 @@ const MovieSlug = () => {
 			const credits = await api.get(`/movies/credits?movie_id=${id}`);
 			return credits.data;
 		} catch (error) {
-			console.log(`Failed to get  credits for ${id}`, error);
+			console.log(`Failed to get credits for ${id}`, error);
 		}
 	}
 
@@ -112,6 +112,8 @@ const MovieSlug = () => {
 	useEffect(() => {
 		window.scrollTo({ top: 0, left: 0, behavior: 'smooth' });
 	}, [movie]);
+
+	const writers = crews?.filter(crew => crew.job === 'Writer');
 
 	return (
 		<div className="flex flex-col items-center bg-primary rounded-lg gap-4 p-4 h-full w-full">
@@ -180,12 +182,16 @@ const MovieSlug = () => {
 				{crews &&
 					crews.map((crew, index) => crew.job === 'Director' && <Crew info={crew} key={index} />)
 				}
-				<h1 className='text-primary-foreground text-xs font-semibold'> Writer </h1>
-				<div className='flex flex-wrap gap-4'>
-					{crews &&
-						crews.map((crew, index) => crew.job === 'Writer' && <Crew info={crew} key={index} />)
-					}
-				</div>
+				{writers && writers.length > 0 && (
+					<>
+						<h1 className='text-primary-foreground text-xs font-semibold'> Writer </h1>
+						<div className='flex flex-wrap gap-4'>
+							{writers.map((writer, index) => (
+								<Crew info={writer} key={index} />
+							))}
+						</div>
+					</>
+				)}
 				<h1 className='text-primary-foreground text-xs font-semibold'> Popular cast </h1>
 				{casts &&
 					<div className='flex flex-wrap gap-4'>
