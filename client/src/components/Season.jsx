@@ -5,41 +5,24 @@ import { CircularProgress, CircularProgressLabel } from '@chakra-ui/react';
 import { ImageDummy, TitleDummy, YearDummy, GenresDummy } from './loaders/MovieLoaders';
 import useAxios from '../hooks/useAxios';
 
-const Movie = ({ info }) => {
+const Season = ({ info, showId, title, backdropPath }) => {
 	const navigate = useNavigate();
 	const api = useAxios();
-	const [details, setDetails] = useState({});
 	const [imageLoaded, setImageLoaded] = useState(false);
 
-	const fetchDetails = async (id) => {
-		try {
-			const response = await api.get(`/movies/details?movie_id=${id}`);
-			return response.data;
-		} catch (error) {
-			console.error(`Failed to fetch details for ${id}`, error);
-			return null;
-		}
-	}
-
 	useEffect(() => {
-		if (details) {
-			const img = new Image();
-			img.src = `https://image.tmdb.org/t/p/w500/${details.poster_path}`;
-			img.onload = () => {
-				setImageLoaded(true);
-			};
-		}
-	}, [details]);
-
-	useEffect(() => {
-		fetchDetails(info.id).then(details => setDetails(details));
+		const img = new Image();
+		img.src = `https://image.tmdb.org/t/p/w500/${info.poster_path}`;
+		img.onload = () => {
+			setImageLoaded(true);
+		};
 	}, []);
 
 	const handleClick = () => {
-		navigate(`/movies?id=${details.id}_${details.title}`,
+		navigate(`/tvshows/${showId}/season?id=${showId}_${info.name}&season_number=${info.season_number}&title=${title}&backdrop_path=${backdropPath}`,
 			{
 				state: {
-					details: details
+					details: info
 				}
 			});
 	}
@@ -55,17 +38,18 @@ const Movie = ({ info }) => {
 					<img
 						loading='lazy'
 						className='rounded-md w-[200px] h-[250px] object-cover self-center'
-						src={`https://image.tmdb.org/t/p/w200/${details.poster_path}`}
-						alt={`${info.title} poster`}
+						src={`https://image.tmdb.org/t/p/w200/${info.poster_path}`}
+						alt={`${title} ${info.name} poster`}
 					/> :
 					<ImageDummy />
 			}
 			{
-				details.title ?
+				info.name ?
 					<>
-						<h4 className='text-sm font-semibold line-clamp-2 text-ellipsis'> {details.title} </h4>
-						<h4 className='text-xs'> {details.release_date?.split('-')[0]} </h4>
-						<h4 className='text-xs'> {`${Math.floor(details?.runtime / 60)}h ${details?.runtime % 60}m`} </h4>
+						<h4 className='text-sm font-semibold line-clamp-2 text-ellipsis'> {title} </h4>
+						<h4 className='text-sm font-semibold line-clamp-2 text-ellipsis'> {info.name} </h4>
+						<h4 className='text-xs'> {info.air_date?.split('-')[0]} </h4>
+						<h4 className='text-xs'> {info.episodes.length} Episodes </h4>
 					</> :
 					<>
 						<TitleDummy />
@@ -77,14 +61,14 @@ const Movie = ({ info }) => {
 				<CircularProgress
 					size='40px'
 					color='var(--highlight)'
-					value={details.vote_average}
+					value={info.vote_average}
 					max={10}
 				>
-					<CircularProgressLabel>{details.vote_average?.toFixed(1)}</CircularProgressLabel>
+					<CircularProgressLabel>{info.vote_average?.toFixed(1)}</CircularProgressLabel>
 				</CircularProgress>
 			</div>
 		</motion.div>
 	)
 }
 
-export default Movie;
+export default Season;

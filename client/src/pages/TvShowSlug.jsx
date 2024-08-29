@@ -11,6 +11,7 @@ import { LoadingMovieSection } from '../components/loaders/MovieLoaders';
 import { useLoading } from '../components/hooks/useLoading';
 import { MovieSlugLoader } from '../components/loaders/MovieSlugLoader';
 import useAxios from '../hooks/useAxios';
+import SeasonSection from '../components/sections/SeasonSection';
 
 const TvShowSlug = () => {
 	const [searchParams] = useSearchParams();
@@ -22,6 +23,7 @@ const TvShowSlug = () => {
 	const [trailerYoutubeKey, setTrailerYoutubeKey] = useState(null);
 	const [videos, setVideos] = useState(null);
 	const [similarShows, setSimilarShows] = useState(null);
+	const [seasons, setSeasons] = useState(false);
 	const [isLoading, setIsLoading] = useState(true);
 	const id = searchParams.get('id');
 
@@ -53,15 +55,24 @@ const TvShowSlug = () => {
 		}
 	};
 
-	const getSeasons = async (showId ,numberOfSeasons) => {
+	const getSeasons = async (showId, numberOfSeasons) => {
 		try {
-			const response = await api.get(`/tvshows/season?tvshow_id=${showId}&season_number=${numberOfSeasons}`);
-			console.log(response.data);
-			return response.data;
+			const seasonPromises = [];
+
+			for (let seasonNumber = 1; seasonNumber <= numberOfSeasons; seasonNumber++) {
+				seasonPromises.push(api.get(`/tvshows/season?tvshow_id=${showId}&season_number=${seasonNumber}`));
+			}
+
+			const responses = await Promise.all(seasonPromises);
+
+			const seasonsData = responses.map(response => response.data);
+
+			return seasonsData;
 		} catch (error) {
-			console.log('Failed to get seasons', error);
+			console.error('Failed to get seasons', error);
 		}
-	} 
+	}
+
 
 	useEffect(() => {
 		if (show) {
@@ -73,12 +84,13 @@ const TvShowSlug = () => {
 				setIsLoading(false);
 				setLoading(false);
 			});
-			getSeasons(show.id ,show.number_of_seasons);
+			getSeasons(show.id, show.number_of_seasons).then(seasons => setSeasons(seasons));
 		}
 	}, [show]);
 
 	useEffect(() => {
 		if (id) {
+			id && getVideos(id).then(videos => setVideos(videos.results));
 			const stateShow = location.state?.show;
 			if (!stateShow) {
 				fetchShow(id.split('_')[0]).then(show => setShow(show));
@@ -89,20 +101,15 @@ const TvShowSlug = () => {
 	}, [id]);
 
 	useEffect(() => {
-		if (show) document.title = show.name; //state missing
+		if (show) {
+			document.title = show.name;
+			window.scrollTo({ top: 0, left: 0, behavior: 'smooth' });
+		}
 	}, [show]);
-
-	useEffect(() => {
-		id && getVideos(id).then(videos => setVideos(videos.results));
-	}, [id]);
 
 	useEffect(() => {
 		videos && setTrailerYoutubeKey(videos.find(video => video.type == 'Trailer')?.key);
 	}, [videos]);
-
-	useEffect(() => {
-		window.scrollTo({ top: 0, left: 0, behavior: 'smooth' });
-	}, [show]);
 
 	return (
 		<div className="flex flex-col items-center bg-primary rounded-lg gap-4 p-4 h-full w-full">
@@ -131,7 +138,7 @@ const TvShowSlug = () => {
 								text={<p className='text-md font-semibold'>Watch trailer <FontAwesomeIcon size='lg' icon={faPlay} /></p>}
 								onClick={() => {
 									setModal(
-										<Frame youtubeKey={trailerYoutubeKey} title={show.title} />
+										<Frame youtubeKey={trailerYoutubeKey} title={show.name} />
 									);
 									setOpen(true);
 								}}
@@ -163,11 +170,12 @@ const TvShowSlug = () => {
 				<MovieSlugLoader />
 			}
 			<motion.div
+				className='flex flex-col bg-accent rounded-lg gap-4 p-4 items-center w-[90%]'
 				initial={{ marginTop: -120 }}
-				className='flex flex-col bg-accent rounded-lg gap-4 p-4 w-[90%]'
 			>
-				<h1 className='text-primary-foreground pb-4 text-start text-sm font-semibold'>Seasons</h1>
-
+				{
+					show && <SeasonSection seasons={seasons} title={show.name} showId={show.id} backdropPath={show.backdrop_path} />
+				}
 			</motion.div>
 			<motion.div
 				className='flex flex-col bg-accent rounded-lg gap-4 p-4 items-center w-[90%]'

@@ -45,7 +45,12 @@ const TvShow = ({ info }) => {
 	}, [token, info.id]);
 
 	const handleClick = () => {
-		navigate(`/tvshows?id=${details.id}_${details.name}`); //state missing
+		navigate(`/tvshows?id=${details.id}_${details.name}`,
+			{
+				state: {
+					details: details
+				}
+			});
 	}
 
 	return (

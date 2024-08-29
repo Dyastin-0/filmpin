@@ -18,7 +18,7 @@ export function AuthProvider({ children }) {
         setUser(response.data.user);
         setSigningIn(false);
       } catch (error) {
-        console.log(error);
+        console.error(error);
         setToken(null);
         setSigningIn(false);
       }

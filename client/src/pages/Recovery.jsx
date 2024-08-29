@@ -28,7 +28,7 @@ const Recovery = () => {
 		} catch (error) {
 			const errorMessage = error.response?.data?.message || 'Failed to send recovery link.';
 			toastError(`${errorMessage}`);
-			console.log(error);
+			console.error(error);
 		} finally {
 			setSendingLink(false);
 		}

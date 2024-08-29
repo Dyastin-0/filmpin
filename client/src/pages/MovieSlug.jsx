@@ -45,7 +45,7 @@ const MovieSlug = () => {
 			const credits = await api.get(`/movies/credits?movie_id=${id}`);
 			return credits.data;
 		} catch (error) {
-			console.log(`Failed to get credits for ${id}`, error);
+			console.error(`Failed to get credits for ${id}`, error);
 		}
 	}
 
@@ -70,6 +70,7 @@ const MovieSlug = () => {
 
 	useEffect(() => {
 		if (movie) {
+			if (movie) document.title = movie.title;
 			setIsLoading(true);
 			setLoading(true);
 			const genres = movie.genres.map(genre => genre.name).join('_').toLowerCase();
@@ -79,7 +80,6 @@ const MovieSlug = () => {
 				setLoading(false);
 			});
 			getCredits(movie.id).then(credits => {
-				console.log(credits)
 				setCasts(credits.cast);
 				setCrews(credits.crew);
 			});
@@ -88,21 +88,14 @@ const MovieSlug = () => {
 
 	useEffect(() => {
 		if (id) {
-			const stateMovie = location.state?.movie;
+			id && getVideos(id).then(videos => setVideos(videos.results));
+			const stateMovie = location.state?.details;
 			if (!stateMovie) {
 				fetchMovie(id.split('_')[0]).then(movie => setMovie(movie));
 			} else {
 				setMovie(stateMovie);
 			}
 		}
-	}, [id]);
-
-	useEffect(() => {
-		if (movie) document.title = movie.title;
-	}, [movie]);
-
-	useEffect(() => {
-		id && getVideos(id).then(videos => setVideos(videos.results));
 	}, [id]);
 
 	useEffect(() => {

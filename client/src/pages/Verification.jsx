@@ -19,7 +19,6 @@ const Verification = () => {
 				const response = await axios.post(`/email/verify?verificationToken=${verificationToken}`);
 				setMessage(response.data.message);
 			} catch (error) {
-				console.log('test');
 				const errorMessage = error.response?.data?.message || 'Failed to verify your account.';
 				setMessage(errorMessage);
 			}
