@@ -110,7 +110,7 @@ const MovieSlug = () => {
 
 	return (
 		<div className="flex flex-col items-center bg-primary rounded-lg gap-4 p-4 h-full w-full">
-			{!isLoading ?
+			{movie ?
 				<>
 					<div className='w-full h-[300px] rounded-lg overflow-hidden'>
 						<img
@@ -189,10 +189,6 @@ const MovieSlug = () => {
 				{casts &&
 					<div className='flex flex-wrap gap-4'>
 						<Cast info={casts[0]} />
-						<Cast info={casts[1]} />
-						<Cast info={casts[2]} />
-						<Cast info={casts[3]} />
-						<Cast info={casts[4]} />
 					</div>
 				}
 				<CastSection title='Full cast' casts={casts} />
