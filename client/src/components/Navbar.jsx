@@ -27,7 +27,7 @@ const Navbar = () => {
       await axios.post('/sign-out');
       setToken(null);
       setUser(null);
-      navigate('/sign-in');
+      navigate('/');
     } catch (error) {
       console.error(error);
     }

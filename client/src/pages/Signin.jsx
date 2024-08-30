@@ -7,35 +7,19 @@ import Button from '../components/ui/Button';
 import { ShowPassword } from '../components/utils/ShowPassword';
 import { useToast } from '../components/hooks/useToast';
 import useAxios from '../hooks/useAxios';
-import { AnimatePresence, motion } from 'framer-motion';
 
 const Signin = () => {
-  const api = useAxios();
   const emailRef = useRef(null);
   const navigate = useNavigate();
   const location = useLocation();
   const [signingIn, setSigningIn] = useState(false);
   const { setToken, setUser, user } = useAuth();
   const { toastError, toastSuccess } = useToast();
-  const [backdrops, setBackdrops] = useState(null);
-  const [backdropIndex, setBackdropIndex] = useState(0);
 
   const previousPath = location.state?.from || '/home';
 
-  const getBackdrops = async () => {
-    try {
-      const response = await axios.get(`${import.meta.env.VITE_BASE_API_URL}/public/backdrops?category=movie&list=top_rated&page=1`);
-      return response.data;
-    } catch (error) {
-      console.error(error);
-    }
-  }
-
   useEffect(() => {
     document.title = 'Sign in';
-    getBackdrops().then(response => {
-      setBackdrops(response);
-    });
     emailRef.current.focus();
   }, []);
 
@@ -69,35 +53,8 @@ const Signin = () => {
     }
   };
 
-  useEffect(() => {
-		if (backdrops) {
-			const intervalId = setInterval(() => {
-				setBackdropIndex((prevIndex) => (prevIndex + 1) % backdrops.length);
-			}, 3000);
-
-			return () => clearInterval(intervalId);
-		}
-	}, [backdrops]);
-
   return (
-    <div
-      className='relative flex flex-col p-4 justify-center items-center h-full w-full
-      text-primary bg-primary rounded-xl overflow-hidden'
-    >
-      <AnimatePresence>
-        { backdrops &&
-          <motion.img
-            key={backdrops[backdropIndex]}
-            src={`https://image.tmdb.org/t/p/original${backdrops[backdropIndex]}`}
-            className='absolute w-full h-full z-10 rounded-lg object-cover blur-[2px]'
-            style={{clipPath: 'inset(2px)'}}
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            transition={{ duration: 1 }}
-          />
-        }
-      </AnimatePresence>
+    <div className='flex flex-col p-4 justify-center items-center h-full w-full text-primary bg-primary rounded-lg'>
       <form
         className='flex flex-col w-[250px] max-w-full p-4 text-xs text-primary-foreground
         bg-accent drop-shadow-sm rounded-md z-10'

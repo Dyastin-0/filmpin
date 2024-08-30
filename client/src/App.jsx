@@ -7,11 +7,12 @@ import ProtectedRoute from './utils/protectedRoute';
 import 'swiper/css';
 import 'swiper/css/pagination';
 import 'swiper/css/navigation';
-import Discover from './pages/Discover';
 
+const Root = lazy(() => import('./pages/Root'));
 const Signin = lazy(() => import('./pages/Signin'));
 const Signup = lazy(() => import('./pages/Signup'));
 const Home = lazy(() => import('./pages/Home'));
+const Discover = lazy(() => import('./pages/Discover'));
 const DiscoverMovieSlug = lazy(() => import('./pages/DiscoverMovieSlug'));
 const DiscoverTvShowSlug = lazy(() => import('./pages/DiscoverTvShowSlug'));
 const MovieSlug = lazy(() => import('./pages/MovieSlug'));
@@ -33,7 +34,7 @@ function App() {
       <Navbar />
       <Suspense>
         <Routes>
-          <Route path='/' element={<Signin />} />
+          <Route path='/' element={<Root />} />
           <Route path='/sign-in' element={<Signin />} />
           <Route path='/sign-up' element={<Signup />} />
           <Route path='/account/verify' element={<AccountVerification />} />
