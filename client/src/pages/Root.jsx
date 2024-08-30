@@ -1,7 +1,6 @@
 import { useEffect, useState } from 'react';
 import axios from 'axios';
 import { AnimatePresence, motion } from 'framer-motion';
-import { Link } from 'react-router-dom';
 
 const Root = () => {
   const [backdrops, setBackdrops] = useState(null);
@@ -51,8 +50,8 @@ const Root = () => {
         </AnimatePresence>
       )}
       <div className='flex justify-start flex-col'>
-        <h1 className='text-4xl text-accent font-bold z-20'> Explore endless movies & TV shows </h1>
-        <h1 className='text-lg text-accent font-semibold z-20'> Find your next watch using our intuitive UI, seamlessly. </h1>
+        <h1 className='text-4xl text-light font-bold z-20'> Explore endless movies & TV shows </h1>
+        <h1 className='text-lg text-light font-semibold z-20'> Find your next watch using our intuitive UI, seamlessly. </h1>
       </div>
     </div>
   );

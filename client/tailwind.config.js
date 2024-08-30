@@ -22,6 +22,7 @@ export default {
         accent: "var(--accent)",
         success: "var(--success)",
         error: "var(--error)",
+        light: "var(--light)"
       },
     },
   },

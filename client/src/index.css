@@ -3,29 +3,44 @@
 @tailwind utilities;
 
 :root {
+  /* Common properties */
   font-family: Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;
   line-height: 1.5;
   font-weight: 400;
 
   color-scheme: light dark;
-  color: rgba(255, 255, 255, 0.87);
-  background-color: #242424;
+  color: var(--text-primary);
+  background-color: var(--bg-primary);
 
   font-synthesis: none;
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 
-  --bg-primary: #F5F7F8;
-  --bg-secondary: #EEEEEE;
-  --accent: #FFFFFF;
   --highlight: #508C9B;
-  --text-highlight: #FFFFFF;
-  --text-secondary: #888888;
-  --text-primary: #686D76;
+  --light: #FFFFFF;
 
-  --error: #C71B29;
-  --success: #0E9B71;
+  /* Theme variables */
+  --bg-primary: #f5f7f8; /* Light theme by default */
+  --bg-secondary: #eeeeee;
+  --accent: #ffffff;
+  --text-highlight: #ffffff;
+  --text-secondary: #888888;
+  --text-primary: #686d76;
+  
+  --error: #c71b29;
+  --success: #0e9b71;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --bg-primary: #1a1a1b;
+    --bg-secondary: #121213;
+    --accent: #1f1f20;
+    --text-highlight: #f2f2f3;
+    --text-secondary: #a4a4a6;
+    --text-primary: #ffffff;
+  }
 }
 
 body {
@@ -38,7 +53,6 @@ body {
   padding: 1rem;
   background-color: var(--bg-secondary);
 }
-
 
 #root {
   position: relative;
@@ -82,7 +96,6 @@ body {
 .swiper-button-prev {
   color: var(--highlight);
 }
-
 
 .swiper-button-next::after,
 .swiper-button-prev::after {

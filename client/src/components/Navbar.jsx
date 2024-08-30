@@ -5,6 +5,7 @@ import axios from 'axios';
 import { SearchInput } from './ui/Input';
 import Button from './ui/Button';
 import { Dropdown, DropdownItem } from './ui/Dropdown';
+import { useThemeToggle } from '../hooks/useTheme';
 
 const routes = [
   { path: '/home', name: 'Home' },
@@ -19,6 +20,7 @@ const authRoutes = [
 const Navbar = () => {
   const navigate = useNavigate();
   const location = useLocation();
+  const { toggleTheme, theme } = useThemeToggle();
   const { setToken, setUser, user } = useAuth();
   const [query, setQuery] = useState(null);
 
@@ -82,6 +84,7 @@ const Navbar = () => {
         </div>
       </div>
       <div className='flex w-fit gap-3 justify-center items-center'>
+        <Button text={theme} onClick={toggleTheme} />
         {user &&
           <Dropdown name={user?.username}>
             <DropdownItem onClick={handleSignout} >
