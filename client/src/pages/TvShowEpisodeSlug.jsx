@@ -76,7 +76,8 @@ const TvShowEpisodeSlug = () => {
 	}, [id]);
 
 	useEffect(() => {
-		videos && setTrailerYoutubeKey(videos.find(video => video.type == 'Recap')?.key);
+		console.log(videos)
+		videos && setTrailerYoutubeKey(videos.find(video => video)?.key);
 	}, [videos]);
 
 	return (
@@ -127,7 +128,7 @@ const TvShowEpisodeSlug = () => {
 				initial={{ marginTop: -120 }}
 				className='flex flex-col bg-accent p-4 rounded-md max-w-full w-[90%] gap-4 shadow-sm'
 			>
-				<h1 className='text-primary-foreground text-sm font-semibold'>Credits</h1>
+				<h1 className='text-primary-foreground text-md font-semibold'>Credits</h1>
 				<h1 className='text-primary-foreground text-sm font-semibold'>Director</h1>
 				{crews &&
 					crews.map((crew, index) => crew.job === 'Director' && <Crew info={crew} key={index} />)
@@ -142,26 +143,24 @@ const TvShowEpisodeSlug = () => {
 						</div>
 					</>
 				)}
-				<h1 className='text-primary-foreground text-xs font-semibold'> Popular guest </h1>
+				<h1 className='text-primary-foreground text-xs font-semibold'> Popular cast </h1>
 				{casts &&
 					<div className='flex flex-wrap gap-4'>
 						<Cast info={casts[0]} />
-						<Cast info={casts[1]} />
-						<Cast info={casts[2]} />
-						<Cast info={casts[3]} />
-						<Cast info={casts[4]} />
 					</div>
 				}
-				<CastSection title='Full guest' casts={casts} />
+				<CastSection title='Full cast' casts={casts} />
 				<CrewSection title='Full crew' crews={details?.crew} />
 			</motion.div>
-			<div className='flex flex-col bg-accent p-4 rounded-md max-w-full w-[90%] gap-4 shadow-sm'>
-				<ClipSection keys={videos?.map((video) => {
-					return { name: video.name, value: video.key }
-				})}
-					title='Clips'
-				/>
-			</div>
+			{videos?.length > 0 &&
+				<div className='flex flex-col bg-accent p-4 rounded-md max-w-full w-[90%] gap-4 shadow-sm'>
+					<ClipSection keys={videos?.map((video) => {
+						return { name: video.name, value: video.key }
+					})}
+						title='Clips'
+					/>
+				</div>
+			}
 		</div>
 	)
 }

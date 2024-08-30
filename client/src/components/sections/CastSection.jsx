@@ -1,7 +1,7 @@
 import Accordion from '../ui/Accordion';
 import { faChevronLeft, faChevronRight } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { useRef, useState, useEffect } from 'react';
+import { useRef, useState } from 'react';
 import { swiperConfigNormal } from '../../configs/swiperConfig';
 import Cast from '../Cast';
 import { Swiper, SwiperSlide } from 'swiper/react';
