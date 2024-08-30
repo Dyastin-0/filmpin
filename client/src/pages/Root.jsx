@@ -34,10 +34,10 @@ const Root = () => {
 
   return (
     <div
-      className='relative flex flex-col p-4 justify-center items-center h-full w-full text-primary bg-primary rounded-lg overflow-hidden'
+      className='relative flex flex-col p-4 justify-center items-center h-full w-full text-primary bg-primary gap-4 rounded-lg overflow-hidden'
     >
       {backdrops && (
-        <AnimatePresence mode='popLayout'>
+        <AnimatePresence>
           <motion.img
             key={backdrops[backdropIndex].backdrop_path}
             src={`https://image.tmdb.org/t/p/original${backdrops[backdropIndex].backdrop_path}`}
@@ -50,28 +50,9 @@ const Root = () => {
           <div className='absolute w-full h-full z-20 rounded-lg bg-black opacity-50'></div>
         </AnimatePresence>
       )}
-      <div className='flex flex-wrap items-center gap-4'>
-        {backdrops && (
-          <AnimatePresence mode='popLayout'>
-            <div className='min-w-[150px] min-h-[230px] z-20 flex justify-center items-center'>
-              <motion.img
-                key={backdrops[backdropIndex].poster_path}
-                src={`https://image.tmdb.org/t/p/original${backdrops[backdropIndex].poster_path}`}
-                loading='lazy'
-                className='rounded-md w-[150px] h-[230px] object-cover'
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                exit={{ opacity: 0 }}
-                transition={{ duration: 1 }}
-              />
-            </div>
-          </AnimatePresence>
-        )}
-        <div className='flex justify-start flex-col'>
-          <h1 className='text-4xl text-accent font-bold z-20'> Explore endless movies & TV shows </h1>
-          <h1 className='text-lg text-accent font-semibold z-20'> Find your next watch using our intuitive UI, seamlessly. </h1>
-          <Link className='text-sm outline-none z-20'>Start now</Link>
-        </div>
+      <div className='flex justify-start flex-col'>
+        <h1 className='text-4xl text-accent font-bold z-20'> Explore endless movies & TV shows </h1>
+        <h1 className='text-lg text-accent font-semibold z-20'> Find your next watch using our intuitive UI, seamlessly. </h1>
       </div>
     </div>
   );
