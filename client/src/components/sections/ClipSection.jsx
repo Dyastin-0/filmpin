@@ -15,13 +15,13 @@ export const ClipSection = ({ title, keys }) => {
 	}
 
 	return (
-		<section className='w-full h-[200px] bg-transparent overflow-hidden gap-4'>
+		<section className='w-full h-fit bg-transparent overflow-hidden gap-4'>
 			<h1 className='text-primary-foreground pb-4 text-sm font-semibold'>{title}</h1>
 			<Swiper {...swiperConfig}>
 				{keys?.map((key, index) => (
 					<SwiperSlide className='max-h-fit' key={index}>
 						<Clip
-							title={key.title}
+							title={key.name}
 							trailerKey={key.value}
 							key={index}
 							onClick={() => handleClick(key.value)}

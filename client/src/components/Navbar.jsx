@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { useAuth } from '../hooks/useAuth';
 import axios from 'axios';
@@ -6,6 +6,7 @@ import { SearchInput } from './ui/Input';
 import Button from './ui/Button';
 import { Dropdown, DropdownItem } from './ui/Dropdown';
 import { useThemeToggle } from '../hooks/useTheme';
+import { motion } from 'framer-motion';
 
 const routes = [
   { path: '/home', name: 'Home' },
@@ -16,13 +17,14 @@ const authRoutes = [
   { path: '/sign-up', name: 'Sign up' }
 ];
 
-
 const Navbar = () => {
   const navigate = useNavigate();
   const location = useLocation();
   const { toggleTheme, theme } = useThemeToggle();
   const { setToken, setUser, user } = useAuth();
   const [query, setQuery] = useState(null);
+  const [isScrollingDown, setIsScrollingDown] = useState(false);
+  const [lastScrollY, setLastScrollY] = useState(0);
 
   const handleSignout = async () => {
     try {
@@ -40,8 +42,24 @@ const Navbar = () => {
     if (query) navigate(`/movies/search?query=${query.replace(/[_\s]/g, '+')}&page=${1}`);
   }
 
+  useEffect(() => {
+    const handleScroll = () => {
+      const currentScrollY = window.scrollY;
+      setIsScrollingDown(currentScrollY > lastScrollY && currentScrollY > 50);
+      setLastScrollY(currentScrollY);
+    };
+
+    window.addEventListener('scroll', handleScroll);
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, [lastScrollY]);
+
   return (
-    <div className='flex justify-between bg-primary rounded-lg w-full p-3 gap-3 drop-shadow-sm z-50'>
+    <motion.div
+      className='sticky top-4 flex justify-between bg-primary rounded-lg w-full p-3 gap-3 drop-shadow-sm z-50'
+      initial={{ y: 0 }}
+      animate={{ y: isScrollingDown ? '-100%' : '0%' }}
+      transition={{ type: 'spring', stiffness: 100, damping: 20 }}
+    >
       <Link to='/'>
         {/* <div className='flex font-semibold'>
           <h1 className='text-primary-highlight'>Film</h1>
@@ -49,28 +67,24 @@ const Navbar = () => {
         </div> */}
       </Link>
       <div className='flex w-fit items-center gap-3'>
-        {
-          user && routes.map((route, index) => (
-            <Button
-              key={index}
-              onClick={() => navigate(route.path)}
-              variant='link'
-              text={route.name}
-              className={`${route.path === location.pathname ? 'text-primary-highlight shadow-[var(--highlight)_0_2px_0_0]' : ''}`}
-            />
-          ))
-        }
-        {
-          !user && authRoutes.map((route, index) => (
-            <Button
-              key={index}
-              onClick={() => navigate(route.path)}
-              variant='link'
-              text={route.name}
-              className={`${route.path === location.pathname ? 'text-primary-highlight shadow-[var(--highlight)_0_2px_0_0]' : ''}`}
-            />
-          ))
-        }
+        {user && routes.map((route, index) => (
+          <Button
+            key={index}
+            onClick={() => navigate(route.path)}
+            variant='link'
+            text={route.name}
+            className={`${route.path === location.pathname ? 'text-primary-highlight shadow-[var(--highlight)_0_2px_0_0]' : ''}`}
+          />
+        ))}
+        {!user && authRoutes.map((route, index) => (
+          <Button
+            key={index}
+            onClick={() => navigate(route.path)}
+            variant='link'
+            text={route.name}
+            className={`${route.path === location.pathname ? 'text-primary-highlight shadow-[var(--highlight)_0_2px_0_0]' : ''}`}
+          />
+        ))}
         <div className='max-w-full'>
           {user &&
             <SearchInput
@@ -87,14 +101,14 @@ const Navbar = () => {
         <Button text={theme} onClick={toggleTheme} />
         {user &&
           <Dropdown name={user?.username}>
-            <DropdownItem onClick={handleSignout} >
+            <DropdownItem onClick={handleSignout}>
               Sign out
             </DropdownItem>
           </Dropdown>
         }
       </div>
-    </div>
-  )
+    </motion.div>
+  );
 }
 
 export default Navbar;

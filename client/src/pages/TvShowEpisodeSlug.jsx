@@ -84,7 +84,7 @@ const TvShowEpisodeSlug = () => {
 		<div className="flex flex-col items-center bg-primary rounded-lg gap-4 p-4 h-full w-full">
 			{details ?
 				<>
-					<div className='w-full h-[300px] rounded-lg overflow-hidden'>
+					<div className='w-full h-[400px] rounded-lg overflow-hidden'>
 						<img
 							loading='lazy'
 							className='w-full h-full object-cover'
