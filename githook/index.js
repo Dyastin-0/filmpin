@@ -1,21 +1,21 @@
 const express = require('express');
 const { exec } = require('child_process');
 const crypto = require('crypto');
-const dotenv = require('dotenv').config();
+const bodyParser = require('body-parser');
 
 const app = express();
-app.use(express.json());
+
+app.use(bodyParser.raw({ type: 'application/json' }));
 
 const GITHUB_SECRET = process.env.GITHUB_SECRET;
 
-function verifyGitHubSignature(req, res, next) {
+const verifyGitHubSignature = (req, res, next) => {
     const signature = req.headers['x-hub-signature-256'];
-    if (!signature) {
+    if (!signature)
         return res.status(401).send('No signature provided');
-    }
 
     const hmac = crypto.createHmac('sha256', GITHUB_SECRET);
-    const digest = `sha256=${hmac.update(JSON.stringify(req.body)).digest('hex')}`;
+    const digest = `sha256=${hmac.update(req.body).digest('hex')}`;
 
     if (crypto.timingSafeEqual(Buffer.from(signature), Buffer.from(digest))) {
         return next();
