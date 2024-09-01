@@ -1,20 +1,20 @@
 import { useState, useEffect } from 'react';
 
 const lightTheme = {
-  '--bg-primary': '#f5f7f8',
-  '--bg-secondary': '#eeeeee',
-  '--accent': '#ffffff',
-  '--highlight': '#508C9B',
+  '--bg-primary': '#F5F5F5',
+  '--bg-secondary': '#EBEBEB',
+  '--accent': '#FFFFFF',
+  '--highlight': '#3A7BD5',
   '--text-highlight': '#ffffff',
   '--text-secondary': '#888888',
   '--text-primary': '#686d76',
 };
 
 const darkTheme = {
-  '--bg-primary': '#1a1a1b',
-  '--bg-secondary': '#121213',
-  '--accent': '#1f1f20',
-  '--highlight': '#508C9B',
+  '--bg-primary': '#212830',
+  '--bg-secondary': '#1A2028',
+  '--accent': '#2B333E',
+  '--highlight': '#3A7BD5',
   '--text-highlight': '#f2f2f3',
   '--text-secondary': '#a4a4a6',
   '--text-primary': '#ffffff',

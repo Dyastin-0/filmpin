@@ -55,7 +55,7 @@ const Navbar = () => {
 
   return (
     <motion.div
-      className='sticky top-4 flex justify-between bg-primary rounded-lg w-full p-3 gap-3 drop-shadow-sm z-50'
+      className='sticky top-3 flex justify-between bg-primary rounded-lg w-full p-3 gap-3 drop-shadow-sm z-50'
       initial={{ y: 0 }}
       animate={{ y: isScrollingDown ? '-100%' : '0%' }}
       transition={{ type: 'spring', stiffness: 100, damping: 20 }}
