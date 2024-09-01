@@ -23,7 +23,7 @@ function verifyGitHubSignature(req, res, next) {
     }
 }
 
-app.post('/webhook', verifyGitHubSignature, (req, res) => {
+app.get('/webhook', verifyGitHubSignature, (req, res) => {
     exec('cd ../client && git pull && npm i && npm run build && cd ../server && npm i && sudo systemctl restart filmpin.service && systemctl restart filmpinclient.service && systemctl restart caddy', (err, stdout, stderr) => {
         if (err) {
             console.error(`Error pulling repo: ${stderr}`);
