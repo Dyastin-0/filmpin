@@ -1,5 +1,5 @@
 const handleRoot = (_, res) => {
-	res.sendStatus(200);
+	res.status(200).send('Riyajinn.');
 }
 
 module.exports = handleRoot;
