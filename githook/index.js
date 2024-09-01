@@ -2,6 +2,7 @@ const express = require('express');
 const { exec } = require('child_process');
 const crypto = require('crypto');
 const bodyParser = require('body-parser');
+const dotenv = require('dotenv').config();
 
 const app = express();
 
