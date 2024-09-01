@@ -5,7 +5,7 @@ const app = express();
 app.use(express.json());
 
 app.post('/webhook', (req, res) => {
-    exec('cd filmpin/client && git pull && npm i && npm run build && cd ../server && npm i && sudo systemctl restart filmpin.service && systemctl restart filmpinclient.service && systemctl restart caddy', (err, stdout, stderr) => {
+    exec('cd ../client && git pull && npm i && npm run build && cd ../server && npm i && sudo systemctl restart filmpin.service && systemctl restart filmpinclient.service && systemctl restart caddy', (err, stdout, stderr) => {
         if (err) {
             console.error(`Error pulling repo: ${stderr}`);
             res.status(500).send('Error');
