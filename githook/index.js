@@ -1,11 +1,12 @@
 const express = require('express');
 const { exec } = require('child_process');
 const crypto = require('crypto');
+const dotenv = require('dotenv');
 
 const app = express();
 app.use(express.json());
 
-const GITHUB_SECRET = 'yanyang';
+const GITHUB_SECRET = process.env.GITHUB_SECRET;
 
 function verifyGitHubSignature(req, res, next) {
     const signature = req.headers['x-hub-signature-256'];
