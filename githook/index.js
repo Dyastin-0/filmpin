@@ -33,7 +33,7 @@ const verifyGitHubSignature = (req, res, next) => {
   const signature = req.headers['x-hub-signature-256'];
   if (!signature) return res.status(400).send('Missing signature');
 
-  const hmac = createHmacSignature(req);
+  const hmac = 'sha256=' + createHmacSignature(req);
 
   console.log('Received signature:', signature);
   console.log('Calculated HMAC:', hmac);
