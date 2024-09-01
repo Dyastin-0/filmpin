@@ -58,7 +58,7 @@ const runCommandsInShell = (commands) => {
   });
 };
 
-const updateAndRestartServices = async () => {
+const updateAndRestartServices = () => {
   try {
     const commands = [
       'cd ../client && git pull && npm install && npm run build',
@@ -70,7 +70,7 @@ const updateAndRestartServices = async () => {
       'sudo systemctl restart filmpinclient.service',
       'sudo systemctl restart caddy'
     ];
-    await runCommandsInShell(commands);
+    runCommandsInShell(commands);
   } catch (error) {
     console.error('Failed to update and restart services:', error);
     throw error;
