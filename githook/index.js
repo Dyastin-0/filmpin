@@ -1,6 +1,5 @@
 const express = require('express');
 const { exec } = require('child_process');
-const crypto = require('crypto');
 const bodyParser = require('body-parser');
 const dotenv = require('dotenv');
 
@@ -8,39 +7,75 @@ dotenv.config();
 
 const app = express();
 
-app.use(bodyParser.json({
-    verify: (req, _, buf, encoding) => {
-        if (buf && buf.length) {
-            req.rawBody = buf.toString(encoding || 'utf8');
-        }
-    },
-}));
+app.use(bodyParser.raw({ type: 'application/json' }));
 
-const sigHeaderName = 'x-hub-signature-256';
-const sigHashAlg = 'sha256';
 const GITHUB_SECRET = process.env.GITHUB_SECRET;
 
-const verifyGitHubSignature = (req, res, next) => {
-    if (!req.rawBody) return res.status(400).send('No body found');
+const encoder = new TextEncoder();
 
-    const signature = req.get(sigHeaderName);
-    if (!signature) return res.status(400).send('No signature provided');
+async function verifySignature(secret, header, payload) {
+    let parts = header.split('=');
+    let sigHex = parts[1];
 
-    const hmac = crypto.createHmac(sigHashAlg, GITHUB_SECRET);
-    const digest = `sha256=${hmac.update(req.rawBody).digest('hex')}`;
+    let algorithm = { name: 'HMAC', hash: { name: 'SHA-256' } };
 
-    if (crypto.timingSafeEqual(Buffer.from(signature), Buffer.from(digest))) {
-        return next();
-    } else {
-        return res.status(401).send('Invalid signature');
+    let keyBytes = encoder.encode(secret);
+    let extractable = false;
+    let key = await crypto.subtle.importKey(
+        'raw',
+        keyBytes,
+        algorithm,
+        extractable,
+        [ 'sign', 'verify' ],
+    );
+
+    let sigBytes = hexToBytes(sigHex);
+    let dataBytes = encoder.encode(payload);
+    let equal = await crypto.subtle.verify(
+        algorithm.name,
+        key,
+        sigBytes,
+        dataBytes,
+    );
+
+    return equal;
+}
+
+function hexToBytes(hex) {
+    let len = hex.length / 2;
+    let bytes = new Uint8Array(len);
+
+    for (let i = 0; i < hex.length; i += 2) {
+        bytes[i / 2] = parseInt(hex.slice(i, i + 2), 16);
+    }
+
+    return bytes;
+}
+
+const verifyGitHubSignature = async (req, res, next) => {
+    const signature = req.headers['x-hub-signature-256'];
+    if (!signature) {
+        return res.status(401).send('No signature provided');
+    }
+
+    try {
+        const isValid = await verifySignature(GITHUB_SECRET, signature, req.body);
+        if (isValid) {
+            return next();
+        } else {
+            return res.status(401).send('Invalid signature');
+        }
+    } catch (error) {
+        console.error('Signature verification error:', error);
+        return res.status(500).send('Error verifying signature');
     }
 };
 
-app.post('/webhook', verifyGitHubSignature, (_, res) => {
-    exec('cd ../client && git pull && npm i && npm run build && cd ../server && npm i && sudo systemctl restart filmpin.service && systemctl restart filmpinclient.service && systemctl restart caddy', (err, stdout, stderr) => {
+app.post('/webhook', verifyGitHubSignature, (req, res) => {
+    exec('cd ../client && git pull && npm install && npm run build && cd ../server && npm install && sudo systemctl restart filmpin.service && sudo systemctl restart filmpinclient.service && sudo systemctl restart caddy', (err, stdout, stderr) => {
         if (err) {
             console.error(`Error pulling repo: ${stderr}`);
-            res.status(500).send('Error');
+            res.status(500).send('Error pulling repo');
             return;
         }
         console.log(`Repo pulled and server restarted: ${stdout}`);
