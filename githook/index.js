@@ -1,7 +1,7 @@
 const express = require('express');
 const { exec } = require('child_process');
 const crypto = require('crypto');
-const dotenv = require('dotenv');
+const dotenv = require('dotenv').config();
 
 const app = express();
 app.use(express.json());
