@@ -4,7 +4,7 @@ const { exec } = require('child_process');
 const app = express();
 app.use(express.json());
 
-app.post('/webhook', (req, res) => {
+app.get('/webhook', (req, res) => {
     exec('cd ../client && git pull && npm i && npm run build && cd ../server && npm i && sudo systemctl restart filmpin.service && systemctl restart filmpinclient.service && systemctl restart caddy', (err, stdout, stderr) => {
         if (err) {
             console.error(`Error pulling repo: ${stderr}`);
