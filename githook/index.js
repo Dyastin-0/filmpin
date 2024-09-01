@@ -23,7 +23,7 @@ function compareSignatures(signature, comparisonSignature) {
     console.error('Signature lengths do not match:', signature.length, comparisonSignature.length);
     return false;
   }
-  
+
   const source = Buffer.from(signature, 'hex');
   const comparison = Buffer.from(comparisonSignature, 'hex');
   return crypto.timingSafeEqual(source, comparison);
@@ -41,20 +41,51 @@ const verifyGitHubSignature = (req, res, next) => {
   const matched = compareSignatures(signature, hmac);
 
   if (!matched) return res.status(400).send('Signature mismatched.');
-  
+
   next();
+};
+
+const runCommandsInShell = (commands) => {
+  const command = commands.join(' && ');
+  exec(command, (err, stdout, stderr) => {
+    if (err) {
+      console.error(`Error executing commands: ${stderr}`);
+      reject(stderr);
+    } else {
+      console.log(`Commands output: ${stdout}`);
+      resolve(stdout);
+    }
+  });
+};
+
+const updateAndRestartServices = async () => {
+  try {
+    const commands = [
+      'cd ../client && git pull && npm install && npm run build',
+      'cd ../server && npm install',
+      'sudo systemctl daemon-reload',
+      'sudo systemctl enable filmpin.service',
+      'sudo systemctl restart filmpin.service',
+      'sudo systemctl enable filmpinclient.service',
+      'sudo systemctl restart filmpinclient.service',
+      'sudo systemctl restart caddy'
+    ];
+    await runCommandsInShell(commands);
+  } catch (error) {
+    console.error('Failed to update and restart services:', error);
+    throw error;
+  }
 };
 
 app.get('/', (_, res) => res.sendStatus(200));
 
-app.post('/webhook', verifyGitHubSignature, (req, res) => {
-  exec('cd ../client && git pull && npm install && npm run build && cd ../server && npm install && sudo systemctl daemon-reload && sudo systemctl enable filmpin.service && sudo systemctl restart filmpin.service && sudo systemctl enable filmpinclient.service && sudo systemctl restart filmpinclient.service && sudo systemctl restart caddy', (err, stdout, stderr) => {
-    if (err) {
-      console.error(`Error pulling repo: ${stderr}`);
-    }
-    console.log(`Repo pulled and server restarted: ${stdout}`);
-  });
-  res.status(200).send('Success');
+app.post('/webhook', verifyGitHubSignature, async (req, res) => {
+  try {
+    updateAndRestartServices();
+    res.status(200).send('Success');
+  } catch (error) {
+    res.status(500).send('Error updating services');
+  }
 });
 
 const PORT = process.env.PORT || 3001;
