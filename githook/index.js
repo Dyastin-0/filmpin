@@ -45,16 +45,16 @@ const verifyGitHubSignature = (req, res, next) => {
   next();
 };
 
+app.get('/', (_, res) => res.sendStatus(200));
+
 app.post('/webhook', verifyGitHubSignature, (req, res) => {
   exec('cd ../client && git pull && npm install && npm run build && cd ../server && npm install && sudo systemctl restart filmpin.service && sudo systemctl restart filmpinclient.service && sudo systemctl restart caddy', (err, stdout, stderr) => {
     if (err) {
       console.error(`Error pulling repo: ${stderr}`);
-      res.status(500).send('Error pulling repo');
-      return;
     }
     console.log(`Repo pulled and server restarted: ${stdout}`);
-    res.status(200).send('Success');
   });
+  res.status(200).send('Success');
 });
 
 const PORT = process.env.PORT || 3001;
