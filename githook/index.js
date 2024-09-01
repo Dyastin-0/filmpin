@@ -19,6 +19,11 @@ const createHmacSignature = (req) => {
 }
 
 function compareSignatures(signature, comparisonSignature) {
+  if (signature.length !== comparisonSignature.length) {
+    console.error('Signature lengths do not match:', signature.length, comparisonSignature.length);
+    return false;
+  }
+  
   const source = Buffer.from(signature, 'hex');
   const comparison = Buffer.from(comparisonSignature, 'hex');
   return crypto.timingSafeEqual(source, comparison);
@@ -29,6 +34,9 @@ const verifyGitHubSignature = (req, res, next) => {
   if (!signature) return res.status(400).send('Missing signature');
 
   const hmac = createHmacSignature(req);
+
+  console.log('Received signature:', signature);
+  console.log('Calculated HMAC:', hmac);
 
   const matched = compareSignatures(signature, hmac);
 
