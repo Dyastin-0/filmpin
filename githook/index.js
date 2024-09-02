@@ -1,11 +1,11 @@
 const express = require('express');
+const bodyParser = require('body-parser');
 const dotenv = require('dotenv').config();
 const { verifyGitHubSignature } = require('./middlewares/githubSignature');
 const { runCommandsInShell } = require('./helpers/childExec');
 
 const app = express();
-
-app.use(express.json());
+app.use(bodyParser.raw({ type: 'application/json' }));
 
 const hasChangesInDirectory = (commits, directory) => {
   return commits.some(commit =>
@@ -39,7 +39,7 @@ const updateAndRestartServices = (commits) => {
 
 app.get('/', (_, res) => res.sendStatus(200));
 
-app.post('/githook', verifyGitHubSignature, (req, res) => {
+app.post('/webhook', verifyGitHubSignature, (req, res) => {
   try {
     const payload = JSON.parse(req.body);
     const commits = payload.commits || [];
