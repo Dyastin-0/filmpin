@@ -2,6 +2,7 @@ import { faPlay } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
 const Clip = ({ title, trailerKey, onClick }) => {
+	console.log(title)
 	return (
 		<div className='h-fit max-w-[270px] hover:cursor-pointer'
 			onClick={onClick}
