@@ -21,19 +21,19 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 
-app.use('/', require('./routes/auth'));
-app.use('/sign-up', require('./routes/auth'));
-app.use('/sign-in', require('./routes/auth'));
-app.use('/refreshAccessToken', require('./routes/auth'));
-app.use('/log-out', require('./routes/auth'));
-app.use('/email', require('./routes/email'));
-app.use('/recover', require('./routes/email'));
+app.use('/api/', require('./routes/auth'));
+app.use('/api/sign-up', require('./routes/auth'));
+app.use('/api/sign-in', require('./routes/auth'));
+app.use('/api/refreshAccessToken', require('./routes/auth'));
+app.use('/api/log-out', require('./routes/auth'));
+app.use('/api/email', require('./routes/email'));
+app.use('/api/recover', require('./routes/email'));
 
-app.use('/public/backdrops', require('./routes/public/backdrops'));
+app.use('/api/public/backdrops', require('./routes/public/backdrops'));
 
 app.use(verifyJsonWebToken);
-app.use('/movies', require('./routes/api/movies'));
-app.use('/tvshows', require('./routes/api/tvshows'))
+app.use('/api/movies', require('./routes/api/movies'));
+app.use('/api/tvshows', require('./routes/api/tvshows'))
 
 if (process.env.BASE_SERVER_URL) {
 	cron.schedule('*/14 * * * *', async () => {
