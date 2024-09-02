@@ -5,10 +5,8 @@ const runCommandsInShell = (commands) => {
   exec(command, (err, stdout, stderr) => {
     if (err) {
       console.error(`Error executing commands: ${stderr}`);
-      reject(stderr);
     } else {
       console.log(`Commands output: ${stdout}`);
-      resolve(stdout);
     }
   });
 };
