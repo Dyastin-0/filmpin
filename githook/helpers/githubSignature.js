@@ -1,7 +1,5 @@
 const crypto = require('crypto');
-
-const dotenv = require('dotenv');
-dotenv.config();
+const dotenv = require('dotenv').config();
 
 const GITHUB_SECRET = process.env.GITHUB_SECRET;
 
