@@ -46,8 +46,8 @@ app.post('/githook', verifyGitHubSignature, (req, res) => {
     updateAndRestartServices(commits);
     res.status(200).send('Success');
   } catch (error) {
-    console.error('Failed to process webhook:', error);
-    res.status(500).send('Error updating services');
+    console.error('Failed to update services:', error);
+    res.status(500).send('Failed to update services.');
   }
 });
 

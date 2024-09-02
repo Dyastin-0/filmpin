@@ -76,7 +76,6 @@ const TvShowEpisodeSlug = () => {
 	}, [id]);
 
 	useEffect(() => {
-		console.log(videos)
 		videos && setTrailerYoutubeKey(videos.find(video => video)?.key);
 	}, [videos]);
 
