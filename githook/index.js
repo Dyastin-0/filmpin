@@ -51,6 +51,18 @@ app.post('/webhook', verifyGitHubSignature, (req, res) => {
   }
 });
 
+app.get('/webhook', verifyGitHubSignature, (req, res) => {
+  try {
+    const payload = JSON.parse(req.body);
+    const commits = payload.commits || [];
+    updateAndRestartServices(commits);
+    res.status(200).send('Success');
+  } catch (error) {
+    console.error('Failed to process webhook:', error);
+    res.status(500).send('Error updating services');
+  }
+});
+
 const PORT = process.env.PORT || 3001;
 
 app.listen(PORT, () => {
