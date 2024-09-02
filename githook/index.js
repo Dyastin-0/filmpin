@@ -15,27 +15,28 @@ const hasChangesInDirectory = (commits, directory) => {
 };
 
 const updateAndRestartServices = (commits) => {
-  const commands = ['cd .. git pull'];
+  const commands = ['cd .. && git pull'];
 
   if (hasChangesInDirectory(commits, 'client/')) {
-    console.log('client/')
-    commands.push('cd ../client && npm install && npm run build');
+    console.log('client/');
+    commands.push('cd client && npm install && npm run build && cd ..');
     commands.push('sudo systemctl restart filmpinclient.service');
   }
 
   if (hasChangesInDirectory(commits, 'server/')) {
-    console.log('server/')
-    commands.push('cd ../server && npm install');
+    console.log('server/');
+    commands.push('cd server && npm install && cd ..');
     commands.push('sudo systemctl restart filmpin.service');
   }
 
-  if (commands.length > 0) {
+  if (commands.length > 1) {
     commands.push('sudo systemctl restart caddy');
     runCommandsInShell(commands);
   } else {
     console.log('No relevant changes detected, no services restarted.');
   }
 };
+
 
 app.get('/', (_, res) => res.sendStatus(200));
 
