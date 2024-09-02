@@ -17,26 +17,36 @@
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 
-  --highlight: #508C9B;
+  --highlight: #23859e;
   --light: #FFFFFF;
 
-  /* Theme variables */
-  --bg-primary: #f5f7f8; /* Light theme by default */
-  --bg-secondary: #eeeeee;
-  --accent: #ffffff;
+  --error: #c71b29;
+  --success: #0e9b71;
+}
+
+:root.dark {
+  --bg-primary: #212830;
+  --bg-secondary: #1A2028;
+  --accent: #2B333E;
+  --text-highlight: #f2f2f3;
+  --text-secondary: #cacaca;
+  --text-primary: #ffffff;
+}
+
+:root.light {
+  --bg-primary: #F5F5F5;
+  --bg-secondary: #EBEBEB;
+  --accent: #FFFFFF;
   --text-highlight: #ffffff;
   --text-secondary: #888888;
   --text-primary: #686d76;
-  
-  --error: #c71b29;
-  --success: #0e9b71;
 }
 
 @media (prefers-color-scheme: dark) {
   :root {
     --bg-primary: #212830;
-    --bg-secondary: #121213;
-    --accent: #1f1f20;
+    --bg-secondary: #1A2028;
+    --accent: #2B333E;
     --text-highlight: #f2f2f3;
     --text-secondary: #a4a4a6;
     --text-primary: #ffffff;
