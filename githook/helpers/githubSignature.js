@@ -1,6 +1,8 @@
 const crypto = require('crypto');
 
 const GITHUB_SECRET = process.env.GITHUB_SECRET;
+const dotenv = require('dotenv');
+dotenv.config();
 
 const createHmacSignature = (req) => {
   return crypto
