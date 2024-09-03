@@ -24,7 +24,6 @@ const TvShowSlug = () => {
 	const [videos, setVideos] = useState(null);
 	const [similarShows, setSimilarShows] = useState(null);
 	const [seasons, setSeasons] = useState(false);
-	const [isLoading, setIsLoading] = useState(true);
 	const id = searchParams.get('id');
 
 	const fetchShow = async (id) => {
@@ -79,7 +78,6 @@ const TvShowSlug = () => {
 			const genres = show.genres.map(genre => genre.name).join('_').toLowerCase();
 			getDiscovery(genres, 'vote_count', 1).then(response => {
 				setSimilarShows(response.results);
-				setIsLoading(false);
 				setLoading(false);
 			});
 			getSeasons(show.id, show.number_of_seasons).then(seasons => setSeasons(seasons));
@@ -171,7 +169,7 @@ const TvShowSlug = () => {
 				className='flex flex-col bg-accent rounded-lg gap-4 p-4 items-center w-[90%]'
 				initial={{ marginTop: -120 }}
 			>
-				{show ?
+				{seasons ?
 					<SeasonSection seasons={seasons} title={show.name} showId={show.id} backdropPath={show.backdrop_path} />
 					: <LoadingMovieSection title='Seasons' />
 				}

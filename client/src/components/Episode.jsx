@@ -58,6 +58,7 @@ const Episode = ({ info, showId, title, backdropPath, seasonNumber }) => {
 				<CircularProgress
 					size='40px'
 					color='var(--highlight)'
+					trackColor='var(--bg-primary)'
 					value={info.vote_average}
 					max={10}
 				>

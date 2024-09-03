@@ -19,7 +19,7 @@ export const ClipSection = ({ title, keys }) => {
 			<h1 className='text-primary-foreground pb-4 text-sm font-semibold'>{title}</h1>
 			<Swiper {...swiperConfig}>
 				{keys?.map((key, index) => (
-					<SwiperSlide className='max-h-fit' key={index}>
+					<SwiperSlide className='max-h-fit transition-all duration-300 hover:scale-95' key={index}>
 						<Clip
 							title={key.name}
 							trailerKey={key.value}

@@ -22,7 +22,6 @@ const TvShowSeasonSlug = () => {
 	const { setModal, setOpen } = useModal();
 	const [trailerYoutubeKey, setTrailerYoutubeKey] = useState(null);
 	const [videos, setVideos] = useState(null);
-	const [isLoading, setIsLoading] = useState(true);
 	const id = searchParams.get('id').split('_')[0];
 	const seasonNumber = searchParams.get('season_number');
 	const title = searchParams.get('title');
@@ -53,12 +52,10 @@ const TvShowSeasonSlug = () => {
 				setLoading(true);
 				getDetails(id, seasonNumber).then(details => {
 					setDetails(details);
-					setIsLoading(false);
 					setLoading(false);
 				});
 			} else {
 				setDetails(stateDetails);
-				setIsLoading(false);
 				setLoading(false);
 			}
 			getVideos(id, seasonNumber).then(videos => setVideos(videos.results));

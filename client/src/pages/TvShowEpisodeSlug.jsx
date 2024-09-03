@@ -27,7 +27,6 @@ const TvShowEpisodeSlug = () => {
 	const { setModal, setOpen } = useModal();
 	const [trailerYoutubeKey, setTrailerYoutubeKey] = useState(null);
 	const [videos, setVideos] = useState(null);
-	const [isLoading, setIsLoading] = useState(true);
 	const id = searchParams.get('id').split('_')[0];
 	const seasonNumber = searchParams.get('season_number');
 	const episodeNumber = searchParams.get('episode_number');
@@ -61,14 +60,12 @@ const TvShowEpisodeSlug = () => {
 					setDetails(details);
 					setCrews(details.crew);
 					setCasts(details.guest_stars.sort((a, b) => b.popularity - a.popularity));
-					setIsLoading(false);
 					setLoading(false);
 				});
 			} else {
 				setDetails(stateDetails);
 				setCrews(stateDetails.crew);
 				setCasts(stateDetails.guest_stars.sort((a, b) => b.popularity - a.popularity));
-				setIsLoading(false);
 				setLoading(false);
 			}
 			getVideos(id, seasonNumber, episodeNumber).then(videos => setVideos(videos.results));
@@ -156,7 +153,7 @@ const TvShowEpisodeSlug = () => {
 					<ClipSection keys={videos?.map((video) => {
 						return { name: video.name, value: video.key }
 					})}
-						title='Clips'
+						title='Videos'
 					/>
 				</div>
 			}

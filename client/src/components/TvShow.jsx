@@ -86,6 +86,7 @@ const TvShow = ({ info }) => {
 				<CircularProgress
 					size='40px'
 					color='var(--highlight)'
+					trackColor='var(--bg-primary)'
 					value={details.vote_average}
 					max={10}
 				>

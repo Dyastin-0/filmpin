@@ -13,7 +13,8 @@ export const RatingDummy = () => {
     <motion.div variants={blinkOpacity} animate='blink' className='absolute bottom-4 right-4'>
       <CircularProgress
         size='40px'
-        ringColor={'var(--bg-primary)'}
+        ringColor='var(--bg-primary)'
+        trackColor='var(--bg-primary)'
       >
       </CircularProgress>
     </motion.div>

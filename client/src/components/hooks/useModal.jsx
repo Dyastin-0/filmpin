@@ -41,9 +41,9 @@ export function ModalProvider({ children }) {
             >
               <motion.div
                 className='flex justify-center items-center w-full h-full'
-                initial={{ y: 400, opacity: 0 }}
-                animate={{ y: 0, opacity: 1 }}
-                exit={{ y: -400, opacity: 0 }}
+                initial={{ scale: 0, opacity: 0 }}
+                animate={{ scale: 1, opacity: 1 }}
+                exit={{ scale: 0, opacity: 0 }}
               >
                 {modal}
               </motion.div>
