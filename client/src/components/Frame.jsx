@@ -1,6 +1,6 @@
 const Frame = ({ youtubeKey, title }) => {
 	return (
-		<div className='w-full max-w-[100%] lg:max-w-[70%] m-4 aspect-video'>
+		<div className='w-[800px] max-w-full aspect-video'>
 			<iframe
 				className='w-full h-full rounded-lg'
 				src={`https://youtube.com/embed/${youtubeKey}`}

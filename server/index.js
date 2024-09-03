@@ -32,8 +32,9 @@ app.use('/api/recover', require('./routes/email'));
 app.use('/api/public/backdrops', require('./routes/public/backdrops'));
 
 app.use(verifyJsonWebToken);
+app.use('/api/account', require('./routes/api/account'));
 app.use('/api/movies', require('./routes/api/movies'));
-app.use('/api/tvshows', require('./routes/api/tvshows'))
+app.use('/api/tvshows', require('./routes/api/tvshows'));
 
 if (process.env.BASE_SERVER_URL) {
 	cron.schedule('*/14 * * * *', async () => {

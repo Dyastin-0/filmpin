@@ -1,7 +1,7 @@
 import React from 'react'
 
 const variants = {
-	default: 'p-2 text-primary-highlight rounded-md transition-all duration-300 active:opacity-70 focus:bg-primary-highlight focus:text-primary-highlight-foreground hover:bg-primary-highlight hover:text-primary-highlight-foreground',
+	default: 'p-2 text-primary-highlight-foreground bg-primary-highlight rounded-md transition-all duration-300 hover:opacity-90 focus:opacity-90 active:opacity-70',
 	link: 'text-primary-foreground font-semibold transition-all duration-300 hover:cursor-pointer hover:text-primary-highlight focus:shadow-[var(--highlight)_0_2px_0_0] pb-1',
 	ghost: 'text-primary-foreground bg-accent rounded-md shadow-sm p-2 focus:shadow-[var(--highlight)_0_0_0_2px] transition-all duration-300'
 }

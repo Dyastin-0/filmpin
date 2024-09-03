@@ -13,6 +13,7 @@ const verifyJsonWebToken = (req, res, next) => {
 			req.username = decoded.UserInfo.username;
 			req.email = decoded.UserInfo.email;
 			req.roles = decoded.UserInfo.roles;
+			req.id = decoded.UserInfo.id;
 			next();
 		}
 	);

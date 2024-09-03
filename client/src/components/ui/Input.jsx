@@ -68,7 +68,7 @@ export const SearchInput = ({ onChange, type, value, id, placeholder, required, 
 				placeholder={placeholder}
 				onFocus={() => setFocus(true)}
 				onBlur={() => setFocus(false)}
-				className={`bg-transparent text-primary-foreground placeholder-primary-foreground rounded-md text-xs outline-none
+				className={`bg-transparent text-primary-foreground placeholder-secondary-foreground rounded-md text-xs outline-none
 					w-full`}
 			/>
 			<button type='submit' onFocus={() => setFocus(true)} onBlur={() => setFocus(false)} className='outline-none'>

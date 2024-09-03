@@ -7,6 +7,7 @@ import ProtectedRoute from './utils/protectedRoute';
 import 'swiper/css';
 import 'swiper/css/pagination';
 import 'swiper/css/navigation';
+import Profile from './pages/Profile';
 
 const Root = lazy(() => import('./pages/Root'));
 const Signin = lazy(() => import('./pages/Signin'));
@@ -51,6 +52,7 @@ function App() {
             <Route path='/tvshows/:show_id/season' element={<TvShowSeasonSlug />} />
             <Route path='/tvshows/:show_id/:season/episode' element={<TvShowEpisodeSlug />} />
             <Route path='/discover/tvshows' element={<DiscoverTvShowSlug />} />
+            <Route path='/:username' element={<Profile />} />
           </Route>
         </Routes>
       </Suspense>

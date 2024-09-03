@@ -6,7 +6,6 @@ import Input from '../components/ui/Input';
 import Button from '../components/ui/Button';
 import { ShowPassword } from '../components/utils/ShowPassword';
 import { useToast } from '../components/hooks/useToast';
-import useAxios from '../hooks/useAxios';
 
 const Signin = () => {
   const emailRef = useRef(null);
@@ -91,16 +90,16 @@ const Signin = () => {
         </div>
         <Link
           to={`/account/recover`}
-          className='underline underline-offset-2 pb-2 outline-none text-primary-highlight text-xs'
+          className='underline underline-offset-2 pb-2 outline-none text-primary-foreground text-xs focus:text-primary-highlight'
         > Forgot password? </Link>
         <Button type='submit' disabled={signingIn} text={`${signingIn ? 'Signing in...' : 'Sign in'}`} />
         <Link
           to={`/account/verify`}
-          className='underline underline-offset-2 text-center pt-1 pb-1 outline-none text-primary-highlight text-xs'
+          className='underline underline-offset-2 text-center pt-1 pb-1 outline-none text-primary-foreground text-xs transition-colors duration-300 focus:text-primary-highlight'
         > Verify your account </Link>
         <Link
           to={`/sign-up`}
-          className='underline underline-offset-2 text-center pt-1 pb-1 outline-none text-primary-highlight text-xs'
+          className='underline underline-offset-2 text-center pt-1 pb-1 outline-none text-primary-foreground text-xs transition-colors duration-300 focus:text-primary-highlight'
         > Don't have an account? click here </Link>
       </form>
     </div>

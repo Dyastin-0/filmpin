@@ -40,10 +40,11 @@ export function ModalProvider({ children }) {
               onClick={() => setOpen(false)}
             >
               <motion.div
-                className='flex justify-center items-center w-full h-full'
+                className='flex justify-center items-center w-fit max-w-full h-fit p-4'
                 initial={{ scale: 0, opacity: 0 }}
                 animate={{ scale: 1, opacity: 1 }}
                 exit={{ scale: 0, opacity: 0 }}
+                onClick={(e) => e.stopPropagation()}
               >
                 {modal}
               </motion.div>

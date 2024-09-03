@@ -32,12 +32,14 @@ const handleRefreshAccessToken = async (req, res) => {
 				await Users.updateOne({ email: user.email }, { $set: { refreshToken: [...newRefreshTokens] } });
 			}
 			if (error || user.email !== decoded.email) return res.sendStatus(403);
+			console.log(user._id);
 			const accessToken = jwt.sign(
 				{
 					UserInfo: {
 						username: user.username,
 						email: user.email,
-						roles: user.roles
+						roles: user.roles,
+						id: user._id
 					}
 				},
 				process.env.ACCESS_TOKEN_SECRET,
@@ -53,7 +55,7 @@ const handleRefreshAccessToken = async (req, res) => {
 			res.cookie('jwt', newRefreshToken, { httpOnly: true, sameSite: 'None', secure: true, maxAge: 30 * 24 * 60 * 60 * 1000 });
 			res.json({
 				accessToken,
-				user: { username: user.username, email: user.email, roles: user.roles }
+				user: { username: user.username, email: user.email, roles: user.roles, backdropPath: user.backdropPath, id: user._id }
 			});
 		}
 	);

@@ -28,6 +28,9 @@ const userSchema = new Schema({
 	roles: {
 		type: [String],
 		default: ['122602']
+	},
+	backdropPath: {
+		type: String
 	}
 });
 
