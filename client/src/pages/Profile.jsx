@@ -55,7 +55,7 @@ const Profile = () => {
 	return (
 		<div className='relative flex flex-col items-center w-full h-full bg-primary rounded-md'>
 			<div className='relative flex justify-center p-4 items-center w-full max-h-[400px] rounded-md'>
-				{false ?
+				{user.profileImageURL ?
 					<UserBackdrop username={user.username} backdropPath={user.backdropPath} /> :
 					token ?
 						<div
