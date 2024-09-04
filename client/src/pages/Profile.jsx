@@ -60,7 +60,7 @@ const Profile = () => {
 			<div className='relative flex justify-center p-4 items-center w-full max-h-[400px] rounded-md'>
 				{userData?.backdropPath ?
 					<UserBackdrop username={userData.username} backdropPath={userData.backdropPath} /> :
-					token && userData._id === user._id ?
+					token && userData?._id === user?._id ?
 						<div
 							className='relative flex justify-center gap-2 p-4 items-center w-full min-h-[400px] rounded-md
 						hover:cursor-pointer'
@@ -99,7 +99,7 @@ const Profile = () => {
 					</div>
 				</div>
 				<div className='absolute top-4 right-4'>
-					{token && userData._id === user._id &&
+					{token && userData?._id === user?._id &&
 						<Dropdown name={<FontAwesomeIcon icon={faEllipsisH} />}>
 							<DropdownItem onClick={handleSelectProfile}>
 								Change profile
