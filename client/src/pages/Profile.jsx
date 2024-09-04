@@ -6,7 +6,7 @@ import { useModal } from '../components/hooks/useModal';
 import SelectBackdrop from '../components/SelectBackdrop';
 import UserBackdrop from '../components/UserBackdrop';
 import { Dropdown, DropdownItem } from '../components/ui/Dropdown';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import SelectProfile from '../components/SelectProfile';
 import { Image } from '../components/ui/Image';
 import useAxios from '../hooks/useAxios';
@@ -15,7 +15,8 @@ import { useLocation } from 'react-router-dom';
 const Profile = () => {
 	const api = useAxios();
 	const location = useLocation();
-	const { user, setUser, token } = useAuth();
+	const [userData, setUserData] = useState(null);
+	const { user, token } = useAuth();
 	const { setModal, setOpen } = useModal();
 
 	const handleSelectBackdrop = () => {
@@ -34,30 +35,32 @@ const Profile = () => {
 
 	const handleViewProfile = () => {
 		setModal(
-			<Image imageURL={user.profileImageURL} name={user.username} />
+			<Image imageURL={userData.profileImageURL} name={userData.username} />
 		);
 		setOpen(true);
 	}
 
 	useEffect(() => {
-		document.title = user?.username;
-	}, []);
+		document.title = userData?.username;
+	}, [userData]);
 
 	useEffect(() => {
-		if (!user) {
-			console.log(location)
+		if (location.pathname.slice(1) !== user?.username) {
 			api.get(`/public/account?username=${location.pathname.slice(1)}`).then(response => {
-				setUser(response.data.user);
+				const publicUserData = response.data.user;
+				publicUserData ? setUserData(publicUserData) : setUserData(user)
 			})
+		} else {
+			setUserData(user);
 		}
-	}, []);
+	}, [user, location.pathname]);
 
 	return (
 		<div className='relative flex flex-col items-center w-full h-full bg-primary rounded-md'>
 			<div className='relative flex justify-center p-4 items-center w-full max-h-[400px] rounded-md'>
-				{user?.profileImageURL ?
-					<UserBackdrop username={user.username} backdropPath={user.backdropPath} /> :
-					token ?
+				{userData?.backdropPath ?
+					<UserBackdrop username={userData.username} backdropPath={userData.backdropPath} /> :
+					token && userData._id === user._id ?
 						<div
 							className='relative flex justify-center gap-2 p-4 items-center w-full min-h-[400px] rounded-md
 						hover:cursor-pointer'
@@ -74,10 +77,10 @@ const Profile = () => {
 				className='flex gap-4 w-[calc(100%-4rem)] h-[200px] p-4 bg-accent rounded-md'
 			>
 				<div className='flex flex-col gap-4 justify-center'>
-					{user?.profileImageURL ?
+					{userData?.profileImageURL ?
 						<img
-							alt={`${user.username} profile image`}
-							src={user.profileImageURL}
+							alt={`${userData.username} profile image`}
+							src={userData.profileImageURL}
 							onClick={handleViewProfile}
 							className='w-[70px] h-[70px] rounded-full
 							transition-all duration-300 hover:cursor-pointer hover:opacity-70'
@@ -91,12 +94,12 @@ const Profile = () => {
 						</div>
 					}
 					<div>
-						<h1 className='text-primary-foreground text-xs font-semibold'>{user?.username}</h1>
-						<h1 className='text-primary-foreground text-xs'>{user?.email}</h1>
+						<h1 className='text-primary-foreground text-xs font-semibold'>{userData?.username}</h1>
+						<h1 className='text-primary-foreground text-xs'>{userData?.email}</h1>
 					</div>
 				</div>
 				<div className='absolute top-4 right-4'>
-					{token &&
+					{token && userData._id === user._id &&
 						<Dropdown name={<FontAwesomeIcon icon={faEllipsisH} />}>
 							<DropdownItem onClick={handleSelectProfile}>
 								Change profile

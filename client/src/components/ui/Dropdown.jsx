@@ -26,8 +26,8 @@ export const Dropdown = ({ name, children }) => {
 				{name}
 			</button>
 			<motion.ul
-				initial={{ scaleY: 0, opacity: 0, y: -20 }}
-				animate={isOpen ? { scaleY: 1, opacity: 1, y: 0 } : { scaleY: 0, opacity: 0, y: -20 }}
+				initial={{ scaleY: 0, opacity: 0, y: -50 }}
+				animate={isOpen ? { scaleY: 1, opacity: 1, y: 0 } : { scaleY: 0, opacity: 0, y: -50 }}
 				transition={0}
 				className={`absolute flex flex-col items-end top-full mt-2 right-0 z-50
 					text-primary-foreground text-xs bg-accent
