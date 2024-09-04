@@ -7,6 +7,9 @@ import Button from './ui/Button';
 import { Dropdown, DropdownItem } from './ui/Dropdown';
 import { useThemeToggle } from '../hooks/useTheme';
 import { motion } from 'framer-motion';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faBars } from '@fortawesome/free-solid-svg-icons';
+import SideNavbar from './SideNavbar';
 
 const routes = [
   { path: '/home', name: 'Home' },
@@ -25,6 +28,8 @@ const Navbar = () => {
   const [query, setQuery] = useState(null);
   const [isScrollingDown, setIsScrollingDown] = useState(false);
   const [lastScrollY, setLastScrollY] = useState(0);
+  const [viewWidth, setViewWidth] = useState(window.innerWidth);
+  const [opensideNavbar, setOpenSideNavbar] = useState(false);
 
   const handleSignout = async () => {
     try {
@@ -42,6 +47,8 @@ const Navbar = () => {
     if (query) navigate(`/movies/search?query=${query.replace(/[_\s]/g, '+')}&page=${1}`);
   }
 
+  const toggleSideNavbar = () => setOpenSideNavbar(!opensideNavbar);
+
   useEffect(() => {
     const handleScroll = () => {
       const currentScrollY = window.scrollY;
@@ -53,6 +60,13 @@ const Navbar = () => {
     return () => window.removeEventListener('scroll', handleScroll);
   }, [lastScrollY]);
 
+  useEffect(() => {
+    const handleResize = () => setViewWidth(window.innerWidth);
+
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
+  }, [viewWidth]);
+
   return (
     <motion.div
       className='sticky top-4 flex justify-between rounded-lg w-full p-3 gap-3 shadow-sm z-40'
@@ -60,14 +74,18 @@ const Navbar = () => {
       animate={{ y: isScrollingDown ? -100 : 0, backgroundColor: isScrollingDown ? 'var(--accent-secondary)' : lastScrollY === 0 ? 'var(--bg-primary)' : 'var(--accent-secondary)' }}
       transition={{ type: 'spring', stiffness: 100, damping: 20 }}
     >
-      <Link className='outline-none' to='/'>
-        <div className='flex justify-center items-center h-full font-semibold'>
-          <h1 className='text-primary-highlight'>Film</h1>
-          <h1 className='text-primary-foreground'>pin</h1>
-        </div>
-      </Link>
+      <div className='flex justify-center items-center gap-2'>
+        {viewWidth < 500 && <FontAwesomeIcon icon={faBars} onClick={toggleSideNavbar} className='hover:cursor-pointer' />}
+        <Link className='outline-none' to='/'>
+          <div className='flex justify-center items-center h-full font-semibold'>
+            <h1 className='text-md text-primary-highlight'>Film</h1>
+            <h1 className='text-md text-primary-foreground'>pin</h1>
+          </div>
+        </Link>
+      </div>
+      <SideNavbar isOpen={opensideNavbar} toggle={toggleSideNavbar} authRoutes={authRoutes} routes={routes} token={token} />
       <div className='flex w-fit items-center gap-3'>
-        {token && routes.map((route, index) => (
+        {token && viewWidth > 500 && routes.map((route, index) => (
           <Button
             key={index}
             onClick={() => navigate(route.path)}
@@ -76,7 +94,7 @@ const Navbar = () => {
             className={`${route.path === location.pathname ? 'text-primary-highlight shadow-[var(--highlight)_0_2px_0_0]' : ''}`}
           />
         ))}
-        {!token && authRoutes.map((route, index) => (
+        {!token && viewWidth > 500 && authRoutes.map((route, index) => (
           <Button
             key={index}
             onClick={() => navigate(route.path)}
