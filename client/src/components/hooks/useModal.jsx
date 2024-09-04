@@ -30,27 +30,21 @@ export function ModalProvider({ children }) {
     <ModalContext.Provider value={value}>
       {children}
       {ReactDOM.createPortal(
-        <AnimatePresence>
+        <div>
           {open && (
-            <motion.div
+            <div
               className='fixed inset-0 flex justify-center items-center bg-black z-40 bg-opacity-30'
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              exit={{ opacity: 0 }}
               onClick={() => setOpen(false)}
             >
-              <motion.div
+              <div
                 className='flex justify-center items-center w-fit max-w-[calc(100%-4rem)] h-fit'
-                initial={{ scale: 0, opacity: 0 }}
-                animate={{ scale: 1, opacity: 1 }}
-                exit={{ scale: 0, opacity: 0 }}
                 onClick={(e) => e.stopPropagation()}
               >
                 {modal}
-              </motion.div>
-            </motion.div>
+              </div>
+            </div>
           )}
-        </AnimatePresence>,
+        </div>,
         document.body
       )}
     </ModalContext.Provider>

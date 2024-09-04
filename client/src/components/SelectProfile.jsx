@@ -5,7 +5,7 @@ import Button from './ui/Button';
 import { useToast } from '../components/hooks/useToast';
 
 const SelectProfile = () => {
-	const { user } = useAuth();
+	const { user, setUser } = useAuth();
 	const api = useAxios();
 	const [file, setFile] = useState(null);
 	const [preview, setPreview] = useState('');
@@ -27,7 +27,9 @@ const SelectProfile = () => {
 			return;
 		}
 		if (uploading) return;
+
 		setUploading(true);
+		
 		const formData = new FormData();
 		formData.set('imageFile', file)
 		try {
@@ -36,6 +38,10 @@ const SelectProfile = () => {
 					'Content-Type': 'multipart/form-data',
 				},
 			});
+			setUser(prev => ({
+				...prev,
+				profileImageURL: response.secure_url
+			}))
 			toastSuccess('Profile updated.');
 		} catch (error) {
 			console.error('Error uploading file:', error);

@@ -8,6 +8,7 @@ import UserBackdrop from '../components/UserBackdrop';
 import { Dropdown, DropdownItem } from '../components/ui/Dropdown';
 import { useEffect } from 'react';
 import SelectProfile from '../components/SelectProfile';
+import { Image } from '../components/ui/Image';
 
 const Profile = () => {
 	const { user } = useAuth();
@@ -23,6 +24,13 @@ const Profile = () => {
 	const handleSelectProfile = () => {
 		setModal(
 			<SelectProfile />
+		);
+		setOpen(true);
+	}
+
+	const handleViewProfile = () => {
+		setModal(
+			<Image imageURL={user.profileImageURL} name={user.username} />
 		);
 		setOpen(true);
 	}
@@ -53,11 +61,13 @@ const Profile = () => {
 						<img
 							alt={`${user.username} profile image`}
 							src={user.profileImageURL}
-							className='w-[70px] h-[70px] rounded-full'
+							onClick={handleViewProfile}
+							className='w-[70px] h-[70px] rounded-full
+							transition-all duration-300 hover:cursor-pointer hover:opacity-70'
 						/>
 						: <div
 							className='flex justify-center items-center w-[70px] h-[70px] rounded-full bg-secondary
-						hover:cursor-pointer'
+							hover:cursor-pointer'
 							onClick={handleSelectProfile}
 						>
 							<FontAwesomeIcon icon={faImage} />

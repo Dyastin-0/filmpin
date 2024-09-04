@@ -23,7 +23,7 @@ export const Backdrop = ({ backdrop_path, title }) => {
 	}
 
 	return (
-		<div className='flex flex-col gap-2 hover:scale-95 hover:cursor-pointer'
+		<div className='flex flex-col gap-2 transition-all duration-300 hover:scale-95 hover:cursor-pointer'
 			onClick={() => handleSetBackdrop(backdrop_path)}
 		>
 			<img

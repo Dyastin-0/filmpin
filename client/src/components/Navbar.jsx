@@ -55,7 +55,7 @@ const Navbar = () => {
 
   return (
     <motion.div
-      className='sticky top-4 flex justify-between rounded-lg w-full p-3 gap-3 shadow-sm z-50'
+      className='sticky top-4 flex justify-between rounded-lg w-full p-3 gap-3 shadow-sm z-40'
       initial={{ y: 0 }}
       animate={{ y: isScrollingDown ? -100 : 0, backgroundColor: isScrollingDown ? 'var(--accent-secondary)' : lastScrollY === 0 ? 'var(--bg-primary)' : 'var(--accent-secondary)' }}
       transition={{ type: 'spring', stiffness: 100, damping: 20 }}
@@ -98,11 +98,20 @@ const Navbar = () => {
         </div>
       </div>
       <div className='flex w-fit gap-3 justify-center items-center'>
-        <Button text={theme} onClick={toggleTheme} />
         {user &&
-          <Dropdown name={user?.username}>
+          <Dropdown
+            name={user.profileImageURL ?
+              <img className='w-[30px] h-[30px] rounded-full' src={user.profileImageURL} />
+              : <div className='flex justify-center items-center w-[30px] h-[30px] rounded-full bg-secondary text-primary-highlight text-xs'>
+                {user.username[0]}
+              </div>
+            }
+          >
             <DropdownItem onClick={() => navigate(`/${user.username}`)}>
               Profile
+            </DropdownItem>
+            <DropdownItem onClick={toggleTheme}>
+              {theme}
             </DropdownItem>
             <DropdownItem onClick={handleSignout}>
               Sign out
