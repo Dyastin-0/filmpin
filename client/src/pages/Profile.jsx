@@ -9,9 +9,13 @@ import { Dropdown, DropdownItem } from '../components/ui/Dropdown';
 import { useEffect } from 'react';
 import SelectProfile from '../components/SelectProfile';
 import { Image } from '../components/ui/Image';
+import useAxios from '../hooks/useAxios';
+import { useLocation } from 'react-router-dom';
 
 const Profile = () => {
-	const { user } = useAuth();
+	const api = useAxios();
+	const location = useLocation();
+	const { user, setUser, token } = useAuth();
 	const { setModal, setOpen } = useModal();
 
 	const handleSelectBackdrop = () => {
@@ -39,17 +43,30 @@ const Profile = () => {
 		document.title = user?.username;
 	}, []);
 
+	useEffect(() => {
+		if (!user) {
+			console.log(location)
+			api.get(`/public/account?username=${location.pathname.slice(1)}`).then(response => {
+				setUser(response.data.user);
+			})
+		}
+	}, []);
+
 	return (
 		<div className='relative flex flex-col items-center w-full h-full bg-primary rounded-md'>
 			<div className='relative flex justify-center p-4 items-center w-full max-h-[400px] rounded-md'>
-				{user?.backdropPath ?
+				{false ?
 					<UserBackdrop username={user.username} backdropPath={user.backdropPath} /> :
-					<div className='absolute top-12 flex items-center gap-2 p-2 drop-shadow-sm bg-accent rounded-md hover:cursor-pointer'
-						onClick={handleSelectBackdrop}
-					>
-						<FontAwesomeIcon className='text-primary-foreground text-xl' icon={faImage} />
-						<p className='text-xs text-primary-foreground font-semibold'>Select a backdrop for your profile</p>
-					</div>
+					token ?
+						<div
+							className='relative flex justify-center gap-2 p-4 items-center w-full min-h-[400px] rounded-md
+						hover:cursor-pointer'
+							onClick={handleSelectBackdrop}
+						>
+							<FontAwesomeIcon className='text-primary-foreground text-xl' icon={faImage} />
+							<p className='text-xs text-primary-foreground font-semibold'>Select a backdrop for your profile</p>
+						</div> :
+						<div className='relative flex justify-center gap-2 p-4 items-center w-full min-h-[400px] rounded-md'></div>
 				}
 			</div>
 			<motion.div
@@ -57,7 +74,7 @@ const Profile = () => {
 				className='flex gap-4 w-[calc(100%-4rem)] h-[200px] p-4 bg-accent rounded-md'
 			>
 				<div className='flex flex-col gap-4 justify-center'>
-					{user.profileImageURL ?
+					{user?.profileImageURL ?
 						<img
 							alt={`${user.username} profile image`}
 							src={user.profileImageURL}
@@ -79,14 +96,16 @@ const Profile = () => {
 					</div>
 				</div>
 				<div className='absolute top-4 right-4'>
-					<Dropdown name={<FontAwesomeIcon icon={faEllipsisH} />}>
-						<DropdownItem onClick={handleSelectProfile}>
-							Change profile
-						</DropdownItem>
-						<DropdownItem onClick={handleSelectBackdrop}>
-							Change background
-						</DropdownItem>
-					</Dropdown>
+					{token &&
+						<Dropdown name={<FontAwesomeIcon icon={faEllipsisH} />}>
+							<DropdownItem onClick={handleSelectProfile}>
+								Change profile
+							</DropdownItem>
+							<DropdownItem onClick={handleSelectBackdrop}>
+								Change background
+							</DropdownItem>
+						</Dropdown>
+					}
 				</div>
 			</motion.div>
 		</div>

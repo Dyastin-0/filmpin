@@ -29,6 +29,7 @@ app.use('/api/log-out', require('./routes/auth'));
 app.use('/api/email', require('./routes/email'));
 app.use('/api/recover', require('./routes/email'));
 
+app.use('/api/public/account', require('./routes/public/account'));
 app.use('/api/public/backdrops', require('./routes/public/backdrops'));
 
 app.use(verifyJsonWebToken);

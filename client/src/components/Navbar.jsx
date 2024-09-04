@@ -21,7 +21,7 @@ const Navbar = () => {
   const navigate = useNavigate();
   const location = useLocation();
   const { toggleTheme, theme } = useThemeToggle();
-  const { setToken, setUser, user } = useAuth();
+  const { setToken, token, setUser, user } = useAuth();
   const [query, setQuery] = useState(null);
   const [isScrollingDown, setIsScrollingDown] = useState(false);
   const [lastScrollY, setLastScrollY] = useState(0);
@@ -67,7 +67,7 @@ const Navbar = () => {
         </div>
       </Link>
       <div className='flex w-fit items-center gap-3'>
-        {user && routes.map((route, index) => (
+        {token && routes.map((route, index) => (
           <Button
             key={index}
             onClick={() => navigate(route.path)}
@@ -76,7 +76,7 @@ const Navbar = () => {
             className={`${route.path === location.pathname ? 'text-primary-highlight shadow-[var(--highlight)_0_2px_0_0]' : ''}`}
           />
         ))}
-        {!user && authRoutes.map((route, index) => (
+        {!token && authRoutes.map((route, index) => (
           <Button
             key={index}
             onClick={() => navigate(route.path)}
@@ -86,7 +86,7 @@ const Navbar = () => {
           />
         ))}
         <div className='max-w-full'>
-          {user &&
+          {token &&
             <SearchInput
               onSubmit={handleSearch}
               type='text'
@@ -98,7 +98,7 @@ const Navbar = () => {
         </div>
       </div>
       <div className='flex w-fit gap-3 justify-center items-center'>
-        {user &&
+        {token &&
           <Dropdown
             name={user.profileImageURL ?
               <img className='w-[30px] h-[30px] rounded-full' src={user.profileImageURL} />

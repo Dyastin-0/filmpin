@@ -36,6 +36,7 @@ function App() {
       <Suspense>
         <Routes>
           <Route path='/' element={<Root />} />
+            <Route path='/:username' element={<Profile />} />
           <Route path='/sign-in' element={<Signin />} />
           <Route path='/sign-up' element={<Signup />} />
           <Route path='/account/verify' element={<AccountVerification />} />
@@ -52,7 +53,6 @@ function App() {
             <Route path='/tvshows/:show_id/season' element={<TvShowSeasonSlug />} />
             <Route path='/tvshows/:show_id/:season/episode' element={<TvShowEpisodeSlug />} />
             <Route path='/discover/tvshows' element={<DiscoverTvShowSlug />} />
-            <Route path='/:username' element={<Profile />} />
           </Route>
         </Routes>
       </Suspense>
