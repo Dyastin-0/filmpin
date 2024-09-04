@@ -12,7 +12,7 @@ const Signin = () => {
   const navigate = useNavigate();
   const location = useLocation();
   const [signingIn, setSigningIn] = useState(false);
-  const { setToken, setUser, user } = useAuth();
+  const { setToken, setUser, token } = useAuth();
   const { toastError, toastSuccess } = useToast();
 
   const previousPath = location.state?.from || '/home';
@@ -23,8 +23,8 @@ const Signin = () => {
   }, []);
 
   useEffect(() => {
-    user && navigate('/home');
-  }, [user]);
+    token && navigate('/home');
+  }, [token]);
 
   const [credentials, setCredentials] = useState({
     email: '',

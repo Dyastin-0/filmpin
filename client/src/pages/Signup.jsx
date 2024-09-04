@@ -11,7 +11,7 @@ import { useToast } from '../components/hooks/useToast';
 
 const Signup = () => {
   const navigate = useNavigate();
-  const { setToken, setUser, user } = useAuth();
+  const { setToken, setUser, token } = useAuth();
   const usernameRef = useRef(null);
   const { toastError, toastSuccess } = useToast();
 
@@ -28,8 +28,8 @@ const Signup = () => {
   const [signingUp, setSigningUp] = useState(false);
 
   useEffect(() => {
-    user && navigate('/home');
-  }, [user]);
+    token && navigate('/home');
+  }, [token]);
 
   useEffect(() => {
     setIsPasswordMatched(confirmedPassword === credentials.password);
