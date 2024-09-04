@@ -175,7 +175,7 @@ const TvShowSlug = () => {
 				}
 			</motion.div>
 			<motion.div
-				className='flex flex-col bg-accent rounded-lg gap-4 p-4 items-center w-[90%]'
+				className='flex flex-col bg-accent rounded-lg gap-4 p-4 items-center w-[calc(100%-2rem)]'
 			>
 				{similarShows ?
 					<TvShowSection title='Recommendations' shows={similarShows.filter(similarShow => similarShow.name !== show.name)} />

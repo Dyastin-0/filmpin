@@ -90,7 +90,7 @@ const TvShowEpisodeSlug = () => {
 					</div>
 					<motion.div
 						initial={{ y: -120 }}
-						className='flex md:flex-row flex-col bg-accent p-4 rounded-md max-w-full w-[90%] gap-4 shadow-sm'
+						className='flex md:flex-row flex-col bg-accent p-4 rounded-md max-w-full w-[calc(100%-2rem)] gap-4 shadow-sm'
 					>
 						<div className='flex w-fit self-center flex-col gap-3'>
 							<img
