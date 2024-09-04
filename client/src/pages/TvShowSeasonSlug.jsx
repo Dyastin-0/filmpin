@@ -77,7 +77,7 @@ const TvShowSeasonSlug = () => {
 					<div className='w-full h-[300px] rounded-lg overflow-hidden'>
 						<img
 							loading='lazy'
-							className='rounded-lg min-w-[168px] h-[250px] self-center'
+							className='w-full h-full object-cover'
 							src={`https://image.tmdb.org/t/p/original/${backdrop_path}`}
 							alt={`${details?.name} backdrop`}
 						/>
@@ -94,7 +94,7 @@ const TvShowSeasonSlug = () => {
 								alt={`${details?.name} poster`}
 							/>
 							<Button
-								text={<p className='text-md font-semibold'>Watch trailer <FontAwesomeIcon size='lg' icon={faPlay} /></p>}
+								text={<p className='text-md font-semibold'> Watch Trailer <FontAwesomeIcon size='lg' icon={faPlay} /></p>}
 								onClick={() => {
 									setModal(
 										<Frame youtubeKey={trailerYoutubeKey} title={title} />
@@ -107,7 +107,7 @@ const TvShowSeasonSlug = () => {
 							<p className='text-primary-foreground text-xs'>{details?.tagline}</p>
 							<h1 className='text-primary-foreground text-4xl font-semibold'> {title} </h1>
 							<h1 className='text-primary-foreground text-md font-semibold'> {details?.name} </h1>
-							<p className='text-primary-foreground text-md'> {details?.overview} </p>
+							<p className='text-primary-foreground text-sm'> {details?.overview} </p>
 							<h4 className='text-primary-foreground text-xs'> {`${details?.air_date?.split('-')[0]}`} </h4>
 							<p className='text-primary-foreground text-xs'> {`${details?.episodes.length} episodes`} </p>
 						</div>

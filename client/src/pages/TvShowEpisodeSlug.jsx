@@ -100,7 +100,7 @@ const TvShowEpisodeSlug = () => {
 								alt={`${details?.name} poster`}
 							/>
 							<Button
-								text={<p className='text-md font-semibold'>Watch trailer <FontAwesomeIcon size='lg' icon={faPlay} /></p>}
+								text={<p className='text-md font-semibold'> Watch Clip <FontAwesomeIcon size='lg' icon={faPlay} /></p>}
 								onClick={() => {
 									setModal(
 										<Frame youtubeKey={trailerYoutubeKey} title={title} />
@@ -112,7 +112,7 @@ const TvShowEpisodeSlug = () => {
 						<div className='flex flex-col gap-2 w-full'>
 							<h1 className='text-primary-foreground text-4xl font-semibold'> {`${title}, S${seasonNumber}`} </h1>
 							<h1 className='text-primary-foreground text-md font-semibold'> {details?.name} </h1>
-							<p className='text-primary-foreground text-md'> {details?.overview} </p>
+							<p className='text-primary-foreground text-sm'> {details?.overview} </p>
 							<h4 className='text-primary-foreground text-xs'> {`${details?.air_date?.split('-')[0]}`} </h4>
 							<p className='text-primary-foreground text-xs'> {`${Math.floor(details?.runtime / 60)}h ${details?.runtime % 60}m`} </p>
 						</div>

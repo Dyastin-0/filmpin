@@ -143,7 +143,7 @@ const TvShowSlug = () => {
 						<div className='flex flex-col gap-2 w-full'>
 							<p className='text-primary-foreground text-xs'>{show?.tagline}</p>
 							<h1 className='text-primary-foreground text-4xl font-semibold'> {show?.name} </h1>
-							<p className='text-primary-foreground text-md'> {show?.overview} </p>
+							<p className='text-primary-foreground text-sm'> {show?.overview} </p>
 							<h4 className='text-primary-foreground text-xs'> {`${show.first_air_date?.split('-')[0]}-${show.last_air_date?.split('-')[0]}`} </h4>
 							<div className='flex gap-1'>
 								{

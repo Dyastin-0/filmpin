@@ -144,7 +144,7 @@ const MovieSlug = () => {
 						<div className='flex flex-col gap-2 w-full'>
 							<p className='text-primary-foreground text-xs'>{movie?.tagline}</p>
 							<h1 className='text-primary-foreground text-4xl font-semibold'> {movie?.title} </h1>
-							<p className='text-primary-foreground text-md'> {movie?.overview} </p>
+							<p className='text-primary-foreground text-sm'> {movie?.overview} </p>
 							<h4 className='text-primary-foreground text-xs'> {movie?.release_date.split('-')[0]} </h4>
 							<div className='flex gap-1'>
 								{

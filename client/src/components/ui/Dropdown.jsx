@@ -19,7 +19,7 @@ export const Dropdown = ({ name, children }) => {
 	return (
 		<div className='relative flex items-center justify-end z-50' ref={dropdownRef}>
 			<button
-				className='flex justify-center items-center text-center outline-none rounded-full focus:shadow-[var(--highlight)_0_0_0_2px] p-1'
+				className='flex h-fit w-fit justify-center items-center text-center outline-none rounded-full focus:shadow-[var(--highlight)_0_0_0_2px] p-1'
 				onClick={toggle}
 				onBlur={handleBlur}
 			>
