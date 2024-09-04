@@ -90,16 +90,16 @@ const Signin = () => {
         </div>
         <Link
           to={`/account/recover`}
-          className='underline underline-offset-2 pb-2 outline-none text-primary-foreground text-xs focus:text-primary-highlight'
+          className='pb-2 w-fit outline-none text-primary-foreground text-xs focus:text-primary-highlight focus:underline'
         > Forgot password? </Link>
         <Button type='submit' disabled={signingIn} text={`${signingIn ? 'Signing in...' : 'Sign in'}`} />
         <Link
           to={`/account/verify`}
-          className='underline underline-offset-2 text-center pt-1 pb-1 outline-none text-primary-foreground text-xs transition-colors duration-300 focus:text-primary-highlight'
+          className='self-center w-fit pt-1 outline-none text-primary-foreground text-xs transition-colors duration-300 focus:text-primary-highlight focus:underline'
         > Verify your account </Link>
         <Link
           to={`/sign-up`}
-          className='underline underline-offset-2 text-center pt-1 pb-1 outline-none text-primary-foreground text-xs transition-colors duration-300 focus:text-primary-highlight'
+          className='self-center w-fit pt-1 outline-none text-primary-foreground text-xs transition-colors duration-300 focus:text-primary-highlight focus:underline'
         > Don't have an account? click here </Link>
       </form>
     </div>

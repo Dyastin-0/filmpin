@@ -47,7 +47,7 @@ const handleAuth = async (req, res) => {
 		await Users.updateOne({ email: user.email }, { $set: { refreshToken: [...newRefreshTokens, newRefreshToken] } });
 
 		res.cookie('jwt', newRefreshToken, { httpOnly: true, sameSite: 'None', secure: true, maxAge: 30 * 24 * 60 * 60 * 1000 });
-		const { password, ...userData } = user.toJSON();
+		const { password, verificationToken, recoveryToken, __v, refreshToken, ...userData } = user.toJSON();
 		res.json({
 			accessToken,
 			user: userData
