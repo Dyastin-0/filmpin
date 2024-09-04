@@ -123,7 +123,7 @@ const TvShowSlug = () => {
 						initial={{ y: -120 }}
 						className='flex md:flex-row flex-col bg-accent p-4 rounded-md max-w-full w-[calc(100%-2rem)] gap-4 shadow-sm'
 					>
-						<div className='flex flex-col gap-3'>
+						<div className='flex flex-col w-fit self-center gap-3'>
 							<img
 								loading='lazy'
 								className='rounded-lg min-w-[168px] h-[250px] self-center'
