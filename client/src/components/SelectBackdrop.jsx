@@ -1,34 +1,32 @@
-import React, { useEffect, useState } from 'react'
-import { SearchInput } from './ui/Input'
+import { useState } from 'react';
+import { SearchInput } from './ui/Input';
 import useAxios from '../hooks/useAxios';
 import { Backdrop } from './Backdrop';
+import { useToast } from './hooks/useToast';
 
 const SelectBackdrop = () => {
 	const api = useAxios();
 	const [query, setQuery] = useState('');
 	const [backdrops, setBackdrops] = useState(null);
 	const [loading, setLoading] = useState(false);
+	const { toastError } = useToast();
 
 	const handleSearch = async (e) => {
 		e.preventDefault();
 		try {
 			setLoading(true);
 			const response = await api.get(`/movies/search?query=${query}&page=1`);
-			console.log(response.data.results);
 			setBackdrops(response.data.results.map(data => ({ backdrop_path: data.backdrop_path, title: data.title })));
 		} catch (error) {
 			console.error('Failed to search.', error);
+			toastError('Failed to search.');
 		} finally {
 			setLoading(false);
 		}
 	}
 
-	useEffect(() => {
-		console.log(backdrops)
-	}, [backdrops]);
-
 	return (
-		<div className='flex flex-col w-[800px] h-[400px] max-w-full m-4 p-4 gap-4 bg-primary rounded-md overflow-hidden' >
+		<div className='flex flex-col w-[800px] h-[400px] max-w-full p-4 gap-4 bg-primary rounded-md overflow-hidden' >
 			<SearchInput
 				onSubmit={handleSearch}
 				onChange={(e) => setQuery(e.target.value)}

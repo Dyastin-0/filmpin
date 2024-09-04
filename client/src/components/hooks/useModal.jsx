@@ -33,14 +33,14 @@ export function ModalProvider({ children }) {
         <AnimatePresence>
           {open && (
             <motion.div
-              className='fixed inset-0 flex justify-center items-center bg-black z-50 bg-opacity-30'
+              className='fixed inset-0 flex justify-center items-center bg-black z-40 bg-opacity-30'
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
               onClick={() => setOpen(false)}
             >
               <motion.div
-                className='flex justify-center items-center w-fit max-w-full h-fit p-4'
+                className='flex justify-center items-center w-fit max-w-[calc(100%-4rem)] h-fit'
                 initial={{ scale: 0, opacity: 0 }}
                 animate={{ scale: 1, opacity: 1 }}
                 exit={{ scale: 0, opacity: 0 }}

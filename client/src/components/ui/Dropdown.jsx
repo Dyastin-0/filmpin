@@ -44,7 +44,7 @@ export const DropdownItem = ({ onClick, children, asChild }) => {
 		children
 	) : (
 		<button
-			className='text-nowrap text-primary-foreground text-xs outline-none pb-1'
+			className='text-right text-nowrap text-primary-foreground text-xs outline-none pb-1'
 			onClick={(e) => {
 				e.stopPropagation();
 				onClick();

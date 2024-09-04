@@ -60,8 +60,8 @@ const Navbar = () => {
       animate={{ y: isScrollingDown ? -100 : 0, backgroundColor: isScrollingDown ? 'var(--accent-secondary)' : lastScrollY === 0 ? 'var(--bg-primary)' : 'var(--accent-secondary)' }}
       transition={{ type: 'spring', stiffness: 100, damping: 20 }}
     >
-      <Link to='/'>
-        <div className='flex font-semibold'>
+      <Link className='outline-none' to='/'>
+        <div className='flex justify-center items-center h-full font-semibold'>
           <h1 className='text-primary-highlight'>Film</h1>
           <h1 className='text-primary-foreground'>pin</h1>
         </div>

@@ -9,7 +9,7 @@ const handleAuth = async (req, res) => {
 	if (!password || password.length < 6) return res.status(400).json({ message: 'Bad request. Invalid input: Password.' });
 	const user = await Users.findOne({ email });
 	if (!user) return res.status(404).json({ message: 'Account not found.' });
-	if (!user.verified) return res.status(403).json({message: 'Verify your account.'});
+	if (!user.verified) return res.status(403).json({ message: 'Verify your account.' });
 	const matched = await compare(password, user.password);
 	if (matched) {
 		const accessToken = jwt.sign(
@@ -47,9 +47,10 @@ const handleAuth = async (req, res) => {
 		await Users.updateOne({ email: user.email }, { $set: { refreshToken: [...newRefreshTokens, newRefreshToken] } });
 
 		res.cookie('jwt', newRefreshToken, { httpOnly: true, sameSite: 'None', secure: true, maxAge: 30 * 24 * 60 * 60 * 1000 });
+		const { password, ...userData } = user.toJSON();
 		res.json({
 			accessToken,
-			user: { username: user.username, email: user.email, roles: user.roles, backdropPath: user.backdropPath, id: user._id }
+			user: userData
 		});
 	} else {
 		return res.status(401).json({ message: 'Invalid credentials.' });

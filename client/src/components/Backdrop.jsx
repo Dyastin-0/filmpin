@@ -1,20 +1,24 @@
 import { useAuth } from "../hooks/useAuth";
 import useAxios from "../hooks/useAxios"
+import { useToast } from "./hooks/useToast";
 
 export const Backdrop = ({ backdrop_path, title }) => {
 	const api = useAxios();
 	const { user, setUser } = useAuth();
+	const { toastError, toastSuccess } = useToast();
 
 	const handleSetBackdrop = async (backdrop_path) => {
 		try {
-			const response = await api.post(`/account/set-backdrop?user_id=${user.id}&backdrop_path=${backdrop_path}`);
+			const response = await api.post(`/account/set-backdrop?user_id=${user._id}&backdrop_path=${backdrop_path}`);
 			const backdrop = response.data.backdropPath;
 			setUser(prev => ({
 				...prev,
 				backdropPath: backdrop
-			}))
+			}));
+			toastSuccess('Backdrop updated.');
 		} catch (error) {
 			console.error('Failed to set backdrop.', error);
+			toastError('Failed to update backdrop.');
 		}
 	}
 

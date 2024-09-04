@@ -31,6 +31,9 @@ const userSchema = new Schema({
 	},
 	backdropPath: {
 		type: String
+	},
+	profileImageURL: {
+		type: String
 	}
 });
 

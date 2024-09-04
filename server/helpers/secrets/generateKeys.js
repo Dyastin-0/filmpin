@@ -15,6 +15,9 @@ const generateKeys = async () => {
     const tmDbKey = await getSecret('TMDB_ACCESS_KEY');
     const serverEmail = await getSecret('SERVER_EMAIL');
     const serverEmailPassword = await getSecret('SERVER_EMAIL_PASSWORD');
+    const cloudinaryCloudName = await getSecret('CLOUDINARY_CLOUD_NAME');
+    const cloudinaryApiKey = await getSecret('CLOUDINARY_API_KEY');
+    const cloudinaryApiSecret = await getSecret('CLOUDINARY_API_SECRET');
 
     // Create the new variables as strings
     const newVariables = [
@@ -24,7 +27,10 @@ const generateKeys = async () => {
       `SERVER_EMAIL_PASSWORD=${serverEmailPassword}`,
       `ACCESS_TOKEN_SECRET=${accessKey}`,
       `REFRESH_TOKEN_SECRET=${refreshKey}`,
-      `EMAIL_TOKEN_SECRET=${emailKey}`
+      `EMAIL_TOKEN_SECRET=${emailKey}`,
+      `CLOUDINARY_CLOUD_NAME=${cloudinaryCloudName}`,
+      `CLOUDINARY_API_KEY=${cloudinaryApiKey}`,
+      `CLOUDINARY_API_SECRET=${cloudinaryApiSecret}`
     ];
 
     // Add the variables to the .env file

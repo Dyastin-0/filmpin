@@ -7,7 +7,7 @@ import SelectBackdrop from '../components/SelectBackdrop';
 import UserBackdrop from '../components/UserBackdrop';
 import { Dropdown, DropdownItem } from '../components/ui/Dropdown';
 import { useEffect } from 'react';
-import { useLoading } from '../components/hooks/useLoading';
+import SelectProfile from '../components/SelectProfile';
 
 const Profile = () => {
 	const { user } = useAuth();
@@ -16,6 +16,13 @@ const Profile = () => {
 	const handleSelectBackdrop = () => {
 		setModal(
 			<SelectBackdrop />
+		);
+		setOpen(true);
+	}
+
+	const handleSelectProfile = () => {
+		setModal(
+			<SelectProfile />
 		);
 		setOpen(true);
 	}
@@ -41,13 +48,31 @@ const Profile = () => {
 				initial={{ y: -120 }}
 				className='flex gap-4 w-[calc(100%-4rem)] h-[200px] p-4 bg-accent rounded-md'
 			>
-				{/* <img className='w-[50px] h-[50px] rounded-full' src="" alt="" /> */}
-				<div className='flex flex-col'>
-					<h1 className='text-primary-foreground text-xs font-semibold'>{user?.username}</h1>
-					<h1 className='text-primary-foreground text-xs'>{user?.email}</h1>
+				<div className='flex flex-col gap-4 justify-center'>
+					{user.profileImageURL ?
+						<img
+							alt={`${user.username} profile image`}
+							src={user.profileImageURL}
+							className='w-[70px] h-[70px] rounded-full'
+						/>
+						: <div
+							className='flex justify-center items-center w-[70px] h-[70px] rounded-full bg-secondary
+						hover:cursor-pointer'
+							onClick={handleSelectProfile}
+						>
+							<FontAwesomeIcon icon={faImage} />
+						</div>
+					}
+					<div>
+						<h1 className='text-primary-foreground text-xs font-semibold'>{user?.username}</h1>
+						<h1 className='text-primary-foreground text-xs'>{user?.email}</h1>
+					</div>
 				</div>
 				<div className='absolute top-4 right-4'>
 					<Dropdown name={<FontAwesomeIcon icon={faEllipsisH} />}>
+						<DropdownItem onClick={handleSelectProfile}>
+							Change profile
+						</DropdownItem>
 						<DropdownItem onClick={handleSelectBackdrop}>
 							Change background
 						</DropdownItem>

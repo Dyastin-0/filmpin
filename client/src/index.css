@@ -20,7 +20,7 @@
   --highlight: #23859e;
   --light: #FFFFFF;
 
-  --error: #c71b29;
+  --error: #d10819;
   --success: #0e9b71;
 }
 
@@ -36,13 +36,9 @@
 
 :root.light {
   --bg-primary: #F0F0F0;
-  /* Primary: Slightly darker */
   --bg-secondary: #E6E6E6;
-  /* Secondary: Darker */
   --accent-secondary: #FFFFFF;
-  /* Accent-secondary: Lightest */
   --accent: #F5F5F5;
-  /* Accent: Still light, but darker than accent-secondary */
   --text-highlight: #ffffff;
   --text-secondary: #888888;
   --text-primary: #686d76;

@@ -53,9 +53,10 @@ const handleRefreshAccessToken = async (req, res) => {
 			);
 			await Users.updateOne({ email: user.email }, { $set: { refreshToken: [...newRefreshTokens, newRefreshToken] } });
 			res.cookie('jwt', newRefreshToken, { httpOnly: true, sameSite: 'None', secure: true, maxAge: 30 * 24 * 60 * 60 * 1000 });
+			const { password, verificationToken, recoveryToken, __v, refreshToken, ...userData } = user.toObject();
 			res.json({
 				accessToken,
-				user: { username: user.username, email: user.email, roles: user.roles, backdropPath: user.backdropPath, id: user._id }
+				user: userData
 			});
 		}
 	);
