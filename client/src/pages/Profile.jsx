@@ -82,7 +82,7 @@ const Profile = () => {
 							alt={`${userData.username} profile image`}
 							src={userData.profileImageURL}
 							onClick={handleViewProfile}
-							className='w-[70px] h-[70px] rounded-full
+							className='w-[100px] h-[100px] rounded-full
 							transition-all duration-300 hover:cursor-pointer hover:opacity-70'
 						/>
 						: <div
@@ -94,7 +94,7 @@ const Profile = () => {
 						</div>
 					}
 					<div>
-						<h1 className='text-primary-foreground text-xs font-semibold'>{userData?.username}</h1>
+						<h1 className='text-primary-foreground text-xl font-bold'>{userData?.username}</h1>
 						<h1 className='text-primary-foreground text-xs'>{userData?.email}</h1>
 					</div>
 				</div>
