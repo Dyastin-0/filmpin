@@ -19,7 +19,6 @@ const generateKeys = async () => {
     const cloudinaryApiKey = await getSecret('CLOUDINARY_API_KEY');
     const cloudinaryApiSecret = await getSecret('CLOUDINARY_API_SECRET');
 
-    // Create the new variables as strings
     const newVariables = [
       `MONGODB_URL=${dbUrl}`,
       `TMBD_ACCESS_KEY=${tmDbKey}`,
@@ -33,10 +32,16 @@ const generateKeys = async () => {
       `CLOUDINARY_API_SECRET=${cloudinaryApiSecret}`
     ];
 
-    // Add the variables to the .env file
-    fs.appendFileSync(envFilePath, newVariables.join('\n') + '\n', { encoding: 'utf8' });
+    const fileContent = fs.readFileSync(envFilePath, { encoding: 'utf8' });
 
-    console.log(`Successfully added new secrets to ${envFilePath}.`);
+    const lines = fileContent.split('\n');
+
+    const firstLine = lines[0];
+    const newContent = [firstLine, ...newVariables].join('\n') + '\n';
+
+    fs.writeFileSync(envFilePath, newContent, { encoding: 'utf8' });
+
+    console.log(`Successfully updated secrets in ${envFilePath}.`);
   } catch (error) {
     console.error('Error generating keys or updating .env file:', error);
   }
