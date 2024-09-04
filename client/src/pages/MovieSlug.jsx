@@ -122,7 +122,7 @@ const MovieSlug = () => {
 					</div>
 					<motion.div
 						initial={{ y: -120 }}
-						className='flex md:flex-row flex-col bg-accent p-4 rounded-md max-w-full w-[90%] gap-4 shadow-sm'
+						className='flex md:flex-row flex-col bg-accent p-4 rounded-md max-w-full w-[calc(100%-2rem)] gap-4 shadow-sm'
 					>
 						<div className='flex flex-col w-fit self-center gap-3'>
 							<img
@@ -168,7 +168,7 @@ const MovieSlug = () => {
 			}
 			<motion.div
 				initial={{ marginTop: -120 }}
-				className='flex flex-col bg-accent rounded-lg gap-4 p-4 w-[90%] overflow-hidden'
+				className='flex flex-col bg-accent rounded-lg gap-4 p-4 w-[calc(100%-2rem)] overflow-hidden'
 			>
 				<h1 className='text-primary-foreground text-sm font-semibold'> Credits </h1>
 				<h1 className='text-primary-foreground text-xs font-semibold'> Director </h1>
@@ -194,13 +194,13 @@ const MovieSlug = () => {
 				<CastSection title='Full cast' casts={casts} />
 				<CrewSection title='Full crew' crews={crews} />
 			</motion.div>
-			<div className='flex flex-col bg-accent rounded-lg gap-4 p-4 items-center w-[90%]'>
+			<div className='flex flex-col bg-accent rounded-lg gap-4 p-4 items-center w-[calc(100%-2rem)]'>
 				{similarMovies ?
 					<MovieSection title='Recommendations' movies={similarMovies?.filter(similarMovie => similarMovie.title !== movie.title)} />
 					: <LoadingMovieSection title='Recommendations' />
 				}
 			</div>
-			<div className='flex flex-col bg-accent rounded-lg gap-4 p-4 items-center w-[90%]'>
+			<div className='flex flex-col bg-accent rounded-lg gap-4 p-4 items-center w-[calc(100%-2rem)]'>
 				<ClipSection keys={videos?.map((video) => {
 					return { name: video.name, value: video.key }
 				})}

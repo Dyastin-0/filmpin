@@ -17,7 +17,7 @@ export const Dropdown = ({ name, children }) => {
 	};
 
 	return (
-		<div className="relative flex items-center justify-end z-50" ref={dropdownRef}>
+		<div className='relative flex items-center justify-end z-50' ref={dropdownRef}>
 			<Button
 				text={name}
 				onClick={toggle}
@@ -44,7 +44,7 @@ export const DropdownItem = ({ onClick, children, asChild }) => {
 		children
 	) : (
 		<button
-			className="text-right text-nowrap text-primary-foreground text-xs outline-none pb-1"
+			className='text-nowrap text-primary-foreground text-xs outline-none pb-1'
 			onClick={(e) => {
 				e.stopPropagation();
 				onClick();

@@ -122,7 +122,7 @@ const TvShowEpisodeSlug = () => {
 			}
 			<motion.div
 				initial={{ marginTop: -120 }}
-				className='flex flex-col bg-accent p-4 rounded-md max-w-full w-[90%] gap-4 shadow-sm'
+				className='flex flex-col bg-accent p-4 rounded-md max-w-full w-[calc(100%-2rem)] gap-4 shadow-sm'
 			>
 				<h1 className='text-primary-foreground text-md font-semibold'>Credits</h1>
 				<h1 className='text-primary-foreground text-sm font-semibold'>Director</h1>
@@ -149,7 +149,7 @@ const TvShowEpisodeSlug = () => {
 				<CrewSection title='Full crew' crews={details?.crew} />
 			</motion.div>
 			{videos?.length > 0 &&
-				<div className='flex flex-col bg-accent p-4 rounded-md max-w-full w-[90%] gap-4 shadow-sm'>
+				<div className='flex flex-col bg-accent p-4 rounded-md max-w-full w-[calc(100%-2rem)] gap-4 shadow-sm'>
 					<ClipSection keys={videos?.map((video) => {
 						return { name: video.name, value: video.key }
 					})}

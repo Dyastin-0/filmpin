@@ -55,16 +55,16 @@ const Navbar = () => {
 
   return (
     <motion.div
-      className='sticky top-3 flex justify-between bg-primary rounded-lg w-full p-3 gap-3 drop-shadow-sm z-50'
+      className='sticky top-4 flex justify-between rounded-lg w-full p-3 gap-3 shadow-sm z-50'
       initial={{ y: 0 }}
-      animate={{ y: isScrollingDown ? '-100%' : '0%' }}
+      animate={{ y: isScrollingDown ? -100 : 0, backgroundColor: isScrollingDown ? 'var(--accent-secondary)' : lastScrollY === 0 ? 'var(--bg-primary)' : 'var(--accent-secondary)' }}
       transition={{ type: 'spring', stiffness: 100, damping: 20 }}
     >
       <Link to='/'>
-        {/* <div className='flex font-semibold'>
+        <div className='flex font-semibold'>
           <h1 className='text-primary-highlight'>Film</h1>
           <h1 className='text-primary-foreground'>pin</h1>
-        </div> */}
+        </div>
       </Link>
       <div className='flex w-fit items-center gap-3'>
         {user && routes.map((route, index) => (
@@ -101,6 +101,9 @@ const Navbar = () => {
         <Button text={theme} onClick={toggleTheme} />
         {user &&
           <Dropdown name={user?.username}>
+            <DropdownItem onClick={() => navigate(`/${user.username}`)}>
+              Profile
+            </DropdownItem>
             <DropdownItem onClick={handleSignout}>
               Sign out
             </DropdownItem>

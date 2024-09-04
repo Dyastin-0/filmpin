@@ -121,7 +121,7 @@ const TvShowSlug = () => {
 					</div>
 					<motion.div
 						initial={{ y: -120 }}
-						className='flex md:flex-row flex-col bg-accent p-4 rounded-md max-w-full w-[90%] gap-4 shadow-sm'
+						className='flex md:flex-row flex-col bg-accent p-4 rounded-md max-w-full w-[calc(100%-2rem)] gap-4 shadow-sm'
 					>
 						<div className='flex flex-col gap-3'>
 							<img
@@ -166,7 +166,7 @@ const TvShowSlug = () => {
 				<MovieSlugLoader />
 			}
 			<motion.div
-				className='flex flex-col bg-accent rounded-lg gap-4 p-4 items-center w-[90%]'
+				className='flex flex-col bg-accent rounded-lg gap-4 p-4 items-center w-[calc(100%-2rem)]'
 				initial={{ marginTop: -120 }}
 			>
 				{seasons ?

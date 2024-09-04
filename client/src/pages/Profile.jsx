@@ -6,6 +6,8 @@ import { useModal } from '../components/hooks/useModal';
 import SelectBackdrop from '../components/SelectBackdrop';
 import UserBackdrop from '../components/UserBackdrop';
 import { Dropdown, DropdownItem } from '../components/ui/Dropdown';
+import { useEffect } from 'react';
+import { useLoading } from '../components/hooks/useLoading';
 
 const Profile = () => {
 	const { user } = useAuth();
@@ -18,9 +20,13 @@ const Profile = () => {
 		setOpen(true);
 	}
 
+	useEffect(() => {
+		document.title = user?.username;
+	}, []);
+
 	return (
 		<div className='relative flex flex-col items-center w-full h-full bg-primary rounded-md'>
-			<div className='relative flex justify-center items-center w-full max-h-[400px] rounded-md'>
+			<div className='relative flex justify-center p-4 items-center w-full max-h-[400px] rounded-md'>
 				{user?.backdropPath ?
 					<UserBackdrop username={user.username} backdropPath={user.backdropPath} /> :
 					<div className='absolute top-12 flex items-center gap-2 p-2 drop-shadow-sm bg-accent rounded-md hover:cursor-pointer'
@@ -33,7 +39,7 @@ const Profile = () => {
 			</div>
 			<motion.div
 				initial={{ y: -120 }}
-				className='flex gap-4 w-[90%] h-[200px] p-4 bg-accent rounded-md'
+				className='flex gap-4 w-[calc(100%-4rem)] h-[200px] p-4 bg-accent rounded-md'
 			>
 				{/* <img className='w-[50px] h-[50px] rounded-full' src="" alt="" /> */}
 				<div className='flex flex-col'>

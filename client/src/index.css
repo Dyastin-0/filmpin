@@ -28,15 +28,21 @@
   --bg-primary: #212830;
   --bg-secondary: #1A2028;
   --accent: #2B333E;
+  --accent-secondary: #343D49;
   --text-highlight: #f2f2f3;
   --text-secondary: #cacaca;
   --text-primary: #ffffff;
 }
 
 :root.light {
-  --bg-primary: #F5F5F5;
-  --bg-secondary: #ececec;
-  --accent: #FFFFFF;
+  --bg-primary: #F0F0F0;
+  /* Primary: Slightly darker */
+  --bg-secondary: #E6E6E6;
+  /* Secondary: Darker */
+  --accent-secondary: #FFFFFF;
+  /* Accent-secondary: Lightest */
+  --accent: #F5F5F5;
+  /* Accent: Still light, but darker than accent-secondary */
   --text-highlight: #ffffff;
   --text-secondary: #888888;
   --text-primary: #686d76;
