@@ -41,7 +41,7 @@ const Profile = () => {
 	}
 
 	useEffect(() => {
-		document.title = userData?.username;
+		if (userData) document.title = userData.username;
 	}, [userData]);
 
 	useEffect(() => {
