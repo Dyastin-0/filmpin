@@ -76,15 +76,21 @@ const Profile = () => {
 				initial={{ y: -120 }}
 				className='flex gap-4 w-[calc(100%-4rem)] h-[200px] p-4 bg-accent rounded-md'
 			>
-				<div className='flex flex-col gap-4 justify-center'>
+				<div className='flex flex-col items-center gap-4'>
 					{userData?.profileImageURL ?
-						<img
-							alt={`${userData.username} profile image`}
-							src={userData.profileImageURL}
-							onClick={handleViewProfile}
-							className='w-[100px] h-[100px] rounded-full
+						<div className='flex flex-col justify-center items-center gap-2'>
+							<img
+								alt={`${userData.username} profile image`}
+								src={userData.profileImageURL}
+								onClick={handleViewProfile}
+								className='w-[100px] h-[100px] rounded-full
 							transition-all duration-300 hover:cursor-pointer hover:opacity-70'
-						/>
+							/>
+							<div>
+								<h1 className='text-primary-foreground text-sm font-semibold'>{userData?.username}</h1>
+								<h1 className='text-primary-foreground text-xs'>{userData?.email}</h1>
+							</div>
+						</div>
 						: <div
 							className='flex justify-center items-center w-[70px] h-[70px] rounded-full bg-secondary
 							hover:cursor-pointer'
@@ -93,10 +99,6 @@ const Profile = () => {
 							<FontAwesomeIcon icon={faImage} />
 						</div>
 					}
-					<div>
-						<h1 className='text-primary-foreground text-xl font-bold'>{userData?.username}</h1>
-						<h1 className='text-primary-foreground text-xs'>{userData?.email}</h1>
-					</div>
 				</div>
 				<div className='absolute top-4 right-4'>
 					{token && userData?._id === user?._id &&
