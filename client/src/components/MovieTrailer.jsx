@@ -1,7 +1,7 @@
 import { motion } from 'framer-motion';
 import { useModal } from './hooks/useModal';
 import { useEffect, useState } from 'react';
-import { TrailerImageDummy } from './loaders/TrailerLoaders';
+import { TrailerImageDummy, TrailerTitleDummy } from './loaders/TrailerLoaders';
 import useAxios from '../hooks/useAxios';
 import Frame from './Frame';
 import Clip from './Clip';
@@ -55,7 +55,10 @@ const MovieTrailer = ({ id, title }) => {
 			{
 				imageLoaded ?
 					<Clip title={title} trailerKey={trailerYoutubeKey} onClick={handleClick} />
-					: <TrailerImageDummy />
+					: <div className='flex flex-col items-center gap-1 justify-center'>
+						<TrailerImageDummy />
+						<TrailerTitleDummy />
+					</div>
 			}
 		</motion.div>
 	)

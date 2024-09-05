@@ -1,5 +1,3 @@
-import React from 'react'
-
 const Cast = ({ info, className }) => {
 	return (
 		<div className={`flex gap-2 w-[200px] items-center ${className}`}>
@@ -12,7 +10,7 @@ const Cast = ({ info, className }) => {
 				/> : <div className='w-[40px] h-[40px] rounded-full bg-secondary'> </div>
 			}
 			<div>
-				<h1 className='text-primary-highlight text-xs font-semibold'>{info.name}</h1>
+				<h1 className='text-primary-highlight text-sm font-semibold'>{info.name}</h1>
 				<h1 className='text-secondary-foreground text-xs font-semibold line-clamp-1 text-ellipsis'>{info.character}</h1>
 			</div>
 		</div>

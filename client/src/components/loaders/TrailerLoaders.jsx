@@ -4,10 +4,10 @@ import { Swiper, SwiperSlide } from 'swiper/react';
 import { swiperConfig } from '../../configs/swiperConfig';
 
 export const TrailerImageDummy = () => <motion.div className='w-full aspect-video rounded-md bg-secondary' variants={blinkVariants} animate='blink'></motion.div>;
-export const TrailerTitleDummy = () => <motion.div className='w-1/2 h-7 rounded-md bg-secondary' variants={blinkVariants} animate='blink'></motion.div>;
+export const TrailerTitleDummy = () => <motion.div className='w-1/2 h-4 rounded-md bg-secondary' variants={blinkVariants} animate='blink'></motion.div>;
 
 export const TrailerDummy = () => (
-  <motion.div className='flex flex-col rounded-md drop-shadow-sm gap-1 p-3 w-[270px] h-fit
+  <motion.div className='flex flex-col items-center rounded-md drop-shadow-sm gap-1 p-3 w-[270px] h-fit
 		text-primary-foreground border border-secondary-accent
 		hover:scale-95 hover:cursor-pointer duration-300'
   >

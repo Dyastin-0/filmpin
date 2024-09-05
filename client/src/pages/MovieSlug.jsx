@@ -92,6 +92,7 @@ const MovieSlug = () => {
 		if (id) {
 			id && getVideos(id).then(videos => setVideos(videos.results));
 			const stateMovie = location.state?.details;
+			console.log(stateMovie)
 			if (!stateMovie) {
 				fetchMovie(id.split('_')[0]).then(movie => setMovie(movie));
 			} else {

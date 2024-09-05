@@ -3,7 +3,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
 const Clip = ({ title, trailerKey, onClick }) => {
 	return (
-		<div className='h-fit max-w-[270px] hover:cursor-pointer'
+		<div className='h-fit max-w-[270px] hover:cursor-pointer group'
 			onClick={onClick}
 		>
 			<div className='relative'>

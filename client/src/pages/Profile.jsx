@@ -10,11 +10,12 @@ import { useEffect, useState } from 'react';
 import SelectProfile from '../components/SelectProfile';
 import { Image } from '../components/ui/Image';
 import useAxios from '../hooks/useAxios';
-import { useLocation } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 
 const Profile = () => {
 	const api = useAxios();
 	const location = useLocation();
+	const navigate = useNavigate();
 	const [userData, setUserData] = useState(null);
 	const { user, token } = useAuth();
 	const { setModal, setOpen } = useModal();
@@ -46,10 +47,17 @@ const Profile = () => {
 
 	useEffect(() => {
 		if (location.pathname.slice(1) !== user?.username) {
-			api.get(`/public/account?username=${location.pathname.slice(1)}`).then(response => {
-				const publicUserData = response.data.user;
-				publicUserData ? setUserData(publicUserData) : setUserData(user)
-			})
+			const getUser = async () => {
+				try {
+					const response = await api.get(`/public/account?username=${location.pathname.slice(1)}`);
+					const publicUserData = response.data.user;
+					setUserData(publicUserData);
+				} catch (error) {
+					console.error('Failed to get user.', error);
+					navigate('/404');
+				}
+			}
+			getUser();
 		} else {
 			setUserData(user);
 		}
