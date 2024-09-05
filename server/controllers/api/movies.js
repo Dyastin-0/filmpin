@@ -1,6 +1,15 @@
 const api = require('../../helpers/tmdbApi');
 const { movieGenres } = require('../../models/genreList');
 
+/**
+ * Fetches a paginated list of movies from a specific category.
+ * @param {Object} req - The request object.
+ * @param {string} req.query.category - One of the following: 'top_rated', 'upcoming', 'popular', 'now_playing'.
+ * @param {number} req.query.page - Page number of the paginated response.
+ * @param {Object} res - The response object.
+ * @returns {Object} JSON object containing the list of movies.
+ * @throws {Error} If the request fails, returns a 500 status.
+ */
 const handleGetCategory = async (req, res) => {
 	const { category, page } = req.query;
 
@@ -13,6 +22,14 @@ const handleGetCategory = async (req, res) => {
 	}
 }
 
+/**
+ * Fetches detailed information for a specific movie.
+ * @param {Object} req - The request object.
+ * @param {number} req.query.movie_id - The ID of the movie to fetch details for.
+ * @param {Object} res - The response object.
+ * @returns {Object} JSON object containing movie details.
+ * @throws {Error} If the request fails, returns a 500 status.
+ */
 const handleGetDetails = async (req, res) => {
 	const { movie_id } = req.query;
 	try {
@@ -24,6 +41,14 @@ const handleGetDetails = async (req, res) => {
 	}
 }
 
+/**
+ * Fetches credits (cast and crew) for a specific movie.
+ * @param {Object} req - The request object.
+ * @param {number} req.query.movie_id - The ID of the movie to fetch credits for.
+ * @param {Object} res - The response object.
+ * @returns {Object} JSON object containing the movie credits.
+ * @throws {Error} If the request fails, returns a 500 status.
+ */
 const handleGetCredits = async (req, res) => {
 	const { movie_id } = req.query;
 	try {
@@ -35,6 +60,15 @@ const handleGetCredits = async (req, res) => {
 	}
 }
 
+/**
+ * Searches for movies based on a query string.
+ * @param {Object} req - The request object.
+ * @param {string} req.query.query - The search term for movie titles.
+ * @param {number} req.query.page - Page number of the paginated response.
+ * @param {Object} res - The response object.
+ * @returns {Object} JSON object containing search results.
+ * @throws {Error} If the request fails, returns a 500 status.
+ */
 const handleSearch = async (req, res) => {
 	const { query, page } = req.query;
 	try {
@@ -46,17 +80,35 @@ const handleSearch = async (req, res) => {
 	}
 }
 
+/**
+ * Fetches videos (trailers, teasers, etc.) for a specific movie.
+ * @param {Object} req - The request object.
+ * @param {number} req.query.movie_id - The ID of the movie to fetch videos for.
+ * @param {Object} res - The response object.
+ * @returns {Object} JSON object containing the movie's videos.
+ * @throws {Error} If the request fails, returns a 500 status.
+ */
 const handleGetVideo = async (req, res) => {
 	const { movie_id } = req.query;
 	try {
 		const response = await api.get(`movie/${movie_id}/videos?language=en-US`);
 		res.json(response.data);
 	} catch (error) {
-		console.error('Failed to search.', error);
+		console.error('Failed to fetch videos.', error);
 		res.sendStatus(500);
 	}
 }
 
+/**
+ * Fetches a list of movies based on genres.
+ * @param {Object} req - The request object.
+ * @param {string} req.query.genres - A list of genres separated by underscores (_), e.g., 'action_drama'.
+ * @param {string} req.query.sort_by - The sorting parameter, see available options at https://developer.themoviedb.org/reference/discover-movie.
+ * @param {number} req.query.page - Page number of the paginated response.
+ * @param {Object} res - The response object.
+ * @returns {Object} JSON object containing a list of movies that match the genre(s).
+ * @throws {Error} If the request fails, returns a 500 status.
+ */
 const handleDiscover = async (req, res) => {
 	const { genres, sort_by, page } = req.query;
 
@@ -73,11 +125,34 @@ const handleDiscover = async (req, res) => {
 	}
 }
 
+/**
+ * Fetches watch providers for a specific movie.
+ * @param {Object} req - The request object.
+ * @param {number} req.query.movie_id - The ID of the movie to fetch watch providers for.
+ * @param {Object} res - The response object.
+ * @returns {Object} JSON object containing the movie's watch providers.
+ * @throws {Error} If the request fails, returns a 500 status.
+ */
+const handleGetWatchProvider = async (req, res) => {
+	const { movie_id } = req.query;
+
+	if (!movie_id) return res.status(400).json({ message: 'Missing movie ID' });
+
+	try {
+		const response = await api.get(`movie/${movie_id}/watch/providers`);
+		res.json(response.data);
+	} catch (error) {
+		console.error('Failed to get watch providers for movie.', error);
+		res.status(500);
+	}
+}
+
 module.exports = {
 	handleGetCategory,
 	handleGetDetails,
 	handleGetCredits,
 	handleSearch,
 	handleGetVideo,
-	handleDiscover
+	handleDiscover,
+	handleGetWatchProvider
 };

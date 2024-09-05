@@ -1,6 +1,27 @@
 const Users = require('../models/user');
 const jwt = require('jsonwebtoken');
 
+/**
+ * Handles the refresh of access tokens using a refresh token stored in cookies.
+ * - Validates the refresh token and generates a new access token and refresh token if valid.
+ * - Updates the user's refresh tokens in the database and sets a new refresh token in cookies.
+ * - Clears the old refresh token from cookies.
+ * 
+ * @param {Object} req - The request object.
+ * @param {Object} req.cookies - The cookies attached to the request.
+ * @param {string} [req.cookies.jwt] - The refresh token stored in cookies (if available).
+ * @param {Object} res - The response object.
+ * 
+ * @returns {void} 
+ * - On success, sets a new refresh token in cookies and returns a JSON response with:
+ *    - `accessToken` {string} - The new JWT access token.
+ *    - `user` {Object} - The authenticated user's data excluding sensitive fields.
+ * - On failure, sends an appropriate status code:
+ *    - {401} - If no refresh token is found in cookies.
+ *    - {403} - If the refresh token is invalid or does not match any user.
+ * 
+ * @throws {Error} - If an internal server error occurs during token verification or user update.
+ */
 const handleRefreshAccessToken = async (req, res) => {
 	const cookies = req.cookies;
 	if (!cookies?.jwt) return res.sendStatus(401);

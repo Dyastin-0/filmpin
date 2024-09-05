@@ -30,7 +30,6 @@ const MovieSlug = () => {
 	const [crews, setCrews] = useState(null);
 	const writers = crews?.filter(crew => crew.job === 'Writer');
 	const [similarMovies, setSimilarMovies] = useState(null);
-	const [isLoading, setIsLoading] = useState(true);
 	const id = searchParams.get('id');
 
 	const getVideos = async (id) => {
@@ -39,6 +38,15 @@ const MovieSlug = () => {
 			return videos.data;
 		} catch (error) {
 			console.error(`Failed to get videos for movie with id '${id}'`, error);
+		}
+	}
+
+	const getWatchProviders = async (id) => {
+		try {
+			const watchProviders = await api.get(`/movies/watch-provider?movie_id=${id}`);
+			console.log(watchProviders.data);
+		} catch (error) {
+			console.error(`Failed to get watch providers for movie with id ${id}`, error);
 		}
 	}
 
@@ -73,18 +81,17 @@ const MovieSlug = () => {
 	useEffect(() => {
 		if (movie) {
 			if (movie) document.title = movie.title;
-			setIsLoading(true);
 			setLoading(true);
 			const genres = movie.genres.map(genre => genre.name).join('_').toLowerCase();
 			getDiscovery(genres, 'vote_count', 1).then(response => {
 				setSimilarMovies(response.results);
-				setIsLoading(false);
 				setLoading(false);
 			});
 			getCredits(movie.id).then(credits => {
 				setCasts(credits.cast);
 				setCrews(credits.crew);
 			});
+			getWatchProviders(movie.id);
 		}
 	}, [movie]);
 
