@@ -49,7 +49,7 @@ const MovieTrailer = ({ id, title }) => {
 
 	return (
 		<motion.div className='flex flex-col rounded-md drop-shadow-sm gap-1 p-3 w-[270px] h-fit
-			text-primary-foreground bg-accent
+			text-primary-foreground border border-secondary-accent
 			hover:scale-95 duration-300'
 		>
 			{

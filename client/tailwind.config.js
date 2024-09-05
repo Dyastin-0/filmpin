@@ -17,7 +17,8 @@ export default {
         },
         secondary: {
           DEFAULT: "var(--bg-secondary)",
-          foreground: "var(--text-secondary)"
+          foreground: "var(--text-secondary)",
+          accent: "var(--accent-secondary)"
         },
         accent: "var(--accent)",
         success: "var(--success)",

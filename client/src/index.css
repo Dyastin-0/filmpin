@@ -37,8 +37,8 @@
 :root.light {
   --bg-primary: #F0F0F0;
   --bg-secondary: #E6E6E6;
-  --accent-secondary: #FFFFFF;
-  --accent: #F5F5F5;
+  --accent-secondary: #F5F5F5;
+  --accent: #FFFFFF;
   --text-highlight: #ffffff;
   --text-secondary: #888888;
   --text-primary: #686d76;

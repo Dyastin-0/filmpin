@@ -69,9 +69,10 @@ const Navbar = () => {
 
   return (
     <motion.div
-      className='sticky top-4 flex justify-between rounded-lg w-full p-3 gap-3 shadow-sm z-40'
+      className={`sticky top-4 flex justify-between rounded-lg w-full p-3 gap-3 shadow-sm z-40 bg-primary
+      ${lastScrollY > 50 ? 'border border-secondary-accent' : ''}`}
       initial={{ y: 0 }}
-      animate={{ y: isScrollingDown ? -100 : 0, backgroundColor: isScrollingDown ? 'var(--accent-secondary)' : lastScrollY === 0 ? 'var(--bg-primary)' : 'var(--accent-secondary)' }}
+      animate={isScrollingDown ? { y: -100 } : { y: 0 }}
       transition={{ type: 'spring', stiffness: 100, damping: 20 }}
     >
       <div className='flex justify-center items-center gap-2'>

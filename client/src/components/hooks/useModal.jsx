@@ -1,6 +1,7 @@
 import React, { createContext, useContext, useEffect, useState } from 'react';
 import ReactDOM from 'react-dom';
-import { AnimatePresence, motion } from 'framer-motion';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faX } from '@fortawesome/free-solid-svg-icons';
 
 const ModalContext = createContext();
 
@@ -33,11 +34,15 @@ export function ModalProvider({ children }) {
         <div>
           {open && (
             <div
-              className='fixed inset-0 flex justify-center items-center bg-black z-40 bg-opacity-30'
+              className='fixed top-0 bottom-0 left-0 right-0 flex justify-center items-center bg-black z-40 bg-opacity-30'
               onClick={() => setOpen(false)}
             >
+              <FontAwesomeIcon icon={faX}
+                className='absolute top-4 right-4 text-xs rounded-full p-2 hover:cursor-pointer'
+                onClick={() => setOpen(false)}
+              />
               <div
-                className='flex justify-center items-center w-fit max-w-[calc(100%-4rem)] h-fit'
+                className='flex justify-center items-center w-fit max-w-[calc(100%-2rem)] h-full max-h-[calc(100%-2rem)]'
                 onClick={(e) => e.stopPropagation()}
               >
                 {modal}
