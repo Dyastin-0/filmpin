@@ -46,7 +46,7 @@ export const DropdownItem = ({ onClick, children, asChild }) => {
 		children
 	) : (
 		<button
-			className='text-right text-nowrap text-primary-foreground text-xs outline-none p-1.5 w-fit rounded-md
+			className='text-right w-full text-nowrap text-primary-foreground text-xs outline-none p-1.5 rounded-md
 			transition-all duration-300
 			hover:bg-primary'
 			onClick={(e) => {

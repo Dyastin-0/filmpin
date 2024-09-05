@@ -94,19 +94,19 @@ const Profile = () => {
 								className='w-[100px] h-[100px] rounded-full
 							transition-all duration-300 hover:cursor-pointer hover:opacity-70'
 							/>
-							<div>
-								<h1 className='text-primary-foreground text-sm font-semibold'>{userData?.username}</h1>
-								<h1 className='text-primary-foreground text-xs'>{userData?.email}</h1>
-							</div>
 						</div>
 						: <div
-							className='flex justify-center items-center w-[70px] h-[70px] rounded-full bg-secondary
-							hover:cursor-pointer'
+							className='flex justify-center items-center w-[100px] h-[100px] rounded-full bg-secondary
+						hover:cursor-pointer'
 							onClick={handleSelectProfile}
 						>
 							<FontAwesomeIcon icon={faImage} />
 						</div>
 					}
+					<div>
+						<h1 className='text-primary-foreground text-sm font-semibold'>{userData?.username}</h1>
+						<h1 className='text-primary-foreground text-xs'>{userData?.email}</h1>
+					</div>
 				</div>
 				<div className='absolute top-4 right-4'>
 					{token && userData?._id === user?._id &&

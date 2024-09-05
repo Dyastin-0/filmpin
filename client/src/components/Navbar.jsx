@@ -121,7 +121,7 @@ const Navbar = () => {
           <Dropdown
             name={user.profileImageURL ?
               <img className='max-w-[30px] max-h-[30px] rounded-full' src={user.profileImageURL} />
-              : <div className='flex justify-center items-center max-w-[30px] max-h-[30px] rounded-full bg-secondary text-primary-highlight text-xs'>
+              : <div className='flex justify-center items-center w-[30px] h-[30px] rounded-full bg-secondary text-primary-highlight text-xs'>
                 {user.username[0]}
               </div>
             }
