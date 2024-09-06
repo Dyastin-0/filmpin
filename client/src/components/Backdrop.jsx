@@ -1,8 +1,10 @@
 import { useAuth } from "../hooks/useAuth";
 import useAxios from "../hooks/useAxios"
+import { useModal } from "./hooks/useModal";
 import { useToast } from "./hooks/useToast";
 
 export const Backdrop = ({ backdrop_path, title }) => {
+	const { setOpen } = useModal();
 	const api = useAxios();
 	const { user, setUser } = useAuth();
 	const { toastError, toastSuccess } = useToast();
@@ -16,6 +18,7 @@ export const Backdrop = ({ backdrop_path, title }) => {
 				backdropPath: backdrop
 			}));
 			toastSuccess('Backdrop updated.');
+			setOpen(false);
 		} catch (error) {
 			console.error('Failed to set backdrop.', error);
 			toastError('Failed to update backdrop.');

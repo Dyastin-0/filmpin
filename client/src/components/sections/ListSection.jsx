@@ -39,12 +39,14 @@ const ListSection = () => {
 			className='relative flex gap-4 w-[calc(100%-4rem)] h-[200px] p-4 bg-accent rounded-md'
 		>
 			<h1 className='text-primary-foreground pb-4 text-sm font-semibold'>Lists</h1>
-			<Button
-				className='absolute top-4 right-4'
-				onClick={handleCreateList}
-				icon={<FontAwesomeIcon icon={faPlus} />}
-				text='Create a list'
-			/>
+			{token &&
+				<Button
+					className='absolute top-4 right-4'
+					onClick={handleCreateList}
+					icon={<FontAwesomeIcon icon={faPlus} />}
+					text='Create a list'
+				/>
+			}
 		</motion.section>
 	)
 }

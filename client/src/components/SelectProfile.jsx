@@ -3,8 +3,10 @@ import { useAuth } from '../hooks/useAuth';
 import useAxios from '../hooks/useAxios';
 import Button from './ui/Button';
 import { useToast } from '../components/hooks/useToast';
+import { useModal } from './hooks/useModal';
 
 const SelectProfile = () => {
+	const { setOpen } = useModal();
 	const { user, setUser } = useAuth();
 	const api = useAxios();
 	const [file, setFile] = useState(null);
@@ -43,6 +45,7 @@ const SelectProfile = () => {
 				profileImageURL: response.data.secure_url
 			}))
 			toastSuccess('Profile updated.');
+			setOpen(false);
 		} catch (error) {
 			console.error('Error uploading file:', error);
 			toastError('Failed to update profile.');

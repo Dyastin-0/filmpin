@@ -5,8 +5,10 @@ import Button from './ui/Button';
 import { movieGenres, tvShowGenres } from '../models/genres';
 import useAxios from '../hooks/useAxios';
 import { useToast } from '../components/hooks/useToast';
+import { useModal } from './hooks/useModal';
 
 const CreateList = () => {
+	const { setOpen } = useModal();
 	const api = useAxios();
 	const titleRef = useRef(null);
 	const [type, setType] = useState('movies');
@@ -35,6 +37,7 @@ const CreateList = () => {
 				}
 			});
 			toastSuccess('List successfully created.');
+			setOpen(false);
 		} catch (error) {
 			console.error('Failed to create list.', error);
 			toastError('Failed to create list.');
@@ -51,7 +54,7 @@ const CreateList = () => {
 
 	useEffect(() => {
 		if (selectedGenres.length > 0) {
-			fetch(type, selectedGenres).then(response => {
+			fetch(type.replace(' ', '').toLocaleUpperCase(), selectedGenres.join('_').toLowerCase).then(response => {
 				setFetched(response.results);
 			});
 		}
@@ -75,7 +78,7 @@ const CreateList = () => {
 			<div className='flex justify-between'>
 				<input
 					disabled={true}
-					className='outline-none rounded-md w-[80px] bg-secondary p-2
+					className='outline-none rounded-md bg-secondary p-2
 					text-xs placeholder:text-secondary-foreground
 					transition-all duration-300
 					focus:shadow-[0_0_0_2px] focus:shadow-secondary-accent'
@@ -83,8 +86,8 @@ const CreateList = () => {
 					value={type}
 				/>
 				<Dropdown name='Select type'>
-					<DropdownItem onClick={() => setType('tvshows')}>TV show</DropdownItem>
-					<DropdownItem onClick={() => setType('movies')}>Movie</DropdownItem>
+					<DropdownItem onClick={() => setType('TV Shows')}>TV shows</DropdownItem>
+					<DropdownItem onClick={() => setType('Movies')}>Movies</DropdownItem>
 				</Dropdown>
 			</div>
 			<h1 className='text-xs text-primary-foreground'>Select genres you like to start with</h1>
