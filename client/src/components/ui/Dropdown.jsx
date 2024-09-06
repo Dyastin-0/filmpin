@@ -6,7 +6,8 @@ export const Dropdown = ({ name, children }) => {
 	const [isOpen, setIsOpen] = useState(false);
 	const dropdownRef = useRef(null);
 
-	const toggle = () => {
+	const toggle = (e) => {
+		e.preventDefault();
 		setIsOpen((prev) => !prev);
 	};
 
@@ -19,7 +20,7 @@ export const Dropdown = ({ name, children }) => {
 	return (
 		<div className='relative flex items-center justify-end z-50' ref={dropdownRef}>
 			<button
-				className='flex h-fit w-fit justify-center items-center text-center outline-none rounded-full focus:shadow-[var(--highlight)_0_0_0_2px] p-1'
+				className='flex h-fit w-fit justify-center items-center text-xs text-center outline-none rounded-full focus:shadow-[var(--highlight)_0_0_0_2px] p-1'
 				onClick={toggle}
 				onBlur={handleBlur}
 			>
@@ -50,6 +51,7 @@ export const DropdownItem = ({ onClick, children, asChild }) => {
 			transition-all duration-300
 			hover:bg-primary'
 			onClick={(e) => {
+				e.preventDefault();
 				e.stopPropagation();
 				onClick();
 			}}

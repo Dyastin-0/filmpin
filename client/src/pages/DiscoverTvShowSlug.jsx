@@ -9,13 +9,7 @@ import useAxios from '../hooks/useAxios';
 import Accordion from '../components/ui/Accordion';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faFilter } from '@fortawesome/free-solid-svg-icons';
-
-const genres = [
-  'action and adventure', 'animation', 'comedy', 'crime',
-  'documentary', 'drama', 'family', 'kids', 'mystery', 'news',
-  'reality', 'sci-fi and fantasy', 'soap', 'talk',
-  'war and politics', 'western'
-];
+import { tvShowGenres } from '../models/genres';
 
 const DiscoverTvShowSlug = () => {
   const [searchParams] = useSearchParams();
@@ -102,7 +96,7 @@ const DiscoverTvShowSlug = () => {
         </h1>
       </div>
       <Accordion title={<div className='gap-2'><FontAwesomeIcon icon={faFilter} /> Filter </div>}>
-        <Selector items={genres} selectedGenres={selectedGenres} setSelectedGenres={setSelectedGenres} />
+        <Selector items={tvShowGenres} selectedGenres={selectedGenres} setSelectedGenres={setSelectedGenres} />
       </Accordion>
       {isLoading ?
         selectedGenres && <LoadingDiscover />

@@ -35,6 +35,13 @@ const userSchema = new Schema({
 	},
 	profileImageURL: {
 		type: String
+	},
+	lists: {
+		type: [String]
+	},
+	created_on: {
+		type: Number,
+		default: Date.now
 	}
 });
 

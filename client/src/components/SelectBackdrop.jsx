@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { SearchInput } from './ui/Input';
+import SearchInput from './ui/SearchInput';
 import useAxios from '../hooks/useAxios';
 import { Backdrop } from './Backdrop';
 import { useToast } from './hooks/useToast';

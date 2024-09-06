@@ -11,6 +11,7 @@ import SelectProfile from '../components/SelectProfile';
 import { Image } from '../components/ui/Image';
 import useAxios from '../hooks/useAxios';
 import { useLocation, useNavigate } from 'react-router-dom';
+import ListSection from '../components/sections/ListSection';
 
 const Profile = () => {
 	const api = useAxios();
@@ -46,7 +47,7 @@ const Profile = () => {
 	}, [userData]);
 
 	useEffect(() => {
-		if (location.pathname.slice(1) !== user?.username) {
+		if (location.pathname.slice(1) !== user?.username && token) {
 			const getUser = async () => {
 				try {
 					const response = await api.get(`/public/account?username=${location.pathname.slice(1)}`);
@@ -61,10 +62,9 @@ const Profile = () => {
 		} else {
 			setUserData(user);
 		}
-	}, [user, location.pathname]);
-
+	}, [user, token, location.pathname]);
 	return (
-		<div className='relative flex flex-col items-center w-full h-full bg-primary rounded-md'>
+		<div className='relative flex flex-col items-center gap-4 w-full h-full bg-primary rounded-md'>
 			<div className='relative flex justify-center p-4 items-center w-full max-h-[400px] rounded-md'>
 				{userData?.backdropPath ?
 					<UserBackdrop username={userData.username} backdropPath={userData.backdropPath} /> :
@@ -121,6 +121,7 @@ const Profile = () => {
 					}
 				</div>
 			</motion.div>
+			<ListSection />
 		</div>
 	)
 }

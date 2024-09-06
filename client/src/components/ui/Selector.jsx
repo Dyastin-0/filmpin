@@ -16,7 +16,10 @@ const Selector = ({ items, selectedGenres, setSelectedGenres }) => {
           key={index}
           name={item}
           value={selectedGenres?.includes(item)}
-          onChecked={() => handleCheckboxChange(item)}
+          onChecked={(e) => {
+            e.preventDefault();
+            handleCheckboxChange(item);
+          }}
         />
       ))}
     </div>

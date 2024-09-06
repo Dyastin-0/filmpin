@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { useAuth } from '../hooks/useAuth';
 import axios from 'axios';
-import { SearchInput } from './ui/Input';
+import SearchInput from './ui/SearchInput';
 import Button from './ui/Button';
 import { Dropdown, DropdownItem } from './ui/Dropdown';
 import { useThemeToggle } from '../hooks/useTheme';

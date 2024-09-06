@@ -44,7 +44,6 @@ const MovieSlug = () => {
 	const getWatchProviders = async (id) => {
 		try {
 			const watchProviders = await api.get(`/movies/watch-provider?movie_id=${id}`);
-			console.log(watchProviders.data);
 		} catch (error) {
 			console.error(`Failed to get watch providers for movie with id ${id}`, error);
 		}
@@ -99,7 +98,6 @@ const MovieSlug = () => {
 		if (id) {
 			id && getVideos(id).then(videos => setVideos(videos.results));
 			const stateMovie = location.state?.details;
-			console.log(stateMovie)
 			if (!stateMovie) {
 				fetchMovie(id.split('_')[0]).then(movie => setMovie(movie));
 			} else {

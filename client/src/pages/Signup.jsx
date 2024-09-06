@@ -136,7 +136,7 @@ const Signup = () => {
         <Button type='submit' disabled={signingUp} text={`${signingUp ? 'Signing up...' : 'Sign up'}`} />
         <Link
           to={`/sign-in`}
-          className='self-center w-fit pt-1 outline-none text-primary-foreground text-xs transition-colors duration-300 focus:text-primary-highlight focus:underline'
+          className='self-center w-fit pt-2 outline-none text-primary-foreground text-xs transition-colors duration-300 focus:text-primary-highlight focus:underline'
         > Already have an account? click here. </Link>
       </form>
     </div>

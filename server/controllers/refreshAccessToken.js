@@ -35,7 +35,6 @@ const handleRefreshAccessToken = async (req, res) => {
 			process.env.REFRESH_TOKEN_SECRET,
 			async (error, decoded) => {
 				if (error) return res.sendStatus(403);
-				console.log(decoded);
 				const hackedUser = await Users.findOne({ email: decoded.email });
 				await Users.updateOne({ email: hackedUser.email }, { $set: { refreshToken: [] } });
 			}
@@ -53,7 +52,6 @@ const handleRefreshAccessToken = async (req, res) => {
 				await Users.updateOne({ email: user.email }, { $set: { refreshToken: [...newRefreshTokens] } });
 			}
 			if (error || user.email !== decoded.email) return res.sendStatus(403);
-			console.log(user._id);
 			const accessToken = jwt.sign(
 				{
 					UserInfo: {

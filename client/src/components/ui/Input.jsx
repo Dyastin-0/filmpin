@@ -1,9 +1,6 @@
 import React, { useState } from 'react';
 import { motion } from 'framer-motion';
 
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faSearch } from '@fortawesome/free-solid-svg-icons';
-
 const Input = React.forwardRef(({ onChange, type, value, id, placeholder, required, className }, ref) => {
 	const [focus, setFocus] = useState(false);
 
@@ -43,8 +40,8 @@ const Input = React.forwardRef(({ onChange, type, value, id, placeholder, requir
 				onBlur={() => setFocus(false)}
 				className={`bg-transparent rounded-md p-2 outline-none text-primary-foreground
 				transition-all duration-300
-				focus:shadow-[var(--highlight)_0_2px_0_0]
-				${value ? 'shadow-[var(--highlight)_2px_2px_0_0px]' : 'shadow-[var(--highlight)_0px_2px_0_0]'} ${className}`}
+				focus:shadow-[var(--accent-secondary)_0_2px_0_0]
+				${value ? 'shadow-[var(--highlight)_2px_2px_0_0px]' : 'shadow-[var(--accent-secondary)_0px_2px_0_0]'} ${className}`}
 				value={value}
 				onChange={(e) => onChange(e)}
 			/>
@@ -52,32 +49,5 @@ const Input = React.forwardRef(({ onChange, type, value, id, placeholder, requir
 	);
 });
 
-export const SearchInput = ({ onChange, type, value, id, placeholder, required, onSubmit }) => {
-	const [focus, setFocus] = useState(false);
-	return (
-		<form className={`flex gap-2 text-primary-foreground bg-secondary pt-1 pb-1 pl-3 pr-3 rounded-full
-			transition-all duration-300
-			${focus ? 'shadow-[0_0_0_2px] shadow-primary-highlight' : 'shadow-sm'}`}
-			onSubmit={onSubmit}>
-			<button type='submit' onFocus={() => setFocus(true)} onBlur={() => setFocus(false)} className='outline-none'>
-				<FontAwesomeIcon
-					className={`transition-all duration-300 ease-in-out hover:scale-110 hover:text-primary-highlight
-					${focus ? 'text-primary-highlight scale-110' : ''}`} icon={faSearch} />
-			</button>
-			<input
-				value={value}
-				id={id}
-				type={type}
-				onChange={onChange}
-				required={required}
-				placeholder={placeholder}
-				onFocus={() => setFocus(true)}
-				onBlur={() => setFocus(false)}
-				className={`bg-transparent text-primary-foreground placeholder-secondary-foreground rounded-md text-xs outline-none
-					w-full`}
-			/>
-		</form>
-	);
-}
 
 export default Input;

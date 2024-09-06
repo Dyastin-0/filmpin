@@ -9,13 +9,7 @@ import useAxios from '../hooks/useAxios';
 import Accordion from '../components/ui/Accordion';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faFilter } from '@fortawesome/free-solid-svg-icons';
-
-const genres = [
-  'action', 'adventure', 'animation', 'comedy', 'crime', 'documentary',
-  'drama', 'family', 'fantasy', 'history', 'horror', 'music',
-  'mystery', 'romance', 'science fiction', 'tv movie', 'thriller',
-  'war', 'western'
-];
+import { movieGenres } from '../models/genres';
 
 const DiscoverMovieSlug = () => {
   const [searchParams] = useSearchParams();
@@ -23,7 +17,7 @@ const DiscoverMovieSlug = () => {
   const api = useAxios();
   const { setLoading } = useLoading();
   const [selectedGenres, setSelectedGenres] = useState([]);
-  const [currentPage, setCurrentPage] = useState(1);
+  const [currentPage, setCurrentPage] = useState(searchParams.get('page'));
   const [totalPages, setTotalPages] = useState(0);
   const [results, setResults] = useState({});
   const [isLoading, setIsLoading] = useState(true);
@@ -103,7 +97,7 @@ const DiscoverMovieSlug = () => {
         </h1>
       </div>
       <Accordion title={<div className='gap-2'><FontAwesomeIcon icon={faFilter} /> Filter </div>}>
-        <Selector items={genres} selectedGenres={selectedGenres} setSelectedGenres={setSelectedGenres} />
+        <Selector items={movieGenres} selectedGenres={selectedGenres} setSelectedGenres={setSelectedGenres} />
       </Accordion>
       {isLoading ?
         selectedGenres && <LoadingDiscover />

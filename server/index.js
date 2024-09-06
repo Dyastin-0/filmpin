@@ -33,7 +33,8 @@ app.use('/api/public/account', require('./routes/public/account'));
 app.use('/api/public/backdrops', require('./routes/public/backdrops'));
 
 app.use(verifyJsonWebToken);
-app.use('/api/account', require('./routes/api/account'));
+app.use('/api/account', require('./routes/api/account/account'));
+app.use('/api/list', require('./routes/api/account/list'));
 app.use('/api/movies', require('./routes/api/movies'));
 app.use('/api/tvshows', require('./routes/api/tvshows'));
 

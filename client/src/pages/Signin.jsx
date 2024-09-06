@@ -95,11 +95,11 @@ const Signin = () => {
         <Button type='submit' disabled={signingIn} text={`${signingIn ? 'Signing in...' : 'Sign in'}`} />
         <Link
           to={`/account/verify`}
-          className='self-center w-fit pt-1 outline-none text-primary-foreground text-xs transition-colors duration-300 focus:text-primary-highlight focus:underline'
+          className='self-center w-fit pt-2 outline-none text-primary-foreground text-xs transition-colors duration-300 focus:text-primary-highlight focus:underline'
         > Verify your account </Link>
         <Link
           to={`/sign-up`}
-          className='self-center w-fit pt-1 outline-none text-primary-foreground text-xs transition-colors duration-300 focus:text-primary-highlight focus:underline'
+          className='self-center w-fit pt-2 outline-none text-primary-foreground text-xs transition-colors duration-300 focus:text-primary-highlight focus:underline'
         > Don't have an account? click here </Link>
       </form>
     </div>

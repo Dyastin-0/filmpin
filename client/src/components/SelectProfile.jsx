@@ -38,7 +38,6 @@ const SelectProfile = () => {
 					'Content-Type': 'multipart/form-data',
 				},
 			});
-			console.log(response);
 			setUser(prev => ({
 				...prev,
 				profileImageURL: response.data.secure_url
