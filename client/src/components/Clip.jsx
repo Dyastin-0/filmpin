@@ -1,11 +1,40 @@
 import { faPlay } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { useEffect } from 'react';
+import Frame from './Frame';
+import { useModal } from './hooks/useModal';
+import { useSearchParams } from 'react-router-dom';
 
-const Clip = ({ title, trailerKey, onClick }) => {
+const Clip = ({ title, trailerKey }) => {
+	const { setModal, setOpen } = useModal();
+	const [searchParams, setSearchParams] = useSearchParams();
+
+	const isOpen = searchParams.get(`${title}_open`);
+
+	useEffect(() => {
+		if (isOpen) {
+			setModal(<Frame youtubeKey={trailerKey} title={title} onClose={handleClose} />);
+			setOpen(true);
+		}
+	}, [isOpen]);
+
+	const handleClose = () => {
+		searchParams.delete(`${title}_open`);
+		setSearchParams(searchParams);
+		setOpen(false);
+	}
+
+	const handleClick = () => {
+		searchParams.set(`${title}_open`, 'true');
+		setSearchParams(searchParams);
+	};
+
+	useEffect(() => {
+
+	}, []);
+
 	return (
-		<div className='h-fit max-w-[270px] hover:cursor-pointer group'
-			onClick={onClick}
-		>
+		<div className='h-fit max-w-[270px] hover:cursor-pointer group' onClick={handleClick}>
 			<div className='relative'>
 				<img
 					loading='lazy'
@@ -19,7 +48,7 @@ const Clip = ({ title, trailerKey, onClick }) => {
 			</div>
 			<h1 className='text-center text-primary-foreground mt-2 text-xs line-clamp-1 font-semibold'>{title}</h1>
 		</div>
-	)
-}
+	);
+};
 
 export default Clip;
