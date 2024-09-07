@@ -1,6 +1,6 @@
 import { faPlay } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import Frame from './Frame';
 import { useModal } from './hooks/useModal';
 import { useSearchParams } from 'react-router-dom';
@@ -8,30 +8,32 @@ import { useSearchParams } from 'react-router-dom';
 const Clip = ({ title, trailerKey }) => {
 	const { setModal, setOpen } = useModal();
 	const [searchParams, setSearchParams] = useSearchParams();
-
-	const isOpen = searchParams.get(`${title}_open`);
+	const [isActive, setIsActive] = useState(false);
 
 	useEffect(() => {
+		const isOpen = searchParams.get(`${title}_open`) === 'true';
 		if (isOpen) {
 			setModal(<Frame youtubeKey={trailerKey} title={title} onClose={handleClose} />);
 			setOpen(true);
+			setIsActive(true);
+		} else if (isActive) {
+			handleClose();
 		}
-	}, [isOpen]);
+	}, [searchParams, title, trailerKey, isActive]);
 
 	const handleClose = () => {
 		searchParams.delete(`${title}_open`);
 		setSearchParams(searchParams);
 		setOpen(false);
-	}
-
-	const handleClick = () => {
-		searchParams.set(`${title}_open`, 'true');
-		setSearchParams(searchParams);
+		setIsActive(false);
 	};
 
-	useEffect(() => {
-
-	}, []);
+	const handleClick = () => {
+		if (!isActive) {
+			searchParams.set(`${title}_open`, 'true');
+			setSearchParams(searchParams);
+		}
+	};
 
 	return (
 		<div className='h-fit max-w-[270px] hover:cursor-pointer group' onClick={handleClick}>
