@@ -1,14 +1,16 @@
 const express = require('express');
 const router = express.Router();
 const {
-	handleGetList,
-	handleCreateList
+	handleGeUsertLists,
+	handleCreateList,
+	handleGetList
 } = require('../../../controllers/account/list');
 
-router.route('/')
-	.post(handleCreateList);
+router.route('/:list_id')
+	.get(handleGetList);
 
 router.route('/')
-	.get(handleGetList);
+	.get(handleGeUsertLists)
+	.post(handleCreateList);
 
 module.exports = router;

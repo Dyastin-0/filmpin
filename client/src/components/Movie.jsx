@@ -1,4 +1,3 @@
-import { motion } from 'framer-motion';
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { CircularProgress, CircularProgressLabel } from '@chakra-ui/react';
@@ -45,7 +44,7 @@ const Movie = ({ info }) => {
 	}
 
 	return (
-		<motion.div className='flex flex-col rounded-lg drop-shadow-sm gap-1 p-4 w-[200px] h-[370px]
+		<div className='flex flex-col rounded-lg drop-shadow-sm gap-1 p-4 w-[200px] h-[370px]
 			text-primary-foreground border border-secondary-accent
 			hover:scale-95 hover:cursor-pointer duration-300'
 			onClick={handleClick}
@@ -84,7 +83,7 @@ const Movie = ({ info }) => {
 					<CircularProgressLabel>{details.vote_average?.toFixed(1)}</CircularProgressLabel>
 				</CircularProgress>
 			</div>
-		</motion.div>
+		</div>
 	)
 }
 

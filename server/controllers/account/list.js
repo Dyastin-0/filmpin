@@ -30,13 +30,27 @@ const handleCreateList = async (req, res) => {
 	}
 }
 
-const handleGetList = async (req, res) => {
+const handleGeUsertLists = async (req, res) => {
 	const { id } = req;
 
 	if (!id) return res.status(400).json({ message: 'Missing ID.' });
 
 	try {
-		const response = await Lists.findOne({ owner: id });
+		const response = await Lists.find({ owner: id });
+		res.json(response);
+	} catch (error) {
+		console.error('Failed to fetch user lists.', error);
+		res.sendStatus(500);
+	}
+}
+
+const handleGetList = async (req, res) => {
+	const { list_id } = req.params;
+
+	if (!list_id) return res.status(400).json({ message: 'Missing list ID.' });
+
+	try {
+		const response = await Lists.findOne({ _id: list_id });
 		res.json(response);
 	} catch (error) {
 		console.error('Failed to fetch list.', error);
@@ -45,6 +59,7 @@ const handleGetList = async (req, res) => {
 }
 
 module.exports = {
-	handleGetList,
-	handleCreateList
+	handleGeUsertLists,
+	handleCreateList,
+	handleGetList
 }

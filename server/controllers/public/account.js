@@ -10,19 +10,17 @@ const Users = require('../../models/user');
  * @throws {Error} - Returns status 500 if an internal error occurs.
  */
 const handleGetProfile = async (req, res) => {
-	const { username } = req.query;
+	const { username, id } = req.query;
 
-	if (!username) return res.status(400).json({ message: 'Missing username.' });
+	if (!username && !id) return res.status(400).json({ message: 'Missing user identifier.' });
 
 	try {
-		const user = await Users.findOne({ username });
+		const user = await Users.findOne({ username }) || await Users.findOne({ _id: id });
 
 		if (!user) return res.status(404).json({ message: 'User not found.' });
 
-		// Destructure and exclude sensitive or unnecessary fields from the response
-		const { password, verificationToken, recoveryToken, __v, refreshToken, ...userData } = user.toJSON();
+		const { password, verificationToken, recoveryToken, refreshToken, ...userData } = user.toJSON();
 		
-		// Return the public user data
 		res.json({
 			user: userData
 		});

@@ -1,0 +1,2 @@
+- [ ] Complete adding jsDOC on handlers.
+- [ ] Add 'request' validation; use joi or other library.

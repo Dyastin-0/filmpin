@@ -12,7 +12,11 @@ const ListSchema = new Schema({
 		type: String
 	},
 	list: {
-		type: [String]
+		type: [{
+			id: String,
+			backdrop_path: String,
+			poster_path: String
+		}]
 	},
 	created_on: {
 		type: Number,

@@ -28,11 +28,16 @@ const CreateList = () => {
 
 	const handleCreateList = async (e) => {
 		e.preventDefault();
+		const randomIndex = Math.floor(Math.random() * fetched.length);  
 		try {
 			const response = await api.post('/list', {
 				list: {
 					type: type,
-					list: [fetched[Math.floor(Math.random() * fetched.length - 1)].id],
+					list: [{
+						id: fetched[randomIndex].id,
+						backdrop_path: fetched[randomIndex].backdrop_path,
+						poster_path: fetched[randomIndex].poster_path
+					}],
 					name: name
 				}
 			});
@@ -54,7 +59,7 @@ const CreateList = () => {
 
 	useEffect(() => {
 		if (selectedGenres.length > 0) {
-			fetch(type.replace(' ', '').toLocaleUpperCase(), selectedGenres.join('_').toLowerCase).then(response => {
+			fetch(type.replace(' ', '').toLowerCase(), selectedGenres.join('_').toLowerCase()).then(response => {
 				setFetched(response.results);
 			});
 		}
@@ -91,7 +96,7 @@ const CreateList = () => {
 				</Dropdown>
 			</div>
 			<h1 className='text-xs text-primary-foreground'>Select genres you like to start with</h1>
-			<Selector items={type === 'Movies' ? movieGenres : tvShowGenres} selectedGenres={selectedGenres} setSelectedGenres={setSelectedGenres} />
+			<Selector items={type === 'movies' ? movieGenres : tvShowGenres} selectedGenres={selectedGenres} setSelectedGenres={setSelectedGenres} />
 			<Button text='Create' type='submit' />
 		</form>
 	)
