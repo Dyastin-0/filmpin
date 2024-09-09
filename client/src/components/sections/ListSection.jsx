@@ -33,19 +33,20 @@ const ListSection = ({ userData }) => {
 	useEffect(() => {
 		if (token && user && userData) {
 			const randomId = crypto.randomUUID();
+
 			const newSocket = io(import.meta.env.VITE_SOCKET_URL, {
 				query: {
 					owner: userData._id,
 					accesor: user._id,
 					randomId: randomId,
+					targetStream: 'list',
 					accessToken: token
 				}
 			});
-			console.log(`listChange/${userData._id}/${user._id}/${randomId}`);
+
 			newSocket.on(`listChange/${userData._id}/${user._id}/${randomId}`, (change) => {
-				console.log(change)
+
 				if (change.type === 'delete') {
-					console.log(change)
 					setList((prevList) => prevList.filter((list) => list._id !== change.list));
 				} else {
 					setList((prevList) => {

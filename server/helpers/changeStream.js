@@ -1,4 +1,4 @@
-const startChangeStreamForUser = (socket, mongoose, owner, accesor, randomId) => {
+const startListStream = (socket, mongoose, owner, accesor, randomId) => {
 	const changeStream = mongoose.model('List').watch(
 		[
 			{
@@ -17,10 +17,11 @@ const startChangeStreamForUser = (socket, mongoose, owner, accesor, randomId) =>
 			list: change.operationType === 'delete' ? change.documentKey._id : change.fullDocument
 		});
 	});
-
+	
 	socket.on('disconnect', () => {
 		changeStream.close();
+		socket.disconnect();
 	});
 };
 
-module.exports = { startChangeStreamForUser };
+module.exports = { startListStream };

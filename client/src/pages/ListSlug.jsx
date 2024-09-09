@@ -7,9 +7,12 @@ import Movie from '../components/Movie';
 import Button from '../components/ui/Button';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faPlus } from '@fortawesome/free-solid-svg-icons';
+import { io } from 'socket.io-client';
+import { useModal } from '../components/hooks/useModal';
+import AddListItem from '../components/AddListItem';
 
 const ListSlug = () => {
-	const { token } = useAuth();
+	const { token, user } = useAuth();
 	const api = useAxios();
 	const [searchParams] = useSearchParams();
 	const location = useLocation();
@@ -17,6 +20,7 @@ const ListSlug = () => {
 	const [list, setList] = useState(null);
 	const [listItem, setListItem] = useState(null);
 	const [owner, setOwner] = useState(null);
+	const { setModal, setOpen } = useModal();
 
 	const getOwner = async (id) => {
 		try {
@@ -44,6 +48,42 @@ const ListSlug = () => {
 			console.error('Failed to fetch movie.', error);
 		}
 	}
+
+	const  handleAddListItem = () => {
+		setModal(
+			<AddListItem />
+		);
+		setOpen(true);
+	}
+
+	useEffect(() => {
+		if (token && user && list) {
+			const randomId = crypto.randomUUID();
+
+			const newSocket = io(import.meta.env.VITE_SOCKET_URL, {
+				query: {
+					owner: list.owner,
+					accesor: user._id,
+					randomId: randomId,
+					targetStream: 'list',
+					accessToken: token
+				}
+			});
+
+			newSocket.on(`listChange/${list.owner}/${user._id}/${randomId}`, (change) => {
+
+				if (change.type === 'delete') {
+					setList((prevList) => prevList.filter((list) => list._id !== change.list));
+				} else {
+					setList((prevList) => {
+						const exists = prevList.some(item => item._id === change.list._id);
+						return exists ? prevList : [...prevList, change.list];
+					});
+				}
+			});
+			return () => newSocket.disconnect();
+		}
+	}, [token, list, user]);
 
 	useEffect(() => {
 		if (token) {
@@ -111,7 +151,7 @@ const ListSlug = () => {
 				className='relative flex flex-col gap-4 w-[calc(100%-4rem)] p-4 bg-accent rounded-md overflow-hidden'
 			>
 				<div className='flex justify-end w-full'>
-					<Button text='Add a movie' icon={<FontAwesomeIcon icon={faPlus} />} />
+					<Button text='Add a movie' icon={<FontAwesomeIcon icon={faPlus} />} onClick={handleAddListItem} />
 				</div>
 				{listItem && list?.type === 'movies' &&
 					listItem.map((item, index) => <Movie key={index} info={item} />)

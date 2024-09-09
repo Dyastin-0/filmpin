@@ -7,7 +7,7 @@ import useAxios from '../hooks/useAxios';
 import { useToast } from '../components/hooks/useToast';
 import { useModal } from './hooks/useModal';
 
-const CreateList = () => {
+const AddListItem = () => {
 	const { setOpen } = useModal();
 	const api = useAxios();
 	const titleRef = useRef(null);
@@ -75,7 +75,7 @@ const CreateList = () => {
 		<form className='flex flex-col w-[400px] max-w-full p-4 gap-4 bg-primary rounded-md overflow-hidden'
 			onSubmit={handleCreateList}
 		>
-			<h1 className='text-center text-xs font-semibold'>Create a List</h1>
+			<h1 className='text-center text-xs font-semibold'>{`Add`}</h1>
 			<input
 				ref={titleRef}
 				onChange={(e) => setName(e.currentTarget.value)}
@@ -117,4 +117,4 @@ const CreateList = () => {
 	)
 }
 
-export default CreateList;
+export default AddListItem;

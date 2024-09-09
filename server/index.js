@@ -8,7 +8,7 @@ const { mongoose } = require('mongoose');
 const credentials = require('./middlewares/credentials');
 const corsOptions = require('./config/corsOption');
 const { verifyJsonWebToken } = require('./middlewares/verifyJsonWebToken');
-const { startChangeStreamForUser } = require('./helpers/changeStream');
+const { startListStream } = require('./helpers/changeStream');
 const allowedOrigins = require('./config/allowedOrigins');
 
 mongoose.connect(process.env.MONGODB_URL)
@@ -47,9 +47,11 @@ app.use('/api/movies', require('./routes/api/movies'));
 app.use('/api/tvshows', require('./routes/api/tvshows'));
 
 io.on('connection', (socket) => {
-	const { owner, accesor, randomId } = socket.handshake.query;
+	const { owner, accesor, randomId, targetStream } = socket.handshake.query;
 	
-	startChangeStreamForUser(socket, mongoose, owner, accesor, randomId);
+	if (targetStream === 'list') {
+		startListStream(socket, mongoose, owner, accesor, randomId);
+	}
 });
 
 const port = 3000;

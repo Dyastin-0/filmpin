@@ -8,6 +8,9 @@ const ListSchema = new Schema({
 	name: {
 		type: String
 	},
+	description: {
+		type: String
+	},
 	type: {
 		type: String
 	},
