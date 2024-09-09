@@ -39,7 +39,6 @@ const ListSlug = () => {
 	const getMovie = async (id) => {
 		try {
 			const response = await api.get(`/movies/details?movie_id=${id}`);
-			console.log(response.data)
 			return response.data;
 		} catch (error) {
 			console.error('Failed to fetch movie.', error);
@@ -78,8 +77,8 @@ const ListSlug = () => {
 	}, [list, token]);
 
 	return (
-		<div className='relative flex flex-col items-center gap-4 w-full h-full bg-primary rounded-md'>
-			<div className='relative flex justify-center p-4 items-center w-full max-h-[400px] rounded-md'>
+		<div className='relative flex flex-col items-center p-4 gap-4 w-full h-full bg-primary rounded-md'>
+			<div className='relative flex justify-center items-center w-full max-h-[400px] rounded-md'>
 				{list ?
 					<img
 						loading='lazy'

@@ -1,14 +1,9 @@
-import { useEffect } from 'react';
 import useAxios from '../hooks/useAxios';
 import { useNavigate } from 'react-router-dom';
 
 const MovieList = ({ list }) => {
 	const api = useAxios();
 	const navigate = useNavigate();
-
-	useEffect(() => {
-		console.log(list)
-	}, [list]);
 
 	const handleClick = (listParam) => {
 		navigate(`/list?list_id=${list._id}`, { state: { list: listParam } });
