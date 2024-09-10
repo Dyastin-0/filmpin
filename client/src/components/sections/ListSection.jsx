@@ -7,7 +7,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faPlus } from '@fortawesome/free-solid-svg-icons';
 import { useModal } from '../hooks/useModal';
 import CreateList from '../CreateList';
-import MovieList from '../MovieList';
+import ListMovie from '../ListMovie';
 import { io } from 'socket.io-client';
 
 const ListSection = ({ userData }) => {
@@ -18,7 +18,7 @@ const ListSection = ({ userData }) => {
 
 	const handleGetList = async () => {
 		try {
-			const response = await api.get('/list');
+			const response = await api.get(`/list?user_id=${userData?._id}`);
 			setList(response.data);
 		} catch (error) {
 			console.error('Failed to fetch list.', error);
@@ -60,16 +60,16 @@ const ListSection = ({ userData }) => {
 	}, [token, userData, user]);
 
 	useEffect(() => {
-		if (token) handleGetList();
-	}, [token]);
+		if (token && userData) handleGetList();
+	}, [token, userData]);
 
 	return (
 		<motion.section
 			initial={{ marginTop: -120 }}
-			className='relative flex flex-col gap-4 w-[calc(100%-4rem)] p-4 bg-accent rounded-md'
+			className='relative flex flex-col gap-4 w-[calc(100%-2rem)] p-4 bg-accent rounded-md'
 		>
 			<h1 className='text-primary-foreground pb-4 text-sm font-semibold'>Lists</h1>
-			{token &&
+			{token && user?.username === userData?.username &&
 				<Button
 					className='absolute top-4 right-4'
 					onClick={handleCreateList}
@@ -80,7 +80,7 @@ const ListSection = ({ userData }) => {
 			<div className='flex flex-wrap justify-center w-full gap-4'>
 				{list.length > 0 &&
 					list.map((item) => (
-						<MovieList key={item._id} list={item} />
+						<ListMovie key={item._id} list={item} />
 					))
 				}
 			</div>

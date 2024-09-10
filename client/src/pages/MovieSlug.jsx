@@ -3,7 +3,7 @@ import { Link, useLocation, useSearchParams } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import Button from '../components/ui/Button';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faPlay } from '@fortawesome/free-solid-svg-icons';
+import { faPlay, faPlus } from '@fortawesome/free-solid-svg-icons';
 import { useModal } from '../components/hooks/useModal';
 import Frame from '../components/Frame';
 import { MovieSection } from '../components/sections/MovieSection';
@@ -16,6 +16,7 @@ import Crew from '../components/Crew';
 import CastSection from '../components/sections/CastSection';
 import CrewSection from '../components/sections/CrewSection';
 import { ClipSection } from '../components/sections/ClipSection';
+import AddListMovie from '../components/AddListMovie';
 
 const MovieSlug = () => {
 	const [searchParams] = useSearchParams();
@@ -31,6 +32,13 @@ const MovieSlug = () => {
 	const writers = crews?.filter(crew => crew.job === 'Writer');
 	const [similarMovies, setSimilarMovies] = useState(null);
 	const id = searchParams.get('id');
+
+	const handleAddToList = () => {
+		setModal(
+			<AddListMovie movie={movie} />
+		);
+		setOpen(true);
+	}
 
 	const getVideos = async (id) => {
 		try {
@@ -153,20 +161,18 @@ const MovieSlug = () => {
 							<p className='text-primary-foreground text-sm'> {movie?.overview} </p>
 							<h4 className='text-primary-foreground text-xs'> {movie?.release_date.split('-')[0]} </h4>
 							<div className='flex gap-1'>
-								{
-									movie?.genres.map((genre, index) => (
-										<Link
-											key={index}
-											to={`/discover/movies?genres=${genre.name.toLowerCase()}&sort_by=vote_count&page=1`}
-											className='underline outline-none underline-offset-2 text-primary-highlight text-xs'
-										>
-											{`${index === movie?.genres.length - 1 ? genre.name : `${genre.name},`}`}
-										</Link>
-									)
-									)
-								}
+								{movie?.genres.map((genre, index) => (
+									<Link
+										key={index}
+										to={`/discover/movies?genres=${genre.name.toLowerCase()}&sort_by=vote_count&page=1`}
+										className='underline outline-none underline-offset-2 text-primary-highlight text-xs'
+									>
+										{`${index === movie?.genres.length - 1 ? genre.name : `${genre.name},`}`}
+									</Link>
+								))}
 							</div>
 							<p className='text-primary-foreground text-xs'> {`${Math.floor(movie?.runtime / 60)}h ${movie?.runtime % 60}m`} </p>
+							<Button text='Add to list' icon={<FontAwesomeIcon icon={faPlus} />} className='w-fit' onClick={handleAddToList} />
 						</div>
 					</motion.div>
 				</> :

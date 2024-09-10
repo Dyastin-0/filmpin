@@ -1,7 +1,7 @@
 import useAxios from '../hooks/useAxios';
 import { useNavigate } from 'react-router-dom';
 
-const MovieList = ({ list }) => {
+const ListMovie = ({ list }) => {
 	const api = useAxios();
 	const navigate = useNavigate();
 
@@ -29,4 +29,4 @@ const MovieList = ({ list }) => {
 	)
 }
 
-export default MovieList;
+export default ListMovie;

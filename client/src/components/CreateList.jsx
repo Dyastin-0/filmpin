@@ -6,12 +6,13 @@ import { movieGenres, tvShowGenres } from '../models/genres';
 import useAxios from '../hooks/useAxios';
 import { useToast } from '../components/hooks/useToast';
 import { useModal } from './hooks/useModal';
+import listTypes from '../models/listTypes';
 
 const CreateList = () => {
 	const { setOpen } = useModal();
 	const api = useAxios();
 	const titleRef = useRef(null);
-	const [type, setType] = useState('movies');
+	const [type, setType] = useState('Movies');
 	const [selectedGenres, setSelectedGenres] = useState([]);
 	const [name, setName] = useState('');
 	const [description, setDescription] = useState('');
@@ -33,13 +34,14 @@ const CreateList = () => {
 		if (!name) return toastError('Your list is missing a name.');
 		if (!selectedGenres.length > 0) return toastError('Select at least one genre.');
 
-		const randomIndex = Math.floor(Math.random() * fetched.length);  
+		const randomIndex = Math.floor(Math.random() * fetched.length);
 		try {
-			const response = await api.post('/list', {
+			await api.post('/list', {
 				list: {
 					type: type,
 					list: [{
 						id: fetched[randomIndex].id,
+						title: fetched[randomIndex].id,
 						backdrop_path: fetched[randomIndex].backdrop_path,
 						poster_path: fetched[randomIndex].poster_path
 					}],
@@ -111,7 +113,7 @@ const CreateList = () => {
 				</Dropdown>
 			</div>
 			<h1 className='text-xs text-primary-foreground'>Select genres you like to start with</h1>
-			<Selector items={type === 'movies' ? movieGenres : tvShowGenres} selectedGenres={selectedGenres} setSelectedGenres={setSelectedGenres} />
+			<Selector items={type === listTypes[122602] ? movieGenres : tvShowGenres} selectedGenres={selectedGenres} setSelectedGenres={setSelectedGenres} />
 			<Button text='Create' type='submit' />
 		</form>
 	)

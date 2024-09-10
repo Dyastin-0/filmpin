@@ -17,6 +17,7 @@ const ListSchema = new Schema({
 	list: {
 		type: [{
 			id: String,
+			title: String,
 			backdrop_path: String,
 			poster_path: String
 		}]

@@ -17,16 +17,20 @@ const startListStream = (socket, mongoose, owner, accesor, randomId) => {
 			{
 				$match: {
 					$or: [{ 'fullDocument.owner': owner },
-					{ 'operationType': 'delete' }]
+					{ 'operationType': 'delete' },
+					{ 'operationType': 'update' }]
 				},
 			},
 		]
 	);
 
 	changeStream.on('change', (change) => {
+		const type = change.operationType;
+		const changeData = type === 'delete' ? change.documentKey._id : type === 'insert' ? change.fullDocument : change.updateDescription.updatedFields.list;
+
 		socket.emit(`listChange/${owner}/${accesor}/${randomId}`, {
 			type: change.operationType,
-			list: change.operationType === 'delete' ? change.documentKey._id : change.fullDocument
+			list: changeData
 		});
 	});
 	

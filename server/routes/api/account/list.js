@@ -3,7 +3,8 @@ const router = express.Router();
 const {
 	handleGeUserLists,
 	handleCreateList,
-	handleGetList
+	handleGetList,
+	handleAddItem
 } = require('../../../controllers/account/list');
 
 router.route('/:list_id')
@@ -12,5 +13,8 @@ router.route('/:list_id')
 router.route('/')
 	.get(handleGeUserLists)
 	.post(handleCreateList);
+
+router.route('/item')
+	.post(handleAddItem);
 
 module.exports = router;

@@ -15,11 +15,11 @@ const listTypes = require('../../models/listTypes');
  */
 const handleCreateList = async (req, res) => {
 	const { id } = req;
-	const { name, list, type } = req.body.list;
+	const { name, description, list, type } = req.body.list;
 
 	if (!name) return res.status(400).json({ message: 'Missing name.' });
 	if (!list || list.length < 1) return res.status(400).json({ message: 'List is empty/null/undefined.' });
-	if (!type || listTypes[type] === undefined ) return res.status(400).json({ message: 'Missing/Invalid type.' });
+	if (!type || listTypes[type] === undefined) return res.status(400).json({ message: 'Missing/Invalid type.' });
 
 	try {
 		const user = await Users.findOne({ _id: id });
@@ -29,7 +29,8 @@ const handleCreateList = async (req, res) => {
 			owner: id,
 			name: name,
 			list: list,
-			type: type
+			type: listTypes[type],
+			description: description
 		});
 
 		const newUserLists = user.lists ? user.lists.concat(newList._id) : [newList._id];
@@ -50,12 +51,12 @@ const handleCreateList = async (req, res) => {
 * @returns {Object} JSON object containing the specified user's lists.
  */
 const handleGeUserLists = async (req, res) => {
-	const { id } = req;
+	const { user_id } = req.query;
 
-	if (!id) return res.status(400).json({ message: 'Missing ID.' });
+	if (!user_id) return res.status(400).json({ message: 'Missing ID.' });
 
 	try {
-		const response = await Lists.find({ owner: id });
+		const response = await Lists.find({ owner: user_id });
 		res.json(response);
 	} catch (error) {
 		console.error('Failed to fetch user lists.', error);
@@ -84,8 +85,35 @@ const handleGetList = async (req, res) => {
 	}
 }
 
+const handleAddItem = async (req, res) => {
+	const { list_id, list_item } = req.body;
+	const { id } = req;
+
+	if (!list_id) return res.status(400).json({ message: 'Missing user ID.' });
+	if (!list_item) return res.status(400).json({ message: 'Missing list.' });
+
+	try {
+		const list = await Lists.findOne({ _id: list_id });
+		if (!list) return res.status(400).json({ message: 'List does not exist.' });
+		if (list.list.some(item => item.id == list_item.id)) return res.status(400).json({ message: `${list_item.title} is already in your ${list.name}.` });
+
+		const user = await Users.findOne({ _id: id });
+		if (!user) return res.status(400).json({ message: 'User does not exist.' });
+		if (user._id.toString() !== list.owner) return res.status(400).json({ message: 'Invalid user.' });
+
+		const newList = list.list ? [...list.list, list_item] : [list_item];
+		await Lists.updateOne({ _id: list_id }, { $set: { list: newList } });
+
+		res.json({ list_name: list.name });
+	} catch (error) {
+		console.error('Failed to add list.', error);
+		res.sendStatus(500);
+	}
+}
+
 module.exports = {
 	handleGeUserLists,
 	handleCreateList,
-	handleGetList
+	handleGetList,
+	handleAddItem
 }

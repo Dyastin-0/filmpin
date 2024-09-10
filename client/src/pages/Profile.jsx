@@ -47,7 +47,7 @@ const Profile = () => {
 	}, [userData]);
 
 	useEffect(() => {
-		if (location.pathname.slice(1) !== user?.username && token) {
+		if (location.pathname.slice(1) !== user?.username) {
 			const getUser = async () => {
 				try {
 					const response = await api.get(`/public/account?username=${location.pathname.slice(1)}`);
@@ -62,7 +62,7 @@ const Profile = () => {
 		} else {
 			setUserData(user);
 		}
-	}, [user, token, location.pathname]);
+	}, [user, location.pathname]);
 	return (
 		<div className='relative flex flex-col items-center p-4 gap-4 w-full h-full bg-primary rounded-md'>
 			<div className='relative flex justify-center items-center w-full max-h-[400px] rounded-md'>
@@ -82,7 +82,7 @@ const Profile = () => {
 			</div>
 			<motion.div
 				initial={{ y: -120 }}
-				className='flex gap-4 w-[calc(100%-4rem)] h-[200px] p-4 bg-accent rounded-md'
+				className='flex gap-4 w-[calc(100%-2rem)] h-[200px] p-4 bg-accent rounded-md'
 			>
 				<div className='flex flex-col items-center gap-4'>
 					{userData?.profileImageURL ?

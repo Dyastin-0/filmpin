@@ -10,6 +10,7 @@ import { faPlus } from '@fortawesome/free-solid-svg-icons';
 import { io } from 'socket.io-client';
 import { useModal } from '../components/hooks/useModal';
 import AddListItem from '../components/AddListItem';
+import listTypes from '../models/listTypes';
 
 const ListSlug = () => {
 	const { token, user } = useAuth();
@@ -49,7 +50,7 @@ const ListSlug = () => {
 		}
 	}
 
-	const  handleAddListItem = () => {
+	const handleAddListItem = () => {
 		setModal(
 			<AddListItem />
 		);
@@ -59,7 +60,6 @@ const ListSlug = () => {
 	useEffect(() => {
 		if (token && user && list) {
 			const randomId = crypto.randomUUID();
-
 			const newSocket = io(import.meta.env.VITE_SOCKET_URL, {
 				query: {
 					owner: list.owner,
@@ -71,14 +71,10 @@ const ListSlug = () => {
 			});
 
 			newSocket.on(`listChange/${list.owner}/${user._id}/${randomId}`, (change) => {
-
 				if (change.type === 'delete') {
-					setList((prevList) => prevList.filter((list) => list._id !== change.list));
+					setListItem((prevList) => prevList.filter((list) => list._id !== change.list));
 				} else {
-					setList((prevList) => {
-						const exists = prevList.some(item => item._id === change.list._id);
-						return exists ? prevList : [...prevList, change.list];
-					});
+					setListItem(change.list);
 				}
 			});
 			return () => newSocket.disconnect();
@@ -87,15 +83,10 @@ const ListSlug = () => {
 
 	useEffect(() => {
 		if (token) {
-			const stateList = location.state?.list;
-			if (stateList) {
-				setList(stateList);
-			} else {
-				getList(searchParams.get('list_id')).then(response => {
-					if (!response) navigate('/404');
-					setList(response);
-				});
-			}
+			getList(searchParams.get('list_id')).then(response => {
+				if (!response) navigate('/404');
+				setList(response);
+			});
 		}
 	}, [token]);
 
@@ -131,14 +122,14 @@ const ListSlug = () => {
 			</div>
 			<motion.div
 				initial={{ y: -120 }}
-				className='flex flex-col gap-4 w-[calc(100%-4rem)] h-[200px] p-4 bg-accent rounded-md'
+				className='flex flex-col gap-4 w-[calc(100%-4rem)] p-4 bg-accent rounded-md'
 			>
-				<div className='flex flex-col w-full'>
+				<div className='flex flex-col gap-4 w-full'>
 					<h1 className='text-sm text-primary-foreground font-semibold'>{list?.name}</h1>
-					<h1 className='text-xs text-primary-foreground'>{list?.type}</h1>
+					<p className='text-xs text-primary-foreground'>{list?.description}</p>
 					<div className='flex gap-1'>
 						<h1 className='text-xs text-primary-foreground'>Created by</h1>
-						<Link className='w-fit outline-none text-primary-foreground text-xs transition-colors duration-300 underline focus:text-primary-highlight'
+						<Link className='w-fit outline-none text-primary-foreground text-xs transition-colors duration-300 underline hover:text-primary-highlight focus:text-primary-highlight'
 							to={`/${owner?.username}`}
 						>
 							{owner?.username}
@@ -148,14 +139,18 @@ const ListSlug = () => {
 			</motion.div>
 			<motion.div
 				initial={{ marginTop: -120 }}
-				className='relative flex flex-col gap-4 w-[calc(100%-4rem)] p-4 bg-accent rounded-md overflow-hidden'
+				className='relative flex flex-col items-center gap-4 w-[calc(100%-4rem)] p-4 bg-accent rounded-md overflow-hidden'
 			>
-				<div className='flex justify-end w-full'>
-					<Button text='Add a movie' icon={<FontAwesomeIcon icon={faPlus} />} onClick={handleAddListItem} />
-				</div>
-				{listItem && list?.type === 'movies' &&
-					listItem.map((item, index) => <Movie key={index} info={item} />)
+				{token && user?._id === list?.owner &&
+					<div className='flex justify-end w-full'>
+						<Button text='Add a movie' icon={<FontAwesomeIcon icon={faPlus} />} onClick={handleAddListItem} />
+					</div>
 				}
+				<div className='flex flex-wrap justify-center gap-4'>
+					{listItem && listTypes[list?.type] === 'Movies' &&
+						listItem.map((item, index) => <Movie key={index} info={item} />)
+					}
+				</div>
 			</motion.div>
 		</div>
 	)

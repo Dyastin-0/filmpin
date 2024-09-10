@@ -1,6 +1,6 @@
 const listTypes = {
-	'122602' : 'movies',
-	'121502' : 'tvshows'
+	'Movies' : '122602',
+	'TV Shows' : '121502'
 }
 
 module.exports = listTypes;
