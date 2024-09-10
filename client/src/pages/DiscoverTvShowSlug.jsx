@@ -18,7 +18,7 @@ const DiscoverTvShowSlug = () => {
   const api = useAxios();
   const { setLoading } = useLoading();
   const [selectedGenres, setSelectedGenres] = useState([]);
-  const [currentPage, setCurrentPage] = useState(1);
+  const [currentPage, setCurrentPage] = useState(searchParams.get('page') || 1);
   const [totalPages, setTotalPages] = useState(0);
   const [results, setResults] = useState({});
   const [isLoading, setIsLoading] = useState(true);
@@ -34,7 +34,7 @@ const DiscoverTvShowSlug = () => {
 
   useEffect(() => {
     document.title = 'Discover TV shows';
-    handleCreate();
+    handleCreate(currentPage);
   }, []);
 
   useEffect(() => {

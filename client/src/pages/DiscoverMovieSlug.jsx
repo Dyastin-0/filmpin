@@ -17,7 +17,7 @@ const DiscoverMovieSlug = () => {
   const api = useAxios();
   const { setLoading } = useLoading();
   const [selectedGenres, setSelectedGenres] = useState([]);
-  const [currentPage, setCurrentPage] = useState(searchParams.get('page'));
+  const [currentPage, setCurrentPage] = useState(searchParams.get('page') || 1);
   const [totalPages, setTotalPages] = useState(0);
   const [results, setResults] = useState({});
   const [isLoading, setIsLoading] = useState(true);
@@ -33,7 +33,7 @@ const DiscoverMovieSlug = () => {
 
   useEffect(() => {
     document.title = 'Discover movies';
-    handleCreate();
+    handleCreate(currentPage);
   }, []);
 
   useEffect(() => {
@@ -79,6 +79,7 @@ const DiscoverMovieSlug = () => {
   };
 
   const onPageChange = async (page) => {
+    console.log('test')
     setIsLoading(true);
     setLoading(true);
     setCurrentPage(page);
