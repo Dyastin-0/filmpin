@@ -7,6 +7,15 @@ cloudinary.config({
 	api_secret: process.env.CLOUDINARY_API_SECRET
 });
 
+/**
+ * Uploads an image to Cloudinary using a buffer.
+ * 
+ * @param {Buffer} imageBuffer - The image file as a buffer.
+ * @param {string} publicId - A unique identifier for the uploaded image on Cloudinary.
+ * 
+ * @returns {Promise<Object>} A promise that resolves with the upload result from Cloudinary.
+ * @throws {Error} Throws an error if the image upload fails.
+ */
 async function uploadImage(imageBuffer, publicId) {
 	try {
 		const result = await new Promise((resolve, reject) => {

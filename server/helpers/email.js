@@ -10,9 +10,19 @@ const transporter = nodemailer.createTransport({
 	}
 });
 
+/**
+ * Sends a plain text email.
+ * 
+ * @param {string} to - Recipient's email address.
+ * @param {string} subject - Subject of the email.
+ * @param {string} text - Body of the email in plain text.
+ * 
+ * @returns {Promise<void>} A promise that resolves when the email is sent.
+ * @throws {Error} Logs an error if sending the email fails.
+ */
 const sendTextEmail = async (to, subject, text) => {
 	try {
-		transporter.sendMail({
+		await transporter.sendMail({
 			from: process.env.SERVER_EMAIL,
 			to: to,
 			subject: subject,
@@ -23,9 +33,19 @@ const sendTextEmail = async (to, subject, text) => {
 	}
 }
 
+/**
+ * Sends an HTML email.
+ * 
+ * @param {string} to - Recipient's email address.
+ * @param {string} subject - Subject of the email.
+ * @param {string} html - Body of the email in HTML format.
+ * 
+ * @returns {Promise<void>} A promise that resolves when the email is sent.
+ * @throws {Error} Logs an error if sending the email fails.
+ */
 const sendHtmlEmail = async (to, subject, html) => {
 	try {
-		transporter.sendMail({
+		await transporter.sendMail({
 			from: process.env.SERVER_EMAIL,
 			to: to,
 			subject: subject,

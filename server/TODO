@@ -1,2 +1,3 @@
-- [ ] Complete adding jsDOC on handlers.
+- [x] Complete adding jsDOC on handlers.
 - [ ] Add 'request' validation; use joi or other library.
+- [ ] Implement adding movies or tv shows to a list.

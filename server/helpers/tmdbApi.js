@@ -1,4 +1,4 @@
-const dotenv = require('dotenv');
+const dotenv = require('dotenv').config();
 const axios = require('axios');
 
 const api = axios.create({
