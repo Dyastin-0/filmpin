@@ -63,7 +63,7 @@ const AddListMovie = ({ movie }) => {
 		<div className='flex flex-col w-[400px] max-w-full p-4 gap-4 bg-primary rounded-md overflow-hidden'>
 			<h1 className='text-center text-xs font-semibold'>{`Add ${movie?.title} to your list`}</h1>
 			<h1 className='text-xs text-primary-foreground'>Your movie lists</h1>
-			{lists?.length > 0 && lists.map((list, index) => listTypes[list.type] === 'Movies' &&
+			{lists?.length > 0 && lists.map((list, index) => listTypes[list?.type] === 'Movies' &&
 				<Checkbox
 					key={index}
 					name={list.name}
