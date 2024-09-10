@@ -47,7 +47,7 @@ const Profile = () => {
 	}, [userData]);
 
 	useEffect(() => {
-		if (location.pathname.slice(1) !== user?.username) {
+		if (user && location.pathname.slice(1) !== user.username) {
 			const getUser = async () => {
 				try {
 					const response = await api.get(`/public/account?username=${location.pathname.slice(1)}`);
@@ -62,7 +62,7 @@ const Profile = () => {
 		} else {
 			setUserData(user);
 		}
-	}, [user, location.pathname]);
+	}, [location, user]);
 	return (
 		<div className='relative flex flex-col items-center p-4 gap-4 w-full h-full bg-primary rounded-md'>
 			<div className='relative flex justify-center items-center w-full max-h-[400px] rounded-md'>
