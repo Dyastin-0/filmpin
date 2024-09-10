@@ -55,7 +55,7 @@ const ListSection = ({ userData }) => {
 					});
 				}
 			});
-			// return () => newSocket.disconnect();
+			return () => newSocket.disconnect();
 		}
 	}, [token, userData, user]);
 
