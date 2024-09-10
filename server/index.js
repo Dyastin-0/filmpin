@@ -19,7 +19,9 @@ const app = express();
 const server = http.createServer(app);
 const io = new Server(server, {
 	cors: {
-		origin: allowedOrigins
+		origin: allowedOrigins,
+		methods: ["GET", "POST"],
+		credentials: true
 	},
 });
 
@@ -48,7 +50,7 @@ app.use('/api/tvshows', require('./routes/api/tvshows'));
 
 io.on('connection', (socket) => {
 	const { owner, accesor, randomId, targetStream } = socket.handshake.query;
-	
+
 	if (targetStream === 'list') {
 		startListStream(socket, mongoose, owner, accesor, randomId);
 	}
