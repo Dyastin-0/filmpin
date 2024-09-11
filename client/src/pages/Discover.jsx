@@ -66,13 +66,13 @@ const Discover = () => {
 				<div className='flex rounded-md p-2 gap-2 z-20 bg-accent self-center'>
 					<Button
 						text='TV Shows'
-						className={`text-xl ${!isMovieHovered ? 'bg-primary-highlight text-primary-highlight-foreground' : 'bg-accent text-primary-foreground'}`}
+						className={`text-xl ${!isMovieHovered ? 'hover:shadow-[var(--highlight)_0_0_0_2px] shadow-[var(--highlight)_0_0_0_2px]' : ''}`}
 						onClick={() => navigate('/discover/tvshows')}
 						onMouseEnter={() => setIsMovieHovered(false)}
 					/>
 					<Button
 						text='Movies'
-						className={`text-xl ${isMovieHovered ? 'bg-primary-highlight text-primary-highlight-foreground' : 'bg-accent text-primary-foreground'}`}
+						className={`text-xl ${isMovieHovered ? 'hover:shadow-[var(--highlight)_0_0_0_2px] shadow-[var(--highlight)_0_0_0_2px]' : ''}`}
 						onClick={() => navigate('/discover/movies')}
 						onMouseEnter={() => setIsMovieHovered(true)}
 					/>
