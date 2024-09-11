@@ -39,7 +39,7 @@ const AddListMovie = ({ movie }) => {
 				}
 			})
 				.then((response) => {
-					toastSuccess(`${movie.title} added at ${response.data.list_name}`);
+					toastSuccess(`${movie.title} added to ${response.data.list_name}.`);
 					setOpen(false);
 				})
 				.catch((error) => {

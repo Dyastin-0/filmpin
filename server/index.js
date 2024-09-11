@@ -14,7 +14,7 @@ const verifySocketJsonWebToken = require('./middlewares/verifySocketJsonWebToken
 
 mongoose.connect(process.env.MONGODB_URL)
 	.then(() => console.log("Connected."))
-	.catch((err) => console.log(err))
+	.catch((error) => console.error(error));
 
 const app = express();
 const server = http.createServer(app);

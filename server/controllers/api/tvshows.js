@@ -138,7 +138,7 @@ const handleGetSeason = async (req, res) => {
 		const response = await api.get(`tv/${tvshow_id}/season/${season_number}?language=en-US`);
 		return res.json(response.data);
 	} catch (error) {
-		console.log('Failed fetching TV season.', error);
+		console.error('Failed fetching TV season.', error);
 		res.sendStatus(500);
 	}
 }
@@ -160,7 +160,7 @@ const handleGetEpisode = async (req, res) => {
 		const response = await api.get(`tv/${tvshow_id}/season/${season_number}/episode/${episode_number}?language=en-US`);
 		return res.json(response.data);
 	} catch (error) {
-		console.log('Failed to fetch TV episode.');
+		console.error('Failed to fetch TV episode.');
 		res.sendStatus(500);
 	}
 }

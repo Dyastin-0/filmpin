@@ -79,7 +79,6 @@ const DiscoverMovieSlug = () => {
   };
 
   const onPageChange = async (page) => {
-    console.log('test')
     setIsLoading(true);
     setLoading(true);
     setCurrentPage(page);

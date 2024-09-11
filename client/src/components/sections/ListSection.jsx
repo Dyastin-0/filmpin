@@ -9,10 +9,12 @@ import { useModal } from '../hooks/useModal';
 import CreateList from '../CreateList';
 import ListMovie from '../ListMovie';
 import { io } from 'socket.io-client';
+import { useToast } from '../hooks/useToast';
 
 const ListSection = ({ userData }) => {
 	const { token, user } = useAuth();
 	const api = useAxios();
+	const { toastSuccess } = useToast();
 	const { setModal, setOpen } = useModal();
 	const [list, setList] = useState([]);
 
@@ -55,6 +57,8 @@ const ListSection = ({ userData }) => {
 						const exists = prevList.some(item => item._id === change.list._id);
 						return exists ? prevList : [...prevList, change.list];
 					});
+					if (userData?.username !== user?.username && change.type === 'insert')
+						toastSuccess(`${userData.username} just added a new list ${change.list.name}.`);
 				}
 			});
 			return () => newSocket.disconnect();

@@ -14,7 +14,7 @@ const handleGetPublicBackdrops = async (req, res) => {
 			}
 		}));
 	} catch (error) {
-		console.log('Failed to fetch backdrops.', error);
+		console.error('Failed to fetch backdrops.', error);
 		res.sendStatus(500);
 	}
 }

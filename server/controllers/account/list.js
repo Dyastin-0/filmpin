@@ -36,7 +36,7 @@ const handleCreateList = async (req, res) => {
 		const newUserLists = user.lists ? user.lists.concat(newList._id) : [newList._id];
 		await Users.updateOne({ _id: id }, { $set: { lists: newUserLists } });
 
-		res.json({ message: 'List successfully created.' });
+		res.json({ list_id: newList._id });
 	} catch (error) {
 		console.error('Failed to create list.', error);
 		res.sendStatus(500);

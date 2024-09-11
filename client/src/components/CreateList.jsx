@@ -41,7 +41,7 @@ const CreateList = () => {
 					type: type,
 					list: [{
 						id: fetched[randomIndex].id,
-						title: fetched[randomIndex].id,
+						title: fetched[randomIndex].title,
 						backdrop_path: fetched[randomIndex].backdrop_path,
 						poster_path: fetched[randomIndex].poster_path
 					}],

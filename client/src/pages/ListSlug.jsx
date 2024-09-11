@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import useAxios from '../hooks/useAxios';
-import { Link, useLocation, useNavigate, useSearchParams } from 'react-router-dom';
+import { Link, useNavigate, useSearchParams } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { useAuth } from '../hooks/useAuth';
 import Movie from '../components/Movie';
@@ -11,12 +11,13 @@ import { io } from 'socket.io-client';
 import { useModal } from '../components/hooks/useModal';
 import AddListItem from '../components/AddListItem';
 import listTypes from '../models/listTypes';
+import { useToast } from '../components/hooks/useToast';
 
 const ListSlug = () => {
 	const { token, user } = useAuth();
 	const api = useAxios();
 	const [searchParams] = useSearchParams();
-	const location = useLocation();
+	const { toastInfo } = useToast();
 	const navigate = useNavigate();
 	const [list, setList] = useState(null);
 	const [listItem, setListItem] = useState(null);
@@ -28,7 +29,7 @@ const ListSlug = () => {
 			const response = await api.get(`/public/account?id=${id}`);
 			return response.data.user;
 		} catch (error) {
-			console.log('Failed to fetch owner.', error);
+			console.error('Failed to fetch owner.', error);
 		}
 	}
 
@@ -58,7 +59,7 @@ const ListSlug = () => {
 	}
 
 	useEffect(() => {
-		if (token && user && list) {
+		if (token && user && list && owner) {
 			const randomId = crypto.randomUUID();
 			const newSocket = io(import.meta.env.VITE_SOCKET_URL, {
 				extraHeaders: {
@@ -76,12 +77,17 @@ const ListSlug = () => {
 				if (change.type === 'delete') {
 					setListItem((prevList) => prevList.filter((list) => list._id !== change.list));
 				} else {
-					setListItem(change.list);
+					setListItem((prevList) => {
+						const newList = change.list.find(ojectList => !prevList.some(prevObjectList => ojectList._id === prevObjectList._id));
+						if (owner._id !== user._id)
+							toastInfo(`${owner?.username} just added ${newList.title} to this list.`);
+						return change.list;
+					});
 				}
 			});
 			return () => newSocket.disconnect();
 		}
-	}, [token, list, user]);
+	}, [token, list, user, owner]);
 
 	useEffect(() => {
 		if (token) {
