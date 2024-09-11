@@ -60,14 +60,23 @@ const startListStream = (socket, mongoose, owner, randomId) => {
 	});
 };
 
+/**
+ * Starts a real-time stream to monitor changes to a user document and emits updates via the socket.
+ * 
+ * @param {object} socket - The Socket.IO connection instance for the connected client.
+ * @param {object} mongoose - The Mongoose instance used for database interactions.
+ * @param {string} randomId - A random identifier used for the socket event namespace.
+ */
 const startUserStream = (socket, mongoose, randomId) => {
 	const { id } = socket;
+
 	const changeStream = mongoose.model('User').watch(
 		[
 			{
 				$match: {
-					$and: [{ 'documentKey._id': new Types.ObjectId(id) },
-					{ 'operationType': 'update' }
+					$and: [
+						{ 'documentKey._id': new Types.ObjectId(id) },
+						{ 'operationType': 'update' }
 					]
 				},
 			},
