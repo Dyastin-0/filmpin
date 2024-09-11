@@ -1,3 +1,6 @@
+const jwt = require('jsonwebtoken');
+const dotenv = require('dotenv').config();
+
 /**
  * Starts a change stream on the 'List' model to listen for changes
  * related to the specified owner and emits the changes to the socket.
@@ -11,7 +14,7 @@
  * 
  * @returns {void} No return value.
  */
-const startListStream = (socket, mongoose, owner, accesor, randomId) => {
+const startListStream = (socket, mongoose, owner, randomId) => {
 	const changeStream = mongoose.model('List').watch(
 		[
 			{
@@ -28,12 +31,28 @@ const startListStream = (socket, mongoose, owner, accesor, randomId) => {
 		const type = change.operationType;
 		const changeData = type === 'delete' ? change.documentKey._id : type === 'insert' ? change.fullDocument : change.updateDescription.updatedFields.list;
 
-		socket.emit(`listChange/${owner}/${accesor}/${randomId}`, {
+		socket.emit(`listChange/${owner}/${socket.id}/${randomId}`, {
 			type: change.operationType,
 			list: changeData
 		});
 	});
-	
+
+	socket.conn.on('packetCreate', (packet) => {
+		if (packet.type === 'ping') {
+			jwt.verify(
+				socket.token,
+				process.env.ACCESS_TOKEN_SECRET,
+				(error, _) => {
+					if (error) {
+						console.log('Disconnected -', socket.id);
+						changeStream.close();
+						socket.disconnect();
+					}
+				}
+			);
+		}
+	});
+
 	socket.on('disconnect', () => {
 		changeStream.close();
 		socket.disconnect();

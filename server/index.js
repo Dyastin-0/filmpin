@@ -10,6 +10,7 @@ const corsOptions = require('./config/corsOption');
 const { verifyJsonWebToken } = require('./middlewares/verifyJsonWebToken');
 const { startListStream } = require('./helpers/changeStream');
 const allowedOrigins = require('./config/allowedOrigins');
+const verifySocketJsonWebToken = require('./middlewares/verifySocketJsonWebToken');
 
 mongoose.connect(process.env.MONGODB_URL)
 	.then(() => console.log("Connected."))
@@ -19,7 +20,9 @@ const app = express();
 const server = http.createServer(app);
 const io = new Server(server, {
 	cors: {
-		origin: allowedOrigins
+		origin: allowedOrigins,
+		methods: ["GET", "POST"],
+		credentials: true
 	},
 });
 
@@ -46,12 +49,14 @@ app.use('/api/list', require('./routes/api/account/list'));
 app.use('/api/movies', require('./routes/api/movies'));
 app.use('/api/tvshows', require('./routes/api/tvshows'));
 
+io.use(verifySocketJsonWebToken);
 io.on('connection', (socket) => {
-	const { owner, accesor, randomId, targetStream } = socket.handshake.query;
+	const { owner, randomId, targetStream } = socket.handshake.query;
 
 	if (targetStream === 'list') {
-		startListStream(socket, mongoose, owner, accesor, randomId);
+		startListStream(socket, mongoose, owner, randomId);
 	}
+
 });
 
 const port = 3000;

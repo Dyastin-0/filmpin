@@ -35,12 +35,14 @@ const ListSection = ({ userData }) => {
 			const randomId = crypto.randomUUID();
 
 			const newSocket = io(import.meta.env.VITE_SOCKET_URL, {
+				extraHeaders: {
+					Authorization: `Bearer ${token}`
+				},
 				query: {
 					owner: userData._id,
 					accesor: user._id,
 					randomId: randomId,
 					targetStream: 'list',
-					accessToken: token
 				}
 			});
 

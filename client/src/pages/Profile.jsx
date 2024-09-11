@@ -47,7 +47,7 @@ const Profile = () => {
 	}, [userData]);
 
 	useEffect(() => {
-		if (user && location.pathname.slice(1) !== user.username) {
+		if (location.pathname.slice(1) !== user?.username) {
 			const getUser = async () => {
 				try {
 					const response = await api.get(`/public/account?username=${location.pathname.slice(1)}`);
@@ -84,7 +84,7 @@ const Profile = () => {
 				initial={{ y: -120 }}
 				className='flex gap-4 w-[calc(100%-2rem)] h-[200px] p-4 bg-accent rounded-md'
 			>
-				<div className='flex flex-col items-center gap-4'>
+				<div className='flex flex-col max-w-full items-center gap-4'>
 					{userData?.profileImageURL ?
 						<div className='flex flex-col justify-center items-center gap-2'>
 							<img
@@ -105,7 +105,7 @@ const Profile = () => {
 					}
 					<div>
 						<h1 className='text-primary-foreground text-sm font-semibold'>{userData?.username}</h1>
-						<h1 className='text-primary-foreground text-xs'>{userData?.email}</h1>
+						<h1 className='text-center text-primary-foreground mt-2 text-xs line-clamp-1 font-semibold'>{userData?.email}</h1>
 					</div>
 				</div>
 				<div className='absolute top-4 right-4'>
@@ -121,7 +121,16 @@ const Profile = () => {
 					}
 				</div>
 			</motion.div>
-			<ListSection userData={userData} />
+			{token ?
+				<ListSection userData={userData} />
+				:
+				<motion.section
+					initial={{ marginTop: -120 }}
+					className='flex justify-center items-center gap-4 w-[calc(100%-2rem)] p-4 bg-accent rounded-md'
+				>
+					<h1 className='text-xs text-primary-foreground font-semibold'>{`Sign in to view ${userData?.username}'s lists.`}</h1>
+				</motion.section>
+			}
 		</div>
 	)
 }

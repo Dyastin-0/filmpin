@@ -61,12 +61,14 @@ const ListSlug = () => {
 		if (token && user && list) {
 			const randomId = crypto.randomUUID();
 			const newSocket = io(import.meta.env.VITE_SOCKET_URL, {
+				extraHeaders: {
+					Authorization: `Bearer ${token}`
+				},
 				query: {
 					owner: list.owner,
 					accesor: user._id,
 					randomId: randomId,
 					targetStream: 'list',
-					accessToken: token
 				}
 			});
 
