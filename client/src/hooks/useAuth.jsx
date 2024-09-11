@@ -1,5 +1,6 @@
-import axios from 'axios';
 import React, { useEffect, useState, useContext, createContext } from 'react';
+import axios from 'axios';
+import { io } from 'socket.io-client';
 
 const AuthContext = createContext();
 
@@ -25,6 +26,35 @@ export function AuthProvider({ children }) {
     }
     getToken();
   }, []);
+
+  useEffect(() => {
+    if (token) {
+      const randomId = crypto.randomUUID();
+      const newSocket = io(import.meta.env.VITE_SOCKET_URL, {
+        extraHeaders: {
+          Authorization: `Bearer ${token}`
+        },
+        query: {
+          randomId: randomId,
+          targetStream: 'user',
+        }
+      });
+
+      newSocket.on(`stream/user/${user._id}/${randomId}`, (change) => {
+        if (change.type === 'delete') {
+          setToken(null);
+          setUser(null);
+        } else {
+          const newList = change.affectedFields.lists;
+          if (newList) {
+            user.lists = newList;
+            setUser(user);
+          }
+        }
+      });
+      return () => newSocket.disconnect();
+    }
+  }, [token, user]);
 
   const value = {
     token,

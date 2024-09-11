@@ -1,5 +1,6 @@
 const jwt = require('jsonwebtoken');
 const dotenv = require('dotenv').config();
+const { Types } = require('mongoose');
 
 /**
  * Starts a change stream on the 'List' model to listen for changes
@@ -31,8 +32,8 @@ const startListStream = (socket, mongoose, owner, randomId) => {
 		const type = change.operationType;
 		const changeData = type === 'delete' ? change.documentKey._id : type === 'insert' ? change.fullDocument : change.updateDescription.updatedFields.list;
 
-		socket.emit(`listChange/${owner}/${socket.id}/${randomId}`, {
-			type: change.operationType,
+		socket.emit(`stream/list/${owner}/${socket.id}/${randomId}`, {
+			type: type,
 			list: changeData
 		});
 	});
@@ -44,7 +45,7 @@ const startListStream = (socket, mongoose, owner, randomId) => {
 				process.env.ACCESS_TOKEN_SECRET,
 				(error, _) => {
 					if (error) {
-						console.log('Disconnected -', socket.id);
+						console.log('List stream: Disconnected -', socket.id);
 						changeStream.close();
 						socket.disconnect();
 					}
@@ -59,4 +60,52 @@ const startListStream = (socket, mongoose, owner, randomId) => {
 	});
 };
 
-module.exports = { startListStream };
+const startUserStream = (socket, mongoose, randomId) => {
+	const { id } = socket;
+	const changeStream = mongoose.model('User').watch(
+		[
+			{
+				$match: {
+					$and: [{ 'documentKey._id': new Types.ObjectId(id) },
+					{ 'operationType': 'update' }
+					]
+				},
+			},
+		]
+	);
+
+	changeStream.on('change', (change) => {
+		const type = change.operationType;
+
+		socket.emit(`stream/user/${id}/${randomId}`, {
+			affectedFields: change.updateDescription.updatedFields,
+			type: type,
+		});
+	});
+
+	socket.conn.on('packetCreate', (packet) => {
+		if (packet.type === 'ping') {
+			jwt.verify(
+				socket.token,
+				process.env.ACCESS_TOKEN_SECRET,
+				(error, _) => {
+					if (error) {
+						console.log('User stream: Disconnected -', socket.id);
+						changeStream.close();
+						socket.disconnect();
+					}
+				}
+			);
+		}
+	});
+
+	socket.on('disconnect', () => {
+		changeStream.close();
+		socket.disconnect();
+	});
+}
+
+module.exports = {
+	startListStream,
+	startUserStream
+};

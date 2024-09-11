@@ -8,7 +8,7 @@ const { mongoose } = require('mongoose');
 const credentials = require('./middlewares/credentials');
 const corsOptions = require('./config/corsOption');
 const { verifyJsonWebToken } = require('./middlewares/verifyJsonWebToken');
-const { startListStream } = require('./helpers/changeStream');
+const { startListStream, startUserStream } = require('./helpers/changeStream');
 const allowedOrigins = require('./config/allowedOrigins');
 const verifySocketJsonWebToken = require('./middlewares/verifySocketJsonWebToken');
 
@@ -57,6 +57,9 @@ io.on('connection', (socket) => {
 		startListStream(socket, mongoose, owner, randomId);
 	}
 
+	if (targetStream === 'user') {
+		startUserStream(socket, mongoose, randomId);
+	}
 });
 
 const port = 3000;

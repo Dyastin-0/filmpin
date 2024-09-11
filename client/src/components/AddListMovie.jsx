@@ -27,6 +27,7 @@ const AddListMovie = ({ movie }) => {
 	}
 
 	const handleAddMovie = async () => {
+		if (!user.lists) return toastError(`You don't have any list, go to your profile to create one.`);
 		if (!selectedList.length > 0) return toastError('No list selected.');
 		selectedList.map((list, _) => (
 			api.post('/list/item', {
@@ -50,7 +51,7 @@ const AddListMovie = ({ movie }) => {
 	}
 
 	useEffect(() => {
-		if (user) {
+		if (user?.lists) {
 			const getLists = async () => {
 				const lists = await Promise.all(user.lists.map((item, _) => getList(item)));
 				setLists(lists);

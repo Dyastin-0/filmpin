@@ -48,7 +48,7 @@ const ListSection = ({ userData }) => {
 				}
 			});
 
-			newSocket.on(`listChange/${userData._id}/${user._id}/${randomId}`, (change) => {
+			newSocket.on(`stream/list/${userData._id}/${user._id}/${randomId}`, (change) => {
 
 				if (change.type === 'delete') {
 					setList((prevList) => prevList.filter((list) => list._id !== change.list));

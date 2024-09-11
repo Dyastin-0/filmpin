@@ -73,7 +73,7 @@ const ListSlug = () => {
 				}
 			});
 
-			newSocket.on(`listChange/${list.owner}/${user._id}/${randomId}`, (change) => {
+			newSocket.on(`stream/list/${list.owner}/${user._id}/${randomId}`, (change) => {
 				if (change.type === 'delete') {
 					setListItem((prevList) => prevList.filter((list) => list._id !== change.list));
 				} else {
