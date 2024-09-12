@@ -3,6 +3,36 @@ const dotenv = require('dotenv').config();
 const { Types } = require('mongoose');
 
 /**
+ * Handles socket disconnection by verifying JWT tokens on each 'ping' packet and closing the MongoDB change stream.
+ * 
+ * @param {object} socket - The Socket.IO connection instance for the connected client.
+ * @param {object} changeStream - The MongoDB change stream that is being streamed.
+ */
+const handleDisconnect = (socket, changeStream) => {
+	socket.conn.on('packetCreate', (packet) => {
+		if (packet.type === 'ping') {
+			jwt.verify(
+				socket.token,
+				process.env.ACCESS_TOKEN_SECRET,
+				(error, _) => {
+					if (error) {
+						console.log('List stream: Disconnected -', socket.id);
+						changeStream.close();
+						socket.disconnect();
+					}
+				}
+			);
+		}
+	});
+
+	socket.on('disconnect', () => {
+		changeStream.close();
+		socket.disconnect();
+	});
+}
+
+
+/**
  * Starts a change stream on the 'List' model to listen for changes
  * related to the specified owner and emits the changes to the socket.
  * Also handles closing the stream when the socket disconnects.
@@ -16,6 +46,7 @@ const { Types } = require('mongoose');
  * @returns {void} No return value.
  */
 const startListStream = (socket, mongoose, owner, randomId) => {
+	console.log('test')
 	const changeStream = mongoose.model('List').watch(
 		[
 			{
@@ -38,26 +69,7 @@ const startListStream = (socket, mongoose, owner, randomId) => {
 		});
 	});
 
-	socket.conn.on('packetCreate', (packet) => {
-		if (packet.type === 'ping') {
-			jwt.verify(
-				socket.token,
-				process.env.ACCESS_TOKEN_SECRET,
-				(error, _) => {
-					if (error) {
-						console.log('List stream: Disconnected -', socket.id);
-						changeStream.close();
-						socket.disconnect();
-					}
-				}
-			);
-		}
-	});
-
-	socket.on('disconnect', () => {
-		changeStream.close();
-		socket.disconnect();
-	});
+	handleDisconnect(socket, changeStream);
 };
 
 /**
@@ -92,26 +104,7 @@ const startUserStream = (socket, mongoose, randomId) => {
 		});
 	});
 
-	socket.conn.on('packetCreate', (packet) => {
-		if (packet.type === 'ping') {
-			jwt.verify(
-				socket.token,
-				process.env.ACCESS_TOKEN_SECRET,
-				(error, _) => {
-					if (error) {
-						console.log('User stream: Disconnected -', socket.id);
-						changeStream.close();
-						socket.disconnect();
-					}
-				}
-			);
-		}
-	});
-
-	socket.on('disconnect', () => {
-		changeStream.close();
-		socket.disconnect();
-	});
+	handleDisconnect(socket, changeStream);
 }
 
 module.exports = {
