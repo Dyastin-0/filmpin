@@ -12,6 +12,7 @@ import { useModal } from '../components/hooks/useModal';
 import AddListItem from '../components/AddListItem';
 import listTypes from '../models/listTypes';
 import { useToast } from '../components/hooks/useToast';
+import TvShow from '../components/TvShow';
 
 const ListSlug = () => {
 	const { token, user } = useAuth();
@@ -45,6 +46,15 @@ const ListSlug = () => {
 	const getMovie = async (id) => {
 		try {
 			const response = await api.get(`/movies/details?movie_id=${id}`);
+			return response.data;
+		} catch (error) {
+			console.error('Failed to fetch movie.', error);
+		}
+	}
+	
+	const getShow = async (id) => {
+		try {
+			const response = await api.get(`/tvshows/details?show_id=${id}`);
 			return response.data;
 		} catch (error) {
 			console.error('Failed to fetch movie.', error);
@@ -100,7 +110,7 @@ const ListSlug = () => {
 
 	useEffect(() => {
 		if (list) {
-			Promise.all(list.list.map(item => getMovie(item.id)))
+			Promise.all(list.list.map(item => listTypes[list.type] === 'Movies' ? getMovie(item.id) : getShow(item.id)))
 				.then(movies => {
 					setListItem(movies);
 				})
@@ -136,7 +146,7 @@ const ListSlug = () => {
 					<h1 className='text-sm text-primary-foreground font-semibold'>{list?.name}</h1>
 					<p className='text-xs text-primary-foreground'>{list?.description}</p>
 					<div className='flex gap-1'>
-						<h1 className='text-xs text-primary-foreground'>Created by</h1>
+						<h1 className='text-xs text-primary-foreground'>{`List of ${listTypes[list?.type]} created by`}</h1>
 						<Link className='w-fit outline-none text-primary-foreground text-xs transition-colors duration-300 underline hover:text-primary-highlight focus:text-primary-highlight'
 							to={`/${owner?.username}`}
 						>
@@ -155,8 +165,9 @@ const ListSlug = () => {
 					</div>
 				}
 				<div className='flex flex-wrap justify-center gap-4'>
-					{listItem && listTypes[list?.type] === 'Movies' &&
-						listItem.map((item, index) => <Movie key={index} info={item} />)
+					{listItem && listTypes[list?.type] === 'Movies' ?
+						listItem?.map((item, index) => <Movie key={index} info={item} />)
+						: listItem?.map((item, index) => <TvShow key={index} info={item} />)
 					}
 				</div>
 			</motion.div>

@@ -3,7 +3,7 @@ import { Link, useLocation, useSearchParams } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import Button from '../components/ui/Button';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faPlay } from '@fortawesome/free-solid-svg-icons';
+import { faPlay, faPlus } from '@fortawesome/free-solid-svg-icons';
 import { useModal } from '../components/hooks/useModal';
 import Frame from '../components/Frame';
 import { TvShowSection } from '../components/sections/tvShowSection';
@@ -12,6 +12,7 @@ import { useLoading } from '../components/hooks/useLoading';
 import { MovieSlugLoader } from '../components/loaders/MovieSlugLoader';
 import useAxios from '../hooks/useAxios';
 import SeasonSection from '../components/sections/SeasonSection';
+import AddToList from '../components/AddToList';
 
 const TvShowSlug = () => {
 	const [searchParams] = useSearchParams();
@@ -25,6 +26,13 @@ const TvShowSlug = () => {
 	const [similarShows, setSimilarShows] = useState(null);
 	const [seasons, setSeasons] = useState(false);
 	const id = searchParams.get('id');
+
+	const handleAddToList = () => {
+		setModal(
+			<AddToList selected={show} type='TV Shows' />
+		);
+		setOpen(true);
+	}
 
 	const fetchShow = async (id) => {
 		try {
@@ -160,6 +168,7 @@ const TvShowSlug = () => {
 								}
 							</div>
 							<p className='text-primary-foreground text-xs'> {`${show.number_of_seasons} seasons, ${show.number_of_episodes} episodes`} </p>
+							<Button text='Add to list' icon={<FontAwesomeIcon icon={faPlus} />} className='w-fit' onClick={handleAddToList} />
 						</div>
 					</motion.div>
 				</> :

@@ -16,7 +16,7 @@ import Crew from '../components/Crew';
 import CastSection from '../components/sections/CastSection';
 import CrewSection from '../components/sections/CrewSection';
 import { ClipSection } from '../components/sections/ClipSection';
-import AddListMovie from '../components/AddListMovie';
+import AddToList from '../components/AddToList';
 
 const MovieSlug = () => {
 	const [searchParams] = useSearchParams();
@@ -35,7 +35,7 @@ const MovieSlug = () => {
 
 	const handleAddToList = () => {
 		setModal(
-			<AddListMovie movie={movie} />
+			<AddToList selected={movie} type='Movies' />
 		);
 		setOpen(true);
 	}

@@ -46,7 +46,6 @@ const handleDisconnect = (socket, changeStream) => {
  * @returns {void} No return value.
  */
 const startListStream = (socket, mongoose, owner, randomId) => {
-	console.log('test')
 	const changeStream = mongoose.model('List').watch(
 		[
 			{
