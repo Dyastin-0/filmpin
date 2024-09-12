@@ -23,7 +23,7 @@ const authRoutes = [
 const Navbar = () => {
   const navigate = useNavigate();
   const location = useLocation();
-  const { toggleTheme, theme } = useThemeToggle();
+  const { toggleTheme, icon } = useThemeToggle();
   const { setToken, token, setUser, user } = useAuth();
   const [query, setQuery] = useState(null);
   const [isScrollingDown, setIsScrollingDown] = useState(false);
@@ -117,6 +117,7 @@ const Navbar = () => {
         </div>
       </div>
       <div className='flex w-fit gap-3 justify-center items-center'>
+        <Button variant='default_rounded' icon={icon} onClick={toggleTheme} />
         {token &&
           <Dropdown
             name={user.profileImageURL ?
@@ -128,9 +129,6 @@ const Navbar = () => {
           >
             <DropdownItem onClick={() => navigate(`/${user.username}`)}>
               Profile
-            </DropdownItem>
-            <DropdownItem onClick={toggleTheme}>
-              {theme}
             </DropdownItem>
             <DropdownItem onClick={handleSignout}>
               Sign out
