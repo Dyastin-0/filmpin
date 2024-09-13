@@ -117,7 +117,7 @@ const Navbar = () => {
         </div>
       </div>
       <div className='flex w-fit gap-3 justify-center items-center'>
-        <Button variant='default_rounded' icon={icon} onClick={toggleTheme} />
+        <Button variant='default_rounded' icon={icon} onClick={toggleTheme} className='p-2' />
         {token &&
           <Dropdown
             name={user.profileImageURL ?

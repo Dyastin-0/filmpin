@@ -13,6 +13,8 @@ import AddListItem from '../components/AddListItem';
 import listTypes from '../models/listTypes';
 import { useToast } from '../components/hooks/useToast';
 import TvShow from '../components/TvShow';
+import { ListBackdropDummy, ListTitleDummy } from '../components/loaders/ListSlugLoader';
+import { LoadingDiscover as ListLoder } from '../components/loaders/MovieLoaders';
 
 const ListSlug = () => {
 	const { token, user } = useAuth();
@@ -51,7 +53,7 @@ const ListSlug = () => {
 			console.error('Failed to fetch movie.', error);
 		}
 	}
-	
+
 	const getShow = async (id) => {
 		try {
 			const response = await api.get(`/tvshows/details?show_id=${id}`);
@@ -135,41 +137,46 @@ const ListSlug = () => {
 						src={`https://image.tmdb.org/t/p/original/${list.list[0].backdrop_path}`}
 						alt={`${list.name} backdrop`}
 					/> :
-					<div></div>
+					<ListBackdropDummy />
 				}
 			</div>
 			<motion.div
 				initial={{ y: -120 }}
-				className='flex flex-col gap-4 w-[calc(100%-4rem)] p-4 bg-accent rounded-md'
+				className='flex flex-col gap-4 w-[calc(100%-2rem)] p-4 bg-accent rounded-md'
 			>
-				<div className='flex flex-col gap-4 w-full'>
-					<h1 className='text-sm text-primary-foreground font-semibold'>{list?.name}</h1>
-					<p className='text-xs text-primary-foreground'>{list?.description}</p>
-					<div className='flex gap-1'>
-						<h1 className='text-xs text-primary-foreground'>{`List of ${listTypes[list?.type]} created by`}</h1>
-						<Link className='w-fit outline-none text-primary-foreground text-xs transition-colors duration-300 underline hover:text-primary-highlight focus:text-primary-highlight'
-							to={`/${owner?.username}`}
-						>
-							{owner?.username}
-						</Link>
-					</div>
-				</div>
+				{list ?
+					<div className='flex flex-col gap-4 w-full'>
+						<h1 className='text-sm text-primary-foreground font-semibold'>{list.name}</h1>
+						<p className='text-xs text-primary-foreground'>{list.description}</p>
+						<div className='flex gap-1'>
+							<h1 className='text-xs text-primary-foreground'>{`List of ${listTypes[list.type]} created by`}</h1>
+							<Link className='w-fit outline-none text-primary-foreground text-xs transition-colors duration-300 underline hover:text-primary-highlight focus:text-primary-highlight'
+								to={`/${owner?.username}`}
+							>
+								{owner?.username}
+							</Link>
+						</div>
+					</div> : <ListTitleDummy />
+				}
 			</motion.div>
 			<motion.div
 				initial={{ marginTop: -120 }}
-				className='relative flex flex-col items-center gap-4 w-[calc(100%-4rem)] p-4 bg-accent rounded-md overflow-hidden'
+				className='relative flex flex-col items-center gap-4 w-[calc(100%-2rem)] p-4 bg-accent rounded-md overflow-hidden'
 			>
 				{token && user?._id === list?.owner &&
 					<div className='flex justify-end w-full'>
-						<Button text='Add a movie' icon={<FontAwesomeIcon icon={faPlus} />} onClick={handleAddListItem} />
+						<Button text={`Add ${listTypes[list.type]}`} icon={<FontAwesomeIcon icon={faPlus} />} onClick={handleAddListItem} />
 					</div>
 				}
-				<div className='flex flex-wrap justify-center gap-4'>
-					{listItem && listTypes[list?.type] === 'Movies' ?
-						listItem?.map((item, index) => <Movie key={index} info={item} />)
-						: listItem?.map((item, index) => <TvShow key={index} info={item} />)
-					}
-				</div>
+				{listItem ?
+					<div className='flex flex-wrap justify-center gap-4'>
+						{listTypes[list?.type] === 'Movies' ?
+							listItem?.map((item, index) => <Movie key={index} info={item} />)
+							: listItem?.map((item, index) => <TvShow key={index} info={item} />)
+						}
+					</div> :
+					<ListLoder />
+				}
 			</motion.div>
 		</div>
 	)

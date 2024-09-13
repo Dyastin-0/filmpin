@@ -28,7 +28,7 @@ export const ToastProvider = ({ children }) => {
 	return (
 		<ToastContext.Provider value={{ addToast }}>
 			{children}
-			<div className='fixed flex flex-col bottom-4 gap-3 right-4 z-50'>
+			<div className='fixed flex flex-col bottom-4 gap-3 left-4 z-50'>
 				<AnimatePresence>
 					{toasts.map(toast => (
 						<Toast
@@ -66,15 +66,14 @@ const Toast = ({ message, onClose, id, color = 'text-primary-foreground' }) => {
 				y: 0
 			}}
 			exit={{
-				x: 999
+				x: -999
 			}}
-			className={`flex justify-center items-center gap-2 bg-accent text-xs ${color} font-bold rounded-md p-2 shadow-md relative`}
+			className={`flex justify-center items-center gap-2 bg-accent text-xs ${color} font-semibold rounded-md p-2 shadow-md relative`}
 		>
 			{message}
 			<Button
 				onClick={onClose}
-				variant='ghost'
-				text={<FontAwesomeIcon className='text-primary-foreground text-[0.5rem]' icon={faX} />}
+				text={<FontAwesomeIcon icon={faX} />}
 			/>
 		</motion.div>
 	);

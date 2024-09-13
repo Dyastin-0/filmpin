@@ -4,6 +4,8 @@ import useAxios from '../hooks/useAxios';
 import Button from './ui/Button';
 import { useToast } from '../components/hooks/useToast';
 import { useModal } from './hooks/useModal';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faImage, faUser } from '@fortawesome/free-solid-svg-icons';
 
 const SelectProfile = () => {
 	const { setOpen } = useModal();
@@ -31,7 +33,7 @@ const SelectProfile = () => {
 		if (uploading) return;
 
 		setUploading(true);
-		
+
 		const formData = new FormData();
 		formData.set('imageFile', file)
 		try {
@@ -65,28 +67,36 @@ const SelectProfile = () => {
 				className='flex flex-col gap-4'
 				onSubmit={handleSubmit}
 			>
+				<label htmlFor='imageFile'
+					className='text-xs text-primary-foreground bg-secondary p-2 rounded-md
+					transition-all duration-300
+					hover:cursor-pointer hover:shadow-[var(--accent)_0_0_0_2px]
+					'
+				>
+					Select an image
+					<FontAwesomeIcon className='ml-1' icon={faImage} />
+				</label>
 				<input
 					ref={inputRef}
 					type='file'
 					accept='image/*'
+					id='imageFile'
 					name='imageFile'
-					className='text-xs text-primary-foreground outline-none focus:shadow-[var(--highlight)_0_0_0_2px] rounded-md
-					transition-all duration-300
-					hover:cursor-pointer hover:shadow-[var(--highlight)_0_0_0_2px]
-					file:bg-primary-highlight file:border-none file:p-1 file:outline-none
-					file:transition-all file:duration-300
-					file:hover:cursor-pointer file:hover:opacity-90 file:active:opacity-70'
+					className='hidden'
 					onChange={handleFileChange}
 				/>
 				<Button type='submit' text={`${uploading ? 'Uploading...' : 'Upload'}`} />
 			</form>
-			{preview && (
+			{preview ?
 				<img
 					src={preview}
 					alt='Preview'
 					className='w-[200px] h-[200px] rounded-full'
-				/>
-			)}
+				/> :
+				<div className='flex justify-center items-center text-[150px] w-[200px] h-[200px] rounded-full bg-secondary'>
+					<FontAwesomeIcon icon={faUser} />
+				</div>
+			}
 		</div>
 	);
 };

@@ -11,7 +11,7 @@ const Checkbox = ({ name, onChecked, value = false }) => {
 		>
 			<div className={`flex justify-center items-center rounded-sm pr-1 pl-1 h-3.5 w-3.5
 				transition-all duration-300
-				${value ? 'bg-primary-secondary text-primary-highlight-foreground' : 'bg-secondary'}`}
+				${value ? 'bg-primary-secondary' : 'bg-secondary'}`}
 			>
 				<motion.button
 					className='flex justify-center items-center'

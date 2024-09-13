@@ -5,7 +5,7 @@ import { faMoon, faSun } from '@fortawesome/free-solid-svg-icons';
 export const useThemeToggle = () => {
   const [icon, setIcon] = useState(() => {
     const savedTheme = localStorage.getItem('theme');
-    return <FontAwesomeIcon icon={savedTheme === 'dark' ? faMoon : faSun} className='text-xl' />
+    return <div className='flex items-center justify-center w-[14px] h-[14px]'><FontAwesomeIcon icon={savedTheme === 'dark' ? faMoon : faSun} /></div>
   })
   const [theme, setTheme] = useState(() => {
     const savedTheme = localStorage.getItem('theme');
@@ -16,7 +16,7 @@ export const useThemeToggle = () => {
     document.documentElement.classList.remove(theme === 'dark' ? 'light' : 'dark');
     document.documentElement.classList.add(theme);
     localStorage.setItem('theme', theme);
-    setIcon(<FontAwesomeIcon icon={theme === 'dark' ? faMoon : faSun} />)
+    setIcon(<div className='flex items-center justify-center w-[14px] h-[14px]'><FontAwesomeIcon icon={theme === 'dark' ? faMoon : faSun} /></div>);
   }, [theme]);
 
   const toggleTheme = () => {
