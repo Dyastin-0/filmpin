@@ -8,7 +8,7 @@ const Root = () => {
 
   const getBackdrops = async () => {
     try {
-      const response = await axios.get(`${import.meta.env.VITE_BASE_API_URL}/public/backdrops?category=tv&list=top_rated&page=1`);
+      const response = await axios.get(`${import.meta.env.VITE_BASE_API_URL}/public/backdrops?category=movie&list=top_rated&page=1`);
       return response.data;
     } catch (error) {
       console.error(error);

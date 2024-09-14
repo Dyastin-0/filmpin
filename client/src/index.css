@@ -55,6 +55,18 @@
   }
 }
 
+@media (prefers-color-scheme: light) {
+  :root {
+    --bg-primary: #F0F0F0;
+    --bg-secondary: #E4E6EB;
+    --accent-secondary: #F5F5F5;
+    --accent: #FFFFFF;
+    --text-highlight: #ffffff;
+    --text-secondary: #888888;
+    --text-primary: #686d76;
+  }
+}
+
 body {
   display: flex;
   justify-content: center;

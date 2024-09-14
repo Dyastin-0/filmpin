@@ -8,7 +8,7 @@ import { Dropdown, DropdownItem } from './ui/Dropdown';
 import { useThemeToggle } from '../hooks/useTheme';
 import { motion } from 'framer-motion';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faBars } from '@fortawesome/free-solid-svg-icons';
+import { faBars, faSignOutAlt, faUser } from '@fortawesome/free-solid-svg-icons';
 import SideNavbar from './SideNavbar';
 
 const routes = [
@@ -129,9 +129,11 @@ const Navbar = () => {
           >
             <DropdownItem onClick={() => navigate(`/${user.username}`)}>
               Profile
+              <FontAwesomeIcon size='xs' icon={faUser} className='ml-1' />
             </DropdownItem>
             <DropdownItem onClick={handleSignout}>
               Sign out
+              <FontAwesomeIcon size='xs' icon={faSignOutAlt} className='ml-1' />
             </DropdownItem>
           </Dropdown>
         }

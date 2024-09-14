@@ -10,6 +10,9 @@ import { useToast } from '../components/hooks/useToast';
 import TvShow from '../components/TvShow';
 import { ListBackdropDummy, ListTitleDummy } from '../components/loaders/ListSlugLoader';
 import { LoadingDiscover as ListLoder } from '../components/loaders/MovieLoaders';
+import Button from '../components/ui/Button';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faGear } from '@fortawesome/free-solid-svg-icons';
 
 const ListSlug = () => {
 	const { token, user } = useAuth();
@@ -129,7 +132,7 @@ const ListSlug = () => {
 			</div>
 			<motion.div
 				initial={{ y: -120 }}
-				className='flex flex-col gap-4 w-[calc(100%-2rem)] p-4 bg-accent rounded-md'
+				className='relative flex flex-col gap-4 w-[calc(100%-2rem)] p-4 bg-accent rounded-md'
 			>
 				{list ?
 					<div className='flex flex-col gap-4 w-full'>
@@ -145,6 +148,7 @@ const ListSlug = () => {
 						</div>
 					</div> : <ListTitleDummy />
 				}
+				<Button variant='default_rounded' icon={<FontAwesomeIcon icon={faGear} />} className='absolute w-fit top-4 right-4' />
 			</motion.div>
 			<motion.div
 				initial={{ marginTop: -120 }}

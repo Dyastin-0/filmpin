@@ -15,7 +15,7 @@ const UserList = ({ list }) => {
 			hover:cursor-pointer'
 			onClick={() => handleClick(list)}
 		>
-			<h1 className='text-xs text-center text-primary-foreground font-semibold'>{list?.name}</h1>
+			<h1 className='text-xs text-center text-primary-foreground font-semibold line-clamp-1'>{list?.name}</h1>
 			{list.list.length >= 4 ?
 				<div className='flex flex-wrap h-[240px] overflow-hidden rounded-md bg-black'>
 					<img className='h-[120px] w-1/2' loading='lazy' src={`https://image.tmdb.org/t/p/w200/${list.list[0]?.poster_path}`} alt={``} />
