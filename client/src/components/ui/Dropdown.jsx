@@ -19,17 +19,17 @@ export const Dropdown = ({ name, children }) => {
 
 	return (
 		<div className='relative flex items-center justify-end z-50' ref={dropdownRef}>
-			<button
-				className='flex h-fit w-fit justify-center items-center text-xs text-center outline-none rounded-full focus:shadow-[var(--highlight)_0_0_0_2px] p-1'
+			<Button
+				variant='default_rounded'
+				text={name}
 				onClick={toggle}
 				onBlur={handleBlur}
-			>
-				{name}
-			</button>
-			<motion.ul
+			/>
+			<motion.div
 				initial={{ scaleY: 0, opacity: 0, y: -50 }}
 				animate={isOpen ? { scaleY: 1, opacity: 1, y: 0 } : { scaleY: 0, opacity: 0, y: -50 }}
 				transition={0}
+				onFocus={() => setIsOpen(true)}
 				className={`absolute flex flex-col items-end top-full mt-2 right-0 z-50
 					text-primary-foreground text-xs bg-accent
 					w-fit max-h-[200px] overflow-auto
@@ -37,19 +37,20 @@ export const Dropdown = ({ name, children }) => {
 				onBlur={handleBlur}
 			>
 				{children}
-			</motion.ul>
+			</motion.div>
 		</div>
 	);
 };
 
-export const DropdownItem = ({ onClick, children, asChild }) => {
+export const DropdownItem = ({ onClick, children, setOpen, asChild }) => {
 	return asChild ? (
 		children
 	) : (
 		<button
 			className='text-right w-full text-nowrap text-primary-foreground text-xs outline-none p-1.5 rounded-md
 			transition-all duration-300
-			hover:bg-primary'
+			hover:bg-primary hover:cursor-pointer focus:bg-primary'
+			onFocus={setOpen}
 			onClick={(e) => {
 				e.preventDefault();
 				e.stopPropagation();

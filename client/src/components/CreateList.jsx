@@ -7,19 +7,20 @@ import useAxios from '../hooks/useAxios';
 import { useToast } from '../components/hooks/useToast';
 import { useModal } from './hooks/useModal';
 import listTypes from '../models/listTypes';
+import DefaultInput from './ui/DefaultInput';
 
 const CreateList = () => {
 	const { setOpen } = useModal();
-	const api = useAxios();
 	const titleRef = useRef(null);
 	const [type, setType] = useState('Movies');
-	const [selectedGenres, setSelectedGenres] = useState([]);
 	const [name, setName] = useState('');
+	const [selectedGenres, setSelectedGenres] = useState([]);
 	const [description, setDescription] = useState('');
 	const [fetched, setFetched] = useState(null);
 	const { toastError, toastSuccess } = useToast();
-
-	const fetch = async (type, genres) => {
+	const api = useAxios();
+	
+	const fetchMoviesOrTvShows = async (type, genres) => {
 		try {
 			const response = await api.get(`/${type}/discover?genres=${genres}&sort_by=vote_count&page=1`);
 			return response.data;
@@ -67,9 +68,11 @@ const CreateList = () => {
 
 	useEffect(() => {
 		if (selectedGenres.length > 0) {
-			fetch(type.replace(' ', '').toLowerCase(), selectedGenres.join('_').toLowerCase()).then(response => {
+			const formattedType = type.replace(' ', '').toLowerCase();
+			const formattedGenres = selectedGenres.join('_').toLowerCase();
+			fetchMoviesOrTvShows(formattedType, formattedGenres).then(response => {
 				setFetched(response.results);
-			});
+			}).catch(() => toastError(`Failed to fetch ${type} with ${selectedGenres.join(', ')} genres.`));
 		}
 	}, [selectedGenres]);
 
@@ -78,35 +81,11 @@ const CreateList = () => {
 			onSubmit={handleCreateList}
 		>
 			<h1 className='text-center text-xs font-semibold'>Create a List</h1>
-			<input
-				ref={titleRef}
-				onChange={(e) => setName(e.currentTarget.value)}
-				value={name}
-				className='outline-none rounded-md bg-secondary p-2
-				text-xs placeholder:text-secondary-foreground
-				transition-all duration-300
-				focus:shadow-[0_0_0_2px] focus:shadow-secondary-accent'
-				placeholder='Name'
-			/>
-			<input
-				onChange={(e) => setDescription(e.currentTarget.value)}
-				value={description}
-				className='outline-none rounded-md bg-secondary p-2
-				text-xs placeholder:text-secondary-foreground
-				transition-all duration-300
-				focus:shadow-[0_0_0_2px] focus:shadow-secondary-accent'
-				placeholder='Description (Optional)'
-			/>
+			<DefaultInput ref={titleRef} onChange={(e) => setName(e.target.value)} value={name} placeholder='Name' />
+			<DefaultInput
+				onChange={(e) => setDescription(e.currentTarget.value)} value={description} placeholder='Description (Optional)' />
 			<div className='flex justify-between'>
-				<input
-					disabled={true}
-					className='outline-none rounded-md bg-secondary p-2
-					text-xs placeholder:text-secondary-foreground
-					transition-all duration-300
-					focus:shadow-[0_0_0_2px] focus:shadow-secondary-accent'
-					placeholder='Type'
-					value={type}
-				/>
+				<DefaultInput disabled={true} readOnly={true} placeholder='Type' value={type} />
 				<Dropdown name='Select type'>
 					<DropdownItem onClick={() => setType('TV Shows')}>TV shows</DropdownItem>
 					<DropdownItem onClick={() => setType('Movies')}>Movies</DropdownItem>

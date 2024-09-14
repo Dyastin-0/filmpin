@@ -79,7 +79,6 @@ const TvShowSlug = () => {
 		}
 	}
 
-
 	useEffect(() => {
 		if (show) {
 			setLoading(true);

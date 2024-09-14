@@ -7,7 +7,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faPlus } from '@fortawesome/free-solid-svg-icons';
 import { useModal } from '../hooks/useModal';
 import CreateList from '../CreateList';
-import ListMovie from '../ListMovie';
+import UserList from '../UserList';
 import { io } from 'socket.io-client';
 import { useToast } from '../hooks/useToast';
 
@@ -86,7 +86,7 @@ const ListSection = ({ userData }) => {
 			<div className='flex flex-wrap justify-center w-full gap-4'>
 				{list.length > 0 &&
 					list.map((item) => (
-						<ListMovie key={item._id} list={item} />
+						<UserList key={item._id} list={item} />
 					))
 				}
 			</div>

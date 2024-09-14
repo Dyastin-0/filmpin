@@ -17,14 +17,8 @@ export function ModalProvider({ children }) {
   };
 
   useEffect(() => {
-    if (open) {
-      document.body.style.overflow = 'hidden';
-    } else {
-      document.body.style.overflow = '';
-    }
-    return () => {
-      document.body.style.overflow = '';
-    };
+    open ? document.body.style.overflow = 'hidden' : document.body.style.overflow = '';
+    return () => document.body.style.overflow = '';
   }, [open]);
 
   return (
@@ -36,7 +30,7 @@ export function ModalProvider({ children }) {
             <div
               className='fixed top-0 bottom-0 left-0 right-0 flex justify-center items-center bg-black z-40 bg-opacity-30'
               onClick={() => setOpen(false)}
-              >
+            >
               <div
                 className='flex justify-center items-center overflow-hidden rounded-md w-fit max-w-[calc(100%-2rem)] h-fit max-h-[calc(100%-2rem)]'
                 onClick={(e) => e.stopPropagation()}

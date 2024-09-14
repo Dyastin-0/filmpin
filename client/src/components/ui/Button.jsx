@@ -13,6 +13,7 @@ const Button = ({
 	variant = 'default',
 	className = '',
 	onMouseEnter,
+	onFocus,
 	disabled,
 	icon
 }) => {
@@ -24,6 +25,7 @@ const Button = ({
 			type={type}
 			onClick={onClick}
 			onBlur={onBlur}
+			onFocus={onFocus}
 		>
 			{text} {icon}
 		</button>

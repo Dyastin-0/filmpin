@@ -1,7 +1,7 @@
 import useAxios from '../hooks/useAxios';
 import { useNavigate } from 'react-router-dom';
 
-const ListMovie = ({ list }) => {
+const UserList = ({ list }) => {
 	const api = useAxios();
 	const navigate = useNavigate();
 
@@ -17,11 +17,11 @@ const ListMovie = ({ list }) => {
 		>
 			<h1 className='text-xs text-center text-primary-foreground font-semibold'>{list?.name}</h1>
 			{list.list.length >= 4 ?
-				<div className='flex flex-wrap h-[240px] over rounded-md bg-black'>
+				<div className='flex flex-wrap h-[240px] overflow-hidden rounded-md bg-black'>
 					<img className='h-[120px] w-1/2' loading='lazy' src={`https://image.tmdb.org/t/p/w200/${list.list[0]?.poster_path}`} alt={``} />
-					<img className='h-[120px] w-1/2' loading='lazy' src={`https://image.tmdb.org/t/p/w200/${list.list[0]?.poster_path}`} alt={``} />
-					<img className='h-[120px] w-1/2' loading='lazy' src={`https://image.tmdb.org/t/p/w200/${list.list[0]?.poster_path}`} alt={``} />
-					<img className='h-[120px] w-1/2' loading='lazy' src={`https://image.tmdb.org/t/p/w200/${list.list[0]?.poster_path}`} alt={``} />
+					<img className='h-[120px] w-1/2' loading='lazy' src={`https://image.tmdb.org/t/p/w200/${list.list[1]?.poster_path}`} alt={``} />
+					<img className='h-[120px] w-1/2' loading='lazy' src={`https://image.tmdb.org/t/p/w200/${list.list[2]?.poster_path}`} alt={``} />
+					<img className='h-[120px] w-1/2' loading='lazy' src={`https://image.tmdb.org/t/p/w200/${list.list[3]?.poster_path}`} alt={``} />
 				</div> :
 				<img className='rounded-md' loading='lazy' src={`https://image.tmdb.org/t/p/w200/${list.list[0]?.poster_path}`} alt={``} />
 			}
@@ -29,4 +29,4 @@ const ListMovie = ({ list }) => {
 	)
 }
 
-export default ListMovie;
+export default UserList;

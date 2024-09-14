@@ -76,15 +76,7 @@ const SelectProfile = () => {
 					Select an image
 					<FontAwesomeIcon className='ml-1' icon={faImage} />
 				</label>
-				<input
-					ref={inputRef}
-					type='file'
-					accept='image/*'
-					id='imageFile'
-					name='imageFile'
-					className='hidden'
-					onChange={handleFileChange}
-				/>
+				<input ref={inputRef} type='file' accept='image/*' id='imageFile' name='imageFile' className='hidden' onChange={handleFileChange} />
 				<Button type='submit' text={`${uploading ? 'Uploading...' : 'Upload'}`} />
 			</form>
 			{preview ?

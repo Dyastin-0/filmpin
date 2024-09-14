@@ -4,12 +4,7 @@ import { Link, useNavigate, useSearchParams } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { useAuth } from '../hooks/useAuth';
 import Movie from '../components/Movie';
-import Button from '../components/ui/Button';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faPlus } from '@fortawesome/free-solid-svg-icons';
 import { io } from 'socket.io-client';
-import { useModal } from '../components/hooks/useModal';
-import AddListItem from '../components/AddListItem';
 import listTypes from '../models/listTypes';
 import { useToast } from '../components/hooks/useToast';
 import TvShow from '../components/TvShow';
@@ -25,7 +20,6 @@ const ListSlug = () => {
 	const [list, setList] = useState(null);
 	const [listItem, setListItem] = useState(null);
 	const [owner, setOwner] = useState(null);
-	const { setModal, setOpen } = useModal();
 
 	const getOwner = async (id) => {
 		try {
@@ -61,13 +55,6 @@ const ListSlug = () => {
 		} catch (error) {
 			console.error('Failed to fetch movie.', error);
 		}
-	}
-
-	const handleAddListItem = () => {
-		setModal(
-			<AddListItem />
-		);
-		setOpen(true);
 	}
 
 	useEffect(() => {
@@ -163,11 +150,6 @@ const ListSlug = () => {
 				initial={{ marginTop: -120 }}
 				className='relative flex flex-col items-center gap-4 w-[calc(100%-2rem)] p-4 bg-accent rounded-md overflow-hidden'
 			>
-				{token && user?._id === list?.owner &&
-					<div className='flex justify-end w-full'>
-						<Button text={`Add ${listTypes[list.type]}`} icon={<FontAwesomeIcon icon={faPlus} />} onClick={handleAddListItem} />
-					</div>
-				}
 				{listItem ?
 					<div className='flex flex-wrap justify-center gap-4'>
 						{listTypes[list?.type] === 'Movies' ?
