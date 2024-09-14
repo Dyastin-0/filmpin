@@ -4,35 +4,38 @@ import { useEffect, useState } from 'react';
 import { AnimatePresence, motion } from 'framer-motion';
 import useAxios from '../hooks/useAxios';
 import { useLoading } from '../components/hooks/useLoading';
+import { useQuery } from '@tanstack/react-query';
 
 const Discover = () => {
 	const api = useAxios();
 	const { setLoading } = useLoading();
 	const navigate = useNavigate();
-	const [movies, setMovies] = useState([]);
-	const [shows, setShows] = useState([]);
 	const [imageIndex, setImageIndex] = useState(0);
 	const [isMovieHovered, setIsMovieHovered] = useState(true);
 
+	const fetchMovies = async () => {
+		const response = await api.get('/movies/discover?genres=[]&sort_by=vote_count&page=1');
+		return response.data.results;
+	};
+
+	const fetchShows = async () => {
+		const response = await api.get('/tvshows/discover?genres=[]&sort_by=vote_count&page=1');
+		return response.data.results;
+	};
+
+	const { data: movies = [], isLoading: isMoviesLoading } = useQuery({
+		queryKey: ['movies', 'mostVoted'],
+		queryFn: fetchMovies,
+	});
+
+	const { data: shows = [], isLoading: isShowsLoading } = useQuery({
+		queryKey: ['shows', 'mostVoted'],
+		queryFn: fetchShows,
+	});
+
 	useEffect(() => {
 		document.title = 'Discover';
-		const fetchMostVoted = async () => {
-			setLoading(true);
-			try {
-				const [moviesResponse, showsResponse] = await Promise.all([
-					api.get('/movies/discover?genres=[]&sort_by=vote_count&page=1'),
-					api.get('/tvshows/discover?genres=[]&sort_by=vote_count&page=1')
-				]);
-				setMovies(moviesResponse.data.results);
-				setShows(showsResponse.data.results);
-			} catch (error) {
-				console.error('Failed to fetch top movies and shows.', error);
-			} finally {
-				setLoading(false);
-			}
-		};
-		fetchMostVoted();
-	}, [api, setLoading]);
+	}, []);
 
 	useEffect(() => {
 		const activeList = isMovieHovered ? movies : shows;
@@ -44,6 +47,10 @@ const Discover = () => {
 			return () => clearInterval(intervalId);
 		}
 	}, [movies, shows, isMovieHovered]);
+
+	useEffect(() => {
+		setLoading(isMoviesLoading || isShowsLoading);
+	}, [isMoviesLoading, isShowsLoading, setLoading]);
 
 	const backdrop = isMovieHovered ? movies[imageIndex]?.backdrop_path : shows[imageIndex]?.backdrop_path;
 
