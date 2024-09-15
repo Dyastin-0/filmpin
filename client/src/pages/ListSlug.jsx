@@ -11,30 +11,10 @@ import { ListBackdropDummy, ListTitleDummy } from '../components/loaders/ListSlu
 import { LoadingDiscover as ListLoder } from '../components/loaders/MovieLoaders';
 import Button from '../components/ui/Button';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faEllipsisV, faGear } from '@fortawesome/free-solid-svg-icons';
+import { faEllipsisV } from '@fortawesome/free-solid-svg-icons';
 import { useQuery } from '@tanstack/react-query';
 import useAxios from '../hooks/useAxios';
-
-// Fetch functions
-const fetchOwner = async (api, id) => {
-  const response = await api.get(`/public/account?id=${id}`);
-  return response.data.user;
-};
-
-const fetchList = async (api, id) => {
-  const response = await api.get(`/list/${id}`);
-  return response.data;
-};
-
-const fetchMovie = async (api, id) => {
-  const response = await api.get(`/movies/details?movie_id=${id}`);
-  return response.data;
-};
-
-const fetchShow = async (api, id) => {
-  const response = await api.get(`/tvshows/details?show_id=${id}`);
-  return response.data;
-};
+import { fetchList, fetchOwner, fetchMovie, fetchShow } from '../helpers/api';
 
 const ListSlug = () => {
   const { token, user } = useAuth();

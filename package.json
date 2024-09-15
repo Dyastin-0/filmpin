@@ -8,8 +8,5 @@
     "devClient": "cd client && npm run dev"
   },
   "author": "",
-  "license": "ISC",
-  "dependencies": {
-    "@tanstack/react-query": "^5.56.2"
-  }
+  "license": "ISC"
 }
