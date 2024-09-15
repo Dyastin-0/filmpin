@@ -1,25 +1,24 @@
 import { useEffect, useState } from 'react';
-import axios from 'axios';
 import { AnimatePresence, motion } from 'framer-motion';
+import { useQuery } from '@tanstack/react-query';
+import axios from 'axios';
+
+const fetchBackdrops = async () => {
+  try {
+    const response = await axios.get(`${import.meta.env.VITE_BASE_API_URL}/public/backdrops?category=movie&list=top_rated&page=1`);
+    return response.data;
+  } catch (error) {
+    throw new Error('Failed to fetch backdrops');
+  }
+};
 
 const Root = () => {
-  const [backdrops, setBackdrops] = useState(null);
   const [backdropIndex, setBackdropIndex] = useState(0);
 
-  const getBackdrops = async () => {
-    try {
-      const response = await axios.get(`${import.meta.env.VITE_BASE_API_URL}/public/backdrops?category=movie&list=top_rated&page=1`);
-      return response.data;
-    } catch (error) {
-      console.error(error);
-    }
-  };
-
-  useEffect(() => {
-    getBackdrops().then((response) => {
-      setBackdrops(response);
-    });
-  }, []);
+  const { data: backdrops } = useQuery({
+    queryKey: ['backdrops', 'movies', 'top_rated'],
+    queryFn: fetchBackdrops,
+  });
 
   useEffect(() => {
     if (backdrops) {

@@ -1,84 +1,53 @@
-import { useEffect, useState } from 'react'
-import { useLocation, useSearchParams } from 'react-router-dom';
+import { useSearchParams, useLocation } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import Button from '../components/ui/Button';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faPlay } from '@fortawesome/free-solid-svg-icons';
 import { useModal } from '../components/hooks/useModal';
 import Frame from '../components/Frame';
-import { useLoading } from '../components/hooks/useLoading';
 import { MovieSlugLoader } from '../components/loaders/MovieSlugLoader';
+import { useQuery } from '@tanstack/react-query';
 import useAxios from '../hooks/useAxios';
 import CrewSection from '../components/sections/CrewSection';
 import Crew from '../components/Crew';
 import Cast from '../components/Cast';
 import CastSection from '../components/sections/CastSection';
 import { ClipSection } from '../components/sections/ClipSection';
+import { fetchTvShowEpisodeDetails, fetchTvShowEpisodeVideos } from '../helpers/api';
+import { useEffect, useState } from 'react';
 
 const TvShowEpisodeSlug = () => {
 	const [searchParams] = useSearchParams();
 	const api = useAxios();
-	const { setLoading } = useLoading();
-	const [details, setDetails] = useState(null);
-	const [crews, setCrews] = useState(null);
-	const [casts, setCasts] = useState(null);
-	const writers = crews?.filter(crew => crew.job === 'Writer');
-	const location = useLocation();
 	const { setModal, setOpen } = useModal();
 	const [trailerYoutubeKey, setTrailerYoutubeKey] = useState(null);
-	const [videos, setVideos] = useState(null);
+
 	const id = searchParams.get('id').split('_')[0];
 	const seasonNumber = searchParams.get('season_number');
 	const episodeNumber = searchParams.get('episode_number');
 	const title = searchParams.get('title');
 	const backdrop_path = searchParams.get('backdrop_path');
 
-	const getVideos = async (id, seasonNumber, episodeNumber) => {
-		try {
-			const videos = await api.get(`/tvshows/season/episode/videos?tvshow_id=${id}&tvshow_season=${seasonNumber}&episode_number=${episodeNumber}`);
-			return videos.data;
-		} catch (error) {
-			console.error(`Failed to get videos for show with id '${id}'`, error);
-		}
-	}
+	const { data: details } = useQuery({
+		queryKey: ['tvshow-details', id, seasonNumber, episodeNumber],
+		queryFn: () => fetchTvShowEpisodeDetails(api, id, seasonNumber, episodeNumber),
+	});
 
-	const getDetails = async (showId, seasonNumber, episodeNumber) => {
-		try {
-			const response = await api.get(`/tvshows/season/episode?tvshow_id=${showId}&season_number=${seasonNumber}&episode_number=${episodeNumber}`);
-			return response.data;
-		} catch (error) {
-			console.error('Failed to get seasons', error);
-		}
-	}
+	const { data: videos } = useQuery({
+		queryKey: ['tvshow-videos', id, seasonNumber, episodeNumber],
+		queryFn: () => fetchTvShowEpisodeVideos(api, id, seasonNumber, episodeNumber),
+	});
+
+	const writers = details?.crew.filter(crew => crew.job === 'Writer');
+	const casts = details?.guest_stars?.sort((a, b) => b.popularity - a.popularity);
 
 	useEffect(() => {
-		if (id) {
-			const stateDetails = location.state?.details;
-			if (!stateDetails) {
-				setLoading(true);
-				getDetails(id, seasonNumber, episodeNumber).then(details => {
-					setDetails(details);
-					setCrews(details.crew);
-					setCasts(details.guest_stars.sort((a, b) => b.popularity - a.popularity));
-					setLoading(false);
-				});
-			} else {
-				setDetails(stateDetails);
-				setCrews(stateDetails.crew);
-				setCasts(stateDetails.guest_stars.sort((a, b) => b.popularity - a.popularity));
-				setLoading(false);
-			}
-			getVideos(id, seasonNumber, episodeNumber).then(videos => setVideos(videos.results));
-		}
-	}, [id]);
-
-	useEffect(() => {
-		videos && setTrailerYoutubeKey(videos.find(video => video)?.key);
+		if (videos) setTrailerYoutubeKey(videos[0].key);
 	}, [videos]);
 
 	return (
 		<div className="flex flex-col items-center bg-primary rounded-lg gap-4 p-4 h-full w-full">
-			{details ?
+			{details ? (
 				<>
 					<div className='w-full h-[400px] rounded-lg overflow-hidden'>
 						<img
@@ -117,17 +86,18 @@ const TvShowEpisodeSlug = () => {
 							<p className='text-primary-foreground text-xs'> {`${Math.floor(details?.runtime / 60)}h ${details?.runtime % 60}m`} </p>
 						</div>
 					</motion.div>
-				</> :
+				</>
+			) : (
 				<MovieSlugLoader />
-			}
+			)}
 			<motion.div
 				initial={{ marginTop: -120 }}
 				className='flex flex-col bg-accent p-4 rounded-md max-w-full w-[calc(100%-2rem)] gap-4 shadow-sm'
 			>
 				<h1 className='text-primary-foreground text-md font-semibold'>Credits</h1>
 				<h1 className='text-primary-foreground text-sm font-semibold'>Director</h1>
-				{crews &&
-					crews.map((crew, index) => crew.job === 'Director' && <Crew info={crew} key={index} />)
+				{details?.crew &&
+					details.crew.map((crew, index) => crew.job === 'Director' && <Crew info={crew} key={index} />)
 				}
 				{writers && writers.length > 0 && (
 					<>
@@ -150,15 +120,16 @@ const TvShowEpisodeSlug = () => {
 			</motion.div>
 			{videos?.length > 0 &&
 				<div className='flex flex-col bg-accent p-4 rounded-md max-w-full w-[calc(100%-2rem)] gap-4 shadow-sm'>
-					<ClipSection keys={videos?.map((video) => {
-						return { name: video.name, value: video.key }
-					})}
+					<ClipSection keys={videos.map((video) => ({
+						name: video.name,
+						value: video.key
+					}))}
 						title='Videos'
 					/>
 				</div>
 			}
 		</div>
-	)
-}
+	);
+};
 
 export default TvShowEpisodeSlug;

@@ -10,27 +10,18 @@ import { Swiper, SwiperSlide } from 'swiper/react';
 import { swiperAutoPlayConfig } from '../configs/swiperConfig';
 import SliderMovie from '../components/SliderMovie';
 import { useEffect } from 'react';
+import { fetchCategory } from '../helpers/api';
 
 const Home = () => {
   const api = useAxios();
   const { setLoading } = useLoading();
-
-  const fetchMovies = async (category) => {
-    const response = await api.get(`/movies/list?category=${category}&page=1`);
-    return response.data.results;
-  };
-
-  const fetchTvShows = async (category) => {
-    const response = await api.get(`/tvshows/list?category=${category}&page=1`);
-    return response.data.results;
-  };
 
   const {
     data: topMovies = [],
     isLoading: isLoadingTopMovies,
   } = useQuery({
     queryKey: ['movies', 'top_rated'],
-    queryFn: () => fetchMovies('top_rated'),
+    queryFn: () => fetchCategory(api, 'movies', 'top_rated'),
   });
 
   const {
@@ -38,7 +29,7 @@ const Home = () => {
     isLoading: isLoadingPopularMovies,
   } = useQuery({
     queryKey: ['movies', 'popular'],
-    queryFn: () => fetchMovies('popular'),
+    queryFn: () => fetchCategory(api, 'movies', 'popular'),
   });
 
   const {
@@ -46,7 +37,7 @@ const Home = () => {
     isLoading: isLoadingUpcomingMovies,
   } = useQuery({
     queryKey: ['movies', 'upcoming'],
-    queryFn: () => fetchMovies('upcoming'),
+    queryFn: () => fetchCategory(api, 'movies', 'upcoming'),
   });
 
   const {
@@ -54,7 +45,7 @@ const Home = () => {
     isLoading: isLoadingNowPlayingMovies,
   } = useQuery({
     queryKey: ['movies', 'now_playing'],
-    queryFn: () => fetchMovies('now_playing'),
+    queryFn: () => fetchCategory(api, 'movies', 'now_playing'),
   });
 
   const {
@@ -62,19 +53,12 @@ const Home = () => {
     isLoading: isLoadingTopTvShows,
   } = useQuery({
     queryKey: ['tvshows', 'top_rated'],
-    queryFn: () => fetchTvShows('top_rated'),
+    queryFn: () => fetchCategory(api, 'tvshows', 'top_rated'),
   });
 
-  const isLoading =
-    isLoadingTopMovies ||
-    isLoadingPopularMovies ||
-    isLoadingUpcomingMovies ||
-    isLoadingNowPlayingMovies ||
-    isLoadingTopTvShows;
-
   useEffect(() => {
-    setLoading(isLoading);
-  }, [isLoading]);
+    setLoading(isLoadingNowPlayingMovies || isLoadingPopularMovies || isLoadingTopMovies || isLoadingTopTvShows || isLoadingUpcomingMovies)
+  }, [isLoadingNowPlayingMovies, isLoadingPopularMovies, isLoadingNowPlayingMovies, isLoadingTopMovies, isLoadingTopTvShows, isLoadingUpcomingMovies]);
 
   return (
     <div className="flex flex-col bg-primary rounded-lg gap-4 p-4 justify-center items-center h-full w-full">
@@ -87,26 +71,12 @@ const Home = () => {
           ))}
         </Swiper>
       </section>
-
-      {isLoading ? (
-        <>
-          <LoadingTrailerSection title="Latest trailers" />
-          <LoadingMovieSection title="Now playing" />
-          <LoadingMovieSection title="Top rated" />
-          <LoadingMovieSection title="Popular" />
-          <LoadingMovieSection title="Upcoming" />
-          <LoadingMovieSection title="Top rated TV shows" />
-        </>
-      ) : (
-        <>
-          <TrailerSection title="Latest trailers" movies={upcomingMovies} />
-          <MovieSection title="Now playing" movies={nowPlayingMovies} />
-          <MovieSection title="Top rated" movies={topMovies} />
-          <MovieSection title="Popular" movies={popularMovies} />
-          <MovieSection title="Upcoming" movies={upcomingMovies} />
-          <TvShowSection title="Top rated TV shows" shows={topTvShows} />
-        </>
-      )}
+      {!isLoadingUpcomingMovies ? <TrailerSection title="Latest trailers" movies={upcomingMovies} /> : <LoadingTrailerSection title="Latest trailers" />}
+      {!isLoadingNowPlayingMovies ? <MovieSection title="Now playing" movies={nowPlayingMovies} /> : <LoadingMovieSection title="Now playing" />}
+      {!isLoadingTopMovies ? <MovieSection title="Top rated" movies={topMovies} /> : <LoadingMovieSection title="Top rated" />}
+      {!isLoadingPopularMovies ? <MovieSection title="Popular" movies={popularMovies} /> : <LoadingMovieSection title="Popular" />}
+      {!isLoadingUpcomingMovies ? <MovieSection title="Upcoming" movies={upcomingMovies} /> : <LoadingMovieSection title="Upcoming" />}
+      {!isLoadingTopTvShows ? <TvShowSection title="Top rated TV shows" shows={topTvShows} /> : <LoadingMovieSection title="Top rated TV shows" />}
     </div>
   );
 };

@@ -5,6 +5,7 @@ import { AnimatePresence, motion } from 'framer-motion';
 import useAxios from '../hooks/useAxios';
 import { useLoading } from '../components/hooks/useLoading';
 import { useQuery } from '@tanstack/react-query';
+import { fetchMovies, fetchShows } from '../helpers/api';
 
 const Discover = () => {
 	const api = useAxios();
@@ -13,24 +14,14 @@ const Discover = () => {
 	const [imageIndex, setImageIndex] = useState(0);
 	const [isMovieHovered, setIsMovieHovered] = useState(true);
 
-	const fetchMovies = async () => {
-		const response = await api.get('/movies/discover?genres=[]&sort_by=vote_count&page=1');
-		return response.data.results;
-	};
-
-	const fetchShows = async () => {
-		const response = await api.get('/tvshows/discover?genres=[]&sort_by=vote_count&page=1');
-		return response.data.results;
-	};
-
 	const { data: movies = [], isLoading: isMoviesLoading } = useQuery({
 		queryKey: ['movies', 'mostVoted'],
-		queryFn: fetchMovies,
+		queryFn: () => fetchMovies(api),
 	});
 
 	const { data: shows = [], isLoading: isShowsLoading } = useQuery({
 		queryKey: ['shows', 'mostVoted'],
-		queryFn: fetchShows,
+		queryFn: () => fetchShows(api),
 	});
 
 	useEffect(() => {

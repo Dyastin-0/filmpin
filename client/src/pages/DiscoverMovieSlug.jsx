@@ -11,7 +11,7 @@ import { faFilter } from '@fortawesome/free-solid-svg-icons';
 import { movieGenres } from '../models/genres';
 import { useQuery } from '@tanstack/react-query';
 import useAxios from '../hooks/useAxios';
-
+import { fetchDiscovery } from '../helpers/api';
 
 const DiscoverMovieSlug = () => {
   const api = useAxios();
@@ -25,15 +25,9 @@ const DiscoverMovieSlug = () => {
   const genresString = selectedGenres?.length > 0 ? selectedGenres.join('_').toLowerCase() : '';
   const sortBy = 'vote_count';
 
-  const fetchDiscovery = async ({ queryKey }) => {
-    const [, genres, sortBy, page] = queryKey;
-    const response = await api.get(`/movies/discover?genres=${genres}&sort_by=${sortBy}&page=${page}`);
-    return response.data;
-  };
-
   const { data, isLoading, isFetching, refetch } = useQuery({
     queryKey: ['discoverMovies', genresString, sortBy, currentPage],
-    queryFn: fetchDiscovery,
+    queryFn: () => fetchDiscovery(api, 'movies', genresString, sortBy, currentPage),
     keepPreviousData: true,
     onError: () => {
       setLoading(false);
@@ -46,23 +40,18 @@ const DiscoverMovieSlug = () => {
 
   useEffect(() => {
     document.title = 'Discover movies';
-    refetch();
-    console.log(selectedGenres)
+    window.scrollTo({ top: 0, left: 0, behavior: 'smooth' });
   }, [selectedGenres, currentPage]);
 
   const onPageChange = (page) => {
     setCurrentPage(page);
     navigate(`/discover/movies?genres=${genresString}&sort_by=${sortBy}&page=${page}`, { replace: true });
   };
-  
-  useEffect(() => {
-    const page = parseInt(searchParams.get('page')) || 1;
-    navigate(`/discover/movies?genres=${genresString}&sort_by=${sortBy}&page=${page}`, { replace: true });
-  }, [selectedGenres]);
 
   useEffect(() => {
-    window.scrollTo({ top: 0, left: 0, behavior: 'smooth' });
-  }, [currentPage]);
+    setCurrentPage(1);
+    navigate(`/discover/movies?genres=${genresString}&sort_by=${sortBy}&page=1`, { replace: true });
+  }, [selectedGenres]);
 
   return (
     <div className='flex flex-col bg-primary rounded-lg gap-4 p-4 items-center h-full w-full'>

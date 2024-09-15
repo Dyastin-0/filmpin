@@ -1,101 +1,81 @@
-import { useNavigate, useSearchParams } from 'react-router-dom';
 import { useEffect, useState } from 'react';
 import Movie from '../components/Movie';
 import Pagination from '../components/ui/Pagination';
-import { LoadingSearchResult } from '../components/loaders/MovieLoaders';
+import { useNavigate, useSearchParams } from 'react-router-dom';
+import { LoadingDiscover } from '../components/loaders/MovieLoaders';
 import { useLoading } from '../components/hooks/useLoading';
+import { useQuery } from '@tanstack/react-query';
 import useAxios from '../hooks/useAxios';
+import { fetchSearchQueryResults } from '../helpers/api';
 
-const SearchResult = () => {
+const DiscoverMovieSlug = () => {
+  const api = useAxios();
   const [searchParams] = useSearchParams();
   const navigate = useNavigate();
-  const api = useAxios();
   const { setLoading } = useLoading();
-  const [currentQuery, setCurrentQuery] = useState('');
   const [totalPages, setTotalPages] = useState(0);
-  const [currentPage, setCurrentPage] = useState(1);
-  const [results, setResults] = useState({});
-  const [isLoading, setIsloading] = useState(true);
-
-  const getPage = async (query, page) => {
-    try {
-      const response = await api.get(`/movies/search?query=${query}&page=${page}`);
-      return response.data;
-    } catch (error) {
-      console.error('Failed to get query.', error);
-    }
-  };
+  const [currentPage, setCurrentPage] = useState(parseInt(searchParams.get('page')) || 1);
+  const [query, setQuery] = useState(searchParams.get('query') || '');
 
   useEffect(() => {
-    document.title = 'Search';
-  }, []);
-
-  useEffect(() => {
-    const query = searchParams.get('query') || '';
-    const page = parseInt(searchParams.get('page')) || 1;
-    setCurrentQuery(query);
-    setCurrentPage(page);
+    setQuery(searchParams.get('query') || '');
   }, [searchParams]);
 
-  useEffect(() => {
-    if (currentQuery) {
-      const fetchResults = async () => {
-        setIsloading(true);
-        setLoading(true);
-        const response = await getPage(currentQuery, currentPage);
-        if (response) {
-          setResults((prevResults) => ({
-            ...prevResults,
-            [response.page]: response.results,
-          }));
-          setTotalPages(response.total_pages > 500 ? 500 : response.total_pages);
-        }
-        setIsloading(false);
-        setLoading(false);
-      };
-      fetchResults();
-    }
-  }, [currentQuery, currentPage]);
+  const sortBy = 'vote_count';
 
-  const onPageChange = async (page) => {
-    setCurrentPage(page);
-    if (!results[page]) {
-      setIsloading(true);
-      setLoading(true);
-      const response = await getPage(currentQuery, page);
-      if (response) {
-        setResults((prevResults) => ({
-          ...prevResults,
-          [page]: response.results,
-        }));
-      }
-      setIsloading(false);
+  const { data, isLoading, isFetching, refetch } = useQuery({
+    queryKey: ['discoverMovies', sortBy, currentPage],
+    queryFn: () => fetchSearchQueryResults(api, query, currentPage),
+    keepPreviousData: true,
+    onError: () => {
       setLoading(false);
-    }
-    navigate(`/movies/search?query=${currentQuery}&page=${page}`);
+    },
+  });
+
+
+  useEffect(() => {
+    data && setTotalPages(data.total_pages > 500 ? 500 : data.total_pages);
+  }, [data]);
+
+  useEffect(() => {
+    document.title = 'Discover movies';
+    window.scrollTo({ top: 0, left: 0, behavior: 'smooth' });
+    refetch();
+  }, [currentPage, query]);
+
+  const onPageChange = (page) => {
+    setCurrentPage(page);
+    navigate(`/movies/search?query=${query}&page=${page}`, { replace: true });
   };
 
   useEffect(() => {
-    window.scrollTo({ top: 0, left: 0, behavior: 'smooth' });
-  }, [currentPage]);
+    const page = parseInt(searchParams.get('page')) || 1;
+    navigate(`/movies/search?query=${query}&page=${page}`, { replace: true });
+  }, [query]);
 
-  return isLoading ? (
-    <LoadingSearchResult title={'Results'} />
-  ) : (
+  return (
     <div className='flex flex-col bg-primary rounded-lg gap-4 p-4 items-center h-full w-full'>
-      <h1 className='text-primary-foreground text-sm text-start w-full font-semibold'>Results</h1>
-      <section className='relative w-full h-fit ml-4 mr-4 mb-4 bg-transparent overflow-hidden gap-4'>
-        <div className='flex flex-wrap justify-center gap-3 w-full h-full'>
-          {results[currentPage].map((movie, index) => (
-            <Movie key={index} info={movie} />
-          ))}
+      <div className='flex justify-start items-center w-full gap-2'>
+        <h1 className='text-primary-foreground text-sm text-start font-semibold'>
+          Results
+        </h1>
+      </div>
+      {isLoading || isFetching ?
+        <LoadingDiscover />
+        :
+        <div className='flex flex-col items-center gap-4'>
+          <div className='flex flex-wrap justify-center gap-3 w-full h-full'>
+            {data?.results?.map((movie, index) => (
+              <Movie key={index} info={movie} />
+            ))}
+          </div>
+          {totalPages > 1 &&
+            <Pagination currentPage={currentPage} totalPages={totalPages} onPageChange={onPageChange} />
+          }
         </div>
-      </section>
-      {totalPages > 1 && (
-        <Pagination currentPage={currentPage} totalPages={totalPages} onPageChange={onPageChange} />
-      )}
+      }
     </div>
   );
 };
 
-export default SearchResult;
+export default DiscoverMovieSlug;

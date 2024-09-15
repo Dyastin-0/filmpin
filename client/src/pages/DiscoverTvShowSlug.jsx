@@ -11,6 +11,7 @@ import { faFilter } from '@fortawesome/free-solid-svg-icons';
 import { tvShowGenres } from '../models/genres';
 import { useQuery } from '@tanstack/react-query';
 import useAxios from '../hooks/useAxios';
+import { fetchDiscovery } from '../helpers/api';
 
 const DiscoverTvShowSlug = () => {
   const api = useAxios();
@@ -24,15 +25,9 @@ const DiscoverTvShowSlug = () => {
   const genresString = selectedGenres?.length > 0 ? selectedGenres.join('_').toLowerCase() : '';
   const sortBy = 'vote_count';
 
-  const fetchDiscovery = async ({ queryKey }) => {
-    const [, genres, sortBy, page] = queryKey;
-    const response = await api.get(`/tvshows/discover?genres=${genres}&sort_by=${sortBy}&page=${page}`);
-    return response.data;
-  };
-
   const { data, isLoading, isFetching, refetch } = useQuery({
     queryKey: ['discoverTvShows', genresString, sortBy, currentPage],
-    queryFn: fetchDiscovery,
+    queryFn: () => fetchDiscovery(api, 'tvshows', genresString, sortBy, currentPage),
     keepPreviousData: true,
     onError: () => {
       setLoading(false);
@@ -56,8 +51,8 @@ const DiscoverTvShowSlug = () => {
   };
 
   useEffect(() => {
-    const page = parseInt(searchParams.get('page')) || 1;
-    navigate(`/discover/tvshows?genres=${genresString}&sort_by=${sortBy}&page=${page}`, { replace: true });
+    setCurrentPage(1);
+    navigate(`/discover/tvshows?genres=${genresString}&sort_by=${sortBy}&page=1`, { replace: true });
   }, [selectedGenres]);
 
   useEffect(() => {
