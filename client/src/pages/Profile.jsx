@@ -23,7 +23,7 @@ const Profile = () => {
   const { setModal, setOpen } = useModal();
   const username = location.pathname.slice(1);
 
-  const { data: userData, isError } = useQuery({
+  const { data: userData, isError, isLoading, refetch } = useQuery({
     queryKey: ['user', username],
     queryFn: () => fetchUserData(api, username),
   });
@@ -31,6 +31,10 @@ const Profile = () => {
   useEffect(() => {
     if (userData) document.title = userData.username;
   }, [userData]);
+
+  useEffect(() => {
+    if (user) refetch();
+  }, [user]);
 
   useEffect(() => {
     if (isError) {
@@ -75,13 +79,13 @@ const Profile = () => {
         className='flex gap-4 w-[calc(100%-2rem)] h-[200px] p-4 bg-accent rounded-md'
       >
         <div className='flex flex-col max-w-full items-center gap-4'>
-          {userData?.profileImageURL ? (
+          {!isLoading && userData?.profileImageURL ? (
             <div className='flex flex-col justify-center items-center gap-2'>
               <img
                 alt={`${userData.username} profile image`}
                 src={userData.profileImageURL}
                 onClick={handleViewProfile}
-                className='w-[100px] h-[100px] rounded-full transition-all duration-300 hover:cursor-pointer hover:opacity-70'
+                className='w-[100px] h-[100px] object-cover rounded-full transition-all duration-300 hover:cursor-pointer hover:opacity-70'
               />
             </div>
           ) : (

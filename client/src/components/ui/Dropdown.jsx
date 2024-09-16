@@ -24,7 +24,6 @@ export const Dropdown = ({ name, children }) => {
 				text={name}
 				onClick={toggle}
 				onBlur={handleBlur}
-				className='p-1'
 			/>
 			<motion.div
 				initial={{ scaleY: 0, opacity: 0, y: -50 }}
