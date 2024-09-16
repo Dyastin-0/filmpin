@@ -52,7 +52,6 @@ const MovieSlug = () => {
 	});
 
 	useEffect(() => {
-		console.log(videos)
 		if (videos) {
 			const trailer = videos.find(video => video.type === 'Trailer');
 			setTrailerYoutubeKey(trailer?.key);
