@@ -25,6 +25,7 @@ const queryClient = new QueryClient({
 const loadCache = async () => {
   try {
     const cachedData = await localforage.getItem('react-query-cache');
+    console.log(cachedData)
     if (cachedData) {
       cachedData.forEach(({ queryKey, data }) => {
         queryClient.setQueryData(queryKey, data);
