@@ -58,6 +58,11 @@ export const fetchSearchQueryResults = async (api, query, page) => {
 	return response.data;
 };
 
+export const fetchTvShowVideos = async (api, id) => {
+	const response = await api.get(`/tvshows/videos?show_id=${id}`);
+	return response.data.results;
+} 
+
 export const fetchTvShowEpisodeVideos = async (api, id, seasonNumber, episodeNumber) => {
 	const response = await api.get(`/tvshows/season/episode/videos?tvshow_id=${id}&tvshow_season=${seasonNumber}&episode_number=${episodeNumber}`).then(res => res.data.results);
 	return response;

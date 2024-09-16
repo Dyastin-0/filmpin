@@ -48,7 +48,6 @@ const Season = ({ info, showId, title, backdropPath }) => {
 					<>
 						<h4 className='text-sm font-semibold line-clamp-2 text-ellipsis'> {info.name} </h4>
 						<h4 className='text-xs'> {info.air_date?.split('-')[0]} </h4>
-						<h4 className='text-xs'> {info.episodes.length} Episodes </h4>
 					</> :
 					<>
 						<TitleDummy />

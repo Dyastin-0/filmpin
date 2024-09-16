@@ -42,7 +42,14 @@ const TvShowEpisodeSlug = () => {
 	const casts = details?.guest_stars?.sort((a, b) => b.popularity - a.popularity);
 
 	useEffect(() => {
-		if (videos) setTrailerYoutubeKey(videos[0].key);
+		if (details) {
+			document.title = details.name;
+			window.scrollTo({ top: 0, left: 0, behavior: 'smooth' });
+		}
+	}, [details]);
+
+	useEffect(() => {
+		if (videos?.length > 0) setTrailerYoutubeKey(videos[0].key);
 	}, [videos]);
 
 	return (
@@ -99,7 +106,7 @@ const TvShowEpisodeSlug = () => {
 				{details?.crew &&
 					details.crew.map((crew, index) => crew.job === 'Director' && <Crew info={crew} key={index} />)
 				}
-				{writers && writers.length > 0 && (
+				{writers && writers?.length > 0 && (
 					<>
 						<h1 className='text-primary-foreground text-xs font-semibold'> Writer </h1>
 						<div className='flex flex-wrap gap-4'>

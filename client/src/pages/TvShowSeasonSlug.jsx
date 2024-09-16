@@ -17,7 +17,6 @@ import { ClipSection } from '../components/sections/ClipSection';
 const TvShowSeasonSlug = () => {
 	const [searchParams] = useSearchParams();
 	const api = useAxios();
-	const location = useLocation();
 	const { setModal, setOpen } = useModal();
 	const [trailerYoutubeKey, setTrailerYoutubeKey] = useState(null);
 
@@ -39,6 +38,13 @@ const TvShowSeasonSlug = () => {
 	useEffect(() => {
 		if (videos) setTrailerYoutubeKey(videos.find(video => video.type === 'Trailer')?.key);
 	}, [videos]);
+
+	useEffect(() => {
+		if (details) {
+			document.title = details.name;
+			window.scrollTo({ top: 0, left: 0, behavior: 'smooth' });
+		}
+	}, [details]);
 
 	return (
 		<div className="flex flex-col items-center bg-primary rounded-lg gap-4 p-4 h-full w-full">
