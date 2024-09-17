@@ -16,11 +16,13 @@ const queryClient = new QueryClient({
   defaultOptions: {
     queries: {
       cacheTime: 1000 * 60 * 60 * 1,
+      staleTime: 1000 * 60 * 10,
       refetchOnWindowFocus: false,
       refetchOnReconnect: false,
     },
   },
 });
+
 
 const loadCache = async () => {
   try {
