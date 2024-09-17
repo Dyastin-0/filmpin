@@ -15,7 +15,6 @@ import CastSection from '../components/sections/CastSection';
 import CrewSection from '../components/sections/CrewSection';
 import { ClipSection } from '../components/sections/ClipSection';
 import AddToList from '../components/AddToList';
-import { useQuery } from '@tanstack/react-query';
 import useAxios from '../hooks/useAxios';
 import { fetchCredits, fetchDiscovery, fetchMovie, fetchVideos } from '../helpers/api';
 
@@ -24,39 +23,49 @@ const MovieSlug = () => {
 	const api = useAxios();
 	const { setModal, setOpen } = useModal();
 	const [trailerYoutubeKey, setTrailerYoutubeKey] = useState(null);
+	const [movie, setMovie] = useState(null);
+	const [videos, setVideos] = useState(null);
+	const [credits, setCredits] = useState(null);
+	const [similarMovies, setSimilarMovies] = useState(null);
+	const [isLoading, setIsLoading] = useState(true);
+	const [isError, setIsError] = useState(false);
+
 	const id = searchParams.get('id').split('_')[0];
+
+	useEffect(() => {
+		const loadData = async () => {
+			try {
+				const movieData = await fetchMovie(api, id);
+				setMovie(movieData);
+
+				const videosData = await fetchVideos(api, 'movies', 'movie_id', id);
+				setVideos(videosData);
+
+				const creditsData = await fetchCredits(api, 'movies', id);
+				setCredits(creditsData);
+
+				const genres = movieData.genres.map(genre => genre.name.toLowerCase()).join('_');
+				const similarMoviesData = await fetchDiscovery(api, 'movies', genres, 'vote_count', 1);
+				setSimilarMovies(similarMoviesData);
+
+				const trailer = videosData.find(video => video.type === 'Trailer');
+				setTrailerYoutubeKey(trailer?.key);
+
+			} catch (error) {
+				setIsError(true);
+				console.error('Error fetching data:', error);
+			} finally {
+				setIsLoading(false);
+			}
+		};
+
+		loadData();
+	}, [id, api]);
 
 	const handleAddToList = () => {
 		setModal(<AddToList selected={movie} type="Movies" />);
 		setOpen(true);
 	};
-
-	const { data: movie, isLoading: isMovieLoading } = useQuery({
-		queryKey: ['movie', id],
-		queryFn: () => fetchMovie(api, id),
-	});
-
-	const { data: videos } = useQuery({
-		queryKey: ['videos', id],
-		queryFn: () => fetchVideos(api, 'movies', 'movie_id', id),
-	});
-
-	const { data: credits } = useQuery({
-		queryKey: ['credits', id],
-		queryFn: () => fetchCredits(api, 'movies', id),
-	});
-
-	const { data: similarMovies } = useQuery({
-		queryKey: ['similarMovies', movie?.genres.map(genre => genre.name.toLowerCase()).join('_')],
-		queryFn: () => fetchDiscovery(api, 'movies', movie?.genres.map(genre => genre.name).join('_').toLowerCase(), 'vote_count', 1),
-	});
-
-	useEffect(() => {
-		if (videos) {
-			const trailer = videos.find(video => video.type === 'Trailer');
-			setTrailerYoutubeKey(trailer?.key);
-		}
-	}, [videos]);
 
 	useEffect(() => {
 		if (movie) {
@@ -65,9 +74,11 @@ const MovieSlug = () => {
 		}
 	}, [movie]);
 
+	if (isError) return <div>Error loading data.</div>;
+
 	return (
 		<div className="flex flex-col items-center bg-primary rounded-lg gap-4 p-4 h-full w-full">
-			{isMovieLoading ? (
+			{isLoading ? (
 				<MovieSlugLoader />
 			) : (
 				<>
@@ -174,10 +185,13 @@ const MovieSlug = () => {
 				)}
 			</div>
 			<div className="flex flex-col bg-accent rounded-lg gap-4 p-4 items-center w-[calc(100%-2rem)]">
-				<ClipSection title={'Videos'}
-					keys={videos?.map((video) => {
-						return { name: video.name, value: video.key }
-					})} />
+				<ClipSection
+					title={'Videos'}
+					keys={videos?.map((video) => ({
+						name: video.name,
+						value: video.key
+					}))}
+				/>
 			</div>
 		</div>
 	);

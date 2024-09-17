@@ -1,4 +1,4 @@
-import { useSearchParams, useLocation } from 'react-router-dom';
+import { useSearchParams } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import Button from '../components/ui/Button';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
@@ -9,7 +9,6 @@ import { LoadingMovieSection } from '../components/loaders/MovieLoaders';
 import { MovieSlugLoader } from '../components/loaders/MovieSlugLoader';
 import useAxios from '../hooks/useAxios';
 import EpisodeSection from '../components/sections/EpisodeSection';
-import { useQuery } from '@tanstack/react-query';
 import { fetchTvShowSeason, fetchTvShowSeasonVideos } from '../helpers/api';
 import { useEffect, useState } from 'react';
 import { ClipSection } from '../components/sections/ClipSection';
@@ -19,36 +18,44 @@ const TvShowSeasonSlug = () => {
 	const api = useAxios();
 	const { setModal, setOpen } = useModal();
 	const [trailerYoutubeKey, setTrailerYoutubeKey] = useState(null);
+	const [details, setDetails] = useState(null);
+	const [videos, setVideos] = useState(null);
+	const [loading, setLoading] = useState(true);
 
 	const id = searchParams.get('id')?.split('_')[0];
 	const seasonNumber = searchParams.get('season_number');
 	const title = searchParams.get('title');
-	const backdrop_path = searchParams.get('backdrop_path');
-
-	const { data: details, isLoading: detailsLoading } = useQuery({
-		queryKey: ['tvshow-season', id, seasonNumber],
-		queryFn: () => fetchTvShowSeason(api, id, seasonNumber)
-	});
-
-	const { data: videos } = useQuery({
-		queryKey: ['tvshow-season-videos', id, seasonNumber],
-		queryFn: () => fetchTvShowSeasonVideos(api, id, seasonNumber)
-	});
+	const backdropPath = searchParams.get('backdrop_path');
 
 	useEffect(() => {
-		if (videos) setTrailerYoutubeKey(videos.find(video => video.type === 'Trailer')?.key);
-	}, [videos]);
+		const fetchData = async () => {
+			try {
+				setLoading(true);
+				const [detailsData, videosData] = await Promise.all([
+					fetchTvShowSeason(api, id, seasonNumber),
+					fetchTvShowSeasonVideos(api, id, seasonNumber)
+				]);
+				setDetails(detailsData);
+				setVideos(videosData);
+				setTrailerYoutubeKey(videosData.find(video => video.type === 'Trailer')?.key);
+			} catch (error) {
+				console.error('Error fetching data:', error);
+			} finally {
+				setLoading(false);
+			}
+		};
+
+		fetchData();
+	}, [api, id, seasonNumber]);
 
 	useEffect(() => {
-		if (details) {
-			document.title = details.name;
+			document.title = details?.name || 'TV Show Season';
 			window.scrollTo({ top: 0, left: 0, behavior: 'smooth' });
-		}
 	}, [details]);
 
 	return (
 		<div className="flex flex-col items-center bg-primary rounded-lg gap-4 p-4 h-full w-full">
-			{detailsLoading ? (
+			{loading ? (
 				<MovieSlugLoader />
 			) : (
 				details && (
@@ -57,7 +64,7 @@ const TvShowSeasonSlug = () => {
 							<img
 								loading='lazy'
 								className='w-full h-full object-cover'
-								src={`https://image.tmdb.org/t/p/original/${backdrop_path}`}
+								src={`https://image.tmdb.org/t/p/original/${backdropPath}`}
 								alt={`${details.name} backdrop`}
 							/>
 						</div>
@@ -103,7 +110,7 @@ const TvShowSeasonSlug = () => {
 						episodes={details.episodes}
 						seasonNumber={seasonNumber}
 						showId={id}
-						backdropPath={backdrop_path}
+						backdropPath={backdropPath}
 						title={title}
 					/>
 				) : (

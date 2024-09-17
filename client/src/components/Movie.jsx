@@ -1,20 +1,34 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { CircularProgress, CircularProgressLabel } from '@chakra-ui/react';
 import { ImageDummy, TitleDummy, YearDummy, GenresDummy } from './loaders/MovieLoaders';
 import useAxios from '../hooks/useAxios';
-import { useQuery } from '@tanstack/react-query';
 import { fetchMovie } from '../helpers/api';
 
 const Movie = ({ info }) => {
 	const navigate = useNavigate();
 	const api = useAxios();
+	const [details, setDetails] = useState(null);
+	const [isLoading, setIsLoading] = useState(true);
+	const [isError, setIsError] = useState(false);
 	const [imageLoaded, setImageLoaded] = useState(false);
 
-	const { data: details, isLoading, isError } = useQuery({
-		queryKey: ['movie', info.id],
-		queryFn: () => fetchMovie(api, info.id),
-	});
+	useEffect(() => {
+		const getMovieDetails = async () => {
+			try {
+				setIsLoading(true);
+				const data = await fetchMovie(api, info.id);
+				setDetails(data);
+			} catch (error) {
+				setIsError(true);
+				console.error('Error fetching movie details:', error);
+			} finally {
+				setIsLoading(false);
+			}
+		};
+
+		getMovieDetails();
+	}, [api, info.id]);
 
 	const handleImageLoad = () => {
 		const img = new Image();
@@ -27,14 +41,16 @@ const Movie = ({ info }) => {
 	}
 
 	const handleClick = () => {
-		navigate(`/movies?id=${details.id}_${details.title}`);
+		if (details) {
+			navigate(`/movies?id=${details.id}_${details.title}`);
+		}
 	};
 
 	return (
 		<div
 			className='flex flex-col rounded-lg drop-shadow-sm gap-1 p-4 w-[200px] h-[370px]
-				text-primary-foreground border border-secondary-accent
-				hover:scale-95 hover:cursor-pointer duration-300'
+        text-primary-foreground border border-secondary-accent
+        hover:scale-95 hover:cursor-pointer duration-300'
 			onClick={handleClick}
 		>
 			{imageLoaded ? (

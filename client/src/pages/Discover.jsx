@@ -2,31 +2,54 @@ import Button from '../components/ui/Button';
 import { useNavigate } from 'react-router-dom';
 import { useEffect, useState } from 'react';
 import { AnimatePresence, motion } from 'framer-motion';
+import { fetchMovies, fetchShows } from '../helpers/api'; // Import existing fetch functions
+import { useLoading } from '../components/hooks/useLoading'; // Keep this if needed, or remove if unused
 import useAxios from '../hooks/useAxios';
-import { useLoading } from '../components/hooks/useLoading';
-import { useQuery } from '@tanstack/react-query';
-import { fetchMovies, fetchShows } from '../helpers/api';
 
 const Discover = () => {
-	const api = useAxios();
-	const { setLoading } = useLoading();
+	const api = useAxios(); // Assuming useAxios is used within fetch functions
+	const { setLoading } = useLoading(); // Keep this if needed, or remove if unused
 	const navigate = useNavigate();
 	const [imageIndex, setImageIndex] = useState(0);
 	const [isMovieHovered, setIsMovieHovered] = useState(true);
-
-	const { data: movies = [], isLoading: isMoviesLoading } = useQuery({
-		queryKey: ['movies', 'mostVoted'],
-		queryFn: () => fetchMovies(api),
-	});
-
-	const { data: shows = [], isLoading: isShowsLoading } = useQuery({
-		queryKey: ['shows', 'mostVoted'],
-		queryFn: () => fetchShows(api),
-	});
+	const [movies, setMovies] = useState([]);
+	const [shows, setShows] = useState([]);
+	const [isMoviesLoading, setIsMoviesLoading] = useState(true);
+	const [isShowsLoading, setIsShowsLoading] = useState(true);
 
 	useEffect(() => {
 		document.title = 'Discover';
 	}, []);
+
+	useEffect(() => {
+		const fetchData = async () => {
+			setIsMoviesLoading(true);
+			setIsShowsLoading(true);
+			try {
+				const moviesData = await fetchMovies(api);
+				setMovies(moviesData);
+			} catch (error) {
+				console.error('Error fetching movies:', error);
+			} finally {
+				setIsMoviesLoading(false);
+			}
+
+			try {
+				const showsData = await fetchShows(api);
+				setShows(showsData);
+			} catch (error) {
+				console.error('Error fetching shows:', error);
+			} finally {
+				setIsShowsLoading(false);
+			}
+		};
+
+		fetchData();
+	}, [api]);
+
+	useEffect(() => {
+		setLoading(isMoviesLoading || isShowsLoading); // Optional: only if you want to use this
+	}, [isMoviesLoading, isShowsLoading, setLoading]);
 
 	useEffect(() => {
 		const activeList = isMovieHovered ? movies : shows;
@@ -38,10 +61,6 @@ const Discover = () => {
 			return () => clearInterval(intervalId);
 		}
 	}, [movies, shows, isMovieHovered]);
-
-	useEffect(() => {
-		setLoading(isMoviesLoading || isShowsLoading);
-	}, [isMoviesLoading, isShowsLoading, setLoading]);
 
 	const backdrop = isMovieHovered ? movies[imageIndex]?.backdrop_path : shows[imageIndex]?.backdrop_path;
 

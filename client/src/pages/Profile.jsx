@@ -1,46 +1,50 @@
+import { useEffect, useState } from 'react';
+import { useLocation, useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
-import { useAuth } from '../hooks/useAuth';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faEllipsisH, faImage } from '@fortawesome/free-solid-svg-icons';
+import { useAuth } from '../hooks/useAuth';
 import { useModal } from '../components/hooks/useModal';
-import SelectBackdrop from '../components/SelectBackdrop';
+import useAxios from '../hooks/useAxios';
 import UserBackdrop from '../components/UserBackdrop';
-import { Dropdown, DropdownItem } from '../components/ui/Dropdown';
-import { useEffect } from 'react';
+import SelectBackdrop from '../components/SelectBackdrop';
 import SelectProfile from '../components/SelectProfile';
 import { Image } from '../components/ui/Image';
-import useAxios from '../hooks/useAxios';
-import { useLocation, useNavigate } from 'react-router-dom';
 import ListSection from '../components/sections/ListSection';
-import { useQuery } from '@tanstack/react-query';
+import { Dropdown, DropdownItem } from '../components/ui/Dropdown';
 import { fetchUserData } from '../helpers/api';
 
 const Profile = () => {
   const api = useAxios();
+  const { user, token } = useAuth();
   const location = useLocation();
   const navigate = useNavigate();
-  const { user, token } = useAuth();
   const { setModal, setOpen } = useModal();
   const username = location.pathname.slice(1);
 
-  const { data: userData, isError, isLoading, refetch } = useQuery({
-    queryKey: ['user', username],
-    queryFn: () => fetchUserData(api, username),
-  });
+  const [userData, setUserData] = useState(null);
+  const [isLoading, setIsLoading] = useState(true);
+  const [isError, setIsError] = useState(false);
 
   useEffect(() => {
-    if (userData) document.title = userData.username;
-  }, [userData]);
+    const loadUserData = async () => {
+      try {
+        setIsLoading(true);
+        const data = await fetchUserData(api, username);
+        setUserData(data);
+        document.title = data.username;
+      } catch (error) {
+        setIsError(true);
+        navigate('/404');
+      } finally {
+        setIsLoading(false);
+      }
+    };
 
-  useEffect(() => {
-    if (user) refetch();
-  }, [user]);
-
-  useEffect(() => {
-    if (isError) {
-      navigate('/404');
+    if (user) {
+      loadUserData();
     }
-  }, [isError, navigate]);
+  }, [username, user, api, navigate]);
 
   const handleSelectBackdrop = () => {
     setModal(<SelectBackdrop />);
@@ -53,9 +57,11 @@ const Profile = () => {
   };
 
   const handleViewProfile = () => {
-    setModal(<Image imageURL={userData.profileImageURL} name={userData.username} />);
+    setModal(<Image imageURL={userData?.profileImageURL} name={userData?.username} />);
     setOpen(true);
   };
+
+  if (isError) return null; // or handle error state as needed
 
   return (
     <div className='relative flex flex-col items-center p-4 gap-4 w-full h-full bg-primary rounded-md'>
@@ -101,14 +107,14 @@ const Profile = () => {
             <h1 className='text-center text-primary-foreground mt-2 text-xs line-clamp-1 font-semibold'>{userData?.email}</h1>
           </div>
         </div>
-        <div className='absolute top-4 right-4'>
-          {token && userData?._id === user?._id && (
+        {token && userData?._id === user?._id && (
+          <div className='absolute top-4 right-4'>
             <Dropdown name={<FontAwesomeIcon icon={faEllipsisH} />}>
               <DropdownItem onClick={handleSelectProfile}>Change profile</DropdownItem>
               <DropdownItem onClick={handleSelectBackdrop}>Change background</DropdownItem>
             </Dropdown>
-          )}
-        </div>
+          </div>
+        )}
       </motion.div>
       {token ? (
         <ListSection userData={userData} />

@@ -4,7 +4,6 @@ import Pagination from '../components/ui/Pagination';
 import { useNavigate, useSearchParams } from 'react-router-dom';
 import { LoadingDiscover } from '../components/loaders/MovieLoaders';
 import { useLoading } from '../components/hooks/useLoading';
-import { useQuery } from '@tanstack/react-query';
 import useAxios from '../hooks/useAxios';
 import { fetchSearchQueryResults } from '../helpers/api';
 
@@ -16,42 +15,52 @@ const DiscoverMovieSlug = () => {
   const [totalPages, setTotalPages] = useState(0);
   const [currentPage, setCurrentPage] = useState(parseInt(searchParams.get('page')) || 1);
   const [query, setQuery] = useState(searchParams.get('query') || '');
+  const [data, setData] = useState(null);
+  const [isLoading, setIsLoading] = useState(true);
+  const [isError, setIsError] = useState(false);
 
   useEffect(() => {
+    // Update query and currentPage based on searchParams
     setQuery(searchParams.get('query') || '');
+    setCurrentPage(parseInt(searchParams.get('page')) || 1);
   }, [searchParams]);
 
-  const sortBy = 'vote_count';
+  useEffect(() => {
+    // Fetch data when query or currentPage changes
+    setIsLoading(true);
+    setIsError(false);
+    setLoading(true);
 
-  const { data, isLoading, isFetching, refetch } = useQuery({
-    queryKey: ['discoverMovies', sortBy, currentPage],
-    queryFn: () => fetchSearchQueryResults(api, query, currentPage),
-    keepPreviousData: true,
-    onError: () => {
-      setLoading(false);
-    },
-  });
-
+    fetchSearchQueryResults(api, query, currentPage)
+      .then(result => {
+        setData(result);
+        setTotalPages(result.total_pages > 500 ? 500 : result.total_pages);
+      })
+      .catch(() => {
+        setIsError(true);
+      })
+      .finally(() => {
+        setIsLoading(false);
+        setLoading(false);
+      });
+  }, [query, currentPage, api, setLoading]);
 
   useEffect(() => {
-    data && setTotalPages(data.total_pages > 500 ? 500 : data.total_pages);
-  }, [data]);
+    navigate(`/movies/search?query=${query}&page=${currentPage}`, { replace: true });
+  }, [query, currentPage, navigate]);
+
+  useEffect(() => {
+    window.scrollTo({ top: 0, left: 0, behavior: 'smooth' });
+  }, [currentPage]);
 
   useEffect(() => {
     document.title = 'Discover movies';
-    window.scrollTo({ top: 0, left: 0, behavior: 'smooth' });
-    refetch();
-  }, [currentPage, query]);
+  }, []);
 
   const onPageChange = (page) => {
     setCurrentPage(page);
     navigate(`/movies/search?query=${query}&page=${page}`, { replace: true });
   };
-
-  useEffect(() => {
-    const page = parseInt(searchParams.get('page')) || 1;
-    navigate(`/movies/search?query=${query}&page=${page}`, { replace: true });
-  }, [query]);
 
   return (
     <div className='flex flex-col bg-primary rounded-lg gap-4 p-4 items-center h-full w-full'>
@@ -60,20 +69,22 @@ const DiscoverMovieSlug = () => {
           Results
         </h1>
       </div>
-      {isLoading || isFetching ?
+      {isLoading ? (
         <LoadingDiscover />
-        :
+      ) : isError ? (
+        <div>Error loading data.</div>
+      ) : (
         <div className='flex flex-col items-center gap-4'>
           <div className='flex flex-wrap justify-center gap-3 w-full h-full'>
             {data?.results?.map((movie, index) => (
               <Movie key={index} info={movie} />
             ))}
           </div>
-          {totalPages > 1 &&
+          {totalPages > 1 && (
             <Pagination currentPage={currentPage} totalPages={totalPages} onPageChange={onPageChange} />
-          }
+          )}
         </div>
-      }
+      )}
     </div>
   );
 };

@@ -9,7 +9,6 @@ import Accordion from '../components/ui/Accordion';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faFilter } from '@fortawesome/free-solid-svg-icons';
 import { tvShowGenres } from '../models/genres';
-import { useQuery } from '@tanstack/react-query';
 import useAxios from '../hooks/useAxios';
 import { fetchDiscovery } from '../helpers/api';
 
@@ -21,28 +20,36 @@ const DiscoverTvShowSlug = () => {
   const [selectedGenres, setSelectedGenres] = useState([]);
   const [totalPages, setTotalPages] = useState(0);
   const [currentPage, setCurrentPage] = useState(parseInt(searchParams.get('page')) || 1);
+  const [data, setData] = useState(null);
+  const [isLoading, setIsLoading] = useState(false);
+  const [isError, setIsError] = useState(false);
 
-  const genresString = selectedGenres?.length > 0 ? selectedGenres.join('_').toLowerCase() : '';
+  const genresString = selectedGenres.length > 0 ? selectedGenres.join('_').toLowerCase() : '';
   const sortBy = 'vote_count';
 
-  const { data, isLoading, isFetching, refetch } = useQuery({
-    queryKey: ['discoverTvShows', genresString, sortBy, currentPage],
-    queryFn: () => fetchDiscovery(api, 'tvshows', genresString, sortBy, currentPage),
-    keepPreviousData: true,
-    onError: () => {
-      setLoading(false);
-    },
-  });
-
   useEffect(() => {
-    if (data) {
-      setTotalPages(data.total_pages > 500 ? 500 : data.total_pages);
-    }
-  }, [data]);
+    const getTvShows = async () => {
+      setIsLoading(true);
+      setIsError(false);
+      try {
+        const result = await fetchDiscovery(api, 'tvshows', genresString, sortBy, currentPage);
+        setData(result);
+        setTotalPages(result.total_pages > 500 ? 500 : result.total_pages);
+      } catch (error) {
+        setIsError(true);
+        console.error('Error fetching TV shows:', error);
+      } finally {
+        setIsLoading(false);
+        setLoading(false);
+      }
+    };
+
+    getTvShows();
+  }, [api, genresString, sortBy, currentPage, setLoading]);
 
   useEffect(() => {
     document.title = 'Discover TV shows';
-    refetch();
+    window.scrollTo({ top: 0, left: 0, behavior: 'smooth' });
   }, [selectedGenres, currentPage]);
 
   const onPageChange = (page) => {
@@ -55,10 +62,6 @@ const DiscoverTvShowSlug = () => {
     navigate(`/discover/tvshows?genres=${genresString}&sort_by=${sortBy}&page=1`, { replace: true });
   }, [selectedGenres]);
 
-  useEffect(() => {
-    window.scrollTo({ top: 0, left: 0, behavior: 'smooth' });
-  }, [currentPage]);
-
   return (
     <div className='flex flex-col bg-primary rounded-lg gap-4 p-4 items-center h-full w-full'>
       <div className='flex justify-start items-center w-full gap-2'>
@@ -69,9 +72,11 @@ const DiscoverTvShowSlug = () => {
       <Accordion title={<div className='gap-2'><FontAwesomeIcon icon={faFilter} /> Filter </div>}>
         <Selector items={tvShowGenres} selectedGenres={selectedGenres} setSelectedGenres={setSelectedGenres} />
       </Accordion>
-      {isLoading || isFetching ?
+      {isLoading ? (
         selectedGenres && <LoadingDiscover />
-        :
+      ) : isError ? (
+        <p>Error loading TV shows</p>
+      ) : (
         <div className='flex flex-col items-center gap-4'>
           <div className='flex flex-wrap justify-center gap-3 w-full h-full'>
             {data?.results?.map((show, index) => (
@@ -82,7 +87,7 @@ const DiscoverTvShowSlug = () => {
             <Pagination currentPage={currentPage} totalPages={totalPages} onPageChange={onPageChange} />
           }
         </div>
-      }
+      )}
     </div>
   );
 };

@@ -9,7 +9,6 @@ import Accordion from '../components/ui/Accordion';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faFilter } from '@fortawesome/free-solid-svg-icons';
 import { movieGenres } from '../models/genres';
-import { useQuery } from '@tanstack/react-query';
 import useAxios from '../hooks/useAxios';
 import { fetchDiscovery } from '../helpers/api';
 
@@ -21,22 +20,32 @@ const DiscoverMovieSlug = () => {
   const [selectedGenres, setSelectedGenres] = useState([]);
   const [totalPages, setTotalPages] = useState(0);
   const [currentPage, setCurrentPage] = useState(parseInt(searchParams.get('page')) || 1);
+  const [data, setData] = useState(null);
+  const [isLoading, setIsLoading] = useState(false);
+  const [isError, setIsError] = useState(false);
 
-  const genresString = selectedGenres?.length > 0 ? selectedGenres.join('_').toLowerCase() : '';
+  const genresString = selectedGenres.length > 0 ? selectedGenres.join('_').toLowerCase() : '';
   const sortBy = 'vote_count';
 
-  const { data, isLoading, isFetching, refetch } = useQuery({
-    queryKey: ['discoverMovies', genresString, sortBy, currentPage],
-    queryFn: () => fetchDiscovery(api, 'movies', genresString, sortBy, currentPage),
-    keepPreviousData: true,
-    onError: () => {
-      setLoading(false);
-    },
-  });
-
   useEffect(() => {
-    data && setTotalPages(data.total_pages > 500 ? 500 : data.total_pages);
-  }, [data]);
+    const getMovies = async () => {
+      setIsLoading(true);
+      setIsError(false);
+      try {
+        const result = await fetchDiscovery(api, 'movies', genresString, sortBy, currentPage);
+        setData(result);
+        setTotalPages(result.total_pages > 500 ? 500 : result.total_pages);
+      } catch (error) {
+        setIsError(true);
+        console.error('Error fetching movies:', error);
+      } finally {
+        setIsLoading(false);
+        setLoading(false);
+      }
+    };
+
+    getMovies();
+  }, [api, genresString, sortBy, currentPage, setLoading]);
 
   useEffect(() => {
     document.title = 'Discover movies';
@@ -63,9 +72,11 @@ const DiscoverMovieSlug = () => {
       <Accordion title={<div className='gap-2'><FontAwesomeIcon icon={faFilter} /> Filter </div>}>
         <Selector items={movieGenres} selectedGenres={selectedGenres} setSelectedGenres={setSelectedGenres} />
       </Accordion>
-      {isLoading || isFetching ?
+      {isLoading ? (
         selectedGenres && <LoadingDiscover />
-        :
+      ) : isError ? (
+        <p>Error loading movies</p>
+      ) : (
         <div className='flex flex-col items-center gap-4'>
           <div className='flex flex-wrap justify-center gap-3 w-full h-full'>
             {data?.results?.map((movie, index) => (
@@ -76,7 +87,7 @@ const DiscoverMovieSlug = () => {
             <Pagination currentPage={currentPage} totalPages={totalPages} onPageChange={onPageChange} />
           }
         </div>
-      }
+      )}
     </div>
   );
 };

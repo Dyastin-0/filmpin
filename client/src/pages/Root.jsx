@@ -1,6 +1,5 @@
 import { useEffect, useState } from 'react';
 import { AnimatePresence, motion } from 'framer-motion';
-import { useQuery } from '@tanstack/react-query';
 import axios from 'axios';
 
 const fetchBackdrops = async () => {
@@ -8,20 +7,33 @@ const fetchBackdrops = async () => {
     const response = await axios.get(`${import.meta.env.VITE_BASE_API_URL}/public/backdrops?category=movie&list=top_rated&page=1`);
     return response.data;
   } catch (error) {
-    throw new Error('Failed to fetch backdrops');
+    console.error('Failed to fetch backdrops:', error);
+    return []; 
   }
 };
 
 const Root = () => {
   const [backdropIndex, setBackdropIndex] = useState(0);
-
-  const { data: backdrops } = useQuery({
-    queryKey: ['backdrops', 'movies', 'top_rated'],
-    queryFn: fetchBackdrops,
-  });
+  const [backdrops, setBackdrops] = useState([]);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    if (backdrops) {
+    const loadBackdrops = async () => {
+      try {
+        const fetchedBackdrops = await fetchBackdrops();
+        setBackdrops(fetchedBackdrops);
+        setLoading(false);
+      } catch (error) {
+        console.error('Error loading backdrops:', error);
+        setLoading(false);
+      }
+    };
+
+    loadBackdrops();
+  }, []);
+
+  useEffect(() => {
+    if (backdrops.length > 0) {
       const intervalId = setInterval(() => {
         setBackdropIndex((prevIndex) => (prevIndex + 1) % backdrops.length);
       }, 3000);
@@ -34,7 +46,7 @@ const Root = () => {
     <div
       className='relative flex flex-col p-4 justify-center items-center h-full w-full text-primary bg-primary gap-4 rounded-lg overflow-hidden'
     >
-      {backdrops && (
+      {!loading && backdrops.length > 0 && (
         <AnimatePresence>
           <motion.img
             key={backdrops[backdropIndex].backdrop_path}
