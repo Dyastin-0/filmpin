@@ -82,17 +82,18 @@ const MovieSlug = () => {
 				<MovieSlugLoader />
 			) : (
 				<>
-					<div className="w-full h-[300px] rounded-lg overflow-hidden">
+					<div className="relative w-full h-[400px] rounded-md overflow-hidden">
+						<div className="absolute w-full h-full bg-gradient-to-b from-transparent to-primary"></div>
 						<img
 							loading="lazy"
-							className="w-full h-full object-cover"
+							className="w-full h-full object-cover rounded-md"
 							src={`https://image.tmdb.org/t/p/original/${movie?.backdrop_path}`}
 							alt={`${movie?.title} backdrop`}
 						/>
 					</div>
 					<motion.div
 						initial={{ y: -120 }}
-						className="flex md:flex-row flex-col bg-accent p-4 rounded-md max-w-full w-[calc(100%-2rem)] gap-4 shadow-sm"
+						className="flex md:flex-row flex-col p-4 rounded-md max-w-full w-[calc(100%-2rem)] gap-4"
 					>
 						<div className="flex flex-col w-fit self-center gap-3">
 							<img
@@ -144,7 +145,7 @@ const MovieSlug = () => {
 			)}
 			<motion.div
 				initial={{ marginTop: -120 }}
-				className="flex flex-col bg-accent rounded-lg gap-4 p-4 w-[calc(100%-2rem)] overflow-hidden"
+				className="flex flex-col rounded-lg gap-4 p-4 w-[calc(100%-2rem)] overflow-hidden"
 			>
 				<h1 className="text-primary-foreground text-sm font-semibold">Credits</h1>
 				<h1 className="text-primary-foreground text-xs font-semibold">Director</h1>
@@ -174,7 +175,7 @@ const MovieSlug = () => {
 				<CastSection title="Full cast" casts={credits?.cast} />
 				<CrewSection title="Full crew" crews={credits?.crew} />
 			</motion.div>
-			<div className="flex flex-col bg-accent rounded-lg gap-4 p-4 items-center w-[calc(100%-2rem)]">
+			<div className="flex flex-col rounded-lg gap-4 p-4 items-center w-[calc(100%-2rem)]">
 				{similarMovies ? (
 					<MovieSection
 						title="Recommendations"
@@ -184,7 +185,7 @@ const MovieSlug = () => {
 					<LoadingMovieSection title="Recommendations" />
 				)}
 			</div>
-			<div className="flex flex-col bg-accent rounded-lg gap-4 p-4 items-center w-[calc(100%-2rem)]">
+			<div className="flex flex-col rounded-lg gap-4 p-4 items-center w-[calc(100%-2rem)]">
 				<ClipSection
 					title={'Videos'}
 					keys={videos?.map((video) => ({

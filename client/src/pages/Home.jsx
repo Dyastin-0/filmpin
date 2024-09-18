@@ -19,45 +19,32 @@ const Home = () => {
 
   const [topMovies, setTopMovies] = useState([]);
   const [popularMovies, setPopularMovies] = useState([]);
-  const [upcomingMovies, setUpcomingMovies] = useState([]);
-  const [nowPlayingMovies, setNowPlayingMovies] = useState([]);
   const [topTvShows, setTopTvShows] = useState([]);
 
   const [isLoadingTopMovies, setIsLoadingTopMovies] = useState(true);
   const [isLoadingPopularMovies, setIsLoadingPopularMovies] = useState(true);
-  const [isLoadingUpcomingMovies, setIsLoadingUpcomingMovies] = useState(true);
-  const [isLoadingNowPlayingMovies, setIsLoadingNowPlayingMovies] = useState(true);
   const [isLoadingTopTvShows, setIsLoadingTopTvShows] = useState(true);
 
   useEffect(() => {
     const fetchData = async () => {
       setIsLoadingTopMovies(true);
       setIsLoadingPopularMovies(true);
-      setIsLoadingUpcomingMovies(true);
-      setIsLoadingNowPlayingMovies(true);
       setIsLoadingTopTvShows(true);
 
       try {
-        const [topMoviesData, popularMoviesData, upcomingMoviesData, nowPlayingMoviesData, topTvShowsData] = await Promise.all([
+        const [topMoviesData, popularMoviesData, topTvShowsData] = await Promise.all([
           fetchCategory(api, 'movies', 'top_rated'),
           fetchCategory(api, 'movies', 'popular'),
-          fetchCategory(api, 'movies', 'upcoming'),
-          fetchCategory(api, 'movies', 'now_playing'),
           fetchCategory(api, 'tvshows', 'top_rated'),
         ]);
-
         setTopMovies(topMoviesData);
         setPopularMovies(popularMoviesData);
-        setUpcomingMovies(upcomingMoviesData);
-        setNowPlayingMovies(nowPlayingMoviesData);
         setTopTvShows(topTvShowsData);
       } catch (error) {
         console.error('Error fetching data:', error);
       } finally {
         setIsLoadingTopMovies(false);
         setIsLoadingPopularMovies(false);
-        setIsLoadingUpcomingMovies(false);
-        setIsLoadingNowPlayingMovies(false);
         setIsLoadingTopTvShows(false);
       }
     };
@@ -67,13 +54,10 @@ const Home = () => {
 
   useEffect(() => {
     setLoading(
-      isLoadingNowPlayingMovies ||
       isLoadingPopularMovies ||
-      isLoadingTopMovies ||
-      isLoadingTopTvShows ||
-      isLoadingUpcomingMovies
+      isLoadingTopMovies
     );
-  }, [isLoadingNowPlayingMovies, isLoadingPopularMovies, isLoadingTopMovies, isLoadingTopTvShows, isLoadingUpcomingMovies, setLoading]);
+  }, [isLoadingPopularMovies, isLoadingTopMovies, setLoading]);
 
   return (
     <div className="flex flex-col bg-primary rounded-lg gap-4 p-4 justify-center items-center h-full w-full">
@@ -90,11 +74,9 @@ const Home = () => {
       ) : (
         <motion.div className='w-full h-[400px] rounded-md overflow-hidden' variants={blinkVariants} animate='blink'></motion.div>
       )}
-      {!isLoadingUpcomingMovies ? <TrailerSection title="Latest trailers" movies={upcomingMovies} /> : <LoadingTrailerSection title="Latest trailers" />}
-      {!isLoadingNowPlayingMovies ? <MovieSection title="Now playing" movies={nowPlayingMovies} /> : <LoadingMovieSection title="Now playing" />}
-      {!isLoadingTopMovies ? <MovieSection title="Top rated" movies={topMovies} /> : <LoadingMovieSection title="Top rated" />}
-      {!isLoadingPopularMovies ? <MovieSection title="Popular" movies={popularMovies} /> : <LoadingMovieSection title="Popular" />}
-      {!isLoadingUpcomingMovies ? <MovieSection title="Upcoming" movies={upcomingMovies} /> : <LoadingMovieSection title="Upcoming" />}
+      {!isLoadingPopularMovies ? <MovieSection title="Popular movies" movies={popularMovies} /> : <LoadingMovieSection title="Popular movies" />}
+      {!isLoadingPopularMovies ? <TrailerSection title="Trailers from popular movies" movies={popularMovies} /> : <LoadingTrailerSection title="Trailers from popular movies" />}
+      {!isLoadingTopMovies ? <MovieSection title="Top rated movies" movies={topMovies} /> : <LoadingMovieSection title="Top rated" />}
       {!isLoadingTopTvShows ? <TvShowSection title="Top rated TV shows" shows={topTvShows} /> : <LoadingMovieSection title="Top rated TV shows" />}
     </div>
   );

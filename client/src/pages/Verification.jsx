@@ -30,7 +30,7 @@ const Verification = () => {
 	return (
 		<div
 			className='flex flex-col p-4 justify-center items-center h-full w-full
-      text-primary-foreground bg-primary rounded-xl'
+      text-primary-foreground border border-secondary-accent rounded-md'
 		>
 			<div
 				className='flex flex-col w-[250px] max-w-full p-4 gap-2 text-xs text-primary-foreground

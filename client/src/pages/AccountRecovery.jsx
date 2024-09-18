@@ -71,7 +71,7 @@ const AccountRecovery = () => {
 	return (
 		<div className='flex flex-col p-4 justify-center items-center h-full w-full text-primary-foreground bg-primary rounded-xl'>
 			<form
-				className='flex flex-col w-[250px] max-w-full p-4 text-xs text-primary-foreground bg-accent drop-shadow-sm rounded-md'
+				className='flex flex-col w-[250px] max-w-full p-4 text-xs text-primary-foreground border border-secondary-accent rounded-md'
 				onSubmit={submit}
 			>
 				<h2 className='w-full text-center pb-4 text-lg font-bold'>Account Recovery</h2>

@@ -1,8 +1,8 @@
-import { motion } from 'framer-motion';
 import { useEffect, useState } from 'react';
 import { TrailerImageDummy, TrailerTitleDummy } from './loaders/TrailerLoaders';
 import useAxios from '../hooks/useAxios';
 import Clip from './Clip';
+import { fetchVideos } from '../helpers/api';
 
 const MovieTrailer = ({ id, title }) => {
 	const api = useAxios();
@@ -11,9 +11,9 @@ const MovieTrailer = ({ id, title }) => {
 	const [imageLoaded, setImageLoaded] = useState(false);
 
 
-	const getVideos = async (id) => {
+	const getVideos = async (api, target, queryParam, id) => {
 		try {
-			const videos = await api.get(`/movies/videos?movie_id=${id}`);
+			const videos = await api.get(`/${target}/videos?${queryParam}=${id}`);
 			return videos.data;
 		} catch (error) {
 			console.error(`Failed to get videos for movie with id '${id}'`, error);
@@ -31,7 +31,7 @@ const MovieTrailer = ({ id, title }) => {
 	}, [trailerYoutubeKey]);
 
 	useEffect(() => {
-		getVideos(id).then(videos => setVideos(videos.results));
+		fetchVideos(api, 'movies', 'movie_id', id).then(videos => setVideos(videos));
 	}, []);
 
 	useEffect(() => {
@@ -39,10 +39,7 @@ const MovieTrailer = ({ id, title }) => {
 	}, [videos]);
 
 	return (
-		<motion.div className='flex flex-col rounded-md drop-shadow-sm gap-1 p-3 w-[270px] h-fit
-			text-primary-foreground border border-secondary-accent
-			hover:scale-95 duration-300'
-		>
+		<div>
 			{
 				imageLoaded ?
 					<Clip title={title} trailerKey={trailerYoutubeKey} />
@@ -51,7 +48,7 @@ const MovieTrailer = ({ id, title }) => {
 						<TrailerTitleDummy />
 					</div>
 			}
-		</motion.div>
+		</div>
 	)
 }
 

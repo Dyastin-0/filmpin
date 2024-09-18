@@ -2,13 +2,13 @@ import Button from '../components/ui/Button';
 import { useNavigate } from 'react-router-dom';
 import { useEffect, useState } from 'react';
 import { AnimatePresence, motion } from 'framer-motion';
-import { fetchMovies, fetchShows } from '../helpers/api'; // Import existing fetch functions
-import { useLoading } from '../components/hooks/useLoading'; // Keep this if needed, or remove if unused
+import { fetchMovies, fetchShows } from '../helpers/api';
+import { useLoading } from '../components/hooks/useLoading';
 import useAxios from '../hooks/useAxios';
 
 const Discover = () => {
-	const api = useAxios(); // Assuming useAxios is used within fetch functions
-	const { setLoading } = useLoading(); // Keep this if needed, or remove if unused
+	const api = useAxios();
+	const { setLoading } = useLoading();
 	const navigate = useNavigate();
 	const [imageIndex, setImageIndex] = useState(0);
 	const [isMovieHovered, setIsMovieHovered] = useState(true);
@@ -48,7 +48,7 @@ const Discover = () => {
 	}, [api]);
 
 	useEffect(() => {
-		setLoading(isMoviesLoading || isShowsLoading); // Optional: only if you want to use this
+		setLoading(isMoviesLoading || isShowsLoading);
 	}, [isMoviesLoading, isShowsLoading, setLoading]);
 
 	useEffect(() => {

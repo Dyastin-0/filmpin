@@ -20,7 +20,7 @@ const ListSlug = () => {
   const api = useAxios();
   const [searchParams] = useSearchParams();
   const { toastInfo } = useToast();
-  
+
   const listId = searchParams.get('list_id');
   const [listData, setListData] = useState(null);
   const [ownerData, setOwnerData] = useState(null);
@@ -93,6 +93,7 @@ const ListSlug = () => {
   return (
     <div className='relative flex flex-col items-center p-4 gap-4 w-full h-full bg-primary rounded-md'>
       <div className='relative flex justify-center items-center w-full max-h-[400px] rounded-md'>
+        <div className="absolute w-full h-full bg-gradient-to-b from-transparent to-primary"></div>
         {isLoading ? <ListBackdropDummy /> :
           <img
             loading='lazy'
@@ -104,14 +105,14 @@ const ListSlug = () => {
       </div>
       <motion.div
         initial={{ y: -120 }}
-        className='relative flex flex-col gap-4 w-[calc(100%-2rem)] p-4 bg-accent rounded-md'
+        className='relative flex flex-col gap-4 w-[calc(100%-2rem)] p-4 rounded-md'
       >
         {isLoading ? <ListTitleDummy /> :
           <div className='flex flex-col gap-4 w-full'>
             <h1 className='text-sm text-primary-foreground font-semibold'>{listData?.name}</h1>
             <p className='text-xs text-primary-foreground'>{listData?.description}</p>
             <div className='flex gap-1'>
-              <h1 className='text-xs text-primary-foreground'>{`List of ${listTypes[listData?.type]} created by`}</h1>
+              <h1 className='text-xs text-primary-foreground'>{`List of ${listTypes[listData?.type]} by`}</h1>
               <Link className='w-fit outline-none text-primary-foreground text-xs transition-colors duration-300 underline hover:text-primary-highlight focus:text-primary-highlight'
                 to={`/${ownerData?.username}`}
               >
@@ -120,15 +121,14 @@ const ListSlug = () => {
             </div>
           </div>
         }
-        <Button variant='default_rounded' icon={<FontAwesomeIcon icon={faEllipsisV} />} className='absolute w-fit top-4 right-4' />
       </motion.div>
       <motion.div
         initial={{ marginTop: -120 }}
-        className='relative flex flex-col items-center gap-4 w-[calc(100%-2rem)] p-4 bg-accent rounded-md overflow-hidden'
+        className='relative flex flex-col items-center gap-4 w-[calc(100%-2rem)] p-4 rounded-md overflow-hidden'
       >
         {isLoading ? <ListLoader /> :
           <div className='flex flex-wrap justify-center gap-4'>
-            {listTypes[listData?.type] === 'Movies' ? 
+            {listTypes[listData?.type] === 'Movies' ?
               listItems.map((item, index) => <Movie key={index} info={item} />)
               : listItems.map((item, index) => <TvShow key={index} info={item} />)
             }

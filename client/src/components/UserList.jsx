@@ -12,7 +12,8 @@ const UserList = ({ list }) => {
 	return (
 		<div className='flex flex-col rounded-lg drop-shadow-sm gap-4 p-4 max-w-[200px] h-fit
 			text-primary-foreground border border-secondary-accent
-			hover:cursor-pointer'
+			transition-all duration-300
+			hover:cursor-pointer hover:scale-95'
 			onClick={() => handleClick(list)}
 		>
 			<h1 className='text-xs text-center text-primary-foreground font-semibold line-clamp-1'>{list?.name}</h1>

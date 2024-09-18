@@ -49,8 +49,8 @@ const TvShowSeasonSlug = () => {
 	}, [api, id, seasonNumber]);
 
 	useEffect(() => {
-			document.title = details?.name || 'TV Show Season';
-			window.scrollTo({ top: 0, left: 0, behavior: 'smooth' });
+		document.title = details?.name || 'TV Show Season';
+		window.scrollTo({ top: 0, left: 0, behavior: 'smooth' });
 	}, [details]);
 
 	return (
@@ -60,7 +60,8 @@ const TvShowSeasonSlug = () => {
 			) : (
 				details && (
 					<>
-						<div className='w-full h-[300px] rounded-lg overflow-hidden'>
+						<div className="relative w-full h-[400px] rounded-md overflow-hidden">
+							<div className="absolute w-full h-full bg-gradient-to-b from-transparent to-primary"></div>
 							<img
 								loading='lazy'
 								className='w-full h-full object-cover'
@@ -70,7 +71,7 @@ const TvShowSeasonSlug = () => {
 						</div>
 						<motion.div
 							initial={{ y: -120 }}
-							className='flex md:flex-row flex-col bg-accent p-4 rounded-md max-w-full w-[calc(100%-2rem)] gap-4 shadow-sm'
+							className='flex md:flex-row flex-col p-4 rounded-md max-w-full w-[calc(100%-2rem)] gap-4'
 						>
 							<div className='flex flex-col w-fit self-center gap-3'>
 								<img
@@ -103,7 +104,7 @@ const TvShowSeasonSlug = () => {
 			)}
 			<motion.div
 				initial={{ marginTop: -120 }}
-				className='flex md:flex-row flex-col bg-accent p-4 rounded-md max-w-full w-[calc(100%-2rem)] gap-4 shadow-sm'
+				className='flex md:flex-row flex-col p-4 rounded-md max-w-full w-[calc(100%-2rem)] gap-4'
 			>
 				{details?.episodes ? (
 					<EpisodeSection
@@ -118,7 +119,7 @@ const TvShowSeasonSlug = () => {
 				)}
 			</motion.div>
 			{videos?.length > 0 &&
-				<div className='flex flex-col bg-accent p-4 rounded-md max-w-full w-[calc(100%-2rem)] gap-4 shadow-sm'>
+				<div className='flex flex-col p-4 rounded-md max-w-full w-[calc(100%-2rem)] gap-4'>
 					<ClipSection keys={videos.map((video) => ({
 						name: video.name,
 						value: video.key

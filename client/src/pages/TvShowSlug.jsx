@@ -25,7 +25,7 @@ const TvShowSlug = () => {
   const [videos, setVideos] = useState([]);
   const [isShowLoading, setIsShowLoading] = useState(true);
   const [isSimilarShowsLoading, setIsSimilarShowsLoading] = useState(true);
-  
+
   const id = searchParams.get('id');
 
   useEffect(() => {
@@ -55,8 +55,8 @@ const TvShowSlug = () => {
   }, [api, id]);
 
   useEffect(() => {
-      document.title = details?.name || 'TV Show';
-      window.scrollTo({ top: 0, left: 0, behavior: 'smooth' });
+    document.title = details?.name || 'TV Show';
+    window.scrollTo({ top: 0, left: 0, behavior: 'smooth' });
   }, [details]);
 
   return (
@@ -66,7 +66,8 @@ const TvShowSlug = () => {
       ) : (
         details && (
           <>
-            <div className='w-full h-[300px] rounded-lg overflow-hidden'>
+            <div className="relative w-full h-[400px] rounded-md overflow-hidden">
+              <div className="absolute w-full h-full bg-gradient-to-b from-transparent to-primary"></div>
               <img
                 loading='lazy'
                 className='w-full h-full object-cover'
@@ -76,7 +77,7 @@ const TvShowSlug = () => {
             </div>
             <motion.div
               initial={{ y: -120 }}
-              className='flex md:flex-row flex-col bg-accent p-4 rounded-md max-w-full w-[calc(100%-2rem)] gap-4 shadow-sm'
+              className='flex md:flex-row flex-col p-4 rounded-md max-w-full w-[calc(100%-2rem)] gap-4'
             >
               <div className='flex flex-col w-fit self-center gap-3'>
                 <img
@@ -118,16 +119,21 @@ const TvShowSlug = () => {
                 <p className='text-primary-foreground text-xs'>
                   {`${details.number_of_seasons} seasons, ${details.number_of_episodes} episodes`}
                 </p>
-                <Button text='Add to list' icon={<FontAwesomeIcon icon={faPlus} />} className='w-fit' onClick={() => setModal(<AddToList selected={details} type='TV Shows' />)} />
+                <Button text='Add to list' icon={<FontAwesomeIcon icon={faPlus} />} className='w-fit'
+                  onClick={() => {
+                    setModal(<AddToList selected={details} type='TV Shows' />);
+                    setOpen(true);
+                  }
+                  } />
               </div>
             </motion.div>
           </>
         )
       )}
-      <motion.div className='flex flex-col bg-accent rounded-lg gap-4 p-4 items-center w-[calc(100%-2rem)]' initial={{ marginTop: -120 }}>
+      <motion.div className='flex flex-col rounded-lg gap-4 p-4 items-center w-[calc(100%-2rem)]' initial={{ marginTop: -120 }}>
         {isShowLoading ? <LoadingMovieSection title='Seasons' /> : <SeasonSection seasons={details?.seasons} title={details.name} showId={details.id} backdropPath={details.backdrop_path} />}
       </motion.div>
-      <motion.div className='flex flex-col bg-accent rounded-lg gap-4 p-4 items-center w-[calc(100%-2rem)]'>
+      <motion.div className='flex flex-col rounded-lg gap-4 p-4 items-center w-[calc(100%-2rem)]'>
         {isSimilarShowsLoading ? (
           <LoadingMovieSection title='Recommendations' />
         ) : (
@@ -135,7 +141,7 @@ const TvShowSlug = () => {
         )}
       </motion.div>
       {videos.length > 0 &&
-        <div className='flex flex-col bg-accent p-4 rounded-md max-w-full w-[calc(100%-2rem)] gap-4 shadow-sm'>
+        <div className='flex flex-col p-4 rounded-md max-w-full w-[calc(100%-2rem)] gap-4'>
           <ClipSection keys={videos.map((video) => ({
             name: video.name,
             value: video.key

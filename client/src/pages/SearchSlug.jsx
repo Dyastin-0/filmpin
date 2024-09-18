@@ -20,13 +20,11 @@ const DiscoverMovieSlug = () => {
   const [isError, setIsError] = useState(false);
 
   useEffect(() => {
-    // Update query and currentPage based on searchParams
     setQuery(searchParams.get('query') || '');
     setCurrentPage(parseInt(searchParams.get('page')) || 1);
   }, [searchParams]);
 
   useEffect(() => {
-    // Fetch data when query or currentPage changes
     setIsLoading(true);
     setIsError(false);
     setLoading(true);

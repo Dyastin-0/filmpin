@@ -33,7 +33,7 @@ const Accordion = ({ title, children }) => {
         animate={{ height: isOpen ? 'auto' : 0 }}
         className='overflow-hidden'
       >
-        <div className='px-4 py-2'>
+        <div className='py-2'>
           {children}
         </div>
       </motion.div>

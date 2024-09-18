@@ -64,7 +64,7 @@ const Signup = () => {
       setCredentials({ username: '', email: '', password: '' });
       setConfirmedPassword('');
       toastSuccess('Sign up success! Check your email for the verification link.');
-      navigate('/sign-in', {state: { from: '/sign-up' }});
+      navigate('/sign-in', { state: { from: '/sign-up' } });
     } catch (error) {
       toastError('Email already used.');
     } finally {
@@ -75,7 +75,7 @@ const Signup = () => {
   return (
     <div className='flex flex-col p-4 justify-center items-center h-full w-full text-primary bg-primary rounded-lg'>
       <form
-        className='flex flex-col w-[250px] max-w-full p-4 text-xs text-primary-foreground bg-accent drop-shadow-sm rounded-md'
+        className='flex flex-col w-[250px] max-w-full p-4 text-xs text-primary-foreground border border-secondary-accent rounded-md'
         onSubmit={submit}
       >
         <h2 className='w-full text-center pb-4 text-lg font-bold'>Create your account</h2>

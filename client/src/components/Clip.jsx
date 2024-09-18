@@ -36,7 +36,7 @@ const Clip = ({ title, trailerKey }) => {
 	};
 
 	return (
-		<div className='h-fit max-w-[270px] hover:cursor-pointer group' onClick={handleClick}>
+		<div className='h-fit max-w-[270px] hover:cursor-pointer group border border-secondary-accent p-4 rounded-md' onClick={handleClick}>
 			<div className='relative'>
 				<img
 					loading='lazy'

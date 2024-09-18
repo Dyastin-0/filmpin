@@ -37,11 +37,11 @@ const Recovery = () => {
 	return (
 		<div
 			className='flex flex-col p-4 justify-center items-center h-full w-full
-      text-primary-foreground bg-primary rounded-xl'
+      text-primary-foreground bg-primary rounded-md'
 		>
 			<form
 				className='flex flex-col w-[250px] max-w-full p-4 gap-4 text-xs text-primary-foreground
-        bg-accent drop-shadow-sm rounded-md'
+        border border-secondary-accent rounded-md'
 				onSubmit={submit}
 			>
 				<h2 className='w-full text-center text-lg font-bold'>

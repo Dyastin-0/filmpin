@@ -55,8 +55,7 @@ const Signin = () => {
   return (
     <div className='flex flex-col p-4 justify-center items-center h-full w-full text-primary bg-primary rounded-lg'>
       <form
-        className='flex flex-col w-[250px] max-w-full p-4 text-xs text-primary-foreground
-        bg-accent drop-shadow-sm rounded-md z-10'
+        className='flex flex-col w-[250px] max-w-full p-4 text-xs text-primary-foreground rounded-md border border-secondary-accent z-10'
         onSubmit={submit}
       >
         <h2 className='w-full text-center pb-4 text-lg font-bold'>

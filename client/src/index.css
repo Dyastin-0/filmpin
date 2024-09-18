@@ -37,11 +37,11 @@
 :root.light {
   --bg-primary: #F0F0F0;
   --bg-secondary: #E4E6EB;
-  --accent-secondary: #F5F5F5;
-  --accent: #FFFFFF;
+  --accent-secondary: #E4E6EB;
+  --accent: #E4E6EB;
   --text-highlight: #ffffff;
   --text-secondary: #888888;
-  --text-primary: #686d76;
+  --text-primary: #2f3338;
 }
 
 @media (prefers-color-scheme: dark) {

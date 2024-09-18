@@ -55,8 +55,8 @@ const TvShowEpisodeSlug = () => {
 	}, [api, id, seasonNumber, episodeNumber]);
 
 	useEffect(() => {
-			document.title = details?.name || 'TV Show Episode';
-			window.scrollTo({ top: 0, left: 0, behavior: 'smooth' });
+		document.title = details?.name || 'TV Show Episode';
+		window.scrollTo({ top: 0, left: 0, behavior: 'smooth' });
 	}, [details]);
 
 	const writers = details?.crew.filter(crew => crew.job === 'Writer') || [];
@@ -70,7 +70,8 @@ const TvShowEpisodeSlug = () => {
 				<div>Error loading data.</div>
 			) : details ? (
 				<>
-					<div className='w-full h-[400px] rounded-lg overflow-hidden'>
+					<div className="relative w-full h-[400px] rounded-md overflow-hidden">
+						<div className="absolute w-full h-full bg-gradient-to-b from-transparent to-primary"></div>
 						<img
 							loading='lazy'
 							className='w-full h-full object-cover'
@@ -80,7 +81,7 @@ const TvShowEpisodeSlug = () => {
 					</div>
 					<motion.div
 						initial={{ y: -120 }}
-						className='flex md:flex-row flex-col bg-accent p-4 rounded-md max-w-full w-[calc(100%-2rem)] gap-4 shadow-sm'
+						className='flex md:flex-row flex-col p-4 rounded-md max-w-full w-[calc(100%-2rem)] gap-4'
 					>
 						<div className='flex w-fit self-center flex-col gap-3'>
 							<img
@@ -107,7 +108,7 @@ const TvShowEpisodeSlug = () => {
 					</motion.div>
 					<motion.div
 						initial={{ marginTop: -120 }}
-						className='flex flex-col bg-accent p-4 rounded-md max-w-full w-[calc(100%-2rem)] gap-4 shadow-sm'
+						className='flex flex-col p-4 rounded-md max-w-full w-[calc(100%-2rem)] gap-4'
 					>
 						<h1 className='text-primary-foreground text-md font-semibold'>Credits</h1>
 						<h1 className='text-primary-foreground text-sm font-semibold'>Director</h1>
@@ -134,7 +135,7 @@ const TvShowEpisodeSlug = () => {
 						<CrewSection title='Full crew' crews={details?.crew} />
 					</motion.div>
 					{videos.length > 0 &&
-						<div className='flex flex-col bg-accent p-4 rounded-md max-w-full w-[calc(100%-2rem)] gap-4 shadow-sm'>
+						<div className='flex flex-col p-4 rounded-md max-w-full w-[calc(100%-2rem)] gap-4'>
 							<ClipSection keys={videos.map((video) => ({
 								name: video.name,
 								value: video.key
