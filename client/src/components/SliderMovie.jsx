@@ -75,7 +75,7 @@ const SliderMovie = ({ movie }) => {
 							<button className='outline-none' onClick={handleClick}>
 								<FontAwesomeIcon size='sm' icon={faInfoCircle} />
 							</button>
-							<h1 className='text-lg font-bold'>{movie.title}</h1>
+							<h1 className='text-sm font-bold'>{movie.title}</h1>
 						</> :
 						<>
 							<motion.div className='rounded-full w-[14px] h-[14px] bg-secondary' variants={blinkVariants} animate='blink' />

@@ -39,7 +39,7 @@ const updateAndRestartServices = (commits) => {
 
 app.get('/', (_, res) => res.sendStatus(200));
 
-app.post('/githook', verifyGitHubSignature, (req, res) => {
+app.post('/githook/', verifyGitHubSignature, (req, res) => {
   try {
     const payload = JSON.parse(req.body);
     const commits = payload.commits || [];

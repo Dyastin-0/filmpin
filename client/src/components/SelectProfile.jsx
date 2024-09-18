@@ -83,7 +83,7 @@ const SelectProfile = () => {
 				<img
 					src={preview}
 					alt='Preview'
-					className='w-[200px] h-[200px] rounded-full'
+					className='w-[200px] h-[200px] rounded-full object-cover aspect-square'
 				/> :
 				<div className='flex justify-center items-center text-[150px] w-[200px] h-[200px] rounded-full bg-secondary'>
 					<FontAwesomeIcon icon={faUser} />
