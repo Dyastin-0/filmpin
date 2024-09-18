@@ -5,31 +5,21 @@ import { CircularProgress, CircularProgressLabel } from '@chakra-ui/react';
 import { ImageDummy, TitleDummy, YearDummy, GenresDummy } from './loaders/MovieLoaders';
 import useAxios from '../hooks/useAxios';
 import { fetchShow } from '../helpers/api';
+import useSWR from 'swr';
 
 const TvShow = ({ info }) => {
-	const api = useAxios();
+	const { api, isAxiosReady } = useAxios();
 	const navigate = useNavigate();
-	const [details, setDetails] = useState(null);
-	const [isLoading, setIsLoading] = useState(true);
-	const [isError, setIsError] = useState(false);
+	// const [details, setDetails] = useState(null);
+	// const [isLoading, setIsLoading] = useState(true);
+	// const [isError, setIsError] = useState(false);
 	const [imageLoaded, setImageLoaded] = useState(false);
 
-	useEffect(() => {
-		const getShowDetails = async () => {
-			try {
-				setIsLoading(true);
-				const data = await fetchShow(api, info.id);
-				setDetails(data);
-			} catch (error) {
-				setIsError(true);
-				console.error('Error fetching show details:', error);
-			} finally {
-				setIsLoading(false);
-			}
-		};
-
-		getShowDetails();
-	}, [api, info.id]);
+	const { data: details, isLoading, isError
+	} = useSWR(
+		isAxiosReady ? `/tvshows/details?show_id=${info.id}` : null,
+		() => fetchShow(api, info.id)
+	);
 
 	const handleImageLoad = () => {
 		const img = new Image();

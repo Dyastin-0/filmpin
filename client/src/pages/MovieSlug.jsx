@@ -17,68 +17,56 @@ import { ClipSection } from '../components/sections/ClipSection';
 import AddToList from '../components/AddToList';
 import useAxios from '../hooks/useAxios';
 import { fetchCredits, fetchDiscovery, fetchMovie, fetchVideos } from '../helpers/api';
+import useSWR from 'swr';
+import { useAuth } from '../hooks/useAuth';
 
 const MovieSlug = () => {
 	const [searchParams] = useSearchParams();
-	const api = useAxios();
+	const { api, isAxiosReady } = useAxios();
+	const { token } = useAuth();
 	const { setModal, setOpen } = useModal();
 	const [trailerYoutubeKey, setTrailerYoutubeKey] = useState(null);
-	const [movie, setMovie] = useState(null);
-	const [videos, setVideos] = useState(null);
-	const [credits, setCredits] = useState(null);
-	const [similarMovies, setSimilarMovies] = useState(null);
-	const [isLoading, setIsLoading] = useState(true);
-	const [isError, setIsError] = useState(false);
+	// const [movie, setMovie] = useState(null);
+	// const [videos, setVideos] = useState(null);
+	// const [credits, setCredits] = useState(null);
+	// const [similarMovies, setSimilarMovies] = useState(null);
+	// const [isLoading, setIsLoading] = useState(true);
+	// const [isError, setIsError] = useState(false);
 
 	const id = searchParams.get('id').split('_')[0];
 
-	useEffect(() => {
-		const loadData = async () => {
-			try {
-				const movieData = await fetchMovie(api, id);
-				setMovie(movieData);
+	const { data: details, isLoading: isDetailsLoading
+	} = useSWR(isAxiosReady ? `/movies/details?movie_id=${id}` : null,
+		() => fetchMovie(api, id)
+	);
 
-				const videosData = await fetchVideos(api, 'movies', 'movie_id', id);
-				setVideos(videosData);
+	const genres = details?.genres.map(genre => genre.name.toLowerCase()).join('_');
 
-				const creditsData = await fetchCredits(api, 'movies', id);
-				setCredits(creditsData);
+	const { data: similarMovies, isLoading: isDiscoverLoading
+	} = useSWR(
+		isAxiosReady && details ? `/movies/discover?genres=${genres}&sort_by=vote_count&page=1` : null,
+		() => fetchDiscovery(api, 'movies', genres)
+	);
+	const { data: videos, isLoading: isVideosLoading
+	} = useSWR(
+		isAxiosReady ? `/movies/videos?movie_id=${id}` : null,
+		() => fetchVideos(api, 'movies', 'movie_id', id)
+	);
 
-				const genres = movieData.genres.map(genre => genre.name.toLowerCase()).join('_');
-				const similarMoviesData = await fetchDiscovery(api, 'movies', genres, 'vote_count', 1);
-				setSimilarMovies(similarMoviesData);
-
-				const trailer = videosData.find(video => video.type === 'Trailer');
-				setTrailerYoutubeKey(trailer?.key);
-
-			} catch (error) {
-				setIsError(true);
-				console.error('Error fetching data:', error);
-			} finally {
-				setIsLoading(false);
-			}
-		};
-
-		loadData();
-	}, [id, api]);
-
-	const handleAddToList = () => {
-		setModal(<AddToList selected={movie} type="Movies" />);
-		setOpen(true);
-	};
+	const { data: credits, isLoading: isCreditsLoading
+	} = useSWR(
+		isAxiosReady ? `/movies/credits?movie_id=${id}` : null,
+		() => fetchCredits(api, 'movies', id)
+	);
 
 	useEffect(() => {
-		if (movie) {
-			document.title = movie.title;
-			window.scrollTo({ top: 0, left: 0, behavior: 'smooth' });
-		}
-	}, [movie]);
-
-	if (isError) return <div>Error loading data.</div>;
+		document.title = details?.title;
+		window.scrollTo({ top: 0, left: 0, behavior: 'smooth' });
+	}, [details]);
 
 	return (
 		<div className="flex flex-col items-center bg-primary rounded-lg gap-4 p-4 h-full w-full">
-			{isLoading ? (
+			{!details ? (
 				<MovieSlugLoader />
 			) : (
 				<>
@@ -87,8 +75,8 @@ const MovieSlug = () => {
 						<img
 							loading="lazy"
 							className="w-full h-full object-cover rounded-md"
-							src={`https://image.tmdb.org/t/p/original/${movie?.backdrop_path}`}
-							alt={`${movie?.title} backdrop`}
+							src={`https://image.tmdb.org/t/p/original/${details.backdrop_path}`}
+							alt={`${details.title} backdrop`}
 						/>
 					</div>
 					<motion.div
@@ -99,8 +87,8 @@ const MovieSlug = () => {
 							<img
 								loading="lazy"
 								className="rounded-lg min-w-[168px] h-[250px] self-center"
-								src={`https://image.tmdb.org/t/p/w200/${movie?.poster_path}`}
-								alt={`${movie?.title} poster`}
+								src={`https://image.tmdb.org/t/p/w200/${details.poster_path}`}
+								alt={`${details.title} poster`}
 							/>
 							<Button
 								text={
@@ -109,35 +97,38 @@ const MovieSlug = () => {
 									</p>
 								}
 								onClick={() => {
-									setModal(<Frame youtubeKey={trailerYoutubeKey} title={movie.title} />);
+									setModal(<Frame youtubeKey={trailerYoutubeKey} title={details.title} />);
 									setOpen(true);
 								}}
 							/>
 						</div>
 						<div className="flex flex-col gap-2 w-full">
-							<p className="text-primary-foreground text-xs">{movie?.tagline}</p>
-							<h1 className="text-primary-foreground text-4xl font-semibold">{movie?.title}</h1>
-							<p className="text-primary-foreground text-sm">{movie?.overview}</p>
-							<h4 className="text-primary-foreground text-xs">{movie?.release_date.split('-')[0]}</h4>
+							<p className="text-primary-foreground text-xs">{details.tagline}</p>
+							<h1 className="text-primary-foreground text-4xl font-semibold">{details?.title}</h1>
+							<p className="text-primary-foreground text-sm">{details.overview}</p>
+							<h4 className="text-primary-foreground text-xs">{details.release_date.split('-')[0]}</h4>
 							<div className="flex gap-1">
-								{movie?.genres.map((genre, index) => (
+								{details.genres.map((genre, index) => (
 									<Link
 										key={index}
 										to={`/discover/movies?genres=${genre.name.toLowerCase()}&sort_by=vote_count&page=1`}
 										className="underline outline-none underline-offset-2 text-primary-highlight text-xs"
 									>
-										{`${index === movie?.genres.length - 1 ? genre.name : `${genre.name},`}`}
+										{`${index === details?.genres.length - 1 ? genre.name : `${genre.name},`}`}
 									</Link>
 								))}
 							</div>
 							<p className="text-primary-foreground text-xs">
-								{`${Math.floor(movie?.runtime / 60)}h ${movie?.runtime % 60}m`}
+								{`${Math.floor(details.runtime / 60)}h ${details.runtime % 60}m`}
 							</p>
 							<Button
 								text="Add to list"
 								icon={<FontAwesomeIcon icon={faPlus} />}
 								className="w-fit"
-								onClick={handleAddToList}
+								onClick={() => {
+									setModal(<AddToList selected={details} type="Movies" />);
+									setOpen(true);
+								}}
 							/>
 						</div>
 					</motion.div>
@@ -179,7 +170,7 @@ const MovieSlug = () => {
 				{similarMovies ? (
 					<MovieSection
 						title="Recommendations"
-						movies={similarMovies.results.filter(similarMovie => similarMovie.title !== movie?.title)}
+						movies={similarMovies.results.filter(similarMovie => similarMovie.title !== details.title)}
 					/>
 				) : (
 					<LoadingMovieSection title="Recommendations" />

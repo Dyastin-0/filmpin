@@ -3,22 +3,18 @@ import { TrailerImageDummy, TrailerTitleDummy } from './loaders/TrailerLoaders';
 import useAxios from '../hooks/useAxios';
 import Clip from './Clip';
 import { fetchVideos } from '../helpers/api';
+import useSWR from 'swr';
 
 const MovieTrailer = ({ id, title }) => {
-	const api = useAxios();
+	const {api, isAxiosReady} = useAxios();
 	const [trailerYoutubeKey, setTrailerYoutubeKey] = useState(null);
-	const [videos, setVideos] = useState(null);
 	const [imageLoaded, setImageLoaded] = useState(false);
 
-
-	const getVideos = async (api, target, queryParam, id) => {
-		try {
-			const videos = await api.get(`/${target}/videos?${queryParam}=${id}`);
-			return videos.data;
-		} catch (error) {
-			console.error(`Failed to get videos for movie with id '${id}'`, error);
-		}
-	}
+	const { data: videos
+	} = useSWR(
+		isAxiosReady ? `/movies/videos?movie_id=${id}` : null,
+		() => fetchVideos(api, 'movies', 'movie_id', id)
+	);
 
 	useEffect(() => {
 		if (trailerYoutubeKey) {
@@ -29,10 +25,6 @@ const MovieTrailer = ({ id, title }) => {
 			}
 		}
 	}, [trailerYoutubeKey]);
-
-	useEffect(() => {
-		fetchVideos(api, 'movies', 'movie_id', id).then(videos => setVideos(videos));
-	}, []);
 
 	useEffect(() => {
 		videos && setTrailerYoutubeKey(videos.find(video => video.type === 'Trailer')?.key);

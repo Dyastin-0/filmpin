@@ -6,30 +6,20 @@ import { motion } from 'framer-motion';
 import { blinkVariants } from '../configs/motionConfig';
 import useAxios from '../hooks/useAxios';
 import { useAuth } from '../hooks/useAuth';
+import useSWR from 'swr';
+import { fetchMovie } from '../helpers/api';
 
 const SliderMovie = ({ movie }) => {
-	const { token } = useAuth();
-	const api = useAxios();
+	const { api, isAxiosReady } = useAxios();
 	const navigate = useNavigate();
-	const [details, setDetails] = useState(null);
 	const [backdropLoaded, setBackdropLoaded] = useState(false);
 	const [posterLoaded, setPosterLoaded] = useState(false);
 
-	const fetchDetails = async (id) => {
-		try {
-			const response = await api.get(`/movies/details?movie_id=${id}`);
-			return response.data;
-		} catch (error) {
-			console.error(`Failed to fetch details for ${id}`, error);
-			return null;
-		}
-	}
-
-	useEffect(() => {
-		if (token) {
-			fetchDetails(movie.id).then(response => setDetails(response));
-		}
-	}, [token]);
+	const { data: details
+	} = useSWR(
+		isAxiosReady ? `/movies/details?movie_id=${movie.id}` : null,
+		() => fetchMovie(api, movie.id)
+	);
 
 	useEffect(() => {
 		const backdrop = new Image();

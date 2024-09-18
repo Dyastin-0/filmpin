@@ -4,54 +4,34 @@ import { CircularProgress, CircularProgressLabel } from '@chakra-ui/react';
 import { ImageDummy, TitleDummy, YearDummy, GenresDummy } from './loaders/MovieLoaders';
 import useAxios from '../hooks/useAxios';
 import { fetchMovie } from '../helpers/api';
+import useSWR from 'swr';
 
 const Movie = ({ info }) => {
 	const navigate = useNavigate();
-	const api = useAxios();
-	const [details, setDetails] = useState(null);
-	const [isLoading, setIsLoading] = useState(true);
-	const [isError, setIsError] = useState(false);
+	const { api, isAxiosReady } = useAxios();
+
 	const [imageLoaded, setImageLoaded] = useState(false);
 
+	const { data: details, isError, isLoading
+	} = useSWR(
+		isAxiosReady ? `/movies/details?movie_id=${info.id}` : null,
+		() => fetchMovie(api, info.id)
+	);
+
 	useEffect(() => {
-		const getMovieDetails = async () => {
-			try {
-				setIsLoading(true);
-				const data = await fetchMovie(api, info.id);
-				setDetails(data);
-			} catch (error) {
-				setIsError(true);
-				console.error('Error fetching movie details:', error);
-			} finally {
-				setIsLoading(false);
-			}
-		};
-
-		getMovieDetails();
-	}, [api, info.id]);
-
-	const handleImageLoad = () => {
-		const img = new Image();
-		img.src = `https://image.tmdb.org/t/p/w500/${details?.poster_path}`;
-		img.onload = () => setImageLoaded(true);
-	};
-
-	if (details && !imageLoaded) {
-		handleImageLoad();
-	}
-
-	const handleClick = () => {
 		if (details) {
-			navigate(`/movies?id=${details.id}_${details.title}`);
+			const img = new Image();
+			img.src = `https://image.tmdb.org/t/p/w500/${details?.poster_path}`;
+			img.onload = () => setImageLoaded(true);
 		}
-	};
+	}, [details]);
 
 	return (
 		<div
 			className='flex flex-col rounded-lg drop-shadow-none gap-1 p-4 w-[200px] h-[370px]
         text-primary-foreground border border-secondary-accent
         hover:scale-95 hover:cursor-pointer duration-300'
-			onClick={handleClick}
+			onClick={() => navigate(`/movies?id=${details.id}_${details.title}`)}
 		>
 			{imageLoaded ? (
 				<img

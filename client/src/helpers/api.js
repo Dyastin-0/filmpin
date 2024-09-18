@@ -33,8 +33,8 @@ export const fetchDiscovery = async (api, target, genres, sortBy = 'vote_count',
 	return response.data;
 };
 
-export const fetchCategory = async (api, target, category) => {
-	const response = await api.get(`/${target}/list?category=${category}&page=1`);
+export const fetchCategory = async (api, target, category, page = '1') => {
+	const response = await api.get(`/${target}/list?category=${category}&page=${page}`);
 	return response.data.results;
 };
 

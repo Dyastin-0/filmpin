@@ -12,45 +12,37 @@ import { swiperAutoPlayConfig } from '../configs/swiperConfig';
 import SliderMovie from '../components/SliderMovie';
 import { fetchCategory } from '../helpers/api';
 import { blinkVariants } from '../configs/motionConfig';
+import useSWR from 'swr';
 
 const Home = () => {
-  const api = useAxios();
+  const { api, isAxiosReady } = useAxios();
   const { setLoading } = useLoading();
 
-  const [topMovies, setTopMovies] = useState([]);
-  const [popularMovies, setPopularMovies] = useState([]);
-  const [topTvShows, setTopTvShows] = useState([]);
+  // const [topMovies, setTopMovies] = useState([]);
+  // const [popularMovies, setPopularMovies] = useState([]);
+  // const [topTvShows, setTopTvShows] = useState([]);
 
-  const [isLoadingTopMovies, setIsLoadingTopMovies] = useState(true);
-  const [isLoadingPopularMovies, setIsLoadingPopularMovies] = useState(true);
-  const [isLoadingTopTvShows, setIsLoadingTopTvShows] = useState(true);
+  // const [isLoadingTopMovies, setIsLoadingTopMovies] = useState(true);
+  // const [isLoadingPopularMovies, setIsLoadingPopularMovies] = useState(true);
+  // const [isLoadingTopTvShows, setIsLoadingTopTvShows] = useState(true);
 
-  useEffect(() => {
-    const fetchData = async () => {
-      setIsLoadingTopMovies(true);
-      setIsLoadingPopularMovies(true);
-      setIsLoadingTopTvShows(true);
+  const { data: topMovies, isLoading: isLoadingTopMovies
+  } = useSWR(
+    isAxiosReady ? `/movies/list?category=top_rated&page=1` : null,
+    () => fetchCategory(api, 'movies', 'top_rated')
+  );
 
-      try {
-        const [topMoviesData, popularMoviesData, topTvShowsData] = await Promise.all([
-          fetchCategory(api, 'movies', 'top_rated'),
-          fetchCategory(api, 'movies', 'popular'),
-          fetchCategory(api, 'tvshows', 'top_rated'),
-        ]);
-        setTopMovies(topMoviesData);
-        setPopularMovies(popularMoviesData);
-        setTopTvShows(topTvShowsData);
-      } catch (error) {
-        console.error('Error fetching data:', error);
-      } finally {
-        setIsLoadingTopMovies(false);
-        setIsLoadingPopularMovies(false);
-        setIsLoadingTopTvShows(false);
-      }
-    };
+  const { data: popularMovies, isLoading: isLoadingPopularMovies
+  } = useSWR(
+    isAxiosReady ? `/movies/list?category=popular&page=1` : null,
+    () => fetchCategory(api, 'movies', 'popular')
+  );
 
-    fetchData();
-  }, [api]);
+  const { data: topTvShows, isLoading: isLoadingTopTvShows
+  } = useSWR(
+    isAxiosReady ? `/tvshows/list?category=top_rated&page=1` : null,
+    () => fetchCategory(api, 'tvshows', 'top_rated')
+  );
 
   useEffect(() => {
     setLoading(
@@ -64,7 +56,7 @@ const Home = () => {
       {!isLoadingTopMovies ? (
         <section className="w-full h-[400px] rounded-md ml-4 mr-4 mb-4 bg-transparent overflow-hidden">
           <Swiper {...swiperAutoPlayConfig}>
-            {topMovies.map((movie, index) => (
+            {topMovies?.map((movie, index) => (
               <SwiperSlide key={index}>
                 <SliderMovie movie={movie} />
               </SwiperSlide>

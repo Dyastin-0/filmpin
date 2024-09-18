@@ -1,42 +1,18 @@
 import { faPlay } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { useEffect, useState } from 'react';
 import Frame from './Frame';
 import { useModal } from './hooks/useModal';
-import { useSearchParams } from 'react-router-dom';
 
 const Clip = ({ title, trailerKey }) => {
 	const { setModal, setOpen } = useModal();
-	const [searchParams, setSearchParams] = useSearchParams();
-	const [isActive, setIsActive] = useState(false);
-
-	useEffect(() => {
-		const isOpen = searchParams.get(`${title}_open`) === 'true';
-		if (isOpen) {
-			setModal(<Frame youtubeKey={trailerKey} title={title} onClose={handleClose} />);
-			setOpen(true);
-			setIsActive(true);
-		} else if (isActive) {
-			handleClose();
-		}
-	}, [searchParams, title, trailerKey, isActive]);
-
-	const handleClose = () => {
-		searchParams.delete(`${title}_open`);
-		setSearchParams(searchParams);
-		setOpen(false);
-		setIsActive(false);
-	};
-
-	const handleClick = () => {
-		if (!isActive) {
-			searchParams.set(`${title}_open`, 'true');
-			setSearchParams(searchParams);
-		}
-	};
 
 	return (
-		<div className='h-fit max-w-[270px] hover:cursor-pointer group border border-secondary-accent p-4 rounded-md' onClick={handleClick}>
+		<div className='h-fit max-w-[270px] hover:cursor-pointer group border border-secondary-accent p-4 rounded-md'
+			onClick={() => {
+				setModal(<Frame youtubeKey={trailerKey} title={title} />);
+				setOpen(true);
+			}}
+		>
 			<div className='relative'>
 				<img
 					loading='lazy'
