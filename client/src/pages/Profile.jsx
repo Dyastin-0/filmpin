@@ -14,6 +14,7 @@ import ListSection from '../components/sections/ListSection';
 import { Dropdown, DropdownItem } from '../components/ui/Dropdown';
 import { fetchUserData } from '../helpers/api';
 import useSWR from 'swr';
+import { Helmet } from 'react-helmet';
 
 const Profile = () => {
   const { api, isAxiosReady } = useAxios();
@@ -33,6 +34,9 @@ const Profile = () => {
 
   return (
     <div className='relative flex flex-col items-center p-4 gap-4 w-full h-full bg-primary rounded-md'>
+      <Helmet>
+        <title>{userData?.username}</title>
+      </Helmet>
       <div className='relative flex justify-center items-center w-full max-h-[400px] rounded-md'>
         <div className="absolute w-full h-full bg-gradient-to-b from-transparent to-primary"></div>
         {userData?.backdropPath ? (

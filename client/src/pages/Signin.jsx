@@ -6,6 +6,7 @@ import Input from '../components/ui/Input';
 import Button from '../components/ui/Button';
 import { ShowPassword } from '../components/utils/ShowPassword';
 import { useToast } from '../components/hooks/useToast';
+import { Helmet } from 'react-helmet';
 
 const Signin = () => {
   const emailRef = useRef(null);
@@ -18,7 +19,6 @@ const Signin = () => {
   const previousPath = location.state?.from || '/home';
 
   useEffect(() => {
-    document.title = 'Sign in';
     emailRef.current.focus();
   }, []);
 
@@ -54,6 +54,9 @@ const Signin = () => {
 
   return (
     <div className='flex flex-col p-4 justify-center items-center h-full w-full text-primary bg-primary rounded-lg'>
+      <Helmet>
+        <title>Sign in</title>
+      </Helmet>
       <form
         className='flex flex-col w-[250px] max-w-full p-4 text-xs text-primary-foreground rounded-md border border-secondary-accent z-10'
         onSubmit={submit}

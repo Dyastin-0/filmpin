@@ -8,6 +8,7 @@ import Input from '../components/ui/Input';
 import Button from '../components/ui/Button';
 import { ShowPassword } from '../components/utils/ShowPassword';
 import { useToast } from '../components/hooks/useToast';
+import { Helmet } from 'react-helmet';
 
 const Signup = () => {
   const navigate = useNavigate();
@@ -37,7 +38,6 @@ const Signup = () => {
 
   useEffect(() => {
     usernameRef.current.focus();
-    document.title = 'Sign up';
   }, []);
 
   useEffect(() => {
@@ -74,6 +74,9 @@ const Signup = () => {
 
   return (
     <div className='flex flex-col p-4 justify-center items-center h-full w-full text-primary bg-primary rounded-lg'>
+      <Helmet>
+        <title>Sign up</title>
+      </Helmet>
       <form
         className='flex flex-col w-[250px] max-w-full p-4 text-xs text-primary-foreground border border-secondary-accent rounded-md'
         onSubmit={submit}

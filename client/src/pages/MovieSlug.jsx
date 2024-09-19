@@ -18,7 +18,7 @@ import AddToList from '../components/AddToList';
 import useAxios from '../hooks/useAxios';
 import { fetchCredits, fetchDiscovery, fetchMovie, fetchVideos } from '../helpers/api';
 import useSWR from 'swr';
-import { useAuth } from '../hooks/useAuth';
+import { Helmet } from 'react-helmet';
 
 const MovieSlug = () => {
 	const [searchParams] = useSearchParams();
@@ -40,13 +40,12 @@ const MovieSlug = () => {
 		isAxiosReady && details ? `/movies/discover?genres=${genres}&sort_by=vote_count&page=1` : null,
 		() => fetchDiscovery(api, 'movies', genres)
 	);
+
 	const { data: videos, isLoading: isVideosLoading
 	} = useSWR(
 		isAxiosReady ? `/movies/videos?movie_id=${id}` : null,
 		() => fetchVideos(api, 'movies', 'movie_id', id), {
-			onSuccess: (data) => setTrailerYoutubeKey(data.find(video => {
-				console.log(video.type === 'Trailer')
-			}))
+			onSuccess: (data) => setTrailerYoutubeKey(data.find((video) => video.type === 'Trailer').key)
 		}
 	);
 
@@ -57,12 +56,14 @@ const MovieSlug = () => {
 	);
 
 	useEffect(() => {
-		document.title = details?.title;
 		window.scrollTo({ top: 0, left: 0, behavior: 'smooth' });
 	}, [details]);
 
 	return (
 		<div className="flex flex-col items-center bg-primary rounded-lg gap-4 p-4 h-full w-full">
+			<Helmet>
+				<title>{details?.title}</title>
+			</Helmet>
 			{!details ? (
 				<MovieSlugLoader />
 			) : (

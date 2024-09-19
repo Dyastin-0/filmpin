@@ -1,14 +1,14 @@
 import { useEffect, useState } from 'react';
 import axios from 'axios';
 import { useSearchParams } from 'react-router-dom';
+import { Helmet } from 'react-helmet';
 
 const Verification = () => {
-	const [searchParams] = useSearchParams();
+	const [searchParams] = useSearchParams();z
 	const [message, setMessage] = useState(null);
 	const verificationToken = searchParams.get('verificationToken');
 
 	useEffect(() => {
-		document.title = 'Verify Your Account';
 		const verifyAccount = async () => {
 			if (!verificationToken) {
 				setMessage('Missing verification token.');
@@ -32,6 +32,9 @@ const Verification = () => {
 			className='flex flex-col p-4 justify-center items-center h-full w-full
       text-primary-foreground border border-secondary-accent rounded-md'
 		>
+			<Helmet>
+				<title>Verify Your Account</title>
+			</Helmet>
 			<div
 				className='flex flex-col w-[250px] max-w-full p-4 gap-2 text-xs text-primary-foreground
         bg-accent drop-shadow-sm rounded-md'
@@ -44,7 +47,7 @@ const Verification = () => {
 					Account Verification
 				</h2>
 				<p className='text-primary-foreground text-center text-xs'>
-					{ message }
+					{message}
 				</p>
 			</div>
 		</div>

@@ -7,6 +7,7 @@ import { useLoading } from '../components/hooks/useLoading';
 import useAxios from '../hooks/useAxios';
 import { fetchSearchQueryResults } from '../helpers/api';
 import useSWR from 'swr';
+import { Helmet } from 'react-helmet';
 
 const DiscoverMovieSlug = () => {
   const { api, isAxiosReady } = useAxios();
@@ -49,6 +50,9 @@ const DiscoverMovieSlug = () => {
 
   return (
     <div className='flex flex-col bg-primary rounded-lg gap-4 p-4 items-center h-full w-full'>
+      <Helmet>
+        <title>Search</title>
+      </Helmet>
       <div className='flex justify-start items-center w-full gap-2'>
         <h1 className='text-primary-foreground text-sm text-start font-semibold'>
           Results

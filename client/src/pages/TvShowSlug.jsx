@@ -15,6 +15,7 @@ import AddToList from '../components/AddToList';
 import { fetchDiscovery, fetchShow, fetchTvShowVideos } from '../helpers/api';
 import { ClipSection } from '../components/sections/ClipSection';
 import useSWR from 'swr';
+import { Helmet } from 'react-helmet';
 
 const TvShowSlug = () => {
   const [searchParams] = useSearchParams();
@@ -43,12 +44,14 @@ const TvShowSlug = () => {
   );
 
 useEffect(() => {
-  document.title = details?.name || 'TV Show';
   window.scrollTo({ top: 0, left: 0, behavior: 'smooth' });
 }, [details]);
 
 return (
   <div className="flex flex-col items-center bg-primary rounded-lg gap-4 p-4 h-full w-full">
+    <Helmet>
+      <title>{details?.name}</title>
+    </Helmet>
     {isShowLoading ? (
       <MovieSlugLoader />
     ) : (

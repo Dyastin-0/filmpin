@@ -5,6 +5,7 @@ import Button from '../components/ui/Button';
 import { useToast } from '../components/hooks/useToast';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { useAuth } from '../hooks/useAuth';
+import { Helmet } from 'react-helmet';
 
 const AccountVerification = () => {
 	const { user } = useAuth();
@@ -22,7 +23,6 @@ const AccountVerification = () => {
 	}, [user]);
 
 	useEffect(() => {
-		document.title = 'Send Verification Link';
 		emailRef.current.focus();
 	}, []);
 
@@ -47,6 +47,9 @@ const AccountVerification = () => {
 			className='flex flex-col p-4 justify-center items-center h-full w-full
       text-primary-foreground bg-primary rounded-md'
 		>
+			<Helmet>
+				<title>Send Verification Link</title>
+			</Helmet>
 			<form
 				className='flex flex-col w-[250px] max-w-full p-4 gap-4 text-xs text-primary-foreground
 				border border-secondary-accent rounded-md'

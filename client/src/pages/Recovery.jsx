@@ -4,6 +4,7 @@ import Input from '../components/ui/Input';
 import Button from '../components/ui/Button';
 import { useToast } from '../components/hooks/useToast';
 import { useNavigate } from 'react-router-dom';
+import { Helmet } from 'react-helmet';
 
 const Recovery = () => {
 	const navigate = useNavigate();
@@ -13,7 +14,6 @@ const Recovery = () => {
 	const { toastError, toastSuccess } = useToast();
 
 	useEffect(() => {
-		document.title = 'Account Recovery';
 		emailRef.current.focus();
 	}, []);
 
@@ -39,6 +39,9 @@ const Recovery = () => {
 			className='flex flex-col p-4 justify-center items-center h-full w-full
       text-primary-foreground bg-primary rounded-md'
 		>
+			<Helmet>
+				<title>Account Recovery</title>
+			</Helmet>
 			<form
 				className='flex flex-col w-[250px] max-w-full p-4 gap-4 text-xs text-primary-foreground
         border border-secondary-accent rounded-md'

@@ -6,6 +6,7 @@ import { fetchCategory } from '../helpers/api';
 import { useLoading } from '../components/hooks/useLoading';
 import useAxios from '../hooks/useAxios';
 import useSWR from 'swr';
+import { Helmet } from 'react-helmet';
 
 const Discover = () => {
 	const { api, isAxiosReady } = useAxios();
@@ -27,10 +28,6 @@ const Discover = () => {
 	);
 
 	useEffect(() => {
-		document.title = 'Discover';
-	}, []);
-
-	useEffect(() => {
 		const activeList = isMovieHovered ? movies : shows;
 		if (activeList?.length > 0) {
 			const intervalId = setInterval(() => {
@@ -47,6 +44,9 @@ const Discover = () => {
 
 	return (
 		<div className='flex flex-col bg-primary rounded-lg gap-4 p-4 items-center h-full w-full'>
+			<Helmet>
+				<title>Discover</title>
+			</Helmet>
 			<div className='relative flex h-full w-full justify-center rounded-lg bg-accent gap-4'>
 				<AnimatePresence>
 					{backdrop && (

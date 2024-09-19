@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import { AnimatePresence, motion } from 'framer-motion';
 import axios from 'axios';
+import { Helmet } from 'react-helmet';
 
 const fetchBackdrops = async () => {
   try {
@@ -8,7 +9,7 @@ const fetchBackdrops = async () => {
     return response.data;
   } catch (error) {
     console.error('Failed to fetch backdrops:', error);
-    return []; 
+    return [];
   }
 };
 
@@ -46,6 +47,9 @@ const Root = () => {
     <div
       className='relative flex flex-col p-4 justify-center items-center h-full w-full text-primary bg-primary gap-4 rounded-lg overflow-hidden'
     >
+      <Helmet>
+        <title>Filmpin</title>
+      </Helmet>
       {!loading && backdrops.length > 0 && (
         <AnimatePresence>
           <motion.img

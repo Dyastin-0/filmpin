@@ -15,6 +15,7 @@ import CastSection from '../components/sections/CastSection';
 import { ClipSection } from '../components/sections/ClipSection';
 import { fetchTvShowEpisodeDetails, fetchTvShowEpisodeVideos } from '../helpers/api';
 import useSWR from 'swr';
+import { Helmet } from 'react-helmet';
 
 const TvShowEpisodeSlug = () => {
 	const [searchParams] = useSearchParams();
@@ -43,7 +44,6 @@ const TvShowEpisodeSlug = () => {
 	);
 
 	useEffect(() => {
-		document.title = details?.name || 'TV Show Episode';
 		window.scrollTo({ top: 0, left: 0, behavior: 'smooth' });
 	}, [details]);
 
@@ -52,6 +52,9 @@ const TvShowEpisodeSlug = () => {
 
 	return (
 		<div className="flex flex-col items-center bg-primary rounded-lg gap-4 p-4 h-full w-full">
+			<Helmet>
+				<title>{details?.name}</title>
+			</Helmet>
 			{isLoading ? (
 				<MovieSlugLoader />
 			) : isError ? (

@@ -7,6 +7,7 @@ import { ShowPassword } from '../components/utils/ShowPassword';
 import { useToast } from '../components/hooks/useToast';
 import { testPassword } from '../helpers/regex';
 import ProgressBar from '../components/ui/ProgressBar';
+import { Helmet } from 'react-helmet';
 
 const AccountRecovery = () => {
 	const navigate = useNavigate();
@@ -28,7 +29,6 @@ const AccountRecovery = () => {
 
 	useEffect(() => {
 		passwordRef.current.focus();
-		document.title = 'Account Recovery';
 	}, []);
 
 	useEffect(() => {
@@ -70,6 +70,9 @@ const AccountRecovery = () => {
 
 	return (
 		<div className='flex flex-col p-4 justify-center items-center h-full w-full text-primary-foreground bg-primary rounded-xl'>
+			<Helmet>
+				<title>Account Recovery</title>
+			</Helmet>
 			<form
 				className='flex flex-col w-[250px] max-w-full p-4 text-xs text-primary-foreground border border-secondary-accent rounded-md'
 				onSubmit={submit}

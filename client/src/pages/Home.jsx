@@ -13,6 +13,7 @@ import SliderMovie from '../components/SliderMovie';
 import { fetchCategory } from '../helpers/api';
 import { blinkVariants } from '../configs/motionConfig';
 import useSWR from 'swr';
+import { Helmet } from 'react-helmet';
 
 const Home = () => {
   const { api, isAxiosReady } = useAxios();
@@ -45,6 +46,10 @@ const Home = () => {
 
   return (
     <div className="flex flex-col bg-primary rounded-lg gap-4 p-4 justify-center items-center h-full w-full">
+      <Helmet>
+        <title>Home</title>
+        <meta name='description' content='Browse, find, and save your next watch!' />
+      </Helmet>
       {!isLoadingTopMovies ? (
         <section className="w-full h-[400px] rounded-md ml-4 mr-4 mb-4 bg-transparent overflow-hidden">
           <Swiper {...swiperAutoPlayConfig}>
