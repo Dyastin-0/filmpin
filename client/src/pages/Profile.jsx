@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
@@ -18,19 +18,23 @@ import { Helmet } from 'react-helmet';
 
 const Profile = () => {
   const { api, isAxiosReady } = useAxios();
-  const { user, token } = useAuth();
+  const { user, setUser, token } = useAuth();
   const location = useLocation();
   const navigate = useNavigate();
   const { setModal, setOpen } = useModal();
   const username = location.pathname.slice(1);
 
-  const { data: userData, isLoading, isError
+  const { data: userData, isLoading, isError, mutate
   } = useSWR(
     isAxiosReady ? `/public/account?username=${username}` : null,
     () => fetchUserData(api, username), {
     onError: () => navigate('/404')
   }
   );
+
+  useEffect(() => {
+    if (user) mutate();
+  }, [user, setUser])
 
   return (
     <div className='relative flex flex-col items-center p-4 gap-4 w-full h-full bg-primary rounded-md'>
