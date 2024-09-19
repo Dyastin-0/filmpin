@@ -5,7 +5,7 @@ import { useToast } from "./hooks/useToast";
 
 export const Backdrop = ({ backdrop_path, title }) => {
 	const { setOpen } = useModal();
-	const api = useAxios();
+	const { api } = useAxios();
 	const { user, setUser } = useAuth();
 	const { toastError, toastSuccess } = useToast();
 

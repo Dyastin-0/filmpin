@@ -1,4 +1,3 @@
-import Movie from '../../components/Movie';
 import { SwiperSlide, Swiper } from 'swiper/react';
 import { swiperConfig } from '../../configs/swiperConfig';
 import TvShow from '../TvShow';

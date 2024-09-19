@@ -11,41 +11,28 @@ import { faFilter } from '@fortawesome/free-solid-svg-icons';
 import { tvShowGenres } from '../models/genres';
 import useAxios from '../hooks/useAxios';
 import { fetchDiscovery } from '../helpers/api';
+import useSWR from 'swr';
 
 const DiscoverTvShowSlug = () => {
-  const api = useAxios();
+  const { api, isAxiosReady } = useAxios();
   const [searchParams] = useSearchParams();
   const navigate = useNavigate();
   const { setLoading } = useLoading();
   const [selectedGenres, setSelectedGenres] = useState([]);
-  const [totalPages, setTotalPages] = useState(0);
   const [currentPage, setCurrentPage] = useState(parseInt(searchParams.get('page')) || 1);
-  const [data, setData] = useState(null);
-  const [isLoading, setIsLoading] = useState(false);
-  const [isError, setIsError] = useState(false);
 
   const genresString = selectedGenres.length > 0 ? selectedGenres.join('_').toLowerCase() : '';
   const sortBy = 'vote_count';
 
-  useEffect(() => {
-    const getTvShows = async () => {
-      setIsLoading(true);
-      setIsError(false);
-      try {
-        const result = await fetchDiscovery(api, 'tvshows', genresString, sortBy, currentPage);
-        setData(result);
-        setTotalPages(result.total_pages > 500 ? 500 : result.total_pages);
-      } catch (error) {
-        setIsError(true);
-        console.error('Error fetching TV shows:', error);
-      } finally {
-        setIsLoading(false);
-        setLoading(false);
-      }
-    };
-
-    getTvShows();
-  }, [api, genresString, sortBy, currentPage, setLoading]);
+  const { data, isLoading, isError
+  } = useSWR(
+    isAxiosReady ? `/discover/tvshows?genres=${genresString}&sort_by=${sortBy}&page=${currentPage}` : null,
+    () => fetchDiscovery(api, 'tvshows', genresString, sortBy, currentPage), {
+    onSuccess: () => {
+      setLoading(false);
+    }
+  }
+  );
 
   useEffect(() => {
     document.title = 'Discover TV shows';
@@ -83,8 +70,8 @@ const DiscoverTvShowSlug = () => {
               <TvShow key={index} info={show} />
             ))}
           </div>
-          {totalPages > 1 &&
-            <Pagination currentPage={currentPage} totalPages={totalPages} onPageChange={onPageChange} />
+          {data?.total_pages > 1 &&
+            <Pagination currentPage={currentPage} totalPages={data.total_pages > 500 ? 500 : data.total_pages} onPageChange={onPageChange} />
           }
         </div>
       )}

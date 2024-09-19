@@ -7,7 +7,6 @@ import useAxios from '../hooks/useAxios';
 
 const Season = ({ info, showId, title, backdropPath }) => {
 	const navigate = useNavigate();
-	const api = useAxios();
 	const [imageLoaded, setImageLoaded] = useState(false);
 
 	useEffect(() => {
@@ -18,20 +17,11 @@ const Season = ({ info, showId, title, backdropPath }) => {
 		};
 	}, []);
 
-	const handleClick = () => {
-		navigate(`/tvshows/${showId}/season?id=${showId}_${info.name}&season_number=${info.season_number}&title=${title}&backdrop_path=${backdropPath}`,
-			{
-				state: {
-					details: info
-				}
-			});
-	}
-
 	return (
 		<motion.div className='flex flex-col rounded-lg drop-shadow-none gap-1 p-4 w-[200px] h-[370px]
 			text-primary-foreground border border-secondary-accent
 			hover:scale-95 hover:cursor-pointer duration-300'
-			onClick={handleClick}
+			onClick={() => navigate(`/tvshows/${showId}/season?id=${showId}_${info.name}&season_number=${info.season_number}&title=${title}&backdrop_path=${backdropPath}`)}
 		>
 			{
 				imageLoaded ?

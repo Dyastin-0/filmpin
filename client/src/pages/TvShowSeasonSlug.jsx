@@ -12,41 +12,32 @@ import EpisodeSection from '../components/sections/EpisodeSection';
 import { fetchTvShowSeason, fetchTvShowSeasonVideos } from '../helpers/api';
 import { useEffect, useState } from 'react';
 import { ClipSection } from '../components/sections/ClipSection';
+import useSWR from 'swr';
 
 const TvShowSeasonSlug = () => {
 	const [searchParams] = useSearchParams();
-	const api = useAxios();
+	const { api, isAxiosReady } = useAxios();
 	const { setModal, setOpen } = useModal();
 	const [trailerYoutubeKey, setTrailerYoutubeKey] = useState(null);
-	const [details, setDetails] = useState(null);
-	const [videos, setVideos] = useState(null);
-	const [loading, setLoading] = useState(true);
 
 	const id = searchParams.get('id')?.split('_')[0];
 	const seasonNumber = searchParams.get('season_number');
 	const title = searchParams.get('title');
 	const backdropPath = searchParams.get('backdrop_path');
 
-	useEffect(() => {
-		const fetchData = async () => {
-			try {
-				setLoading(true);
-				const [detailsData, videosData] = await Promise.all([
-					fetchTvShowSeason(api, id, seasonNumber),
-					fetchTvShowSeasonVideos(api, id, seasonNumber)
-				]);
-				setDetails(detailsData);
-				setVideos(videosData);
-				setTrailerYoutubeKey(videosData.find(video => video.type === 'Trailer')?.key);
-			} catch (error) {
-				console.error('Error fetching data:', error);
-			} finally {
-				setLoading(false);
-			}
-		};
+	const { data: details, isLoading
+	} = useSWR(
+		isAxiosReady ? `/tvshows/season?tvshow_id=${id}&season_number=${seasonNumber}` : null,
+		() => fetchTvShowSeason(api, id, seasonNumber)
+	);
 
-		fetchData();
-	}, [api, id, seasonNumber]);
+	const { data: videos
+	} = useSWR(
+		isAxiosReady ? `/tvshows/season/videos?tvshow_id=${id}&tvshow_season=${seasonNumber}` : null,
+		() => fetchTvShowSeasonVideos(api, id, seasonNumber), {
+		onSuccess: (data) => setTrailerYoutubeKey(data[0].key)
+	}
+	);
 
 	useEffect(() => {
 		document.title = details?.name || 'TV Show Season';
@@ -55,7 +46,7 @@ const TvShowSeasonSlug = () => {
 
 	return (
 		<div className="flex flex-col items-center bg-primary rounded-lg gap-4 p-4 h-full w-full">
-			{loading ? (
+			{isLoading ? (
 				<MovieSlugLoader />
 			) : (
 				details && (

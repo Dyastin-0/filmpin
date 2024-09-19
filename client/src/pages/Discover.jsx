@@ -2,65 +2,46 @@ import Button from '../components/ui/Button';
 import { useNavigate } from 'react-router-dom';
 import { useEffect, useState } from 'react';
 import { AnimatePresence, motion } from 'framer-motion';
-import { fetchMovies, fetchShows } from '../helpers/api';
+import { fetchCategory } from '../helpers/api';
 import { useLoading } from '../components/hooks/useLoading';
 import useAxios from '../hooks/useAxios';
+import useSWR from 'swr';
 
 const Discover = () => {
-	const api = useAxios();
+	const { api, isAxiosReady } = useAxios();
 	const { setLoading } = useLoading();
 	const navigate = useNavigate();
 	const [imageIndex, setImageIndex] = useState(0);
 	const [isMovieHovered, setIsMovieHovered] = useState(true);
-	const [movies, setMovies] = useState([]);
-	const [shows, setShows] = useState([]);
-	const [isMoviesLoading, setIsMoviesLoading] = useState(true);
-	const [isShowsLoading, setIsShowsLoading] = useState(true);
+
+	const { data: movies
+	} = useSWR(
+		isAxiosReady ? '/movies/discover?genres=&sort_by=vote_count&page=1' : null,
+		() => fetchCategory(api, 'movies', 'top_rated', 1)
+	);
+
+	const { data: shows
+	} = useSWR(
+		isAxiosReady ? '/tvshows/discover?genres=&sort_by=vote_count&page=1' : null,
+		() => fetchCategory(api, 'tvshows', 'top_rated', 1)
+	);
 
 	useEffect(() => {
 		document.title = 'Discover';
 	}, []);
 
 	useEffect(() => {
-		const fetchData = async () => {
-			setIsMoviesLoading(true);
-			setIsShowsLoading(true);
-			try {
-				const moviesData = await fetchMovies(api);
-				setMovies(moviesData);
-			} catch (error) {
-				console.error('Error fetching movies:', error);
-			} finally {
-				setIsMoviesLoading(false);
-			}
-
-			try {
-				const showsData = await fetchShows(api);
-				setShows(showsData);
-			} catch (error) {
-				console.error('Error fetching shows:', error);
-			} finally {
-				setIsShowsLoading(false);
-			}
-		};
-
-		fetchData();
-	}, [api]);
-
-	useEffect(() => {
-		setLoading(isMoviesLoading || isShowsLoading);
-	}, [isMoviesLoading, isShowsLoading, setLoading]);
-
-	useEffect(() => {
 		const activeList = isMovieHovered ? movies : shows;
-		if (activeList.length > 0) {
+		if (activeList?.length > 0) {
 			const intervalId = setInterval(() => {
-				setImageIndex((prevIndex) => (prevIndex + 1) % activeList.length);
+				setImageIndex((prevIndex) => (prevIndex + 1) % activeList?.length);
 			}, 3000);
 
 			return () => clearInterval(intervalId);
 		}
 	}, [movies, shows, isMovieHovered]);
+
+	if (!movies || !shows) return;
 
 	const backdrop = isMovieHovered ? movies[imageIndex]?.backdrop_path : shows[imageIndex]?.backdrop_path;
 

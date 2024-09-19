@@ -13,66 +13,37 @@ import { Image } from '../components/ui/Image';
 import ListSection from '../components/sections/ListSection';
 import { Dropdown, DropdownItem } from '../components/ui/Dropdown';
 import { fetchUserData } from '../helpers/api';
+import useSWR from 'swr';
 
 const Profile = () => {
-  const api = useAxios();
+  const { api, isAxiosReady } = useAxios();
   const { user, token } = useAuth();
   const location = useLocation();
   const navigate = useNavigate();
   const { setModal, setOpen } = useModal();
   const username = location.pathname.slice(1);
 
-  const [userData, setUserData] = useState(null);
-  const [isLoading, setIsLoading] = useState(true);
-  const [isError, setIsError] = useState(false);
-
-  useEffect(() => {
-    const loadUserData = async () => {
-      try {
-        setIsLoading(true);
-        const data = await fetchUserData(api, username);
-        setUserData(data);
-        document.title = data.username;
-      } catch (error) {
-        setIsError(true);
-        navigate('/404');
-      } finally {
-        setIsLoading(false);
-      }
-    };
-
-    if (user) {
-      loadUserData();
-    }
-  }, [username, user, api, navigate]);
-
-  const handleSelectBackdrop = () => {
-    setModal(<SelectBackdrop />);
-    setOpen(true);
-  };
-
-  const handleSelectProfile = () => {
-    setModal(<SelectProfile />);
-    setOpen(true);
-  };
-
-  const handleViewProfile = () => {
-    setModal(<Image imageURL={userData?.profileImageURL} name={userData?.username} />);
-    setOpen(true);
-  };
-
-  if (isError) return null; // or handle error state as needed
+  const { data: userData, isLoading, isError
+  } = useSWR(
+    isAxiosReady ? `/public/account?username=${username}` : null,
+    () => fetchUserData(api, username), {
+    onError: () => navigate('/404')
+  }
+  );
 
   return (
     <div className='relative flex flex-col items-center p-4 gap-4 w-full h-full bg-primary rounded-md'>
       <div className='relative flex justify-center items-center w-full max-h-[400px] rounded-md'>
-      <div className="absolute w-full h-full bg-gradient-to-b from-transparent to-primary"></div>
+        <div className="absolute w-full h-full bg-gradient-to-b from-transparent to-primary"></div>
         {userData?.backdropPath ? (
           <UserBackdrop username={userData.username} backdropPath={userData.backdropPath} />
         ) : token && userData?._id === user?._id ? (
           <div
             className='relative flex justify-center gap-2 p-4 items-center w-full min-h-[400px] rounded-md hover:cursor-pointer'
-            onClick={handleSelectBackdrop}
+            onClick={() => {
+              setModal(<SelectBackdrop />);
+              setOpen(true);
+            }}
           >
             <FontAwesomeIcon className='text-primary-foreground text-xl' icon={faImage} />
             <p className='text-xs text-primary-foreground font-semibold'>Select a backdrop for your profile</p>
@@ -91,14 +62,20 @@ const Profile = () => {
               <img
                 alt={`${userData.username} profile image`}
                 src={userData.profileImageURL}
-                onClick={handleViewProfile}
+                onClick={() => {
+                  setModal(<Image imageURL={userData?.profileImageURL} name={userData?.username} />);
+                  setOpen(true);
+                }}
                 className='w-[100px] h-[100px] object-cover rounded-full transition-all duration-300 hover:cursor-pointer hover:opacity-70'
               />
             </div>
           ) : (
             <div
               className='flex justify-center items-center w-[100px] h-[100px] rounded-full bg-secondary hover:cursor-pointer'
-              onClick={handleSelectProfile}
+              onClick={() => {
+                setModal(<SelectProfile />);
+                setOpen(true);
+              }}
             >
               <FontAwesomeIcon icon={faImage} />
             </div>
@@ -111,8 +88,14 @@ const Profile = () => {
         {token && userData?._id === user?._id && (
           <div className='absolute top-4 right-4'>
             <Dropdown name={<FontAwesomeIcon icon={faEllipsisH} />}>
-              <DropdownItem onClick={handleSelectProfile}>Change profile</DropdownItem>
-              <DropdownItem onClick={handleSelectBackdrop}>Change background</DropdownItem>
+              <DropdownItem onClick={() => {
+                setModal(<SelectProfile />);
+                setOpen(true);
+              }}>Change profile</DropdownItem>
+              <DropdownItem onClick={() => {
+                setModal(<SelectBackdrop />);
+                setOpen(true);
+              }}>Change background</DropdownItem>
             </Dropdown>
           </div>
         )}

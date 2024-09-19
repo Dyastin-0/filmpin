@@ -10,7 +10,7 @@ import { faImage, faUser } from '@fortawesome/free-solid-svg-icons';
 const SelectProfile = () => {
 	const { setOpen } = useModal();
 	const { user, setUser } = useAuth();
-	const api = useAxios();
+	const { api } = useAxios();
 	const [file, setFile] = useState(null);
 	const [preview, setPreview] = useState('');
 	const [uploading, setUploading] = useState(false);

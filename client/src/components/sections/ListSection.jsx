@@ -13,7 +13,7 @@ import { useToast } from '../hooks/useToast';
 
 const ListSection = ({ userData }) => {
 	const { token, user } = useAuth();
-	const api = useAxios();
+	const { api } = useAxios();
 	const { toastSuccess } = useToast();
 	const { setModal, setOpen } = useModal();
 	const [list, setList] = useState([]);
@@ -25,11 +25,6 @@ const ListSection = ({ userData }) => {
 		} catch (error) {
 			console.error('Failed to fetch list.', error);
 		}
-	};
-
-	const handleCreateList = () => {
-		setModal(<CreateList />);
-		setOpen(true);
 	};
 
 	useEffect(() => {
@@ -78,7 +73,10 @@ const ListSection = ({ userData }) => {
 			{token && user?.username === userData?.username &&
 				<Button
 					className='absolute top-4 right-4'
-					onClick={handleCreateList}
+					onClick={() => {
+						setModal(<CreateList />);
+						setOpen(true);
+					}}
 					icon={<FontAwesomeIcon icon={faPlus} />}
 					text='Create a list'
 				/>

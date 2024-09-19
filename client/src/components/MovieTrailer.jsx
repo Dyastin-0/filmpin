@@ -6,7 +6,7 @@ import { fetchVideos } from '../helpers/api';
 import useSWR from 'swr';
 
 const MovieTrailer = ({ id, title }) => {
-	const {api, isAxiosReady} = useAxios();
+	const { api, isAxiosReady } = useAxios();
 	const [trailerYoutubeKey, setTrailerYoutubeKey] = useState(null);
 	const [imageLoaded, setImageLoaded] = useState(false);
 
@@ -32,14 +32,12 @@ const MovieTrailer = ({ id, title }) => {
 
 	return (
 		<div>
-			{
-				imageLoaded ?
-					<Clip title={title} trailerKey={trailerYoutubeKey} />
-					: <div className='flex flex-col items-center gap-1 justify-center'>
-						<TrailerImageDummy />
-						<TrailerTitleDummy />
-					</div>
-			}
+			{imageLoaded ?
+				<Clip title={title} trailerKey={trailerYoutubeKey} />
+				: <div className='flex flex-col items-center gap-1 justify-center'>
+					<TrailerImageDummy />
+					<TrailerTitleDummy />
+				</div>}
 		</div>
 	)
 }

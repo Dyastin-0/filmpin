@@ -1,5 +1,5 @@
 import { motion } from 'framer-motion';
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { CircularProgress, CircularProgressLabel } from '@chakra-ui/react';
 import { ImageDummy, TitleDummy, YearDummy, GenresDummy } from './loaders/MovieLoaders';
@@ -10,9 +10,6 @@ import useSWR from 'swr';
 const TvShow = ({ info }) => {
 	const { api, isAxiosReady } = useAxios();
 	const navigate = useNavigate();
-	// const [details, setDetails] = useState(null);
-	// const [isLoading, setIsLoading] = useState(true);
-	// const [isError, setIsError] = useState(false);
 	const [imageLoaded, setImageLoaded] = useState(false);
 
 	const { data: details, isLoading, isError
@@ -31,18 +28,12 @@ const TvShow = ({ info }) => {
 		handleImageLoad();
 	}
 
-	const handleClick = () => {
-		if (details) {
-			navigate(`/tvshows?id=${details.id}_${details.name}`);
-		}
-	};
-
 	return (
 		<motion.div
 			className='flex flex-col rounded-lg drop-shadow-none gap-1 p-4 w-[200px] h-[370px]
         text-primary-foreground border border-secondary-accent
         hover:scale-95 hover:cursor-pointer duration-300'
-			onClick={handleClick}
+			onClick={() => navigate(`/tvshows?id=${details.id}_${details.name}`)}
 		>
 			{imageLoaded ? (
 				<img

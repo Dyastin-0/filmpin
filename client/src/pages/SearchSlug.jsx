@@ -6,18 +6,23 @@ import { LoadingDiscover } from '../components/loaders/MovieLoaders';
 import { useLoading } from '../components/hooks/useLoading';
 import useAxios from '../hooks/useAxios';
 import { fetchSearchQueryResults } from '../helpers/api';
+import useSWR from 'swr';
 
 const DiscoverMovieSlug = () => {
-  const api = useAxios();
+  const { api, isAxiosReady } = useAxios();
   const [searchParams] = useSearchParams();
   const navigate = useNavigate();
   const { setLoading } = useLoading();
-  const [totalPages, setTotalPages] = useState(0);
   const [currentPage, setCurrentPage] = useState(parseInt(searchParams.get('page')) || 1);
   const [query, setQuery] = useState(searchParams.get('query') || '');
-  const [data, setData] = useState(null);
-  const [isLoading, setIsLoading] = useState(true);
-  const [isError, setIsError] = useState(false);
+
+  const { data, isLoading, isError
+  } = useSWR(
+    isAxiosReady ? `/movies/search?query=${query}&page=${currentPage}` : null,
+    () => fetchSearchQueryResults(api, query, currentPage), {
+    onSuccess: () => setLoading(false)
+  }
+  );
 
   useEffect(() => {
     setQuery(searchParams.get('query') || '');
@@ -25,25 +30,7 @@ const DiscoverMovieSlug = () => {
   }, [searchParams]);
 
   useEffect(() => {
-    setIsLoading(true);
-    setIsError(false);
     setLoading(true);
-
-    fetchSearchQueryResults(api, query, currentPage)
-      .then(result => {
-        setData(result);
-        setTotalPages(result.total_pages > 500 ? 500 : result.total_pages);
-      })
-      .catch(() => {
-        setIsError(true);
-      })
-      .finally(() => {
-        setIsLoading(false);
-        setLoading(false);
-      });
-  }, [query, currentPage, api, setLoading]);
-
-  useEffect(() => {
     navigate(`/movies/search?query=${query}&page=${currentPage}`, { replace: true });
   }, [query, currentPage, navigate]);
 
@@ -78,8 +65,8 @@ const DiscoverMovieSlug = () => {
               <Movie key={index} info={movie} />
             ))}
           </div>
-          {totalPages > 1 && (
-            <Pagination currentPage={currentPage} totalPages={totalPages} onPageChange={onPageChange} />
+          {data?.total_pages > 1 && (
+            <Pagination currentPage={currentPage} totalPages={data.total_pages > 500 ? 500 : data.total_pages} onPageChange={onPageChange} />
           )}
         </div>
       )}

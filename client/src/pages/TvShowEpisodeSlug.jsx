@@ -14,10 +14,11 @@ import Cast from '../components/Cast';
 import CastSection from '../components/sections/CastSection';
 import { ClipSection } from '../components/sections/ClipSection';
 import { fetchTvShowEpisodeDetails, fetchTvShowEpisodeVideos } from '../helpers/api';
+import useSWR from 'swr';
 
 const TvShowEpisodeSlug = () => {
 	const [searchParams] = useSearchParams();
-	const api = useAxios();
+	const { api, isAxiosReady } = useAxios();
 	const { setModal, setOpen } = useModal();
 	const [trailerYoutubeKey, setTrailerYoutubeKey] = useState(null);
 
@@ -27,32 +28,19 @@ const TvShowEpisodeSlug = () => {
 	const title = searchParams.get('title') || '';
 	const backdrop_path = searchParams.get('backdrop_path') || '';
 
-	const [details, setDetails] = useState(null);
-	const [videos, setVideos] = useState([]);
-	const [isLoading, setIsLoading] = useState(true);
-	const [isError, setIsError] = useState(false);
+	const { data: details, isLoading, isError
+	} = useSWR(
+		isAxiosReady ? `/tvshows/season/episode?tvshow_id=${id}&season_number=${seasonNumber}&episode_number=${episodeNumber}` : null,
+		() => fetchTvShowEpisodeDetails(api, id, seasonNumber, episodeNumber)
+	);
 
-	useEffect(() => {
-		setIsLoading(true);
-		setIsError(false);
-
-		const fetchData = async () => {
-			try {
-				const detailsData = await fetchTvShowEpisodeDetails(api, id, seasonNumber, episodeNumber);
-				const videosData = await fetchTvShowEpisodeVideos(api, id, seasonNumber, episodeNumber);
-
-				setDetails(detailsData);
-				setVideos(videosData);
-				setTrailerYoutubeKey(videosData.length > 0 ? videosData[0].key : null);
-			} catch (error) {
-				setIsError(true);
-			} finally {
-				setIsLoading(false);
-			}
-		};
-
-		fetchData();
-	}, [api, id, seasonNumber, episodeNumber]);
+	const { data: videos
+	} = useSWR(
+		isAxiosReady ? `/tvshows/season/episode/videos?tvshow_id=${id}&tvshow_season=${seasonNumber}&episode_number=${episodeNumber}` : null,
+		() => fetchTvShowEpisodeVideos(api, id, seasonNumber, episodeNumber), {
+		onSuccess: (data) => setTrailerYoutubeKey(data[0].key)
+	}
+	);
 
 	useEffect(() => {
 		document.title = details?.name || 'TV Show Episode';
@@ -134,7 +122,7 @@ const TvShowEpisodeSlug = () => {
 						<CastSection title='Full cast' casts={casts} />
 						<CrewSection title='Full crew' crews={details?.crew} />
 					</motion.div>
-					{videos.length > 0 &&
+					{videos?.length > 0 &&
 						<div className='flex flex-col p-4 rounded-md max-w-full w-[calc(100%-2rem)] gap-4'>
 							<ClipSection keys={videos.map((video) => ({
 								name: video.name,

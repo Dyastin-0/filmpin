@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { LoadingMovieSection } from '../components/loaders/MovieLoaders';
 import { LoadingTrailerSection } from '../components/loaders/TrailerLoaders';
@@ -17,14 +17,6 @@ import useSWR from 'swr';
 const Home = () => {
   const { api, isAxiosReady } = useAxios();
   const { setLoading } = useLoading();
-
-  // const [topMovies, setTopMovies] = useState([]);
-  // const [popularMovies, setPopularMovies] = useState([]);
-  // const [topTvShows, setTopTvShows] = useState([]);
-
-  // const [isLoadingTopMovies, setIsLoadingTopMovies] = useState(true);
-  // const [isLoadingPopularMovies, setIsLoadingPopularMovies] = useState(true);
-  // const [isLoadingTopTvShows, setIsLoadingTopTvShows] = useState(true);
 
   const { data: topMovies, isLoading: isLoadingTopMovies
   } = useSWR(

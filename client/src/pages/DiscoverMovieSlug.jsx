@@ -11,41 +11,28 @@ import { faFilter } from '@fortawesome/free-solid-svg-icons';
 import { movieGenres } from '../models/genres';
 import useAxios from '../hooks/useAxios';
 import { fetchDiscovery } from '../helpers/api';
+import useSWR from 'swr';
 
 const DiscoverMovieSlug = () => {
-  const api = useAxios();
-  const [searchParams] = useSearchParams();
   const navigate = useNavigate();
+  const { api, isAxiosReady } = useAxios();
+  const [searchParams] = useSearchParams();
   const { setLoading } = useLoading();
   const [selectedGenres, setSelectedGenres] = useState([]);
-  const [totalPages, setTotalPages] = useState(0);
   const [currentPage, setCurrentPage] = useState(parseInt(searchParams.get('page')) || 1);
-  const [data, setData] = useState(null);
-  const [isLoading, setIsLoading] = useState(false);
-  const [isError, setIsError] = useState(false);
 
   const genresString = selectedGenres.length > 0 ? selectedGenres.join('_').toLowerCase() : '';
   const sortBy = 'vote_count';
 
-  useEffect(() => {
-    const getMovies = async () => {
-      setIsLoading(true);
-      setIsError(false);
-      try {
-        const result = await fetchDiscovery(api, 'movies', genresString, sortBy, currentPage);
-        setData(result);
-        setTotalPages(result.total_pages > 500 ? 500 : result.total_pages);
-      } catch (error) {
-        setIsError(true);
-        console.error('Error fetching movies:', error);
-      } finally {
-        setIsLoading(false);
-        setLoading(false);
-      }
-    };
-
-    getMovies();
-  }, [api, genresString, sortBy, currentPage, setLoading]);
+  const { data, isLoading, isError
+  } = useSWR(
+    isAxiosReady ? `/discover/movies?genres=${genresString}&sort_by=${sortBy}&page=${currentPage}` : null,
+    () => fetchDiscovery(api, 'movies', genresString, sortBy, currentPage), {
+    onSuccess: () => {
+      setLoading(false);
+    }
+  }
+  );
 
   useEffect(() => {
     document.title = 'Discover movies';
@@ -54,6 +41,7 @@ const DiscoverMovieSlug = () => {
 
   const onPageChange = (page) => {
     setCurrentPage(page);
+    setLoading(true);
     navigate(`/discover/movies?genres=${genresString}&sort_by=${sortBy}&page=${page}`, { replace: true });
   };
 
@@ -83,8 +71,8 @@ const DiscoverMovieSlug = () => {
               <Movie key={index} info={movie} />
             ))}
           </div>
-          {totalPages > 1 &&
-            <Pagination currentPage={currentPage} totalPages={totalPages} onPageChange={onPageChange} />
+          {data?.total_pages > 1 &&
+            <Pagination currentPage={currentPage} totalPages={data.total_pages > 500 ? 500 : data.total_pages} onPageChange={onPageChange} />
           }
         </div>
       )}

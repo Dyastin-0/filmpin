@@ -1,8 +1,6 @@
-import useAxios from '../hooks/useAxios';
 import { useNavigate } from 'react-router-dom';
 
 const UserList = ({ list }) => {
-	const api = useAxios();
 	const navigate = useNavigate();
 
 	const handleClick = (listParam) => {

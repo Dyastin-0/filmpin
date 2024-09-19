@@ -23,15 +23,8 @@ import { useAuth } from '../hooks/useAuth';
 const MovieSlug = () => {
 	const [searchParams] = useSearchParams();
 	const { api, isAxiosReady } = useAxios();
-	const { token } = useAuth();
 	const { setModal, setOpen } = useModal();
 	const [trailerYoutubeKey, setTrailerYoutubeKey] = useState(null);
-	// const [movie, setMovie] = useState(null);
-	// const [videos, setVideos] = useState(null);
-	// const [credits, setCredits] = useState(null);
-	// const [similarMovies, setSimilarMovies] = useState(null);
-	// const [isLoading, setIsLoading] = useState(true);
-	// const [isError, setIsError] = useState(false);
 
 	const id = searchParams.get('id').split('_')[0];
 
@@ -50,7 +43,11 @@ const MovieSlug = () => {
 	const { data: videos, isLoading: isVideosLoading
 	} = useSWR(
 		isAxiosReady ? `/movies/videos?movie_id=${id}` : null,
-		() => fetchVideos(api, 'movies', 'movie_id', id)
+		() => fetchVideos(api, 'movies', 'movie_id', id), {
+			onSuccess: (data) => setTrailerYoutubeKey(data.find(video => {
+				console.log(video.type === 'Trailer')
+			}))
+		}
 	);
 
 	const { data: credits, isLoading: isCreditsLoading

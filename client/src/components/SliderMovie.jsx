@@ -4,22 +4,11 @@ import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { blinkVariants } from '../configs/motionConfig';
-import useAxios from '../hooks/useAxios';
-import { useAuth } from '../hooks/useAuth';
-import useSWR from 'swr';
-import { fetchMovie } from '../helpers/api';
 
 const SliderMovie = ({ movie }) => {
-	const { api, isAxiosReady } = useAxios();
 	const navigate = useNavigate();
 	const [backdropLoaded, setBackdropLoaded] = useState(false);
 	const [posterLoaded, setPosterLoaded] = useState(false);
-
-	const { data: details
-	} = useSWR(
-		isAxiosReady ? `/movies/details?movie_id=${movie.id}` : null,
-		() => fetchMovie(api, movie.id)
-	);
 
 	useEffect(() => {
 		const backdrop = new Image();
@@ -32,11 +21,7 @@ const SliderMovie = ({ movie }) => {
 	}, []);
 
 	const handleClick = () => {
-		navigate(`/movies?id=${movie.id}_${movie.title}`, {
-			state: {
-				details: details
-			}
-		});
+		navigate(`/movies?id=${movie.id}_${movie.title}`);
 	}
 
 	return (

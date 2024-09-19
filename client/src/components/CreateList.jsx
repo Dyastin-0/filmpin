@@ -8,6 +8,7 @@ import { useToast } from '../components/hooks/useToast';
 import { useModal } from './hooks/useModal';
 import listTypes from '../models/listTypes';
 import DefaultInput from './ui/DefaultInput';
+import { fetchDiscovery } from '../helpers/api';
 
 const CreateList = () => {
 	const { setOpen } = useModal();
@@ -18,16 +19,7 @@ const CreateList = () => {
 	const [description, setDescription] = useState('');
 	const [fetched, setFetched] = useState(null);
 	const { toastError, toastSuccess } = useToast();
-	const api = useAxios();
-	
-	const fetchMoviesOrTvShows = async (type, genres) => {
-		try {
-			const response = await api.get(`/${type}/discover?genres=${genres}&sort_by=vote_count&page=1`);
-			return response.data;
-		} catch (error) {
-			console.error('Failed to fetch movies/tvshows.', error);
-		}
-	}
+	const { api } = useAxios();
 
 	const handleCreateList = async (e) => {
 		e.preventDefault();
@@ -68,11 +60,10 @@ const CreateList = () => {
 
 	useEffect(() => {
 		if (selectedGenres.length > 0) {
-			const formattedType = type.replace(' ', '').toLowerCase();
-			const formattedGenres = selectedGenres.join('_').toLowerCase();
-			fetchMoviesOrTvShows(formattedType, formattedGenres).then(response => {
-				setFetched(response.results);
-			}).catch(() => toastError(`Failed to fetch ${type} with ${selectedGenres.join(', ')} genres.`));
+			fetchDiscovery(api, type.replace(' ', '').toLowerCase(), selectedGenres.join('_').toLowerCase())
+				.then(response => {
+					setFetched(response.results);
+				}).catch(() => toastError(`Failed to fetch ${type} with ${selectedGenres.join(', ')} genres.`));
 		}
 	}, [selectedGenres]);
 

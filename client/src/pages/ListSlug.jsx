@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { Link, useNavigate, useSearchParams } from 'react-router-dom';
+import { Link, useSearchParams } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { useAuth } from '../hooks/useAuth';
 import Movie from '../components/Movie';
@@ -9,55 +9,38 @@ import { useToast } from '../components/hooks/useToast';
 import TvShow from '../components/TvShow';
 import { ListBackdropDummy, ListTitleDummy } from '../components/loaders/ListSlugLoader';
 import { LoadingDiscover as ListLoader } from '../components/loaders/MovieLoaders';
-import Button from '../components/ui/Button';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faEllipsisV } from '@fortawesome/free-solid-svg-icons';
 import useAxios from '../hooks/useAxios';
 import { fetchList, fetchOwner, fetchMovie, fetchShow } from '../helpers/api';
+import useSWR from 'swr';
 
 const ListSlug = () => {
   const { token, user } = useAuth();
-  const api = useAxios();
+  const { api, isAxiosReady } = useAxios();
   const [searchParams] = useSearchParams();
   const { toastInfo } = useToast();
 
-  const listId = searchParams.get('list_id');
-  const [listData, setListData] = useState(null);
-  const [ownerData, setOwnerData] = useState(null);
+  const id = searchParams.get('list_id');
+
   const [listItems, setListItems] = useState([]);
-  const [isLoading, setIsLoading] = useState(false);
-  const [isError, setIsError] = useState(false);
 
-  useEffect(() => {
-    const fetchListData = async () => {
-      if (!listId || !token) return;
-
-      setIsLoading(true);
-      setIsError(false);
-
-      try {
-        const listResponse = await fetchList(api, listId);
-        setListData(listResponse);
-
-        if (listResponse.owner) {
-          const ownerResponse = await fetchOwner(api, listResponse.owner);
-          setOwnerData(ownerResponse);
+  const { data: listData, isLoading } = useSWR(
+    isAxiosReady ? `/list/${id}` : null,
+    () => fetchList(api, id),
+    {
+      onSuccess: (data) => {
+        if (data && data.list) {
+          const fetchItem = listTypes[data.type] === 'Movies' ? fetchMovie : fetchShow;
+          Promise.all(data.list.map(item => fetchItem(api, item.id)))
+            .then(fetchedItems => setListItems(fetchedItems));
         }
-
-        const fetchItem = listTypes[listResponse.type] === 'Movies' ? fetchMovie : fetchShow;
-        const itemsResponses = await Promise.all(listResponse.list.map(item => fetchItem(api, item.id)));
-        setListItems(itemsResponses);
-
-      } catch (error) {
-        setIsError(true);
-        console.error('Error fetching data:', error);
-      } finally {
-        setIsLoading(false);
       }
-    };
+    }
+  );
 
-    fetchListData();
-  }, [listId, token]);
+  const { data: ownerData } = useSWR(
+    isAxiosReady && listData ? `/public/account?id=${listData.owner}` : null,
+    () => fetchOwner(api, listData.owner)
+  );
 
   useEffect(() => {
     if (token && user && listData && ownerData) {
@@ -77,7 +60,9 @@ const ListSlug = () => {
           setListItems(prevList => prevList.filter(item => item._id !== change.list));
         } else {
           setListItems(prevList => {
-            const newList = change.list.find(ojectList => !prevList.some(prevObjectList => ojectList._id === prevObjectList._id));
+            const newList = change.list.find(
+              objectList => !prevList.some(prevObjectList => objectList._id === prevObjectList._id)
+            );
             if (ownerData._id !== user._id) {
               toastInfo(`${ownerData?.username} just added ${newList.title} to this list.`);
             }
@@ -129,8 +114,8 @@ const ListSlug = () => {
         {isLoading ? <ListLoader /> :
           <div className='flex flex-wrap justify-center gap-4'>
             {listTypes[listData?.type] === 'Movies' ?
-              listItems.map((item, index) => <Movie key={index} info={item} />)
-              : listItems.map((item, index) => <TvShow key={index} info={item} />)
+              listItems?.map((item, index) => <Movie key={index} info={item} />)
+              : listItems?.map((item, index) => <TvShow key={index} info={item} />)
             }
           </div>
         }
