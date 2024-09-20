@@ -4,7 +4,7 @@ import { faChevronLeft, faChevronRight } from '@fortawesome/free-solid-svg-icons
 const Pagination = ({ currentPage, totalPages, onPageChange }) => {
   const getPageNumbers = () => {
     const pageNumbers = [];
-    const maxPages = 3;
+    const maxPages = 5;
     const startPage = Math.max(1, currentPage - Math.floor(maxPages / 2));
     const endPage = Math.min(totalPages, startPage + maxPages - 1);
 
@@ -36,16 +36,19 @@ const Pagination = ({ currentPage, totalPages, onPageChange }) => {
       <button
         onClick={() => onPageChange(currentPage - 1)}
         disabled={currentPage === 1}
-        className='px-2 py-1 text-xs bg-accent shadow-sm disabled:bg-secondary rounded-md text-primary-foreground'
+        className='px-2 py-1 text-xs bg-accent shadow-sm disabled:bg-secondary rounded-md text-primary-foreground
+        transition-all duration-300'
       >
-        <FontAwesomeIcon icon={faChevronLeft} />
+        Prev
       </button>
       {pageNumbers.map((page, index) => (
         <button
           key={index}
           onClick={() => onPageChange(page)}
           disabled={page === currentPage || page === '...'}
-          className={`px-2 py-1 text-xs rounded-md ${page == currentPage
+          className={`px-2 py-1 text-xs rounded-md 
+            transition-all duration-300
+            ${page == currentPage
               ? 'bg-primary-highlight text-primary-highlight-foreground'
               : 'bg-accent shadow-sm text-primary-foreground'
             }`}
@@ -56,9 +59,10 @@ const Pagination = ({ currentPage, totalPages, onPageChange }) => {
       <button
         onClick={() => onPageChange(currentPage + 1)}
         disabled={currentPage === totalPages}
-        className='px-2 py-1 text-xs bg-accent disabled:bg-secondary shadow-sm rounded-md text-primary-foreground'
+        className='px-2 py-1 text-xs bg-accent disabled:bg-secondary shadow-sm rounded-md text-primary-foreground
+        transition-all duration-300'
       >
-        <FontAwesomeIcon icon={faChevronRight} />
+       Next
       </button>
     </div>
   );

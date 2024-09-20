@@ -67,7 +67,7 @@ const ListSection = ({ userData }) => {
 	return (
 		<motion.section
 			initial={{ marginTop: -120 }}
-			className='relative flex flex-col gap-4 w-[calc(100%-2rem)] p-4 rounded-md'
+			className='relative flex flex-col gap-4 w-[calc(100%-2rem)] p-4'
 		>
 			<h1 className='text-primary-foreground pb-4 text-sm font-semibold'>Lists</h1>
 			{token && user?.username === userData?.username &&

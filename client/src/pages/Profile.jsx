@@ -62,7 +62,7 @@ const Profile = () => {
       </div>
       <motion.div
         initial={{ y: -120 }}
-        className='flex gap-4 w-[calc(100%-2rem)] h-[300px] p-4 rounded-md'
+        className='flex gap-4 w-[calc(100%-2rem)] h-fit p-4 rounded-md'
       >
         <div className='flex flex-col max-w-full items-center gap-4'>
           {!isLoading && userData?.profileImageURL ? (
