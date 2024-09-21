@@ -43,11 +43,11 @@ const Input = React.forwardRef(
           onBlur={() => setFocus(false)}
           className={`bg-transparent rounded-md p-2 outline-none text-primary-foreground
 				transition-all duration-300
-				focus:shadow-[var(--accent-secondary)_0_1px_0_0]
+				focus:shadow-[var(--accent-secondary)_0_2px_0_0]
 				${
           value
-            ? "shadow-[var(--highlight)_1px_1px_0_0px]"
-            : "shadow-[var(--accent-secondary)_0px_1px_0_0]"
+            ? "shadow-[var(--highlight)_2px_2px_0_0px]"
+            : "shadow-[var(--accent-secondary)_0px_2px_0_0]"
         } ${className}`}
           value={value}
           onChange={(e) => onChange(e)}

@@ -113,7 +113,7 @@ const SignupForm = () => {
         autoComplete="on"
         className={`${
           !testEmail(credentials.email) && credentials.email !== ""
-            ? "shadow-[0px_1px_0_0] shadow-error"
+            ? "shadow-[0px_2px_0_0] shadow-error"
             : ""
         }`}
         value={credentials.email}
@@ -131,7 +131,7 @@ const SignupForm = () => {
           value={credentials.password}
           className={`${
             !isPasswordmatched && credentials.password
-              ? "shadow-[1px_1px_0_0] shadow-error"
+              ? "shadow-[2px_2px_0_0] shadow-error"
               : ""
           }`}
           onChange={(e) =>
@@ -161,7 +161,7 @@ const SignupForm = () => {
           value={confirmedPassword}
           className={`${
             !isPasswordmatched && confirmedPassword
-              ? "shadow-[1px_1px_0_0] shadow-error"
+              ? "shadow-[2px_2px_0_0] shadow-error"
               : ""
           }`}
           onChange={(e) => setConfirmedPassword(e.target.value)}

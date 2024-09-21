@@ -99,7 +99,7 @@ const AccountRecovery = () => {
             value={credentials.password}
             className={`${
               !isPasswordMatched && credentials.password
-                ? "shadow-[1px_1px_0_0] shadow-error"
+                ? "shadow-[2px_2px_0_0] shadow-error"
                 : ""
             }`}
             onChange={(e) =>
@@ -129,7 +129,7 @@ const AccountRecovery = () => {
             value={confirmedPassword}
             className={`${
               !isPasswordMatched && confirmedPassword
-                ? "shadow-[1px_1px_0_0] shadow-error"
+                ? "shadow-[2px_2px_0_0] shadow-error"
                 : ""
             }`}
             onChange={(e) => setConfirmedPassword(e.target.value)}
