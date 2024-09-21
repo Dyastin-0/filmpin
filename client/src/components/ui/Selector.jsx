@@ -1,4 +1,4 @@
-import Checkbox from '../ui/Checkbox';
+import Checkbox from "../ui/Checkbox";
 
 const Selector = ({ items, selectedGenres, setSelectedGenres }) => {
   const handleCheckboxChange = (genre) => {
@@ -10,7 +10,7 @@ const Selector = ({ items, selectedGenres, setSelectedGenres }) => {
   };
 
   return (
-    <div className='flex flex-wrap justify-center gap-2'>
+    <div className="flex flex-wrap justify-center gap-2">
       {items.map((item, index) => (
         <Checkbox
           key={index}

@@ -1,13 +1,13 @@
-import { Autoplay, Navigation, Pagination } from 'swiper/modules';
+import { Autoplay, Navigation, Pagination } from "swiper/modules";
 
 export const swiperConfig = {
   speed: 1000,
   spaceBetween: 14,
-  slidesPerView: 'auto',
+  slidesPerView: "auto",
   navigation: true,
-  lazy: 'true',
+  lazy: "true",
   modules: [Navigation],
-  className: 'swiper-slide',
+  className: "swiper-slide",
 };
 
 export const swiperAutoPlayConfig = {
@@ -16,18 +16,18 @@ export const swiperAutoPlayConfig = {
   loop: true,
   slidesPerView: 1,
   autoplay: {
-    delay: '3000',
-    disableOnInteraction: false
+    delay: "3000",
+    disableOnInteraction: false,
   },
-  lazy: 'true',
+  lazy: "true",
   modules: [Autoplay, Pagination],
-  className: 'swiper-slide',
+  className: "swiper-slide",
 };
 
 export const swiperConfigNormal = {
   speed: 1000,
   spaceBetween: 14,
-  slidesPerView: 'auto',
-  lazy: 'true',
-  className: 'swiper-slide',
+  slidesPerView: "auto",
+  lazy: "true",
+  className: "swiper-slide",
 };

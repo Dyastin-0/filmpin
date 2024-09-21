@@ -1,23 +1,27 @@
-import React, { useState, useEffect } from 'react';
-import { Link, useLocation, useNavigate } from 'react-router-dom';
-import { useAuth } from '../hooks/useAuth';
-import axios from 'axios';
-import SearchInput from './ui/SearchInput';
-import Button from './ui/Button';
-import { Dropdown, DropdownItem } from './ui/Dropdown';
-import { useThemeToggle } from '../hooks/useTheme';
-import { motion } from 'framer-motion';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faBars, faSignOutAlt, faUser } from '@fortawesome/free-solid-svg-icons';
-import SideNavbar from './SideNavbar';
+import React, { useState, useEffect } from "react";
+import { Link, useLocation, useNavigate } from "react-router-dom";
+import { useAuth } from "../hooks/useAuth";
+import axios from "axios";
+import SearchInput from "./ui/SearchInput";
+import Button from "./ui/Button";
+import { Dropdown, DropdownItem } from "./ui/Dropdown";
+import { useThemeToggle } from "../hooks/useTheme";
+import { motion } from "framer-motion";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import {
+  faBars,
+  faSignOutAlt,
+  faUser,
+} from "@fortawesome/free-solid-svg-icons";
+import SideNavbar from "./SideNavbar";
 
 const routes = [
-  { path: '/home', name: 'Home' },
-  { path: '/discover', name: 'Discover' }
+  { path: "/home", name: "Home" },
+  { path: "/discover", name: "Discover" },
 ];
 const authRoutes = [
-  { path: '/sign-in', name: 'Sign in' },
-  { path: '/sign-up', name: 'Sign up' }
+  { path: "/sign-in", name: "Sign in" },
+  { path: "/sign-up", name: "Sign up" },
 ];
 
 const Navbar = () => {
@@ -33,19 +37,22 @@ const Navbar = () => {
 
   const handleSignout = async () => {
     try {
-      await axios.post('/sign-out');
+      await axios.post("/sign-out");
       setToken(null);
       setUser(null);
-      navigate('/');
+      navigate("/");
     } catch (error) {
       console.error(error);
     }
-  }
+  };
 
   const handleSearch = (e) => {
     e.preventDefault();
-    if (query) navigate(`/movies/search?query=${query.replace(/[_\s]/g, '+')}&page=${1}`);
-  }
+    if (query)
+      navigate(
+        `/movies/search?query=${query.replace(/[_\s]/g, "+")}&page=${1}`
+      );
+  };
 
   const toggleSideNavbar = () => setOpenSideNavbar(!opensideNavbar);
 
@@ -56,94 +63,126 @@ const Navbar = () => {
       setLastScrollY(currentScrollY);
     };
 
-    window.addEventListener('scroll', handleScroll);
-    return () => window.removeEventListener('scroll', handleScroll);
+    window.addEventListener("scroll", handleScroll);
+    return () => window.removeEventListener("scroll", handleScroll);
   }, [lastScrollY]);
 
   useEffect(() => {
     const handleResize = () => setViewWidth(window.innerWidth);
 
-    window.addEventListener('resize', handleResize);
-    return () => window.removeEventListener('resize', handleResize);
+    window.addEventListener("resize", handleResize);
+    return () => window.removeEventListener("resize", handleResize);
   }, [viewWidth]);
 
   return (
     <motion.div
       className={`sticky top-4 flex justify-between rounded-lg w-full p-3 gap-3 shadow-sm z-40 bg-primary
-      ${lastScrollY > 50 ? 'border border-secondary-accent' : ''}`}
+      ${lastScrollY > 50 ? "border border-secondary-accent" : ""}`}
       initial={{ y: 0 }}
       animate={isScrollingDown ? { y: -100 } : { y: 0 }}
-      transition={{ type: 'spring', stiffness: 100, damping: 20 }}
+      transition={{ type: "spring", stiffness: 100, damping: 20 }}
     >
-      <div className='flex justify-center items-center gap-2'>
-        {viewWidth < 500 && <FontAwesomeIcon icon={faBars} onClick={toggleSideNavbar} className='hover:cursor-pointer' />}
-        <Link className='outline-none' to='/'>
-          <div className='flex justify-center items-center h-full font-semibold'>
-            <h1 className='text-md text-primary-highlight'>Film</h1>
-            <h1 className='text-md text-primary-foreground'>pin</h1>
+      <div className="flex justify-center items-center gap-2">
+        {viewWidth < 500 && (
+          <FontAwesomeIcon
+            icon={faBars}
+            onClick={toggleSideNavbar}
+            className="hover:cursor-pointer"
+          />
+        )}
+        <Link className="outline-none" to="/">
+          <div className="flex justify-center items-center h-full font-semibold">
+            <h1 className="text-md text-primary-highlight">Film</h1>
+            <h1 className="text-md text-primary-foreground">pin</h1>
           </div>
         </Link>
       </div>
-      <SideNavbar isOpen={opensideNavbar} toggle={toggleSideNavbar} authRoutes={authRoutes} routes={routes} token={token} />
-      <div className='flex w-fit items-center gap-3'>
-        {token && viewWidth > 500 && routes.map((route, index) => (
-          <Button
-            key={index}
-            onClick={() => navigate(route.path)}
-            variant='link'
-            text={route.name}
-            className={`${route.path === location.pathname ? 'text-primary-highlight shadow-[var(--highlight)_0_2px_0_0]' : ''}`}
-          />
-        ))}
-        {!token && viewWidth > 500 && authRoutes.map((route, index) => (
-          <Button
-            key={index}
-            onClick={() => navigate(route.path)}
-            variant='link'
-            text={route.name}
-            className={`${route.path === location.pathname ? 'text-primary-highlight shadow-[var(--highlight)_0_2px_0_0]' : ''}`}
-          />
-        ))}
-        <div className='max-w-full'>
-          {token &&
+      <SideNavbar
+        isOpen={opensideNavbar}
+        toggle={toggleSideNavbar}
+        authRoutes={authRoutes}
+        routes={routes}
+        token={token}
+      />
+      <div className="flex w-fit items-center gap-3">
+        {token &&
+          viewWidth > 500 &&
+          routes.map((route, index) => (
+            <Button
+              key={index}
+              onClick={() => navigate(route.path)}
+              variant="link"
+              text={route.name}
+              className={`${
+                route.path === location.pathname
+                  ? "text-primary-highlight shadow-[var(--highlight)_0_2px_0_0]"
+                  : ""
+              }`}
+            />
+          ))}
+        {!token &&
+          viewWidth > 500 &&
+          authRoutes.map((route, index) => (
+            <Button
+              key={index}
+              onClick={() => navigate(route.path)}
+              variant="link"
+              text={route.name}
+              className={`${
+                route.path === location.pathname
+                  ? "text-primary-highlight shadow-[var(--highlight)_0_2px_0_0]"
+                  : ""
+              }`}
+            />
+          ))}
+        <div className="max-w-full">
+          {token && (
             <SearchInput
               onSubmit={handleSearch}
-              type='text'
-              id='search'
-              placeholder='Search'
+              type="text"
+              id="search"
+              placeholder="Search"
               onChange={(e) => setQuery(e.target.value)}
             />
-          }
+          )}
         </div>
       </div>
-      <div className='flex w-fit gap-3 justify-center items-center'>
-        <Button variant='default_rounded' icon={icon} onClick={toggleTheme} className='p-2' />
-        {token &&
+      <div className="flex w-fit gap-3 justify-center items-center">
+        <Button
+          variant="default_rounded"
+          icon={icon}
+          onClick={toggleTheme}
+          className="p-2"
+        />
+        {token && (
           <Dropdown
-            name={user.profileImageURL ?
-              <img
-                loading='lazy'
-                src={user.profileImageURL}
-                className='max-w-[30px] max-h-[30px] object-cover aspect-square rounded-full'
-              />
-              : <div className='flex justify-center items-center w-[30px] h-[30px] rounded-full bg-secondary text-primary-highlight text-xs'>
-                {user.username[0]}
-              </div>
+            name={
+              user.profileImageURL ? (
+                <img
+                  loading="lazy"
+                  src={user.profileImageURL}
+                  className="max-w-[30px] max-h-[30px] object-cover aspect-square rounded-full"
+                />
+              ) : (
+                <div className="flex justify-center items-center w-[30px] h-[30px] rounded-full bg-secondary text-primary-highlight text-xs">
+                  {user.username[0]}
+                </div>
+              )
             }
           >
             <DropdownItem onClick={() => navigate(`/${user.username}`)}>
               Profile
-              <FontAwesomeIcon size='xs' icon={faUser} className='ml-1' />
+              <FontAwesomeIcon size="xs" icon={faUser} className="ml-1" />
             </DropdownItem>
             <DropdownItem onClick={handleSignout}>
               Sign out
-              <FontAwesomeIcon size='xs' icon={faSignOutAlt} className='ml-1' />
+              <FontAwesomeIcon size="xs" icon={faSignOutAlt} className="ml-1" />
             </DropdownItem>
           </Dropdown>
-        }
+        )}
       </div>
     </motion.div>
   );
-}
+};
 
 export default Navbar;

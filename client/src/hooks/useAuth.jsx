@@ -1,6 +1,6 @@
-import React, { useEffect, useState, useContext, createContext } from 'react';
-import axios from 'axios';
-import { io } from 'socket.io-client';
+import React, { useEffect, useState, useContext, createContext } from "react";
+import axios from "axios";
+import { io } from "socket.io-client";
 
 const AuthContext = createContext();
 
@@ -14,7 +14,7 @@ export function AuthProvider({ children }) {
   useEffect(() => {
     const getToken = async () => {
       try {
-        const response = await axios.get('/refreshAccessToken');
+        const response = await axios.get("/refreshAccessToken");
         setToken(response.data.accessToken);
         setUser(response.data.user);
         setSigningIn(false);
@@ -23,7 +23,7 @@ export function AuthProvider({ children }) {
         setToken(null);
         setSigningIn(false);
       }
-    }
+    };
     getToken();
   }, []);
 
@@ -32,16 +32,16 @@ export function AuthProvider({ children }) {
       const randomId = crypto.randomUUID();
       const newSocket = io(import.meta.env.VITE_SOCKET_URL, {
         extraHeaders: {
-          Authorization: `Bearer ${token}`
+          Authorization: `Bearer ${token}`,
         },
         query: {
           randomId: randomId,
-          targetStream: 'user',
-        }
+          targetStream: "user",
+        },
       });
 
       newSocket.on(`stream/user/${user._id}/${randomId}`, (change) => {
-        if (change.type === 'delete') {
+        if (change.type === "delete") {
           setToken(null);
           setUser(null);
         } else {
@@ -61,12 +61,8 @@ export function AuthProvider({ children }) {
     user,
     setUser,
     setToken,
-    signingIn
-  }
+    signingIn,
+  };
 
-  return (
-    <AuthContext.Provider value={value}>
-      {children}
-    </AuthContext.Provider>
-  );
+  return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
 }

@@ -1,5 +1,8 @@
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faChevronLeft, faChevronRight } from '@fortawesome/free-solid-svg-icons';
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import {
+  faChevronLeft,
+  faChevronRight,
+} from "@fortawesome/free-solid-svg-icons";
 
 const Pagination = ({ currentPage, totalPages, onPageChange }) => {
   const getPageNumbers = () => {
@@ -15,14 +18,14 @@ const Pagination = ({ currentPage, totalPages, onPageChange }) => {
     if (startPage > 1) {
       pageNumbers.unshift(1);
       if (startPage > 2) {
-        pageNumbers.splice(1, 0, '...');
+        pageNumbers.splice(1, 0, "...");
       }
     }
 
     if (endPage < totalPages) {
       pageNumbers.push(totalPages);
       if (endPage < totalPages - 1) {
-        pageNumbers.splice(pageNumbers.length - 1, 0, '...');
+        pageNumbers.splice(pageNumbers.length - 1, 0, "...");
       }
     }
 
@@ -32,12 +35,12 @@ const Pagination = ({ currentPage, totalPages, onPageChange }) => {
   const pageNumbers = getPageNumbers();
 
   return (
-    <div className='flex gap-2'>
+    <div className="flex gap-2">
       <button
         onClick={() => onPageChange(currentPage - 1)}
         disabled={currentPage === 1}
-        className='px-2 py-1 text-xs bg-accent shadow-sm disabled:bg-secondary rounded-md text-primary-foreground
-        transition-all duration-300'
+        className="px-2 py-1 text-xs bg-accent shadow-sm disabled:bg-secondary rounded-md text-primary-foreground
+        transition-all duration-300"
       >
         Prev
       </button>
@@ -45,12 +48,13 @@ const Pagination = ({ currentPage, totalPages, onPageChange }) => {
         <button
           key={index}
           onClick={() => onPageChange(page)}
-          disabled={page === currentPage || page === '...'}
+          disabled={page === currentPage || page === "..."}
           className={`px-2 py-1 text-xs rounded-md 
             transition-all duration-300
-            ${page == currentPage
-              ? 'bg-primary-highlight text-primary-highlight-foreground'
-              : 'bg-accent shadow-sm text-primary-foreground'
+            ${
+              page == currentPage
+                ? "bg-primary-highlight text-primary-highlight-foreground"
+                : "bg-accent shadow-sm text-primary-foreground"
             }`}
         >
           {page}
@@ -59,10 +63,10 @@ const Pagination = ({ currentPage, totalPages, onPageChange }) => {
       <button
         onClick={() => onPageChange(currentPage + 1)}
         disabled={currentPage === totalPages}
-        className='px-2 py-1 text-xs bg-accent disabled:bg-secondary shadow-sm rounded-md text-primary-foreground
-        transition-all duration-300'
+        className="px-2 py-1 text-xs bg-accent disabled:bg-secondary shadow-sm rounded-md text-primary-foreground
+        transition-all duration-300"
       >
-       Next
+        Next
       </button>
     </div>
   );
