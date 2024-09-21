@@ -1,6 +1,5 @@
 const emailTemplate = (title, message, link, linkTitle) => {
-	return (
-		`
+  return `
 		<!DOCTYPE html>
 		<html lang='en'>
 
@@ -21,7 +20,11 @@ const emailTemplate = (title, message, link, linkTitle) => {
 							</div>
 							<h1 style='font-size: 16px; color: #686D76; margin-top: 1rem;'>${title}</h1>
 							<p style='font-size: 12px; color: #686D76;'>${message}</p>
-							${link ? `<a href='${link}' style='font-size: 12px; color: #508C9B; text-decoration: underline;'>${linkTitle}</a>` : ''}
+							${
+                link
+                  ? `<a href='${link}' style='font-size: 12px; color: #508C9B; text-decoration: underline;'>${linkTitle}</a>`
+                  : ""
+              }
 						</td>
 					</tr>
 				</table>
@@ -29,10 +32,9 @@ const emailTemplate = (title, message, link, linkTitle) => {
 		</body>
 
 		</html>
-		`
-	);
-}
+		`;
+};
 
 module.exports = {
-	emailTemplate
-}
+  emailTemplate,
+};

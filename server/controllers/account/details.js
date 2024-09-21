@@ -1,5 +1,5 @@
-const Users = require('../../models/user');
-const { uploadImage } = require('../../helpers/cloudinaryApi');
+const Users = require("../../models/user");
+const { uploadImage } = require("../../helpers/cloudinaryApi");
 
 /**
  * Sets the backdrop image path for a user.
@@ -12,22 +12,25 @@ const { uploadImage } = require('../../helpers/cloudinaryApi');
  * @throws {Error} If user is not found or an internal server error occurs, returns appropriate status codes.
  */
 const handleSetBackdrop = async (req, res) => {
-	const { user_id, backdrop_path } = req.query;
-	const { id } = req;
+  const { user_id, backdrop_path } = req.query;
+  const { id } = req;
 
-	if (!user_id) return res.status(400).json({ message: 'Missing ID.' });
-	if (user_id !== id) return res.status(400).json({ message: 'Invalid ID.' });
+  if (!user_id) return res.status(400).json({ message: "Missing ID." });
+  if (user_id !== id) return res.status(400).json({ message: "Invalid ID." });
 
-	try {
-		const user = await Users.findOne({ _id: id });
-		if (!user) return res.status(404).json({ message: 'User not found.' });
-		await Users.updateOne({ _id: id }, { $set: { backdropPath: backdrop_path } });
-		res.json({ backdropPath: backdrop_path });
-	} catch (error) {
-		console.error('Failed to set backdrop.', error);
-		res.sendStatus(500);
-	}
-}
+  try {
+    const user = await Users.findOne({ _id: id });
+    if (!user) return res.status(404).json({ message: "User not found." });
+    await Users.updateOne(
+      { _id: id },
+      { $set: { backdropPath: backdrop_path } }
+    );
+    res.json({ backdropPath: backdrop_path });
+  } catch (error) {
+    console.error("Failed to set backdrop.", error);
+    res.sendStatus(500);
+  }
+};
 
 /**
  * Sets the profile image for a user by uploading it to Cloudinary.
@@ -40,32 +43,35 @@ const handleSetBackdrop = async (req, res) => {
  * @throws {Error} If user is not found, file is missing, or an internal server error occurs, returns appropriate status codes.
  */
 const handleSetProfile = async (req, res) => {
-	const { user_id } = req.query;
-	const { id } = req;
-	const file = req.file;
+  const { user_id } = req.query;
+  const { id } = req;
+  const file = req.file;
 
-	if (!user_id) return res.status(400).json({ message: 'Missing ID.' });
-	if (user_id !== id) return res.status(400).json({ message: 'Invalid ID.' });
-	if (!file) return res.status(400).json({ message: 'Missing file.' });
+  if (!user_id) return res.status(400).json({ message: "Missing ID." });
+  if (user_id !== id) return res.status(400).json({ message: "Invalid ID." });
+  if (!file) return res.status(400).json({ message: "Missing file." });
 
-	try {
-		const publicId = `${id}-profile`;
-		const result = await uploadImage(file.buffer, publicId);
+  try {
+    const publicId = `${id}-profile`;
+    const result = await uploadImage(file.buffer, publicId);
 
-		const user = await Users.findOne({ _id: id });
-		if (!user) return res.status(404).json({ message: 'User not found.' });
+    const user = await Users.findOne({ _id: id });
+    if (!user) return res.status(404).json({ message: "User not found." });
 
-		const profileURL = result.secure_url;
-		await Users.updateOne({ _id: id }, { $set: { profileImageURL: profileURL } });
+    const profileURL = result.secure_url;
+    await Users.updateOne(
+      { _id: id },
+      { $set: { profileImageURL: profileURL } }
+    );
 
-		res.json(result);
-	} catch (error) {
-		console.error('Failed to set profile.', error);
-		res.sendStatus(500);
-	}
-}
+    res.json(result);
+  } catch (error) {
+    console.error("Failed to set profile.", error);
+    res.sendStatus(500);
+  }
+};
 
 module.exports = {
-	handleSetBackdrop,
-	handleSetProfile
-}
+  handleSetBackdrop,
+  handleSetProfile,
+};

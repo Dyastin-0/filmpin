@@ -1,5 +1,5 @@
-const api = require('../../helpers/tmdbApi');
-const { tvGenres } = require('../../models/genreList');
+const api = require("../../helpers/tmdbApi");
+const { tvGenres } = require("../../models/genreList");
 
 /**
  * Fetches a paginated list of TV shows from a specific category.
@@ -11,15 +11,17 @@ const { tvGenres } = require('../../models/genreList');
  * @throws {Error} If the request fails, returns a 500 status.
  */
 const handleGetCategory = async (req, res) => {
-	const { category, page } = req.query;
-	try {
-		const response = await api.get(`tv/${category}?language=en-US&page=${page}&sort_by=vote_count.desc`);
-		res.json(response.data);
-	} catch (error) {
-		console.error('Failed to fetch TV list.', error);
-		res.sendStatus(500);
-	}
-}
+  const { category, page } = req.query;
+  try {
+    const response = await api.get(
+      `tv/${category}?language=en-US&page=${page}&sort_by=vote_count.desc`
+    );
+    res.json(response.data);
+  } catch (error) {
+    console.error("Failed to fetch TV list.", error);
+    res.sendStatus(500);
+  }
+};
 
 /**
  * Fetches detailed information for a specific TV show.
@@ -30,15 +32,15 @@ const handleGetCategory = async (req, res) => {
  * @throws {Error} If the request fails, returns a 500 status.
  */
 const handleGetDetails = async (req, res) => {
-	const { show_id } = req.query;
-	try {
-		const response = await api.get(`tv/${show_id}?language=en-US`);
-		res.json(response.data);
-	} catch (error) {
-		console.error('Failed to fetch TV details', error);
-		res.sendStatus(500);
-	}
-}
+  const { show_id } = req.query;
+  try {
+    const response = await api.get(`tv/${show_id}?language=en-US`);
+    res.json(response.data);
+  } catch (error) {
+    console.error("Failed to fetch TV details", error);
+    res.sendStatus(500);
+  }
+};
 
 /**
  * Fetches credits (cast and crew) for a specific TV show.
@@ -49,15 +51,15 @@ const handleGetDetails = async (req, res) => {
  * @throws {Error} If the request fails, returns a 500 status.
  */
 const handleGetCredits = async (req, res) => {
-	const { show_id } = req.query;
-	try {
-		const response = await api.get(`tv/${show_id}/credits?language=en-US`);
-		res.json(response.data);
-	} catch (error) {
-		console.error('Failed to fetch credits.', error);
-		res.sendStatus(500);
-	}
-}
+  const { show_id } = req.query;
+  try {
+    const response = await api.get(`tv/${show_id}/credits?language=en-US`);
+    res.json(response.data);
+  } catch (error) {
+    console.error("Failed to fetch credits.", error);
+    res.sendStatus(500);
+  }
+};
 
 /**
  * Searches for TV shows based on a query string.
@@ -69,15 +71,17 @@ const handleGetCredits = async (req, res) => {
  * @throws {Error} If the request fails, returns a 500 status.
  */
 const handleSearch = async (req, res) => {
-	const { query, page } = req.query;
-	try {
-		const response = await api.get(`search/tv?query=${query}&include_adult=false&video=false&language=en-US&page=${page}`);
-		res.json(response.data);
-	} catch (error) {
-		console.error('Failed to search.', error);
-		res.sendStatus(500);
-	}
-}
+  const { query, page } = req.query;
+  try {
+    const response = await api.get(
+      `search/tv?query=${query}&include_adult=false&video=false&language=en-US&page=${page}`
+    );
+    res.json(response.data);
+  } catch (error) {
+    console.error("Failed to search.", error);
+    res.sendStatus(500);
+  }
+};
 
 /**
  * Fetches videos (trailers, teasers, etc.) for a specific TV show.
@@ -88,15 +92,15 @@ const handleSearch = async (req, res) => {
  * @throws {Error} If the request fails, returns a 500 status.
  */
 const handleGetVideo = async (req, res) => {
-	const { show_id } = req.query;
-	try {
-		const response = await api.get(`tv/${show_id}/videos?language=en-US`);
-		res.json(response.data);
-	} catch (error) {
-		console.error('Failed to fetch videos.', error);
-		res.sendStatus(500);
-	}
-}
+  const { show_id } = req.query;
+  try {
+    const response = await api.get(`tv/${show_id}/videos?language=en-US`);
+    res.json(response.data);
+  } catch (error) {
+    console.error("Failed to fetch videos.", error);
+    res.sendStatus(500);
+  }
+};
 
 /**
  * Fetches a list of TV shows based on genres.
@@ -109,18 +113,20 @@ const handleGetVideo = async (req, res) => {
  * @throws {Error} If the request fails, returns a 500 status.
  */
 const handleDiscover = async (req, res) => {
-	const { genres, sort_by, page } = req.query;
-	const genresArray = genres?.split('_');
-	const genreKeys = genresArray?.map(genre => tvGenres[genre]);
-	const joinedKeys = genreKeys?.join(',');
-	try {
-		const response = await api.get(`discover/tv?include_adult=false&language=en-US&with_genres=${joinedKeys}&sort_by=${sort_by}.desc&page=${page}`);
-		res.json(response.data);
-	} catch (error) {
-		console.error('Failed to get discover.', error);
-		res.sendStatus(500);
-	}
-}
+  const { genres, sort_by, page } = req.query;
+  const genresArray = genres?.split("_");
+  const genreKeys = genresArray?.map((genre) => tvGenres[genre]);
+  const joinedKeys = genreKeys?.join(",");
+  try {
+    const response = await api.get(
+      `discover/tv?include_adult=false&language=en-US&with_genres=${joinedKeys}&sort_by=${sort_by}.desc&page=${page}`
+    );
+    res.json(response.data);
+  } catch (error) {
+    console.error("Failed to get discover.", error);
+    res.sendStatus(500);
+  }
+};
 
 /**
  * Fetches details for a specific season of a TV show.
@@ -132,16 +138,18 @@ const handleDiscover = async (req, res) => {
  * @throws {Error} If the request fails, returns a 500 status.
  */
 const handleGetSeason = async (req, res) => {
-	const { tvshow_id, season_number } = req.query;
+  const { tvshow_id, season_number } = req.query;
 
-	try {
-		const response = await api.get(`tv/${tvshow_id}/season/${season_number}?language=en-US`);
-		return res.json(response.data);
-	} catch (error) {
-		console.error('Failed fetching TV season.', error);
-		res.sendStatus(500);
-	}
-}
+  try {
+    const response = await api.get(
+      `tv/${tvshow_id}/season/${season_number}?language=en-US`
+    );
+    return res.json(response.data);
+  } catch (error) {
+    console.error("Failed fetching TV season.", error);
+    res.sendStatus(500);
+  }
+};
 
 /**
  * Fetches details for a specific episode of a TV show season.
@@ -154,16 +162,18 @@ const handleGetSeason = async (req, res) => {
  * @throws {Error} If the request fails, returns a 500 status.
  */
 const handleGetEpisode = async (req, res) => {
-	const { tvshow_id, season_number, episode_number } = req.query;
+  const { tvshow_id, season_number, episode_number } = req.query;
 
-	try {
-		const response = await api.get(`tv/${tvshow_id}/season/${season_number}/episode/${episode_number}?language=en-US`);
-		return res.json(response.data);
-	} catch (error) {
-		console.error('Failed to fetch TV episode.');
-		res.sendStatus(500);
-	}
-}
+  try {
+    const response = await api.get(
+      `tv/${tvshow_id}/season/${season_number}/episode/${episode_number}?language=en-US`
+    );
+    return res.json(response.data);
+  } catch (error) {
+    console.error("Failed to fetch TV episode.");
+    res.sendStatus(500);
+  }
+};
 
 /**
  * Fetches videos for a specific season of a TV show.
@@ -175,16 +185,18 @@ const handleGetEpisode = async (req, res) => {
  * @throws {Error} If the request fails, returns a 500 status.
  */
 const handleGetSeasonVideo = async (req, res) => {
-	const { tvshow_id, tvshow_season } = req.query;
+  const { tvshow_id, tvshow_season } = req.query;
 
-	try {
-		const response = await api.get(`tv/${tvshow_id}/season/${tvshow_season}/videos?language=en-US`);
-		return res.json(response.data);
-	} catch (error) {
-		console.error('Failed to get TV show season videos.', error);
-		res.sendStatus(500);
-	}
-}
+  try {
+    const response = await api.get(
+      `tv/${tvshow_id}/season/${tvshow_season}/videos?language=en-US`
+    );
+    return res.json(response.data);
+  } catch (error) {
+    console.error("Failed to get TV show season videos.", error);
+    res.sendStatus(500);
+  }
+};
 
 /**
  * Fetches videos for a specific episode of a TV show season.
@@ -197,26 +209,28 @@ const handleGetSeasonVideo = async (req, res) => {
  * @throws {Error} If the request fails, returns a 500 status.
  */
 const handleGetEpisodeVideo = async (req, res) => {
-	const { tvshow_id, tvshow_season, episode_number } = req.query;
+  const { tvshow_id, tvshow_season, episode_number } = req.query;
 
-	try {
-		const response = await api.get(`tv/${tvshow_id}/season/${tvshow_season}/episode/${episode_number}/videos?language=en-US`);
-		res.json(response.data);
-	} catch (error) {
-		console.error('Failed to get TV show episode videos.', error);
-		res.sendStatus(500);
-	}
-}
+  try {
+    const response = await api.get(
+      `tv/${tvshow_id}/season/${tvshow_season}/episode/${episode_number}/videos?language=en-US`
+    );
+    res.json(response.data);
+  } catch (error) {
+    console.error("Failed to get TV show episode videos.", error);
+    res.sendStatus(500);
+  }
+};
 
 module.exports = {
-	handleGetCategory,
-	handleGetDetails,
-	handleGetCredits,
-	handleDiscover,
-	handleSearch,
-	handleGetVideo,
-	handleGetSeason,
-	handleGetEpisode,
-	handleGetSeasonVideo,
-	handleGetEpisodeVideo
-}
+  handleGetCategory,
+  handleGetDetails,
+  handleGetCredits,
+  handleDiscover,
+  handleSearch,
+  handleGetVideo,
+  handleGetSeason,
+  handleGetEpisode,
+  handleGetSeasonVideo,
+  handleGetEpisodeVideo,
+};

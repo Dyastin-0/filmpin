@@ -1,5 +1,5 @@
-const api = require('../../helpers/tmdbApi');
-const { movieGenres } = require('../../models/genreList');
+const api = require("../../helpers/tmdbApi");
+const { movieGenres } = require("../../models/genreList");
 
 /**
  * Fetches a paginated list of movies from a specific category.
@@ -11,16 +11,18 @@ const { movieGenres } = require('../../models/genreList');
  * @throws {Error} If the request fails, returns a 500 status.
  */
 const handleGetCategory = async (req, res) => {
-	const { category, page } = req.query;
+  const { category, page } = req.query;
 
-	try {
-		const response = await api.get(`movie/${category}?language=en-US&page=${page}&sort_by=popularity.desc`);
-		res.json(response.data);
-	} catch (error) {
-		console.error('Failed to fetch list.', error);
-		res.sendStatus(500);
-	}
-}
+  try {
+    const response = await api.get(
+      `movie/${category}?language=en-US&page=${page}&sort_by=popularity.desc`
+    );
+    res.json(response.data);
+  } catch (error) {
+    console.error("Failed to fetch list.", error);
+    res.sendStatus(500);
+  }
+};
 
 /**
  * Fetches detailed information for a specific movie.
@@ -31,15 +33,15 @@ const handleGetCategory = async (req, res) => {
  * @throws {Error} If the request fails, returns a 500 status.
  */
 const handleGetDetails = async (req, res) => {
-	const { movie_id } = req.query;
-	try {
-		const response = await api.get(`movie/${movie_id}?language=en-US`);
-		res.json(response.data);
-	} catch (error) {
-		console.error('Failed to fetch details', error);
-		res.sendStatus(500);
-	}
-}
+  const { movie_id } = req.query;
+  try {
+    const response = await api.get(`movie/${movie_id}?language=en-US`);
+    res.json(response.data);
+  } catch (error) {
+    console.error("Failed to fetch details", error);
+    res.sendStatus(500);
+  }
+};
 
 /**
  * Fetches credits (cast and crew) for a specific movie.
@@ -50,15 +52,17 @@ const handleGetDetails = async (req, res) => {
  * @throws {Error} If the request fails, returns a 500 status.
  */
 const handleGetCredits = async (req, res) => {
-	const { movie_id } = req.query;
-	try {
-		const response = await api.get(`movie/${movie_id}/credits?sort_by=popularity&language=en-US`);
-		res.json(response.data);
-	} catch (error) {
-		console.error('Failed to fetch credits.', error);
-		res.sendStatus(500);
-	}
-}
+  const { movie_id } = req.query;
+  try {
+    const response = await api.get(
+      `movie/${movie_id}/credits?sort_by=popularity&language=en-US`
+    );
+    res.json(response.data);
+  } catch (error) {
+    console.error("Failed to fetch credits.", error);
+    res.sendStatus(500);
+  }
+};
 
 /**
  * Searches for movies based on a query string.
@@ -70,15 +74,17 @@ const handleGetCredits = async (req, res) => {
  * @throws {Error} If the request fails, returns a 500 status.
  */
 const handleSearch = async (req, res) => {
-	const { query, page } = req.query;
-	try {
-		const response = await api.get(`search/movie?query=${query}&include_adult=false&video=false&language=en-US&page=${page}`);
-		res.json(response.data);
-	} catch (error) {
-		console.error('Failed to search.', error);
-		res.sendStatus(500);
-	}
-}
+  const { query, page } = req.query;
+  try {
+    const response = await api.get(
+      `search/movie?query=${query}&include_adult=false&video=false&language=en-US&page=${page}`
+    );
+    res.json(response.data);
+  } catch (error) {
+    console.error("Failed to search.", error);
+    res.sendStatus(500);
+  }
+};
 
 /**
  * Fetches videos (trailers, teasers, etc.) for a specific movie.
@@ -89,15 +95,15 @@ const handleSearch = async (req, res) => {
  * @throws {Error} If the request fails, returns a 500 status.
  */
 const handleGetVideo = async (req, res) => {
-	const { movie_id } = req.query;
-	try {
-		const response = await api.get(`movie/${movie_id}/videos?language=en-US`);
-		res.json(response.data);
-	} catch (error) {
-		console.error('Failed to fetch videos.', error);
-		res.sendStatus(500);
-	}
-}
+  const { movie_id } = req.query;
+  try {
+    const response = await api.get(`movie/${movie_id}/videos?language=en-US`);
+    res.json(response.data);
+  } catch (error) {
+    console.error("Failed to fetch videos.", error);
+    res.sendStatus(500);
+  }
+};
 
 /**
  * Fetches a list of movies based on genres.
@@ -110,20 +116,22 @@ const handleGetVideo = async (req, res) => {
  * @throws {Error} If the request fails, returns a 500 status.
  */
 const handleDiscover = async (req, res) => {
-	const { genres, sort_by, page } = req.query;
+  const { genres, sort_by, page } = req.query;
 
-	const genresArray = genres.split('_');
-	const genreKeys = genresArray.map(genre => movieGenres[genre]);
-	const joinedKeys = genreKeys.join(',');
+  const genresArray = genres.split("_");
+  const genreKeys = genresArray.map((genre) => movieGenres[genre]);
+  const joinedKeys = genreKeys.join(",");
 
-	try {
-		const response = await api.get(`discover/movie?include_adult=false&language=en-US&with_genres=${joinedKeys}&sort_by=${sort_by}.desc&page=${page}`);
-		res.json(response.data);
-	} catch (error) {
-		console.error('Failed to get discover.', error);
-		res.sendStatus(500);
-	}
-}
+  try {
+    const response = await api.get(
+      `discover/movie?include_adult=false&language=en-US&with_genres=${joinedKeys}&sort_by=${sort_by}.desc&page=${page}`
+    );
+    res.json(response.data);
+  } catch (error) {
+    console.error("Failed to get discover.", error);
+    res.sendStatus(500);
+  }
+};
 
 /**
  * Fetches watch providers for a specific movie.
@@ -134,25 +142,25 @@ const handleDiscover = async (req, res) => {
  * @throws {Error} If the request fails, returns a 500 status.
  */
 const handleGetWatchProvider = async (req, res) => {
-	const { movie_id } = req.query;
+  const { movie_id } = req.query;
 
-	if (!movie_id) return res.status(400).json({ message: 'Missing movie ID' });
+  if (!movie_id) return res.status(400).json({ message: "Missing movie ID" });
 
-	try {
-		const response = await api.get(`movie/${movie_id}/watch/providers`);
-		res.json(response.data);
-	} catch (error) {
-		console.error('Failed to get watch providers for movie.', error);
-		res.status(500);
-	}
-}
+  try {
+    const response = await api.get(`movie/${movie_id}/watch/providers`);
+    res.json(response.data);
+  } catch (error) {
+    console.error("Failed to get watch providers for movie.", error);
+    res.status(500);
+  }
+};
 
 module.exports = {
-	handleGetCategory,
-	handleGetDetails,
-	handleGetCredits,
-	handleSearch,
-	handleGetVideo,
-	handleDiscover,
-	handleGetWatchProvider
+  handleGetCategory,
+  handleGetDetails,
+  handleGetCredits,
+  handleSearch,
+  handleGetVideo,
+  handleDiscover,
+  handleGetWatchProvider,
 };

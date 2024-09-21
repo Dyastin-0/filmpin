@@ -1,10 +1,7 @@
-const express = require('express');
+const express = require("express");
 const router = express.Router();
-const {
-	handleGetProfile
-} = require('../../controllers/public/account');
+const { handleGetProfile } = require("../../controllers/public/account");
 
-router.route('/')
-	.get(handleGetProfile);
+router.route("/").get(handleGetProfile);
 
 module.exports = router;

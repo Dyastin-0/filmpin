@@ -1,5 +1,5 @@
-const api = require('../../helpers/tmdbApi');
-const Users = require('../../models/user');
+const api = require("../../helpers/tmdbApi");
+const Users = require("../../models/user");
 
 /**
  * Retrieves public account data for a given username.
@@ -10,26 +10,34 @@ const Users = require('../../models/user');
  * @throws {Error} - Returns status 500 if an internal error occurs.
  */
 const handleGetProfile = async (req, res) => {
-	const { username, id } = req.query;
+  const { username, id } = req.query;
 
-	if (!username && !id) return res.status(400).json({ message: 'Missing user identifier.' });
+  if (!username && !id)
+    return res.status(400).json({ message: "Missing user identifier." });
 
-	try {
-		const user = await Users.findOne({ username }) || await Users.findOne({ _id: id });
+  try {
+    const user =
+      (await Users.findOne({ username })) || (await Users.findOne({ _id: id }));
 
-		if (!user) return res.status(404).json({ message: 'User not found.' });
+    if (!user) return res.status(404).json({ message: "User not found." });
 
-		const { password, verificationToken, recoveryToken, refreshToken, ...userData } = user.toJSON();
-		
-		res.json({
-			user: userData
-		});
-	} catch (error) {
-		console.error('Failed to get public account.', error);
-		res.sendStatus(500);
-	}
-}
+    const {
+      password,
+      verificationToken,
+      recoveryToken,
+      refreshToken,
+      ...userData
+    } = user.toJSON();
+
+    res.json({
+      user: userData,
+    });
+  } catch (error) {
+    console.error("Failed to get public account.", error);
+    res.sendStatus(500);
+  }
+};
 
 module.exports = {
-	handleGetProfile
-}
+  handleGetProfile,
+};
