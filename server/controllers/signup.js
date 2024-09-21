@@ -21,30 +21,28 @@ const { hash } = require("../helpers/hash");
  * @throws {Error} Throws an error if there's an issue during the signup process.
  */
 const handleSignup = async (req, res) => {
-  try {
-    const { username, email, password } = req.body;
+  const { username, email, password } = req.body;
 
-    if (!username)
-      return res
-        .status(400)
-        .json({ message: "Bad request. Username missing." });
-    if (!email) return res.json({ message: "Bad request. Email missing." });
+  if (!username) return res.status(400).json({ message: "Username missing." });
+
+  if (!email) return res.json({ message: "Email missing." });
+
+  if (!password) return res.status(400).json({ message: "Password missing." });
+
+  try {
+    const usernameExist = await Users.findOne({ username: username });
+    console.log(usernameExist, username);
+    if (usernameExist)
+      return res.status(400).json({
+        message: `Username ${username} is already used.`,
+      });
+
     const emailExist = await Users.findOne({ email });
+
     if (emailExist)
       return res
         .status(400)
-        .json({ message: `Bad request. Email ${email} is already used.` });
-    const usernameExist = await Users.findOne({ username });
-    if (usernameExist)
-      return res
-        .status(400)
-        .json({
-          message: `Bad request. Username ${username} is already used.`,
-        });
-    if (!password)
-      return res
-        .status(400)
-        .json({ message: "Bad request. Password missing." });
+        .json({ message: `Email ${email} is already used.` });
 
     const hashedPassword = await hash(password);
 
@@ -69,8 +67,8 @@ const handleSignup = async (req, res) => {
       email,
       "Verify your Filmpin account",
       emailTemplate(
-        "Filmpin Account Verification",
-        "To continue with our app, click the link below. \n If you ignore this email if you did not request for it.",
+        "Verify your account",
+        "To proceed with accessing our app, please click the link below. You may disregard this email if you did not request it.",
         `${process.env.BASE_CLIENT_URL}/account/verification?verificationToken=${verificationToken}`,
         "Verify your account"
       )

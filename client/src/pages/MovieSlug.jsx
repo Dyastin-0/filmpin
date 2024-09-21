@@ -26,6 +26,7 @@ import useSWR from "swr";
 import { Helmet } from "react-helmet";
 import MovieInfoSection from "../components/sections/MovieInfoSection";
 import CreditsSection from "../components/sections/CreditsSection";
+import MovieCommentSection from "../components/sections/MovieCommentSection";
 
 const MovieSlug = () => {
   const [searchParams] = useSearchParams();
@@ -115,6 +116,7 @@ const MovieSlug = () => {
           }))}
         />
       </div>
+      <MovieCommentSection />
     </div>
   );
 };

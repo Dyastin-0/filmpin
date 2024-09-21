@@ -71,10 +71,9 @@ const Root = () => {
           {" "}
           Explore endless movies & TV shows{" "}
         </h1>
-        <h1 className="text-lg text-light font-semibold z-20">
+        <h1 className="text-md text-light font-semibold z-20">
           {" "}
-          Find your next watch using our intuitive UI, seamlessly. Explore Your
-          Next Favorite Flick!{" "}
+          Find your next favorite flick using our intuitive UI, seamlessly.{" "}
         </h1>
       </div>
     </div>

@@ -5,7 +5,6 @@ import { Helmet } from "react-helmet";
 
 const Verification = () => {
   const [searchParams] = useSearchParams();
-  z;
   const [message, setMessage] = useState(null);
   const verificationToken = searchParams.get("verificationToken");
 

@@ -7,6 +7,7 @@ import ProgressBar from "../ui/ProgressBar";
 import { ShowPassword } from "../utils/ShowPassword";
 import Button from "../ui/Button";
 import { testEmail, testPassword, testUsername } from "../../helpers/regex";
+import axios from "axios";
 
 const SignupForm = () => {
   const navigate = useNavigate();
@@ -76,7 +77,7 @@ const SignupForm = () => {
       );
       navigate("/sign-in", { state: { from: "/sign-up" } });
     } catch (error) {
-      toastError("Email already used.");
+      toastError(error.response.data.message);
     } finally {
       setSigningUp(false);
     }
