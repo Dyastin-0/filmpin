@@ -47,7 +47,7 @@ const SideNavbar = ({ isOpen, toggle, routes, authRoutes, token }) => {
                 text={route.name}
                 className={`${
                   route.path === location.pathname
-                    ? "text-primary-highlight shadow-[var(--highlight)_0_2px_0_0]"
+                    ? "text-primary-highlight shadow-[var(--highlight)_0_1px_0_0]"
                     : ""
                 }`}
               />
@@ -63,7 +63,7 @@ const SideNavbar = ({ isOpen, toggle, routes, authRoutes, token }) => {
                 text={route.name}
                 className={`${
                   route.path === location.pathname
-                    ? "text-primary-highlight shadow-[var(--highlight)_0_2px_0_0]"
+                    ? "text-primary-highlight shadow-[var(--highlight)_0_1px_0_0]"
                     : ""
                 }`}
               />

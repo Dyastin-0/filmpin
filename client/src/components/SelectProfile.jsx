@@ -72,7 +72,7 @@ const SelectProfile = () => {
           htmlFor="imageFile"
           className="text-xs text-primary-foreground bg-secondary p-2 rounded-md
 					transition-all duration-300
-					hover:cursor-pointer hover:shadow-[var(--accent)_0_0_0_2px]
+					hover:cursor-pointer hover:shadow-[var(--accent)_0_0_0_1px]
 					"
         >
           Select an image

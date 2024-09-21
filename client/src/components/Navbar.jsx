@@ -1,5 +1,10 @@
 import React, { useState, useEffect } from "react";
-import { Link, useLocation, useNavigate } from "react-router-dom";
+import {
+  Link,
+  useLocation,
+  useNavigate,
+  useSearchParams,
+} from "react-router-dom";
 import { useAuth } from "../hooks/useAuth";
 import axios from "axios";
 import SearchInput from "./ui/SearchInput";
@@ -25,6 +30,7 @@ const authRoutes = [
 ];
 
 const Navbar = () => {
+  const [searchParams] = useSearchParams();
   const navigate = useNavigate();
   const location = useLocation();
   const { toggleTheme, icon } = useThemeToggle();
@@ -50,7 +56,10 @@ const Navbar = () => {
     e.preventDefault();
     if (query)
       navigate(
-        `/movies/search?query=${query.replace(/[_\s]/g, "+")}&page=${1}`
+        `/search?query=${query.replace(
+          /[_\s]/g,
+          "+"
+        )}&movies-page=1&tvshows-page=1`
       );
   };
 
@@ -115,7 +124,7 @@ const Navbar = () => {
               text={route.name}
               className={`${
                 route.path === location.pathname
-                  ? "text-primary-highlight shadow-[var(--highlight)_0_2px_0_0]"
+                  ? "text-primary-highlight shadow-[var(--highlight)_0_1px_0_0]"
                   : ""
               }`}
             />
@@ -130,7 +139,7 @@ const Navbar = () => {
               text={route.name}
               className={`${
                 route.path === location.pathname
-                  ? "text-primary-highlight shadow-[var(--highlight)_0_2px_0_0]"
+                  ? "text-primary-highlight shadow-[var(--highlight)_0_1px_0_0]"
                   : ""
               }`}
             />

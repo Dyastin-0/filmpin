@@ -13,7 +13,7 @@ const SelectBackdrop = () => {
 
   const { data: backdrops, isLoading } = useSWR(
     isAxiosReady ? `/movies/search?query=${query}&page=1` : null,
-    () => fetchSearchQueryResults(api, query, 1),
+    () => fetchSearchQueryResults(api, "movies", query, 1),
     {
       onError: () => toastError("Failed to search for backdrops."),
     }
@@ -27,7 +27,7 @@ const SelectBackdrop = () => {
       />
       <div
         className="h-full flex flex-col items-center gap-4 overflow-y-auto
-				scrollbar scrollbar-thumb-primary-highlight scrollbar-track-transparent"
+				scrollbar scrollbar-thumb-secondary scrollbar-track-transparent"
       >
         {backdrops?.results.length > 0 ? (
           backdrops?.results.map(

@@ -77,8 +77,10 @@ export const fetchUserData = async (api, username) => {
   return response.data.user;
 };
 
-export const fetchSearchQueryResults = async (api, query, page) => {
-  const response = await api.get(`/movies/search?query=${query}&page=${page}`);
+export const fetchSearchQueryResults = async (api, target, query, page) => {
+  const response = await api.get(
+    `/${target}/search?query=${query}&page=${page}`
+  );
   return response.data;
 };
 

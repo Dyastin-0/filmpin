@@ -48,11 +48,12 @@ function App() {
           <Route path="/account/recover" element={<Recovery />} />
           <Route element={<ProtectedRoute />}>
             <Route path="/home" element={<Home />} />
+            <Route path="/search" element={<SearchSlug />} />
             <Route path="/movies" element={<MovieSlug />} />
-            <Route path="/movies/search" element={<SearchSlug />} />
+            <Route path="/tvshows" element={<TvShowSlug />} />
             <Route path="/discover" element={<Discover />} />
             <Route path="/discover/movies" element={<DiscoverMovieSlug />} />
-            <Route path="/tvshows" element={<TvShowSlug />} />
+            <Route path="/discover/tvshows" element={<DiscoverTvShowSlug />} />
             <Route
               path="/tvshows/:show_id/season"
               element={<TvShowSeasonSlug />}
@@ -61,7 +62,6 @@ function App() {
               path="/tvshows/:show_id/:season/episode"
               element={<TvShowEpisodeSlug />}
             />
-            <Route path="/discover/tvshows" element={<DiscoverTvShowSlug />} />
             <Route path="/list" element={<ListSlug />} />
           </Route>
         </Routes>
