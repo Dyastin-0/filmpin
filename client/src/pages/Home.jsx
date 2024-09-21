@@ -1,5 +1,4 @@
 import { useEffect } from "react";
-import { motion } from "framer-motion";
 import { LoadingMovieSection } from "../components/loaders/MovieLoaders";
 import { LoadingTrailerSection } from "../components/loaders/TrailerLoaders";
 import { useLoading } from "../components/hooks/useLoading";
@@ -7,13 +6,11 @@ import { MovieSection } from "../components/sections/MovieSection";
 import { TrailerSection } from "../components/sections/TrailerSection";
 import { TvShowSection } from "../components/sections/tvShowSection";
 import useAxios from "../hooks/useAxios";
-import { Swiper, SwiperSlide } from "swiper/react";
-import { swiperAutoPlayConfig } from "../configs/swiperConfig";
-import SliderMovie from "../components/SliderMovie";
 import { fetchCategory } from "../helpers/api";
-import { blinkVariants } from "../configs/motionConfig";
 import useSWR from "swr";
 import { Helmet } from "react-helmet";
+import HomeSlider from "../components/sliders/HomeSlider";
+import BackdropLoader from "../components/loaders/BackdropLoader";
 
 const Home = () => {
   const { api, isAxiosReady } = useAxios();
@@ -48,21 +45,9 @@ const Home = () => {
         />
       </Helmet>
       {!isLoadingTopMovies ? (
-        <section className="w-full h-[400px] rounded-md ml-4 mr-4 mb-4 bg-transparent overflow-hidden">
-          <Swiper {...swiperAutoPlayConfig}>
-            {topMovies?.map((movie, index) => (
-              <SwiperSlide key={index}>
-                <SliderMovie movie={movie} />
-              </SwiperSlide>
-            ))}
-          </Swiper>
-        </section>
+        <HomeSlider data={topMovies} />
       ) : (
-        <motion.div
-          className="w-full h-[400px] rounded-md overflow-hidden"
-          variants={blinkVariants}
-          animate="blink"
-        ></motion.div>
+        <BackdropLoader />
       )}
       {!isLoadingPopularMovies ? (
         <MovieSection title="Popular movies" movies={popularMovies} />

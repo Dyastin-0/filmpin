@@ -1,7 +1,5 @@
 import { useEffect, useState } from "react";
 import Selector from "../components/ui/Selector";
-import TvShow from "../components/TvShow";
-import Pagination from "../components/ui/Pagination";
 import { useNavigate, useSearchParams } from "react-router-dom";
 import { LoadingDiscover } from "../components/loaders/MovieLoaders";
 import { useLoading } from "../components/hooks/useLoading";
@@ -13,6 +11,7 @@ import useAxios from "../hooks/useAxios";
 import { fetchDiscovery } from "../helpers/api";
 import useSWR from "swr";
 import { Helmet } from "react-helmet";
+import DiscoverTvShow from "../components/paginations/DiscoverTvShow";
 
 const DiscoverTvShowSlug = () => {
   const { api, isAxiosReady } = useAxios();
@@ -41,7 +40,6 @@ const DiscoverTvShowSlug = () => {
   );
 
   useEffect(() => {
-    document.title = "Discover TV shows";
     window.scrollTo({ top: 0, left: 0, behavior: "smooth" });
   }, [selectedGenres, currentPage]);
 
@@ -66,11 +64,9 @@ const DiscoverTvShowSlug = () => {
       <Helmet>
         <title>Discover Movies</title>
       </Helmet>
-      <div className="flex justify-start items-center w-full gap-2">
-        <h1 className="text-primary-foreground text-sm text-start font-semibold">
-          Discover TV shows
-        </h1>
-      </div>
+      <h1 className="text-primary-foreground text-sm text-start font-semibold">
+        Discover TV shows
+      </h1>
       <Accordion
         title={
           <div className="gap-2">
@@ -87,22 +83,15 @@ const DiscoverTvShowSlug = () => {
       {isLoading ? (
         selectedGenres && <LoadingDiscover />
       ) : isError ? (
-        <p>Error loading TV shows</p>
+        <p className="text-xs text-error text-center font-bold">
+          Something went wrong.
+        </p>
       ) : (
-        <div className="flex flex-col items-center gap-4">
-          <div className="flex flex-wrap justify-center gap-3 w-full h-full">
-            {data?.results?.map((show, index) => (
-              <TvShow key={index} info={show} />
-            ))}
-          </div>
-          {data?.total_pages > 1 && (
-            <Pagination
-              currentPage={currentPage}
-              totalPages={data.total_pages > 500 ? 500 : data.total_pages}
-              onPageChange={onPageChange}
-            />
-          )}
-        </div>
+        <DiscoverTvShow
+          data={data}
+          currentPage={currentPage}
+          onPageChange={onPageChange}
+        />
       )}
     </div>
   );

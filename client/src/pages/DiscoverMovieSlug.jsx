@@ -1,7 +1,5 @@
 import { useEffect, useState } from "react";
 import Selector from "../components/ui/Selector";
-import Movie from "../components/Movie";
-import Pagination from "../components/ui/Pagination";
 import { useNavigate, useSearchParams } from "react-router-dom";
 import { LoadingDiscover } from "../components/loaders/MovieLoaders";
 import { useLoading } from "../components/hooks/useLoading";
@@ -13,6 +11,7 @@ import useAxios from "../hooks/useAxios";
 import { fetchDiscovery } from "../helpers/api";
 import useSWR from "swr";
 import { Helmet } from "react-helmet";
+import DiscoverMovie from "../components/paginations/DiscoverMovie";
 
 const DiscoverMovieSlug = () => {
   const navigate = useNavigate();
@@ -66,11 +65,9 @@ const DiscoverMovieSlug = () => {
       <Helmet>
         <title>Discover Movies</title>
       </Helmet>
-      <div className="flex justify-start items-center w-full gap-2">
-        <h1 className="text-primary-foreground text-sm text-start font-semibold">
-          Discover movies
-        </h1>
-      </div>
+      <h1 className="text-primary-foreground text-sm text-start font-semibold">
+        Discover movies
+      </h1>
       <Accordion
         title={
           <div className="gap-2">
@@ -86,21 +83,16 @@ const DiscoverMovieSlug = () => {
       </Accordion>
       {isLoading ? (
         selectedGenres && <LoadingDiscover />
+      ) : isError ? (
+        <p className="text-xs text-error text-center font-bold">
+          Something went wrong.
+        </p>
       ) : (
-        <div className="flex flex-col items-center gap-4">
-          <div className="flex flex-wrap justify-center gap-3 w-full h-full">
-            {data?.results?.map((movie, index) => (
-              <Movie key={index} info={movie} />
-            ))}
-          </div>
-          {data?.total_pages > 1 && (
-            <Pagination
-              currentPage={currentPage}
-              totalPages={data.total_pages > 500 ? 500 : data.total_pages}
-              onPageChange={onPageChange}
-            />
-          )}
-        </div>
+        <DiscoverMovie
+          data={data}
+          currentPage={currentPage}
+          onPageChange={onPageChange}
+        />
       )}
     </div>
   );

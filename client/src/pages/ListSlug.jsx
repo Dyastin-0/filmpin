@@ -2,11 +2,9 @@ import { useEffect, useState } from "react";
 import { Link, useSearchParams } from "react-router-dom";
 import { motion } from "framer-motion";
 import { useAuth } from "../hooks/useAuth";
-import Movie from "../components/Movie";
 import { io } from "socket.io-client";
 import listTypes from "../models/listTypes";
 import { useToast } from "../components/hooks/useToast";
-import TvShow from "../components/TvShow";
 import {
   ListBackdropDummy,
   ListTitleDummy,
@@ -16,6 +14,9 @@ import useAxios from "../hooks/useAxios";
 import { fetchList, fetchOwner, fetchMovie, fetchShow } from "../helpers/api";
 import useSWR from "swr";
 import { Helmet } from "react-helmet";
+import ImageLazy from "../components/ui/ImageLazy";
+import ListTitleSection from "../components/sections/ListTitleSection";
+import ListItemSection from "../components/sections/ListItemSection";
 
 const ListSlug = () => {
   const { token, user } = useAuth();
@@ -27,21 +28,21 @@ const ListSlug = () => {
 
   const [listItems, setListItems] = useState([]);
 
-  const { data: listData, isLoading } = useSWR(
-    isAxiosReady ? `/list/${id}` : null,
-    () => fetchList(api, id),
-    {
-      onSuccess: (data) => {
-        if (data && data.list) {
-          const fetchItem =
-            listTypes[data.type] === "Movies" ? fetchMovie : fetchShow;
-          Promise.all(data.list.map((item) => fetchItem(api, item.id))).then(
-            (fetchedItems) => setListItems(fetchedItems)
-          );
-        }
-      },
-    }
-  );
+  const {
+    data: listData,
+    isLoading,
+    isError,
+  } = useSWR(isAxiosReady ? `/list/${id}` : null, () => fetchList(api, id), {
+    onSuccess: (data) => {
+      if (data && data.list) {
+        const fetchItem =
+          listTypes[data.type] === "Movies" ? fetchMovie : fetchShow;
+        Promise.all(data.list.map((item) => fetchItem(api, item.id))).then(
+          (fetchedItems) => setListItems(fetchedItems)
+        );
+      }
+    },
+  });
 
   const { data: ownerData } = useSWR(
     isAxiosReady && listData ? `/public/account?id=${listData.owner}` : null,
@@ -101,15 +102,12 @@ const ListSlug = () => {
         {isLoading ? (
           <ListBackdropDummy />
         ) : (
-          <img
-            loading="lazy"
-            className="w-full h-full object-cover rounded-md"
-            src={
-              listData?.list[0]?.backdrop_path
-                ? `https://image.tmdb.org/t/p/original/${listData.list[0].backdrop_path}`
-                : ""
+          <ImageLazy
+            imagePath={
+              listData?.list[Math.floor(Math.random() * listData?.list.length)]
+                ?.backdrop_path
             }
-            alt={`${listData?.name} backdrop`}
+            name={listData?.name}
           />
         )}
       </div>
@@ -119,26 +117,12 @@ const ListSlug = () => {
       >
         {isLoading ? (
           <ListTitleDummy />
+        ) : isError ? (
+          <p className="text-xs text-error text-center font-bold">
+            Something went wrong.
+          </p>
         ) : (
-          <div className="flex flex-col gap-4 w-full">
-            <h1 className="text-sm text-primary-foreground font-semibold">
-              {listData?.name}
-            </h1>
-            <p className="text-xs text-primary-foreground">
-              {listData?.description}
-            </p>
-            <div className="flex gap-1">
-              <h1 className="text-xs text-primary-foreground">{`List of ${
-                listTypes[listData?.type]
-              } by`}</h1>
-              <Link
-                className="w-fit outline-none text-primary-foreground text-xs transition-colors duration-300 underline hover:text-primary-highlight focus:text-primary-highlight"
-                to={`/${ownerData?.username}`}
-              >
-                {ownerData?.username}
-              </Link>
-            </div>
-          </div>
+          <ListTitleSection listData={listData} ownerData={ownerData} />
         )}
       </motion.div>
       <motion.div
@@ -148,15 +132,7 @@ const ListSlug = () => {
         {isLoading ? (
           <ListLoader />
         ) : (
-          <div className="flex flex-wrap justify-center gap-4">
-            {listTypes[listData?.type] === "Movies"
-              ? listItems?.map((item, index) => (
-                  <Movie key={index} info={item} />
-                ))
-              : listItems?.map((item, index) => (
-                  <TvShow key={index} info={item} />
-                ))}
-          </div>
+          <ListItemSection listItems={listItems} listData={listData} />
         )}
       </motion.div>
     </div>

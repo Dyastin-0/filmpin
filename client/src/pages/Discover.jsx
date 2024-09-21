@@ -15,12 +15,12 @@ const Discover = () => {
   const [imageIndex, setImageIndex] = useState(0);
   const [isMovieHovered, setIsMovieHovered] = useState(true);
 
-  const { data: movies } = useSWR(
+  const { data: movies, isLoading: areMoviesLoading } = useSWR(
     isAxiosReady ? "/movies/discover?genres=&sort_by=vote_count&page=1" : null,
     () => fetchCategory(api, "movies", "top_rated", 1)
   );
 
-  const { data: shows } = useSWR(
+  const { data: shows, isLoading: areShowsLoading } = useSWR(
     isAxiosReady ? "/tvshows/discover?genres=&sort_by=vote_count&page=1" : null,
     () => fetchCategory(api, "tvshows", "top_rated", 1)
   );
@@ -36,6 +36,10 @@ const Discover = () => {
     }
   }, [movies, shows, isMovieHovered]);
 
+  useEffect(() => {
+    setLoading(areMoviesLoading || areShowsLoading);
+  }, [areMoviesLoading, areShowsLoading]);
+
   if (!movies || !shows) return;
 
   const backdrop = isMovieHovered
@@ -48,6 +52,7 @@ const Discover = () => {
         <title>Discover</title>
       </Helmet>
       <div className="relative flex h-full w-full justify-center rounded-lg bg-accent gap-4">
+        <div className="absolute w-full h-full bg-black opacity-20 rounded-md z-20"></div>
         <AnimatePresence>
           {backdrop && (
             <motion.img
@@ -61,24 +66,14 @@ const Discover = () => {
             />
           )}
         </AnimatePresence>
-        <div className="flex rounded-md p-2 gap-2 z-20 bg-accent self-center">
+        <div className="absolute top-4 left-4 flex rounded-md p-2 gap-2 z-30">
           <Button
             text="TV Shows"
-            className={`text-xl ${
-              !isMovieHovered
-                ? "hover:shadow-[var(--highlight)_0_0_0_2px] shadow-[var(--highlight)_0_0_0_2px]"
-                : ""
-            }`}
             onClick={() => navigate("/discover/tvshows")}
             onMouseEnter={() => setIsMovieHovered(false)}
           />
           <Button
             text="Movies"
-            className={`text-xl ${
-              isMovieHovered
-                ? "hover:shadow-[var(--highlight)_0_0_0_2px] shadow-[var(--highlight)_0_0_0_2px]"
-                : ""
-            }`}
             onClick={() => navigate("/discover/movies")}
             onMouseEnter={() => setIsMovieHovered(true)}
           />

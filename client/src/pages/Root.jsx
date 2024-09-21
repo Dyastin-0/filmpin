@@ -73,7 +73,8 @@ const Root = () => {
         </h1>
         <h1 className="text-lg text-light font-semibold z-20">
           {" "}
-          Find your next watch using our intuitive UI, seamlessly.{" "}
+          Find your next watch using our intuitive UI, seamlessly. Explore Your
+          Next Favorite Flick!{" "}
         </h1>
       </div>
     </div>

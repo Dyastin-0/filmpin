@@ -75,6 +75,27 @@ const ListSection = ({ userData }) => {
     if (token && userData) handleGetList();
   }, [token, userData]);
 
+  if (!token) {
+    <motion.section
+      initial={{ marginTop: -120 }}
+      className="flex justify-center items-center gap-4 w-[calc(100%-2rem)] p-4 bg-accent rounded-md"
+    >
+      <h1 className="text-xs text-primary-foreground font-semibold">{`Sign in to view ${userData?.username}'s lists.`}</h1>
+    </motion.section>;
+  }
+
+  if (!list.length > 0)
+    return (
+      <motion.section
+        initial={{ marginTop: -120 }}
+        className="relative flex flex-col gap-4 w-[calc(100%-2rem)] p-4"
+      >
+        <h1 className="text-primary-foreground text-center text-xs font-semibold">
+          {userData?.username} doesn't have a list yet.
+        </h1>
+      </motion.section>
+    );
+
   return (
     <motion.section
       initial={{ marginTop: -120 }}
