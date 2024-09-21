@@ -65,7 +65,7 @@ const Toast = ({ message, onClose, id, color = "text-primary-foreground" }) => {
       exit={{
         x: -999,
       }}
-      className={`flex justify-center items-center gap-2 bg-accent text-xs ${color} font-semibold rounded-md p-2 shadow-md relative`}
+      className={`flex justify-center items-center gap-2 bg-primary text-xs ${color} font-semibold rounded-md p-2 shadow-md relative`}
     >
       {message}
       <Button onClick={onClose} text={<FontAwesomeIcon icon={faX} />} />

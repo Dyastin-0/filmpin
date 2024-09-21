@@ -32,8 +32,7 @@ const AddToList = ({ selected, type }) => {
           list_id: list,
           list_item: {
             id: selected.id,
-            title:
-              listTypes[list.type] === type ? selected.title : selected.name,
+            title: selected.title || selected.name,
             poster_path: selected.poster_path,
             backdrop_path: selected.backdrop_path,
           },
