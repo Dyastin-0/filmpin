@@ -117,10 +117,6 @@ const ListSlug = () => {
       >
         {isLoading ? (
           <ListTitleDummy />
-        ) : isError ? (
-          <p className="text-xs text-error text-center font-bold">
-            Something went wrong.
-          </p>
         ) : (
           <ListTitleSection listData={listData} ownerData={ownerData} />
         )}
@@ -131,6 +127,10 @@ const ListSlug = () => {
       >
         {isLoading ? (
           <ListLoader />
+        ) : isError ? (
+          <p className="text-xs text-error text-center font-bold">
+            Failed to load {listTypes[listData.type]}, Something went wrong.
+          </p>
         ) : (
           <ListItemSection listItems={listItems} listData={listData} />
         )}

@@ -6,7 +6,7 @@ import { MovieSection } from "../components/sections/MovieSection";
 import { TrailerSection } from "../components/sections/TrailerSection";
 import { TvShowSection } from "../components/sections/tvShowSection";
 import useAxios from "../hooks/useAxios";
-import { fetchCategory } from "../helpers/api";
+import { fetchCategory, fetchDiscovery } from "../helpers/api";
 import useSWR from "swr";
 import { Helmet } from "react-helmet";
 import HomeSlider from "../components/sliders/HomeSlider";
@@ -18,7 +18,8 @@ const Home = () => {
 
   const { data: topMovies, isLoading: isLoadingTopMovies } = useSWR(
     isAxiosReady ? `/movies/list?category=top_rated&page=1` : null,
-    () => fetchCategory(api, "movies", "top_rated")
+    () =>
+      fetchDiscovery(api, "movies", "[]").then((response) => response.results)
   );
 
   const { data: popularMovies, isLoading: isLoadingPopularMovies } = useSWR(
