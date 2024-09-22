@@ -1,5 +1,17 @@
 const Reviews = require("../../models/review");
 
+/**
+ * Handles posting a review.
+ * @param {Object} req - The request object.
+ * @param {Object} req.body - The body of the request containing review details.
+ * @param {String} req.body.id - The ID of the reviewed item.
+ * @param {String} req.body.title - The title of the reviewed item.
+ * @param {String} req.body.content - The content of the review.
+ * @param {String} req.id - The ID of the authenticated user.
+ * @param {Object} res - The response object.
+ * @returns {Object} JSON object with a message and the new review.
+ * @throws {Error} If the request fails, returns a 500 status.
+ */
 const handlePostReview = async (req, res) => {
   const { id, title, content } = req.body;
   const { id: user_id } = req;
@@ -10,6 +22,13 @@ const handlePostReview = async (req, res) => {
   if (!user_id) return res.status(400).json({ message: "Missing user ID." });
 
   try {
+    const hasReviewed = await Reviews.findOne({ id, title, owner: user_id });
+
+    if (hasReviewed)
+      return res
+        .status(409)
+        .json({ message: "You have already reviewed this." });
+
     const newReview = await Reviews.create({
       id,
       title,
@@ -24,6 +43,18 @@ const handlePostReview = async (req, res) => {
   }
 };
 
+/**
+ * Handles retrieving reviews based on query parameters.
+ * @param {Object} req - The request object.
+ * @param {Object} req.query - The query parameters for fetching reviews.
+ * @param {String} req.query.id - The ID of the reviewed item.
+ * @param {String} req.query.title - The title of the reviewed item.
+ * @param {Number} req.query.page - The page number for pagination.
+ * @param {Number} req.query.limit - The number of reviews per page (default is 20).
+ * @param {Object} res - The response object.
+ * @returns {Object} JSON object containing the reviews and pagination info.
+ * @throws {Error} If the request fails, returns a 500 status.
+ */
 const handleGetReview = async (req, res) => {
   const { id, title, page } = req.query;
   const limit = parseInt(req.query.limit) || 20;
@@ -50,15 +81,31 @@ const handleGetReview = async (req, res) => {
   }
 };
 
+/**
+ * Handles liking or unliking a review.
+ * @param {Object} req - The request object.
+ * @param {Object} req.query - The query parameters for liking the review.
+ * @param {String} req.query.id - The ID of the reviewed item.
+ * @param {String} req.query.title - The title of the reviewed item.
+ * @param {String} req.query.owner - The owner of the review.
+ * @param {String} req.id - The ID of the authenticated user.
+ * @param {Object} res - The response object.
+ * @returns {Object} JSON object with a message about the like status.
+ * @throws {Error} If the request fails, returns a 500 status.
+ */
 const handleLike = async (req, res) => {
-  const { id, title } = req.query;
+  const { id, title, owner } = req.query;
   const { id: user_id } = req;
 
   if (!id) return res.status(400).json({ message: "Missing ID." });
   if (!title) return res.status(400).json({ message: "Missing title." });
 
   try {
-    const review = await Reviews.findOne({ id: id, title: title });
+    const review = await Reviews.findOne({
+      id: id,
+      title: title,
+      owner,
+    });
     if (!review) {
       return res.status(404).json({ message: "Review not found." });
     }
@@ -66,7 +113,7 @@ const handleLike = async (req, res) => {
     if (review.owner === user_id)
       return res
         .status(400)
-        .json({ message: "You can't heart your own review." });
+        .json({ message: "You can't like your own review." });
 
     const hasLiked = review.hearts.includes(user_id);
 

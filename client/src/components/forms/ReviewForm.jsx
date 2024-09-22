@@ -27,6 +27,7 @@ const ReviewForm = ({ details, mutate }) => {
         .then((response) => response.data.newReview);
       toastSuccess("Review posted.");
       setReview("");
+      textareaRef.current.style.height = "auto";
       mutate();
     } catch (error) {
       toastError(error.response.data.message);

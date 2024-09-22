@@ -26,7 +26,7 @@ const Review = ({ review, details, mutate }) => {
   const handleLike = async () => {
     try {
       const response = await api.post(
-        `/reviews/like?id=${details.id}&title=${details.title}`
+        `/reviews/like?id=${details.id}&title=${details.title}&owner=${ownerData._id}`
       );
       mutate();
     } catch (error) {
@@ -66,17 +66,28 @@ const Review = ({ review, details, mutate }) => {
           </div>
         </div>
       </div>
-      {!isOwner && ownerData && user && (
+      {!isOwner && ownerData && user ? (
+        <div className="flex gap-2">
+          <button
+            className="flex text-primary-foreground items-center outline-none
+            transition-all duration-300
+            hover:text-primary-highlight hover:cursor-pointer"
+            onClick={handleLike}
+          >
+            <FontAwesomeIcon icon={hasLiked ? faSolidHeart : faRegularHeart} />
+          </button>
+          <span className="text-xs text-primary-foreground">
+            {hearts?.length}
+          </span>
+        </div>
+      ) : (
         <div className="flex gap-2">
           <button
             className="flex text-primary-foreground items-center outline-none
             transition-all duration-300
             hover:text-primary-highlight hover:cursor-pointer"
           >
-            <FontAwesomeIcon
-              onClick={handleLike}
-              icon={hasLiked ? faSolidHeart : faRegularHeart}
-            />
+            <FontAwesomeIcon icon={faSolidHeart} />
           </button>
           <span className="text-xs text-primary-foreground">
             {hearts?.length}
