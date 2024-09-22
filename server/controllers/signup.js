@@ -31,7 +31,7 @@ const handleSignup = async (req, res) => {
 
   try {
     const usernameExist = await Users.findOne({ username: username });
-    console.log(usernameExist, username);
+
     if (usernameExist)
       return res.status(400).json({
         message: `Username ${username} is already used.`,

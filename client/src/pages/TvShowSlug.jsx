@@ -12,6 +12,7 @@ import useSWR from "swr";
 import { Helmet } from "react-helmet";
 import TvShowInfoSection from "../components/sections/TvShowInfoSection";
 import { useLoading } from "../components/hooks/useLoading";
+import MovieReviewSection from "../components/sections/MovieReviewSection";
 
 const TvShowSlug = () => {
   const { setLoading } = useLoading();
@@ -111,6 +112,7 @@ const TvShowSlug = () => {
           />
         </div>
       )}
+      <MovieReviewSection details={details} />
     </div>
   );
 };

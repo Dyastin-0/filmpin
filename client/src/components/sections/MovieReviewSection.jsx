@@ -12,9 +12,12 @@ const MovieReviewSection = ({ details }) => {
 
   const { data, mutate } = useSWR(
     isAxiosReady && details
-      ? `/movies/reviews?id=${details.id}&page=${currentPage}`
+      ? `/movies/reviews?id=${details.id}title=${
+          details.title || details.name
+        }&page=${currentPage}`
       : null,
-    () => fetchReviews(api, details.id, currentPage)
+    () =>
+      fetchReviews(api, details.id, details.title || details.name, currentPage)
   );
 
   const onPageChange = (page) => {
@@ -22,11 +25,16 @@ const MovieReviewSection = ({ details }) => {
   };
 
   return (
-    <section className="flex flex-col rounded-lg gap-4 p-4 w-[calc(100%-2rem)]">
+    <section className="flex flex-col w-full rounded-lg gap-4 p-4">
       <h1 className="text-primary-foreground text-sm font-semibold">Reviews</h1>
       <div className="flex flex-col gap-4">
         {data?.reviews.map((review, index) => (
-          <Review key={index} review={review} />
+          <Review
+            key={index}
+            review={review}
+            details={details}
+            mutate={mutate}
+          />
         ))}
       </div>
       {data?.total_pages > 1 && (

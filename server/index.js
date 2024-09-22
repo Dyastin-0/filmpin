@@ -49,6 +49,7 @@ app.use("/api/account", require("./routes/api/account/account"));
 app.use("/api/list", require("./routes/api/account/list"));
 app.use("/api/movies", require("./routes/api/movies"));
 app.use("/api/tvshows", require("./routes/api/tvshows"));
+app.use("/api/reviews", require("./routes/api/reviews"));
 
 io.use(verifySocketJsonWebToken);
 io.on("connection", (socket) => {

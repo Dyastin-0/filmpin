@@ -4,6 +4,11 @@ const { Schema } = mongoose;
 const reviewSchema = Schema({
   id: {
     type: String,
+    index: true,
+  },
+  title: {
+    type: String,
+    index: true,
   },
   owner: {
     type: String,
@@ -12,8 +17,8 @@ const reviewSchema = Schema({
     type: String,
   },
   hearts: {
-    type: Number,
-    default: 0,
+    type: [String],
+    default: [],
   },
   created_on: {
     type: Number,

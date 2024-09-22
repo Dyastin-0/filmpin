@@ -14,8 +14,10 @@ const Accordion = ({ title, children }) => {
   return (
     <div className="w-fit max-w-full text-primary-foreground rounded-md">
       <button
-        className="flex outline-none items-center text-primary-foreground hover:text-primary-highlight transition-colors duration-300 text-xs font-semibold w-fit"
+        className="flex w-fit outline-none items-center text-primary-foreground text-xs font-semibold
+        transition-colors duration-300 focus:text-primary-highlight hover:text-primary-highlight"
         onClick={toggleAccordion}
+        onFocus={() => setIsOpen(true)}
       >
         <div className="flex items-center gap-1 justify-between">
           {title}

@@ -124,9 +124,9 @@ export const fetchTvShowSeasonVideos = async (api, id, seasonNumber) => {
   return response.data.results;
 };
 
-export const fetchReviews = async (api, id, currentPage = 1) => {
+export const fetchReviews = async (api, id, title, currentPage = 1) => {
   const response = await api.get(
-    `/movies/reviews?id=${id}&page=${currentPage}`
+    `/reviews?id=${id}&title=${title}&page=${currentPage}`
   );
   return response.data;
 };

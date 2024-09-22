@@ -1,20 +1,12 @@
 import { useEffect, useState } from "react";
 import { Link, useSearchParams } from "react-router-dom";
 import { motion } from "framer-motion";
-import Button from "../components/ui/Button";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faPlay, faPlus } from "@fortawesome/free-solid-svg-icons";
-import { useModal } from "../components/hooks/useModal";
-import Frame from "../components/Frame";
 import { MovieSection } from "../components/sections/MovieSection";
 import { LoadingMovieSection } from "../components/loaders/MovieLoaders";
 import { MovieSlugLoader } from "../components/loaders/MovieSlugLoader";
-import Cast from "../components/Cast";
-import Crew from "../components/Crew";
 import CastSection from "../components/sections/CastSection";
 import CrewSection from "../components/sections/CrewSection";
 import { ClipSection } from "../components/sections/ClipSection";
-import AddToList from "../components/AddToList";
 import useAxios from "../hooks/useAxios";
 import {
   fetchCredits,

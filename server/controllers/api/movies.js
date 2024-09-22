@@ -1,5 +1,4 @@
 const api = require("../../helpers/tmdbApi");
-const Reviews = require("../../models/review");
 const { movieGenres } = require("../../models/genreList");
 
 /**
@@ -175,55 +174,6 @@ const handleGetWatchProvider = async (req, res) => {
   }
 };
 
-const handlePostReview = async (req, res) => {
-  const { id, content } = req.body;
-  const { id: user_id } = req;
-
-  console.log(req.body);
-
-  if (!id) return res.status(400).json({ message: "Missing ID." });
-  if (!user_id) return res.status(400).json({ message: "Missing user ID." });
-  if (!content) return res.status(400).json({ message: "Missing content." });
-
-  try {
-    const newReview = await Reviews.create({
-      id,
-      owner: user_id,
-      content,
-    });
-
-    res.json({ message: "Review posted.", newReview });
-  } catch (error) {
-    console.error(error);
-    res.sendStatus(500);
-  }
-};
-
-const handleGetReview = async (req, res) => {
-  const { id, page } = req.query;
-  const limit = parseInt(req.query.limit) || 20;
-  const skip = (page - 1) * limit;
-
-  if (!id) return res.status(400).json({ message: "Missing ID." });
-
-  try {
-    const reviews = await Reviews.find({ id: id }).skip(skip).limit(limit);
-
-    const total = await Reviews.countDocuments({ id: id });
-    const total_pages = Math.ceil(total / limit);
-
-    res.json({
-      reviews,
-      current_page: page,
-      total_pages,
-      total_reviews: total,
-    });
-  } catch (error) {
-    console.error(error);
-    res.sendStatus(500);
-  }
-};
-
 module.exports = {
   handleGetCategory,
   handleGetDetails,
@@ -232,6 +182,4 @@ module.exports = {
   handleGetVideo,
   handleDiscover,
   handleGetWatchProvider,
-  handlePostReview,
-  handleGetReview,
 };

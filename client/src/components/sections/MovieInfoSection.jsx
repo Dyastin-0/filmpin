@@ -16,7 +16,7 @@ const MovieInfoSection = ({ details, trailerYoutubeKey }) => {
         <div className="absolute w-full h-full bg-gradient-to-b from-transparent to-primary"></div>
         <img
           loading="lazy"
-          className="w-full h-full object-cover rounded-md"
+          className="min-w-full min-h-full object-cover rounded-md"
           src={`https://image.tmdb.org/t/p/original/${details.backdrop_path}`}
           alt={`${details.title} backdrop`}
         />
@@ -40,7 +40,8 @@ const MovieInfoSection = ({ details, trailerYoutubeKey }) => {
               <Link
                 key={index}
                 to={`/discover/movies?genres=${genre.name.toLowerCase()}&sort_by=vote_count&page=1`}
-                className="underline outline-none underline-offset-2 text-primary-highlight text-xs"
+                className="underline outline-none underline-offset-2 text-xs
+                transition-all duration-300 hover:text-primary-highlight focus:text-primary-highlight"
               >
                 {`${
                   index === details?.genres.length - 1

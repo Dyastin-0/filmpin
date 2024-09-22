@@ -46,7 +46,8 @@ const TvShowInfoSection = ({ details, trailerYoutubeKey }) => {
               <Link
                 key={index}
                 to={`/discover/tvshows?genres=${genre?.name.toLowerCase()}&sort_by=vote_count&page=1`}
-                className="underline outline-none underline-offset-2 text-primary-highlight text-xs"
+                className="underline outline-none underline-offset-2 text-xs
+                transition-all duration-300 hover:text-primary-highlight focus:text-primary-highlight"
               >
                 {`${
                   index === details.genres.length - 1

@@ -24,7 +24,9 @@ const DiscoverMovieSlug = () => {
   );
 
   const genresString =
-    selectedGenres.length > 0 ? selectedGenres.join("_").toLowerCase() : "";
+    selectedGenres.length > 0
+      ? selectedGenres.join("_").toLowerCase()
+      : searchParams.get("genres");
   const sortBy = "vote_count";
 
   const { data, isLoading, isError } = useSWR(

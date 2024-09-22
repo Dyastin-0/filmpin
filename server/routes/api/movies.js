@@ -10,8 +10,6 @@ const {
   handleGetVideo,
   handleDiscover,
   handleGetWatchProvider,
-  handlePostReview,
-  handleGetReview,
 } = require("../../controllers/api/movies");
 
 const cacheService = require("express-api-cache");
@@ -34,10 +32,5 @@ router.route("/discover").get(cache("10 minutes"), handleDiscover);
 router
   .route("/watch-provider")
   .get(cache("10 minutes"), handleGetWatchProvider);
-
-router
-  .route("/reviews")
-  .post(cache("10 minutes"), handlePostReview)
-  .get(handleGetReview);
 
 module.exports = router;
