@@ -10,9 +10,10 @@ import useAxios from "../hooks/useAxios";
 import { useToast } from "./hooks/useToast";
 import dayjs from "dayjs";
 import relativeTime from "dayjs/plugin/relativeTime";
+
 dayjs.extend(relativeTime);
 
-const Review = ({ review, details, mutate }) => {
+const Review = ({ review, details }) => {
   const { api } = useAxios();
   const { user } = useAuth();
   const { toastError } = useToast();
@@ -28,7 +29,6 @@ const Review = ({ review, details, mutate }) => {
       const response = await api.post(
         `/reviews/like?id=${details.id}&title=${details.title}&owner=${ownerData._id}`
       );
-      mutate();
     } catch (error) {
       toastError(error.response.data.message);
     }

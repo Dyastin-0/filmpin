@@ -14,7 +14,7 @@ import { useToast } from "../hooks/useToast";
 const ListSection = ({ userData }) => {
   const { token, user } = useAuth();
   const { api } = useAxios();
-  const { toastSuccess } = useToast();
+  const { toastInfo } = useToast();
   const { setModal, setOpen } = useModal();
   const [list, setList] = useState([]);
 
@@ -46,24 +46,15 @@ const ListSection = ({ userData }) => {
       newSocket.on(
         `stream/list/${userData._id}/${user._id}/${randomId}`,
         (change) => {
-          if (change.type === "delete") {
+          if (change.type === "delete")
             setList((prevList) =>
               prevList.filter((list) => list._id !== change.list)
             );
-          } else {
-            setList((prevList) => {
-              const exists = prevList.some(
-                (item) => item._id === change.list._id
-              );
-              return exists ? prevList : [...prevList, change.list];
-            });
-            if (
-              userData?.username !== user?.username &&
-              change.type === "insert"
-            )
-              toastSuccess(
-                `${userData.username} just added a new list ${change.list.name}.`
-              );
+          if (change.type === "insert") {
+            setList((prevList) => [...prevList, change.list]);
+            toastInfo(
+              `${userData.username} just added a new list ${change.list.name}.`
+            );
           }
         }
       );
@@ -74,6 +65,8 @@ const ListSection = ({ userData }) => {
   useEffect(() => {
     if (token && userData) handleGetList();
   }, [token, userData]);
+
+  const isOwner = userData?.username === user?.username;
 
   if (!token) {
     <motion.section
@@ -91,8 +84,16 @@ const ListSection = ({ userData }) => {
         className="relative flex flex-col gap-4 w-[calc(100%-2rem)] p-4"
       >
         <h1 className="text-primary-foreground text-center text-xs font-semibold">
-          {userData?.username} doesn't have a list yet.
+          {isOwner ? "You don't" : userData?.username} have a list yet.
         </h1>
+        <Button
+          text="Create one."
+          className="self-center"
+          onClick={() => {
+            setModal(<CreateList />);
+            setOpen(true);
+          }}
+        />
       </motion.section>
     );
 

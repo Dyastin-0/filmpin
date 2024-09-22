@@ -66,25 +66,15 @@ const ListSlug = () => {
       newSocket.on(
         `stream/list/${listData.owner}/${user._id}/${randomId}`,
         (change) => {
-          if (change.type === "delete") {
+          if (change.type === "delete")
             setListItems((prevList) =>
               prevList.filter((item) => item._id !== change.list)
             );
-          } else {
-            setListItems((prevList) => {
-              const newList = change.list.find(
-                (objectList) =>
-                  !prevList.some(
-                    (prevObjectList) => objectList._id === prevObjectList._id
-                  )
-              );
-              if (ownerData._id !== user._id) {
-                toastInfo(
-                  `${ownerData?.username} just added ${newList.title} to this list.`
-                );
-              }
-              return change.list;
-            });
+          if (change.type === "update") {
+            setListItems(change.list);
+            toastInfo(
+              `${ownerData.username} just added a new item at this list.`
+            );
           }
         }
       );

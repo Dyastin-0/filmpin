@@ -8,7 +8,11 @@ const { mongoose } = require("mongoose");
 const credentials = require("./middlewares/credentials");
 const corsOptions = require("./config/corsOption");
 const { verifyJsonWebToken } = require("./middlewares/verifyJsonWebToken");
-const { startListStream, startUserStream } = require("./helpers/changeStream");
+const {
+  startListStream,
+  startUserStream,
+  startReviewStream,
+} = require("./helpers/changeStream");
 const allowedOrigins = require("./config/allowedOrigins");
 const verifySocketJsonWebToken = require("./middlewares/verifySocketJsonWebToken");
 
@@ -53,15 +57,15 @@ app.use("/api/reviews", require("./routes/api/reviews"));
 
 io.use(verifySocketJsonWebToken);
 io.on("connection", (socket) => {
-  const { owner, randomId, targetStream } = socket.handshake.query;
+  const { owner, randomId, itemId, targetStream } = socket.handshake.query;
 
-  if (targetStream === "list") {
+  if (targetStream === "list")
     startListStream(socket, mongoose, owner, randomId);
-  }
 
-  if (targetStream === "user") {
-    startUserStream(socket, mongoose, randomId);
-  }
+  if (targetStream === "user") startUserStream(socket, mongoose, randomId);
+
+  if (targetStream === "review")
+    startReviewStream(socket, mongoose, randomId, itemId);
 });
 
 const port = 3000;

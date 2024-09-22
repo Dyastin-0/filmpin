@@ -104,7 +104,41 @@ const startUserStream = (socket, mongoose, randomId) => {
   handleDisconnect(socket, changeStream);
 };
 
+const startReviewStream = (socket, mongoose, randomId, itemId) => {
+  const changeStream = mongoose.model("Review").watch([
+    {
+      $match: {
+        $or: [
+          { "fullDocument.id": itemId },
+          { operationType: "insert" },
+          { operationType: "delete" },
+          { operationType: "update" },
+        ],
+      },
+    },
+  ]);
+
+  changeStream.on("change", (change) => {
+    const type = change.operationType;
+    const changeData =
+      type === "delete"
+        ? change.documentKey._id
+        : type === "insert"
+        ? change.fullDocument
+        : change.updateDescription.updatedFields.hearts;
+
+    socket.emit(`stream/review/${itemId}/${randomId}`, {
+      newReview: changeData,
+      key: change.documentKey,
+      type: type,
+    });
+  });
+
+  handleDisconnect(socket, changeStream);
+};
+
 module.exports = {
   startListStream,
   startUserStream,
+  startReviewStream,
 };

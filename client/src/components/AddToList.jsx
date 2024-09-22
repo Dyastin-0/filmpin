@@ -67,7 +67,7 @@ const AddToList = ({ selected, type }) => {
       </h1>
       {lists?.length > 0 &&
         lists
-          .filter((list) => listTypes[list.type] === type)
+          .filter((list) => listTypes[list?.type] === type)
           .map((list, index) => (
             <Checkbox
               key={index}
