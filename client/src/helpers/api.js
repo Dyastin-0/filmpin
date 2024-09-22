@@ -1,5 +1,5 @@
-export const fetchOwner = async (api, id) => {
-  const response = await api.get(`/public/account?id=${id}`);
+export const fetchOwner = async (axios, id) => {
+  const response = await axios.get(`/public/account?id=${id}`);
   return response.data.user;
 };
 
@@ -72,11 +72,6 @@ export const fetchCredits = async (api, target, id) => {
   return response.data;
 };
 
-export const fetchUserData = async (api, username) => {
-  const response = await api.get(`/public/account?username=${username}`);
-  return response.data.user;
-};
-
 export const fetchSearchQueryResults = async (api, target, query, page) => {
   const response = await api.get(
     `/${target}/search?query=${query}&page=${page}`
@@ -127,4 +122,11 @@ export const fetchTvShowSeasonVideos = async (api, id, seasonNumber) => {
     `/tvshows/season/videos?tvshow_id=${id}&tvshow_season=${seasonNumber}`
   );
   return response.data.results;
+};
+
+export const fetchReviews = async (api, id, currentPage = 1) => {
+  const response = await api.get(
+    `/movies/reviews?id=${id}&page=${currentPage}`
+  );
+  return response.data;
 };

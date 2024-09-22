@@ -1,4 +1,5 @@
 const api = require("../../helpers/tmdbApi");
+const Reviews = require("../../models/review");
 const { movieGenres } = require("../../models/genreList");
 
 /**
@@ -12,6 +13,9 @@ const { movieGenres } = require("../../models/genreList");
  */
 const handleGetCategory = async (req, res) => {
   const { category, page } = req.query;
+
+  if (!category) return res.status(400).json({ message: "Missing category." });
+  if (!page) return res.status(400).json({ message: "Missing page number." });
 
   try {
     const response = await api.get(
@@ -34,6 +38,9 @@ const handleGetCategory = async (req, res) => {
  */
 const handleGetDetails = async (req, res) => {
   const { movie_id } = req.query;
+
+  if (!movie_id) return res.status(400).json({ message: "Missing movie ID" });
+
   try {
     const response = await api.get(`movie/${movie_id}?language=en-US`);
     res.json(response.data);
@@ -53,6 +60,9 @@ const handleGetDetails = async (req, res) => {
  */
 const handleGetCredits = async (req, res) => {
   const { movie_id } = req.query;
+
+  if (!movie_id) return res.status(400).json({ message: "Missing movie ID." });
+
   try {
     const response = await api.get(
       `movie/${movie_id}/credits?sort_by=popularity&language=en-US`
@@ -75,6 +85,10 @@ const handleGetCredits = async (req, res) => {
  */
 const handleSearch = async (req, res) => {
   const { query, page } = req.query;
+
+  if (!query) return res.status(400).json({ message: "Missing query." });
+  if (!page) return res.status(400).json({ message: "Missing page number." });
+
   try {
     const response = await api.get(
       `search/movie?query=${query}&include_adult=false&video=false&language=en-US&page=${page}`
@@ -96,6 +110,9 @@ const handleSearch = async (req, res) => {
  */
 const handleGetVideo = async (req, res) => {
   const { movie_id } = req.query;
+
+  if (!movie_id) return res.status(400).json({ message: "Missing movie ID." });
+
   try {
     const response = await api.get(`movie/${movie_id}/videos?language=en-US`);
     res.json(response.data);
@@ -117,6 +134,9 @@ const handleGetVideo = async (req, res) => {
  */
 const handleDiscover = async (req, res) => {
   const { genres, sort_by, page } = req.query;
+
+  if (!sort_by) return res.status(400).json({ message: "Missing sort key." });
+  if (!page) return res.status(400).json({ message: "Missing page number." });
 
   const genresArray = genres.split("_");
   const genreKeys = genresArray.map((genre) => movieGenres[genre]);
@@ -155,6 +175,55 @@ const handleGetWatchProvider = async (req, res) => {
   }
 };
 
+const handlePostReview = async (req, res) => {
+  const { id, content } = req.body;
+  const { id: user_id } = req;
+
+  console.log(req.body);
+
+  if (!id) return res.status(400).json({ message: "Missing ID." });
+  if (!user_id) return res.status(400).json({ message: "Missing user ID." });
+  if (!content) return res.status(400).json({ message: "Missing content." });
+
+  try {
+    const newReview = await Reviews.create({
+      id,
+      owner: user_id,
+      content,
+    });
+
+    res.json({ message: "Review posted.", newReview });
+  } catch (error) {
+    console.error(error);
+    res.sendStatus(500);
+  }
+};
+
+const handleGetReview = async (req, res) => {
+  const { id, page } = req.query;
+  const limit = parseInt(req.query.limit) || 20;
+  const skip = (page - 1) * limit;
+
+  if (!id) return res.status(400).json({ message: "Missing ID." });
+
+  try {
+    const reviews = await Reviews.find({ id: id }).skip(skip).limit(limit);
+
+    const total = await Reviews.countDocuments({ id: id });
+    const total_pages = Math.ceil(total / limit);
+
+    res.json({
+      reviews,
+      current_page: page,
+      total_pages,
+      total_reviews: total,
+    });
+  } catch (error) {
+    console.error(error);
+    res.sendStatus(500);
+  }
+};
+
 module.exports = {
   handleGetCategory,
   handleGetDetails,
@@ -163,4 +232,6 @@ module.exports = {
   handleGetVideo,
   handleDiscover,
   handleGetWatchProvider,
+  handlePostReview,
+  handleGetReview,
 };

@@ -17,6 +17,7 @@ import { Helmet } from "react-helmet";
 import ImageLazy from "../components/ui/ImageLazy";
 import ListTitleSection from "../components/sections/ListTitleSection";
 import ListItemSection from "../components/sections/ListItemSection";
+import axios from "axios";
 
 const ListSlug = () => {
   const { token, user } = useAuth();
@@ -45,8 +46,8 @@ const ListSlug = () => {
   });
 
   const { data: ownerData } = useSWR(
-    isAxiosReady && listData ? `/public/account?id=${listData.owner}` : null,
-    () => fetchOwner(api, listData.owner)
+    listData ? `/public/account?id=${listData.owner}` : null,
+    () => fetchOwner(axios, listData.owner)
   );
 
   useEffect(() => {
