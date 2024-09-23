@@ -39,8 +39,8 @@ const useAxios = () => {
         (error) => Promise.reject(error)
       );
 
-      setIsAxiosReady(true); // Axios is now ready with the interceptor
-      return () => api.interceptors.request.eject(interceptor); // Cleanup interceptor
+      setIsAxiosReady(true);
+      return () => api.interceptors.request.eject(interceptor);
     }
   }, [token, setToken]);
 
