@@ -80,14 +80,14 @@ const TvShowEpisodeSlug = () => {
           />
           <motion.div
             initial={{ marginTop: -120 }}
-            className="flex flex-col p-4 rounded-md max-w-full w-[calc(100%-2rem)] gap-4"
+            className="flex flex-col p-4 rounded-md max-w-full w-full gap-4"
           >
             <CreditsSection credits={{ crew: details.crew, cast: casts }} />
             <CastSection title="Full cast" casts={casts} />
             <CrewSection title="Full crew" crews={details?.crew} />
           </motion.div>
           {videos?.length > 0 && (
-            <div className="flex flex-col p-4 rounded-md max-w-full w-[calc(100%-2rem)] gap-4">
+            <div className="flex flex-col p-4 rounded-md max-w-full w-full gap-4">
               <ClipSection
                 keys={videos.map((video) => ({
                   name: video.name,

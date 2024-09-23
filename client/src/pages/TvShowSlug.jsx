@@ -75,7 +75,7 @@ const TvShowSlug = () => {
         />
       )}
       <motion.section
-        className="flex flex-col rounded-lg gap-4 p-4 items-center w-[calc(100%-2rem)]"
+        className="flex flex-col rounded-lg gap-4 p-4 items-center w-full"
         initial={{ marginTop: -120 }}
       >
         {isShowLoading ? (
@@ -89,7 +89,7 @@ const TvShowSlug = () => {
           />
         )}
       </motion.section>
-      <motion.div className="flex flex-col rounded-lg gap-4 p-4 items-center w-[calc(100%-2rem)]">
+      <motion.div className="flex flex-col rounded-lg gap-4 p-4 items-center w-full">
         {isSimilarShowsLoading ? (
           <LoadingMovieSection title="Recommendations" />
         ) : (
@@ -102,7 +102,7 @@ const TvShowSlug = () => {
         )}
       </motion.div>
       {videos?.length > 0 && (
-        <div className="flex flex-col p-4 rounded-md max-w-full w-[calc(100%-2rem)] gap-4">
+        <div className="flex flex-col p-4 rounded-md max-w-full w-full gap-4">
           <ClipSection
             keys={videos.map((video) => ({
               name: video.name,

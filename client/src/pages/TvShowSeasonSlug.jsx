@@ -1,10 +1,5 @@
 import { useSearchParams } from "react-router-dom";
 import { motion } from "framer-motion";
-import Button from "../components/ui/Button";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faPlay } from "@fortawesome/free-solid-svg-icons";
-import { useModal } from "../components/hooks/useModal";
-import Frame from "../components/Frame";
 import { LoadingMovieSection } from "../components/loaders/MovieLoaders";
 import { MovieSlugLoader } from "../components/loaders/MovieSlugLoader";
 import useAxios from "../hooks/useAxios";
@@ -66,7 +61,7 @@ const TvShowSeasonSlug = () => {
       )}
       <motion.div
         initial={{ marginTop: -120 }}
-        className="flex md:flex-row flex-col p-4 rounded-md max-w-full w-[calc(100%-2rem)] gap-4"
+        className="flex md:flex-row flex-col p-4 rounded-md max-w-full w-full gap-4"
       >
         {details?.episodes ? (
           <EpisodeSection
@@ -81,7 +76,7 @@ const TvShowSeasonSlug = () => {
         )}
       </motion.div>
       {videos?.length > 0 && (
-        <div className="flex flex-col p-4 rounded-md max-w-full w-[calc(100%-2rem)] gap-4">
+        <div className="flex flex-col p-4 rounded-md max-w-full w-full gap-4">
           <ClipSection
             keys={videos.map((video) => ({
               name: video.name,

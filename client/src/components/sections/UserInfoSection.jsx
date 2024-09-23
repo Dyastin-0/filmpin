@@ -15,7 +15,7 @@ const UserInfoSection = ({ userData, user }) => {
   return (
     <motion.section
       initial={{ y: -120 }}
-      className="flex gap-4 w-[calc(100%-2rem)] h-fit p-4"
+      className="flex gap-4 w-full h-fit p-4"
     >
       <div className="flex flex-col max-w-full items-center gap-4">
         {userData?.profileImageURL ? (

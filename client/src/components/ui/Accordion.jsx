@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useRef } from "react";
 import { motion } from "framer-motion";
 import Button from "../ui/Button";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -6,9 +6,23 @@ import { faChevronDown } from "@fortawesome/free-solid-svg-icons";
 
 const Accordion = ({ title, children }) => {
   const [isOpen, setIsOpen] = useState(false);
+  const contentRef = useRef(null);
 
+  // Toggles accordion when the button is clicked
   const toggleAccordion = () => {
-    setIsOpen(!isOpen);
+    setIsOpen((prev) => !prev);
+  };
+
+  // Open accordion when any child is focused
+  const handleFocus = () => {
+    setIsOpen(true);
+  };
+
+  // Close accordion when focus is lost from all children
+  const handleBlur = (e) => {
+    if (!contentRef.current.contains(e.relatedTarget)) {
+      setIsOpen(false);
+    }
   };
 
   return (
@@ -17,7 +31,6 @@ const Accordion = ({ title, children }) => {
         className="flex w-fit outline-none items-center text-primary-foreground text-xs font-semibold
         transition-colors duration-300 focus:text-primary-highlight hover:text-primary-highlight"
         onClick={toggleAccordion}
-        onFocus={() => setIsOpen(true)}
       >
         <div className="flex items-center gap-1 justify-between">
           {title}
@@ -34,8 +47,13 @@ const Accordion = ({ title, children }) => {
         initial={{ height: 0 }}
         animate={{ height: isOpen ? "auto" : 0 }}
         className="overflow-hidden"
+        transition={{ duration: 0.3 }}
+        ref={contentRef}
+        onFocus={handleFocus}
+        onBlur={handleBlur}
+        tabIndex={-1}
       >
-        <div className="py-2">{children}</div>
+        {children}
       </motion.div>
     </div>
   );

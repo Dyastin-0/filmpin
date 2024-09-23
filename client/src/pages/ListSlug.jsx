@@ -104,7 +104,7 @@ const ListSlug = () => {
       </div>
       <motion.div
         initial={{ y: -120 }}
-        className="relative flex flex-col gap-4 w-[calc(100%-2rem)] p-4 rounded-md"
+        className="relative flex flex-col gap-4 w-full p-4 rounded-md"
       >
         {isLoading ? (
           <ListTitleDummy />
@@ -114,7 +114,7 @@ const ListSlug = () => {
       </motion.div>
       <motion.div
         initial={{ marginTop: -120 }}
-        className="relative flex flex-col items-center gap-4 w-[calc(100%-2rem)] p-4 rounded-md overflow-hidden"
+        className="relative flex flex-col items-center gap-4 w-full p-4 rounded-md overflow-hidden"
       >
         {isLoading ? (
           <ListLoader />

@@ -78,7 +78,7 @@ const MovieSlug = () => {
       )}
       <motion.div
         initial={{ marginTop: -120 }}
-        className="flex flex-col rounded-lg gap-4 p-4 w-[calc(100%-2rem)] overflow-hidden"
+        className="flex flex-col rounded-lg gap-4 p-0 w-[calc(100%-2rem)] overflow-hidden"
       >
         <h1 className="text-primary-foreground text-sm font-semibold">
           Credits
@@ -87,7 +87,7 @@ const MovieSlug = () => {
         <CastSection title="Full cast" casts={credits?.cast} />
         <CrewSection title="Full crew" crews={credits?.crew} />
       </motion.div>
-      <section className="flex flex-col rounded-lg gap-4 p-4 items-center w-[calc(100%-2rem)]">
+      <section className="flex flex-col rounded-lg gap-4 items-center w-[calc(100%-2rem)]">
         {similarMovies ? (
           <MovieSection
             title="Recommendations"
@@ -99,7 +99,7 @@ const MovieSlug = () => {
           <LoadingMovieSection title="Recommendations" />
         )}
       </section>
-      <div className="flex flex-col rounded-lg gap-4 p-4 items-center w-[calc(100%-2rem)]">
+      <div className="flex flex-col rounded-lg gap-4 items-center w-[calc(100%-2rem)]">
         <ClipSection
           title={"Videos"}
           keys={videos?.map((video) => ({

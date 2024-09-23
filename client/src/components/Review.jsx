@@ -71,7 +71,7 @@ const Review = ({ review, details }) => {
           <button
             className="flex text-primary-foreground items-center outline-none
             transition-all duration-300
-            hover:text-primary-highlight hover:cursor-pointer"
+            hover:text-primary-highligh focus:text-primary-highlightt hover:cursor-pointer"
             onClick={handleLike}
           >
             <FontAwesomeIcon icon={hasLiked ? faSolidHeart : faRegularHeart} />
@@ -85,7 +85,7 @@ const Review = ({ review, details }) => {
           <button
             className="flex text-primary-foreground items-center outline-none
             transition-all duration-300
-            hover:text-primary-highlight hover:cursor-pointer"
+            hover:text-primary-highlight focus:text-primary-highlight hover:cursor-pointer"
           >
             <FontAwesomeIcon icon={faSolidHeart} />
           </button>
