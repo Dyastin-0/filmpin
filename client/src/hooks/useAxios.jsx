@@ -12,6 +12,8 @@ const api = axios.create({
   withCredentials: true,
 });
 
+let refreshTokenPromise = null;
+
 const useAxios = () => {
   const { token, setToken } = useAuth();
   const [isAxiosReady, setIsAxiosReady] = useState(false);
@@ -29,12 +31,19 @@ const useAxios = () => {
             return config;
           }
 
-          const response = await axios.get("/refreshAccessToken", {
-            withCredentials: true,
-          });
-          setToken(response.data.accessToken);
-          config.headers.Authorization = `Bearer ${response.data.accessToken}`;
-          return config;
+          if (!refreshTokenPromise) {
+            refreshTokenPromise = refreshAccessToken();
+          }
+
+          try {
+            const newToken = await refreshTokenPromise;
+            config.headers.Authorization = `Bearer ${newToken}`;
+            return config;
+          } catch (error) {
+            return Promise.reject(error);
+          } finally {
+            refreshTokenPromise = null;
+          }
         },
         (error) => Promise.reject(error)
       );
@@ -43,6 +52,19 @@ const useAxios = () => {
       return () => api.interceptors.request.eject(interceptor);
     }
   }, [token, setToken]);
+
+  const refreshAccessToken = async () => {
+    try {
+      const response = await axios.get("/refreshAccessToken");
+
+      const newAccessToken = response.data.accessToken;
+      setToken(newAccessToken);
+      return newAccessToken;
+    } catch (error) {
+      console.error("Failed to refresh token:", error);
+      throw error;
+    }
+  };
 
   return { api, isAxiosReady };
 };
