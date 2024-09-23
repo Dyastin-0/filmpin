@@ -1,12 +1,19 @@
 import { useEffect, useState } from "react";
 import useAxios from "../../hooks/useAxios";
-import useSWR from "swr";
 import { fetchReviews } from "../../helpers/api";
 import Review from "../Review";
 import Pagination from "../ui/Pagination";
 import ReviewForm from "../forms/ReviewForm";
 import { io } from "socket.io-client";
 import { useAuth } from "../../hooks/useAuth";
+
+const updateReviewHearts = (review, change) => {
+  if (review._id !== change.key._id) return review;
+  const updatedHearts = Array.isArray(change.newReview)
+    ? change.newReview
+    : [...review.hearts, change.newReview];
+  return { ...review, hearts: updatedHearts };
+};
 
 const MovieReviewSection = ({ details }) => {
   const { token } = useAuth();
@@ -40,6 +47,7 @@ const MovieReviewSection = ({ details }) => {
       });
 
       newSocket.on(`stream/review/${details.id}/${randomId}`, (change) => {
+        console.log(change);
         if (change.type === "delete")
           setData((prevReviews) =>
             prevReviews.reviews.filter((review) => review._id !== change.review)
@@ -50,16 +58,12 @@ const MovieReviewSection = ({ details }) => {
             reviews: [...prevReviews.reviews, change.newReview],
           }));
         if (change.type === "update") {
-          setData((prevReviews) => {
-            return {
-              ...prevReviews,
-              reviews: prevReviews.reviews.map((review) =>
-                review._id === change.key._id
-                  ? { ...review, hearts: change.newReview }
-                  : review
-              ),
-            };
-          });
+          setData((prevReviews) => ({
+            ...prevReviews,
+            reviews: prevReviews.reviews.map((review) =>
+              updateReviewHearts(review, change)
+            ),
+          }));
         }
       });
       return () => newSocket.disconnect();

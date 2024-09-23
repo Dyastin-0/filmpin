@@ -125,8 +125,8 @@ const startReviewStream = (socket, mongoose, randomId, itemId) => {
         ? change.documentKey._id
         : type === "insert"
         ? change.fullDocument
-        : change.updateDescription.updatedFields.hearts;
-
+        : change.updateDescription.updatedFields.hearts ||
+          change.updateDescription.updatedFields["hearts.1"];
     socket.emit(`stream/review/${itemId}/${randomId}`, {
       newReview: changeData,
       key: change.documentKey,
