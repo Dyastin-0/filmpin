@@ -47,7 +47,6 @@ const MovieReviewSection = ({ details }) => {
       });
 
       newSocket.on(`stream/review/${details.id}/${randomId}`, (change) => {
-        console.log(change);
         if (change.type === "delete")
           setData((prevReviews) =>
             prevReviews.reviews.filter((review) => review._id !== change.review)
