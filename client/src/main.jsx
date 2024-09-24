@@ -20,7 +20,9 @@ ReactDOM.createRoot(document.getElementById("root")).render(
             <SWRConfig
               value={{
                 revalidateOnFocus: false,
-                // revalidateOnMount: false,
+                shouldRetryOnError: false,
+                revalidateIfStale: true,
+                revalidateOnReconnect: true,
               }}
             >
               <App />
