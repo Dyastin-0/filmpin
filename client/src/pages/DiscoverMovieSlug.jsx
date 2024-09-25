@@ -19,7 +19,7 @@ const DiscoverMovieSlug = () => {
   const [searchParams] = useSearchParams();
   const { setLoading } = useLoading();
   const [selectedGenres, setSelectedGenres] = useState();
-  const [currentPage, setCurrentPage] = useState(1);
+  const [currentPage, setCurrentPage] = useState(searchParams.get("page") || 1);
 
   const genresString =
     selectedGenres?.length > 0
