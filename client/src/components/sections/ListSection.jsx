@@ -52,9 +52,11 @@ const ListSection = ({ userData }) => {
             );
           if (change.type === "insert") {
             setList((prevList) => [...prevList, change.list]);
-            toastInfo(
-              `${userData.username} just added a new list ${change.list.name}.`
-            );
+            const isOwner = userData.username === user.username;
+            !isOwner &&
+              toastInfo(
+                `${userData.username} added a new list '${change.list.name}'.`
+              );
           }
         }
       );

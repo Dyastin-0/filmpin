@@ -8,10 +8,12 @@ const listTypes = require("../../models/listTypes");
  * @param {string} req.id - The ID of the user.
  * @param {Object} req.body.list - The list object from the request body.
  * @param {string} req.body.list.name - The name of the list.
+ * @param {string} [req.body.list.description] - The description of the list.
  * @param {Array} req.body.list.list - The items in the list.
  * @param {string} req.body.list.type - The type of the list.
  * @param {Object} res - The response object.
- * @returns {Object} Success message.
+ * @returns {Object} JSON object containing the new list ID.
+ * @returns {string} returns.list_id - The ID of the newly created list.
  */
 const handleCreateList = async (req, res) => {
   const { id } = req;
@@ -50,9 +52,10 @@ const handleCreateList = async (req, res) => {
 /**
  * Fetches the lists for a specific user.
  * @param {Object} req - The request object.
- * @param {string} req.id - The ID of the user.
+ * @param {string} req.query.user_id - The ID of the user.
  * @param {Object} res - The response object.
  * @returns {Object} JSON object containing the specified user's lists.
+ * @returns {Array} returns.lists - An array of lists owned by the user.
  */
 const handleGeUserLists = async (req, res) => {
   const { user_id } = req.query;
@@ -74,6 +77,7 @@ const handleGeUserLists = async (req, res) => {
  * @param {string} req.params.list_id - The ID of the list.
  * @param {Object} res - The response object.
  * @returns {Object} JSON object containing the specified list.
+ * @returns {Object} returns.list - The list object.
  */
 const handleGetList = async (req, res) => {
   const { list_id } = req.params;
@@ -89,22 +93,31 @@ const handleGetList = async (req, res) => {
   }
 };
 
+/**
+ * Adds an item to a specific list.
+ * @param {Object} req - The request object.
+ * @param {string} req.body.list_id - The ID of the list.
+ * @param {Object} req.body.list_item - The item to add to the list.
+ * @param {string} req.id - The ID of the user.
+ * @param {Object} res - The response object.
+ * @returns {Object} JSON object containing the updated list name.
+ * @returns {string} returns.list_name - The name of the updated list.
+ */
 const handleAddItem = async (req, res) => {
   const { list_id, list_item } = req.body;
   const { id } = req;
 
-  if (!list_id) return res.status(400).json({ message: "Missing user ID." });
-  if (!list_item) return res.status(400).json({ message: "Missing list." });
+  if (!list_id) return res.status(400).json({ message: "Missing list ID." });
+  if (!list_item)
+    return res.status(400).json({ message: "Missing list item." });
 
   try {
     const list = await Lists.findOne({ _id: list_id });
     if (!list) return res.status(400).json({ message: "List does not exist." });
     if (list.list.some((item) => item.id == list_item.id))
-      return res
-        .status(400)
-        .json({
-          message: `${list_item.title} is already in your ${list.name}.`,
-        });
+      return res.status(400).json({
+        message: `${list_item.title} is already in your ${list.name}.`,
+      });
 
     const user = await Users.findOne({ _id: id });
     if (!user) return res.status(400).json({ message: "User does not exist." });
@@ -116,7 +129,43 @@ const handleAddItem = async (req, res) => {
 
     res.json({ list_name: list.name });
   } catch (error) {
-    console.error("Failed to add list.", error);
+    console.error("Failed to add item to list.", error);
+    res.sendStatus(500);
+  }
+};
+
+/**
+ * Updates a specific list with a new list of items.
+ * @param {Object} req - The request object.
+ * @param {string} req.query.list_id - The ID of the list.
+ * @param {Array} req.body.new_list - The new list of items.
+ * @param {string} req.id - The ID of the user.
+ * @param {Object} res - The response object.
+ * @returns {Object} JSON object containing a success message.
+ * @returns {string} returns.message - A success message indicating the list was updated.
+ */
+const handlePatchList = async (req, res) => {
+  const { list_id } = req.query;
+  const { new_list } = req.body;
+  const { id } = req;
+
+  if (!list_id) return res.status(400).json({ message: "Missing list ID." });
+  if (!new_list) return res.status(400).json({ message: "Missing new list." });
+
+  try {
+    const list = await Lists.findOne({ _id: list_id });
+
+    if (!list) return res.status(400).json({ message: "List does not exist." });
+
+    if (list.owner !== id)
+      return res
+        .status(403)
+        .json({ message: "You can't edit someone else's list." });
+
+    await Lists.updateOne({ _id: list_id }, { $set: { list: new_list } });
+    res.json({ message: "List updated." });
+  } catch (error) {
+    console.error("Failed to update list.", error);
     res.sendStatus(500);
   }
 };
@@ -126,4 +175,5 @@ module.exports = {
   handleCreateList,
   handleGetList,
   handleAddItem,
+  handlePatchList,
 };

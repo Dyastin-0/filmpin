@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useCallback, useMemo } from "react";
 import { Link, useSearchParams } from "react-router-dom";
 import { motion } from "framer-motion";
 import { useAuth } from "../hooks/useAuth";
@@ -18,6 +18,10 @@ import ImageLazy from "../components/ui/ImageLazy";
 import ListTitleSection from "../components/sections/ListTitleSection";
 import ListItemSection from "../components/sections/ListItemSection";
 import axios from "axios";
+import Button from "../components/ui/Button";
+import { Dropdown, DropdownItem } from "../components/ui/Dropdown";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faEdit, faEllipsisV, faSave } from "@fortawesome/free-solid-svg-icons";
 
 const ListSlug = () => {
   const { token, user } = useAuth();
@@ -28,6 +32,8 @@ const ListSlug = () => {
   const id = searchParams.get("list_id");
 
   const [listItems, setListItems] = useState([]);
+  const [initialListItems, setInitialListItems] = useState([]);
+  const [isEditMode, setIsEditMode] = useState(false);
 
   const {
     data: listData,
@@ -39,7 +45,10 @@ const ListSlug = () => {
         const fetchItem =
           listTypes[data.type] === "Movies" ? fetchMovie : fetchShow;
         Promise.all(data.list.map((item) => fetchItem(api, item.id))).then(
-          (fetchedItems) => setListItems(fetchedItems)
+          (fetchedItems) => {
+            setListItems(fetchedItems);
+            setInitialListItems(fetchedItems);
+          }
         );
       }
     },
@@ -66,22 +75,65 @@ const ListSlug = () => {
       newSocket.on(
         `stream/list/${listData.owner}/${user._id}/${randomId}`,
         (change) => {
-          if (change.type === "delete")
+          if (change.type === "delete") {
             setListItems((prevList) =>
               prevList.filter((item) => item._id !== change.list)
             );
+          }
           if (change.type === "update") {
-            setListItems(change.list);
-            toastInfo(
-              `${ownerData.username} just added a new item at this list.`
-            );
+            const hasChanges =
+              JSON.stringify(listItems) !== JSON.stringify(change.list);
+            console.log(hasChanges);
+            if (hasChanges) {
+              setListItems(change.list);
+              const isOwner = ownerData.username === user.username;
+              toastInfo(
+                isOwner
+                  ? `Your list has been updated.`
+                  : `${ownerData.username} updated ${listData.list.name}.`
+              );
+            }
           }
         }
       );
 
       return () => newSocket.disconnect();
     }
-  }, [token, listData, user, ownerData]);
+  }, [token, listData, user, ownerData, toastInfo]);
+
+  const handleSave = useCallback(async () => {
+    const hasChanges =
+      JSON.stringify(listItems) !== JSON.stringify(initialListItems);
+
+    if (!hasChanges) return toastInfo("No changes detected.");
+
+    try {
+      await api.patch(`/list?list_id=${listData._id}`, { new_list: listItems });
+      toastInfo("Changes saved successfully.");
+      setInitialListItems(listItems);
+      setIsEditMode(false);
+    } catch (error) {
+      toastInfo("Failed to save changes.");
+    }
+  }, [api, listData, listItems, initialListItems, toastInfo]);
+
+  const toggleEditMode = useCallback(() => {
+    if (isEditMode) {
+      setListItems(initialListItems);
+    } else {
+      setInitialListItems(listItems);
+    }
+    setIsEditMode(!isEditMode);
+  }, [isEditMode, listItems, initialListItems]);
+
+  const editButtonText = useMemo(
+    () => (isEditMode ? "Save" : "Edit"),
+    [isEditMode]
+  );
+  const editButtonIcon = useMemo(
+    () => (isEditMode ? faSave : faEdit),
+    [isEditMode]
+  );
 
   return (
     <div className="relative flex flex-col items-center p-4 gap-4 w-full h-full bg-primary rounded-md">
@@ -94,10 +146,7 @@ const ListSlug = () => {
           <ListBackdropDummy />
         ) : (
           <ImageLazy
-            imagePath={
-              listData?.list[Math.floor(Math.random() * listData?.list.length)]
-                ?.backdrop_path
-            }
+            imagePath={listItems[0]?.backdrop_path}
             name={listData?.name}
           />
         )}
@@ -119,11 +168,37 @@ const ListSlug = () => {
         {isLoading ? (
           <ListLoader />
         ) : isError ? (
-          <p className="text-xs text-error text-center font-bold">
+          <p className="text-xs text-primary-foreground text-center font-bold">
             Failed to load {listTypes[listData.type]}, Something went wrong.
           </p>
         ) : (
-          <ListItemSection listItems={listItems} listData={listData} />
+          <>
+            {isEditMode && (
+              <span className="text-xs text-primary-foreground font-semibold">
+                You are in edit mode
+              </span>
+            )}
+            <div className="flex gap-4 self-end">
+              <Button
+                text={editButtonText}
+                icon={<FontAwesomeIcon icon={editButtonIcon} />}
+                onClick={isEditMode ? handleSave : toggleEditMode}
+              />
+              {isEditMode && (
+                <Button
+                  text="Cancel"
+                  className="bg-error text-primary-foreground"
+                  onClick={toggleEditMode}
+                />
+              )}
+            </div>
+            <ListItemSection
+              listItems={listItems}
+              listData={listData}
+              setListItems={setListItems}
+              isEditMode={isEditMode}
+            />
+          </>
         )}
       </motion.div>
     </div>
