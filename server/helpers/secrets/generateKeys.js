@@ -29,7 +29,7 @@ const generateKeys = async () => {
       `CLOUDINARY_CLOUD_NAME=${cloudinaryCloudName}`,
       `CLOUDINARY_API_KEY=${cloudinaryApiKey}`,
       `CLOUDINARY_API_SECRET=${cloudinaryApiSecret}`,
-      `BASE_CLIENT_URL=filmpin.duckdns.org`,
+      `BASE_CLIENT_URL=filmpin.dyastin.tech`,
     ];
 
     const fileContent = fs.readFileSync(envFilePath, { encoding: "utf8" });
