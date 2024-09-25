@@ -1,36 +1,62 @@
-import React, { useState, useEffect } from "react";
-import { DragDropContext, Droppable, Draggable } from "@hello-pangea/dnd";
+import { useState, useEffect } from "react";
+import {
+  DndContext,
+  closestCenter,
+  useSensor,
+  useSensors,
+  PointerSensor,
+} from "@dnd-kit/core";
+import {
+  SortableContext,
+  rectSortingStrategy,
+  useSortable,
+  arrayMove,
+} from "@dnd-kit/sortable";
+import { CSS } from "@dnd-kit/utilities";
 import listTypes from "../../models/listTypes";
 import Movie from "../Movie";
 import TvShow from "../TvShow";
 
-const ListItemSection = ({ listItems, listData, setListItems, isEditMode }) => {
-  const [direction, setDirection] = useState("horizontal");
+const SortableItem = ({ id, item, isEditMode, type }) => {
+  const { attributes, listeners, setNodeRef, transform, transition } =
+    useSortable({ id });
 
-  const onDragEnd = (result) => {
-    if (!result.destination) return;
-
-    const reorderedItems = Array.from(listItems);
-    const [removed] = reorderedItems.splice(result.source.index, 1);
-    reorderedItems.splice(result.destination.index, 0, removed);
-
-    setListItems(reorderedItems);
+  const style = {
+    transform: CSS.Transform.toString(transform),
+    transition,
   };
 
-  useEffect(() => {
-    const updateDirection = () => {
-      if (window.innerWidth < 768) {
-        setDirection("vertical");
-      } else {
-        setDirection("horizontal");
-      }
-    };
+  return (
+    <div
+      ref={setNodeRef}
+      style={style}
+      {...attributes}
+      {...listeners}
+      className="draggable-item"
+    >
+      {type === "Movies" ? (
+        <Movie info={item} isEditMode={isEditMode} />
+      ) : (
+        <TvShow info={item} isEditMode={isEditMode} />
+      )}
+    </div>
+  );
+};
 
-    window.addEventListener("resize", updateDirection);
-    updateDirection();
+const ListItemSection = ({ listItems, listData, setListItems, isEditMode }) => {
+  const sensors = useSensors(useSensor(PointerSensor));
 
-    return () => window.removeEventListener("resize", updateDirection);
-  }, []);
+  const handleDragEnd = (event) => {
+    const { active, over } = event;
+
+    if (active.id !== over.id) {
+      setListItems((items) => {
+        const oldIndex = items.findIndex((item) => item.id === active.id);
+        const newIndex = items.findIndex((item) => item.id === over.id);
+        return arrayMove(items, oldIndex, newIndex);
+      });
+    }
+  };
 
   if (!isEditMode) {
     return (
@@ -47,37 +73,28 @@ const ListItemSection = ({ listItems, listData, setListItems, isEditMode }) => {
   }
 
   return (
-    <DragDropContext onDragEnd={onDragEnd}>
-      <Droppable droppableId="droppable" direction={direction}>
-        {(provided) => (
-          <section
-            className={`flex ${direction === "horizontal" ? "flex-row" : "flex-col"} flex-wrap justify-center max-w-full gap-4`}
-            {...provided.droppableProps}
-            ref={provided.innerRef}
-          >
-            {listItems?.map((item, index) => (
-              <Draggable key={index} draggableId={String(index)} index={index}>
-                {(provided) => (
-                  <div
-                    ref={provided.innerRef}
-                    {...provided.draggableProps}
-                    {...provided.dragHandleProps}
-                    className="draggable-item"
-                  >
-                    {listTypes[listData?.type] === "Movies" ? (
-                      <Movie info={item} isEditMode={isEditMode} />
-                    ) : (
-                      <TvShow info={item} isEditMode={isEditMode} />
-                    )}
-                  </div>
-                )}
-              </Draggable>
-            ))}
-            {provided.placeholder}
-          </section>
-        )}
-      </Droppable>
-    </DragDropContext>
+    <DndContext
+      sensors={sensors}
+      collisionDetection={closestCenter}
+      onDragEnd={handleDragEnd}
+    >
+      <SortableContext
+        items={listItems.map((item) => item.id)}
+        strategy={rectSortingStrategy}
+      >
+        <section className={`flex flex-wrap justify-center max-w-full gap-4`}>
+          {listItems?.map((item, index) => (
+            <SortableItem
+              key={item.id}
+              id={item.id}
+              item={item}
+              isEditMode={isEditMode}
+              type={listTypes[listData?.type]}
+            />
+          ))}
+        </section>
+      </SortableContext>
+    </DndContext>
   );
 };
 

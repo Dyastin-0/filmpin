@@ -83,7 +83,6 @@ const ListSlug = () => {
           if (change.type === "update") {
             const hasChanges =
               JSON.stringify(listItems) !== JSON.stringify(change.list);
-            console.log(hasChanges);
             if (hasChanges) {
               setListItems(change.list);
               const isOwner = ownerData.username === user.username;
