@@ -11,7 +11,7 @@ import useAxios from "../hooks/useAxios";
 import { fetchMovie } from "../helpers/api";
 import useSWR from "swr";
 
-const Movie = ({ info }) => {
+const Movie = ({ info, isEditMode }) => {
   const navigate = useNavigate();
   const { api, isAxiosReady } = useAxios();
 
@@ -38,7 +38,9 @@ const Movie = ({ info }) => {
       className="flex flex-col rounded-lg drop-shadow-none gap-1 p-4 w-[200px] h-[370px]
         text-primary-foreground border border-secondary-accent
         hover:scale-95 hover:cursor-pointer duration-300"
-      onClick={() => navigate(`/movies?id=${details.id}_${details.title}`)}
+      onClick={() => {
+        !isEditMode && navigate(`/movies?id=${details.id}_${details.title}`);
+      }}
     >
       {imageLoaded ? (
         <img

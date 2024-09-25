@@ -15,7 +15,7 @@ import useSWR from "swr";
 const AddToList = ({ selected, type }) => {
   const { user } = useAuth();
   const { api, isAxiosReady } = useAxios();
-  const { toastError, toastSuccess } = useToast();
+  const { toastError, toastInfo } = useToast();
   const { setOpen, setModal } = useModal();
   const [selectedList, setSelectedList] = useState([]);
 
@@ -38,7 +38,7 @@ const AddToList = ({ selected, type }) => {
           },
         })
         .then((response) => {
-          toastSuccess(
+          toastInfo(
             `${selected.title || selected.name} added to ${
               response.data.list_name
             }.`

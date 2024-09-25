@@ -7,7 +7,7 @@ export const Backdrop = ({ backdrop_path, title }) => {
   const { setOpen } = useModal();
   const { api } = useAxios();
   const { user, setUser } = useAuth();
-  const { toastError, toastSuccess } = useToast();
+  const { toastError, toastInfo } = useToast();
 
   const handleSetBackdrop = async (backdrop_path) => {
     try {
@@ -19,7 +19,7 @@ export const Backdrop = ({ backdrop_path, title }) => {
         ...prev,
         backdropPath: backdrop,
       }));
-      toastSuccess("Backdrop updated.");
+      toastInfo("Backdrop updated.");
       setOpen(false);
     } catch (error) {
       console.error("Failed to set backdrop.", error);

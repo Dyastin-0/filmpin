@@ -12,7 +12,7 @@ const Crew = ({ info }) => {
         <div className="w-[40px] h-[40px] rounded-full bg-secondary"> </div>
       )}
       <div>
-        <h1 className="text-primary-highlight text-xs font-semibold line-clamp-1 text-ellipsis">
+        <h1 className="text-primary-foreground text-xs font-semibold line-clamp-1 text-ellipsis">
           {info.name}
         </h1>
         <h1 className="text-secondary-foreground text-xs font-semibold line-clamp-1 text-ellipsis">

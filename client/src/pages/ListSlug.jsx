@@ -135,6 +135,8 @@ const ListSlug = () => {
     [isEditMode]
   );
 
+  const isOwner = user && ownerData && user._id === ownerData._id;
+
   return (
     <div className="relative flex flex-col items-center p-4 gap-4 w-full h-full bg-primary rounded-md">
       <Helmet>
@@ -173,25 +175,32 @@ const ListSlug = () => {
           </p>
         ) : (
           <>
-            {isEditMode && (
-              <span className="text-xs text-primary-foreground font-semibold">
-                You are in edit mode
-              </span>
+            {isOwner && (
+              <div className="flex justify-end items-center gap-2 w-full">
+                {isEditMode && (
+                  <div className="flex w-full justify-between">
+                    <span className="text-xs text-primary-foreground">
+                      Tip: Drag a movie at the start to change the list's
+                      backdrop.
+                    </span>
+                  </div>
+                )}
+                <div className="flex gap-2 justify-self-end">
+                  <Button
+                    text={editButtonText}
+                    icon={<FontAwesomeIcon icon={editButtonIcon} />}
+                    onClick={isEditMode ? handleSave : toggleEditMode}
+                  />
+                  {isEditMode && (
+                    <Button
+                      variant="ghost"
+                      text="Cancel"
+                      onClick={toggleEditMode}
+                    />
+                  )}
+                </div>
+              </div>
             )}
-            <div className="flex gap-4 self-end">
-              <Button
-                text={editButtonText}
-                icon={<FontAwesomeIcon icon={editButtonIcon} />}
-                onClick={isEditMode ? handleSave : toggleEditMode}
-              />
-              {isEditMode && (
-                <Button
-                  text="Cancel"
-                  className="bg-error text-primary-foreground"
-                  onClick={toggleEditMode}
-                />
-              )}
-            </div>
             <ListItemSection
               listItems={listItems}
               listData={listData}

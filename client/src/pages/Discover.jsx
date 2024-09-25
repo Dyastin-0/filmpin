@@ -69,12 +69,16 @@ const Discover = () => {
         <div className="absolute top-4 left-4 flex rounded-md p-2 gap-2 z-30">
           <Button
             text="TV Shows"
-            onClick={() => navigate("/discover/tvshows")}
+            onClick={() =>
+              navigate("/discover/tvshows?genres=&sort_by=vote_count&page=1")
+            }
             onMouseEnter={() => setIsMovieHovered(false)}
           />
           <Button
             text="Movies"
-            onClick={() => navigate("/discover/movies")}
+            onClick={() =>
+              navigate("/discover/movies?genres=&sort_by=vote_count&page=1")
+            }
             onMouseEnter={() => setIsMovieHovered(true)}
           />
         </div>

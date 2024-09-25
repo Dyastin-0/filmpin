@@ -14,7 +14,7 @@ const AccountVerification = () => {
   const emailRef = useRef(null);
   const [sendingLink, setSendingLink] = useState(false);
   const [email, setEmail] = useState("");
-  const { toastError, toastSuccess } = useToast();
+  const { toastError, toastInfo } = useToast();
 
   const previousLocation = location.state?.from;
 
@@ -31,7 +31,7 @@ const AccountVerification = () => {
     setSendingLink(true);
     try {
       await axios.post(`email/verify/sendVerification?email=${email}`);
-      toastSuccess("Verification link sent!");
+      toastInfo("Verification link sent!");
       setEmail("");
       navigate("/sign-in");
     } catch (error) {

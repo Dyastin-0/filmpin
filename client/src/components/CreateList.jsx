@@ -18,7 +18,7 @@ const CreateList = () => {
   const [selectedGenres, setSelectedGenres] = useState([]);
   const [description, setDescription] = useState("");
   const [fetched, setFetched] = useState(null);
-  const { toastError, toastSuccess } = useToast();
+  const { toastError, toastInfo } = useToast();
   const { api } = useAxios();
 
   const handleCreateList = async (e) => {
@@ -45,7 +45,7 @@ const CreateList = () => {
           description: description,
         },
       });
-      toastSuccess("List successfully created.");
+      toastInfo("List successfully created.");
       setOpen(false);
     } catch (error) {
       console.error("Failed to create list.", error);

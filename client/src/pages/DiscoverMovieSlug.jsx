@@ -18,15 +18,13 @@ const DiscoverMovieSlug = () => {
   const { api, isAxiosReady } = useAxios();
   const [searchParams] = useSearchParams();
   const { setLoading } = useLoading();
-  const [selectedGenres, setSelectedGenres] = useState([]);
-  const [currentPage, setCurrentPage] = useState(
-    parseInt(searchParams.get("page")) || 1
-  );
+  const [selectedGenres, setSelectedGenres] = useState();
+  const [currentPage, setCurrentPage] = useState(1);
 
   const genresString =
-    selectedGenres.length > 0
+    selectedGenres?.length > 0
       ? selectedGenres.join("_").toLowerCase()
-      : searchParams.get("genres");
+      : searchParams.get("genres") || "";
   const sortBy = "vote_count";
 
   const { data, isLoading, isError } = useSWR(
@@ -45,22 +43,27 @@ const DiscoverMovieSlug = () => {
     window.scrollTo({ top: 0, left: 0, behavior: "smooth" });
   }, [selectedGenres, currentPage]);
 
+  useEffect(() => {
+    const genres = searchParams.get("genres");
+    setSelectedGenres(genres !== "" ? genres.split("_") : []);
+    setCurrentPage(parseInt(searchParams.get("page")) || 1);
+  }, [searchParams]);
+
+  useEffect(() => {
+    const query = `?${searchParams.toString()}`;
+    const newQuery = `?genres=${genresString}&sort_by=${sortBy}&page=${currentPage}`;
+    if (query !== newQuery) {
+      navigate(newQuery);
+    }
+  }, [selectedGenres]);
+
   const onPageChange = (page) => {
     setCurrentPage(page);
     setLoading(true);
     navigate(
-      `/discover/movies?genres=${genresString}&sort_by=${sortBy}&page=${page}`,
-      { replace: true }
+      `/discover/movies?genres=${genresString}&sort_by=${sortBy}&page=${page}`
     );
   };
-
-  useEffect(() => {
-    setCurrentPage(1);
-    navigate(
-      `/discover/movies?genres=${genresString}&sort_by=${sortBy}&page=1`,
-      { replace: true }
-    );
-  }, [selectedGenres]);
 
   return (
     <div className="flex flex-col bg-primary rounded-lg gap-4 p-4 items-center h-full w-full">

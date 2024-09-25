@@ -11,7 +11,7 @@ const Recovery = () => {
   const emailRef = useRef(null);
   const [sendingLink, setSendingLink] = useState(false);
   const [email, setEmail] = useState("");
-  const { toastError, toastSuccess } = useToast();
+  const { toastError, toastInfo } = useToast();
 
   useEffect(() => {
     emailRef.current.focus();
@@ -22,7 +22,7 @@ const Recovery = () => {
     setSendingLink(true);
     try {
       await axios.post(`/email/recover/sendRecovery?email=${email}`);
-      toastSuccess("Recovery link sent!");
+      toastInfo("Recovery link sent!");
       setEmail("");
       navigate("/sign-in");
     } catch (error) {

@@ -13,7 +13,7 @@ const SigninForm = ({}) => {
   const location = useLocation();
   const [signingIn, setSigningIn] = useState(false);
   const { setToken, setUser, token } = useAuth();
-  const { toastError, toastSuccess } = useToast();
+  const { toastError, toastInfo } = useToast();
 
   const previousPath = location.state?.from || "/home";
 
@@ -40,7 +40,7 @@ const SigninForm = ({}) => {
       const { data } = await axios.post("/sign-in", { email, password });
       setToken(data.accessToken);
       setUser(data.user);
-      toastSuccess("Signed in!");
+      toastInfo("Signed in!");
       setCredentials({ email: "", password: "" });
       navigate(previousPath);
     } catch (error) {

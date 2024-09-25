@@ -29,7 +29,7 @@ const AccountRecovery = () => {
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const [submitting, setSubmitting] = useState(false);
-  const { toastError, toastSuccess } = useToast();
+  const { toastError, toastInfo } = useToast();
 
   useEffect(() => {
     passwordRef.current.focus();
@@ -65,7 +65,7 @@ const AccountRecovery = () => {
           password: credentials.password,
         }
       );
-      toastSuccess(data.message);
+      toastInfo(data.message);
       navigate("/sign-in");
     } catch (error) {
       const errorMessage =

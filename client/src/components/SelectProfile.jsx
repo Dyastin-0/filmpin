@@ -14,7 +14,7 @@ const SelectProfile = () => {
   const [file, setFile] = useState(null);
   const [preview, setPreview] = useState("");
   const [uploading, setUploading] = useState(false);
-  const { toastError, toastSuccess } = useToast();
+  const { toastError, toastInfo } = useToast();
   const inputRef = useRef(null);
 
   const handleFileChange = (event) => {
@@ -50,7 +50,7 @@ const SelectProfile = () => {
         ...prev,
         profileImageURL: response.data.secure_url,
       }));
-      toastSuccess("Profile updated.");
+      toastInfo("Profile updated.");
       setOpen(false);
     } catch (error) {
       console.error("Error uploading file:", error);

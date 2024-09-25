@@ -19,14 +19,13 @@ const DiscoverTvShowSlug = () => {
   const navigate = useNavigate();
   const { setLoading } = useLoading();
   const [selectedGenres, setSelectedGenres] = useState([]);
-  const [currentPage, setCurrentPage] = useState(
-    parseInt(searchParams.get("page")) || 1
-  );
+  const [currentPage, setCurrentPage] = useState(1);
 
   const genresString =
     selectedGenres.length > 0
       ? selectedGenres.join("_").toLowerCase()
-      : searchParams.get("genres");
+      : searchParams.get("genres") || "";
+
   const sortBy = "vote_count";
 
   const { data, isLoading, isError } = useSWR(
@@ -45,21 +44,27 @@ const DiscoverTvShowSlug = () => {
     window.scrollTo({ top: 0, left: 0, behavior: "smooth" });
   }, [selectedGenres, currentPage]);
 
-  const onPageChange = (page) => {
-    setCurrentPage(page);
-    navigate(
-      `/discover/tvshows?genres=${genresString}&sort_by=${sortBy}&page=${page}`,
-      { replace: true }
-    );
-  };
+  useEffect(() => {
+    const genres = searchParams.get("genres");
+    setSelectedGenres(genres !== "" ? genres.split("_") : []);
+    setCurrentPage(parseInt(searchParams.get("page")) || 1);
+  }, [searchParams]);
 
   useEffect(() => {
-    setCurrentPage(1);
-    navigate(
-      `/discover/tvshows?genres=${genresString}&sort_by=${sortBy}&page=1`,
-      { replace: true }
-    );
+    const query = `?${searchParams.toString()}`;
+    const newQuery = `?genres=${genresString}&sort_by=${sortBy}&page=${currentPage}`;
+    if (query !== newQuery) {
+      navigate(newQuery);
+    }
   }, [selectedGenres]);
+
+  const onPageChange = (page) => {
+    setCurrentPage(page);
+    setLoading(true);
+    navigate(
+      `/discover/tvshows?genres=${genresString}&sort_by=${sortBy}&page=${page}`
+    );
+  };
 
   return (
     <div className="flex flex-col bg-primary rounded-lg gap-4 p-4 items-center h-full w-full">

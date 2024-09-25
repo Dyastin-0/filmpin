@@ -82,13 +82,9 @@ const Review = ({ review, details }) => {
         </div>
       ) : (
         <div className="flex gap-2">
-          <button
-            className="flex text-primary-foreground items-center outline-none
-            transition-all duration-300
-            hover:text-primary-highlight focus:text-primary-highlight hover:cursor-pointer"
-          >
+          <span className="flex text-primary-foreground">
             <FontAwesomeIcon icon={faSolidHeart} />
-          </button>
+          </span>
           <span className="text-xs text-primary-foreground">
             {hearts?.length}
           </span>

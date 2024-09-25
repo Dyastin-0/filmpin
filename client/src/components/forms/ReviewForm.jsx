@@ -8,7 +8,7 @@ import { faReply } from "@fortawesome/free-solid-svg-icons";
 const ReviewForm = ({ details }) => {
   const { api } = useAxios();
   const { user } = useAuth();
-  const { toastError, toastSuccess } = useToast();
+  const { toastError, toastInfo } = useToast();
   const [review, setReview] = useState("");
   const textareaRef = useRef(null);
 
@@ -25,7 +25,7 @@ const ReviewForm = ({ details }) => {
           content: review,
         })
         .then((response) => response.data.newReview);
-      toastSuccess("Review posted.");
+      toastInfo("Review posted.");
       setReview("");
       textareaRef.current.style.height = "auto";
     } catch (error) {

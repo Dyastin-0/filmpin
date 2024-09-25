@@ -13,7 +13,7 @@ const SignupForm = () => {
   const navigate = useNavigate();
   const { setToken, setUser, token } = useAuth();
   const usernameRef = useRef(null);
-  const { toastError, toastSuccess } = useToast();
+  const { toastError, toastInfo } = useToast();
 
   const [credentials, setCredentials] = useState({
     username: "",
@@ -72,9 +72,7 @@ const SignupForm = () => {
       setUser(data.user);
       setCredentials({ username: "", email: "", password: "" });
       setConfirmedPassword("");
-      toastSuccess(
-        "Sign up success! Check your email for the verification link."
-      );
+      toastInfo("Sign up success! Check your email for the verification link.");
       navigate("/sign-in", { state: { from: "/sign-up" } });
     } catch (error) {
       toastError(error.response.data.message);
