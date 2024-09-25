@@ -39,7 +39,6 @@ function App() {
         <Routes>
           <Route path="/" element={<Root />} />
           <Route path="/404" element={<NotFound />} />
-          <Route path="/:username" element={<Profile />} />
           <Route path="/sign-in" element={<Signin />} />
           <Route path="/sign-up" element={<Signup />} />
           <Route path="/account/verify" element={<AccountVerification />} />
@@ -47,6 +46,7 @@ function App() {
           <Route path="/account/recovery" element={<AccountRecovery />} />
           <Route path="/account/recover" element={<Recovery />} />
           <Route element={<ProtectedRoute />}>
+            <Route path="/:username" element={<Profile />} />
             <Route path="/home" element={<Home />} />
             <Route path="/search" element={<SearchSlug />} />
             <Route path="/movies" element={<MovieSlug />} />
