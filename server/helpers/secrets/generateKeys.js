@@ -7,10 +7,9 @@ const envFilePath = path.join(__dirname, "../../.env");
 
 const generateKeys = async () => {
   try {
-    const accessKey = crypto.randomBytes(64).toString("hex");
-    const refreshKey = crypto.randomBytes(64).toString("hex");
-    const emailKey = crypto.randomBytes(64).toString("hex");
-
+    const accessKey = await getSecret("ACCESS_TOKEN_KEY");
+    const refreshKey = await getSecret("REFRESH_TOKEN_KEY");
+    const emailKey = await getSecret("EMAIL_TOKEN_KEY");
     const dbUrl = await getSecret("MDB_ACCESS_URI");
     const tmDbKey = await getSecret("TMDB_ACCESS_KEY");
     const serverEmail = await getSecret("SERVER_EMAIL");
