@@ -40,7 +40,7 @@ export const Dropdown = ({ name, children }) => {
         className={`absolute flex flex-col items-end top-full mt-2 right-0 z-50
 					text-primary-foreground text-xs bg-accent
 					w-fit max-h-[200px] overflow-auto
-					p-2 pb-1 gap-1 shadow-md rounded-md`}
+					p-2 gap-2 shadow-md rounded-md`}
         onBlur={handleBlur}
       >
         {children}

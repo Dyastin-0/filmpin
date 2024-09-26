@@ -159,7 +159,11 @@ const ListSlug = () => {
         {isLoading ? (
           <ListTitleDummy />
         ) : (
-          <ListTitleSection listData={listData} ownerData={ownerData} />
+          <ListTitleSection
+            listData={listData}
+            listItems={listItems}
+            ownerData={ownerData}
+          />
         )}
       </motion.div>
       <motion.div
@@ -177,26 +181,34 @@ const ListSlug = () => {
             {isOwner && (
               <div className="flex justify-end items-center gap-2 w-full">
                 {isEditMode && (
-                  <div className="flex w-full justify-between">
-                    <span className="text-xs text-primary-foreground">
-                      Tip: Drag a movie at the start to change the list's
+                  <div className="flex flex-col gap-2 w-full items-center text-xs text-primary-foreground">
+                    <span>
+                      Tip: Drag an item at the start to change the list's
                       backdrop.
                     </span>
+                    <div className="flex items-center gap-2">
+                      <span>You are in edit mode.</span>
+                      <Button text="Save" onClick={handleSave} />
+                      <Button
+                        variant="ghost"
+                        text="Exit"
+                        onClick={toggleEditMode}
+                      />
+                    </div>
                   </div>
                 )}
                 <div className="flex gap-2 justify-self-end">
-                  <Button
-                    text={editButtonText}
-                    icon={<FontAwesomeIcon icon={editButtonIcon} />}
-                    onClick={isEditMode ? handleSave : toggleEditMode}
-                  />
-                  {isEditMode && (
-                    <Button
-                      variant="ghost"
-                      text="Cancel"
-                      onClick={toggleEditMode}
-                    />
-                  )}
+                  <Dropdown
+                    name={
+                      <div className="flex box-border justify-center items-center h-[14px] w-[14px]">
+                        <FontAwesomeIcon icon={faEllipsisV} />
+                      </div>
+                    }
+                  >
+                    <DropdownItem onClick={toggleEditMode}>
+                      Edit <FontAwesomeIcon icon={faEdit} />
+                    </DropdownItem>
+                  </Dropdown>
                 </div>
               </div>
             )}

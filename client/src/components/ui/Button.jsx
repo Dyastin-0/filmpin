@@ -3,7 +3,7 @@ const variants = {
   default_rounded:
     "p-2 text-primary-foreground font-semibold bg-secondary rounded-full",
   link: "text-primary-foreground font-bold transition-all duration-300 hover:cursor-pointer hover:text-primary-highlight focus:shadow-[var(--highlight)_0_2px_0_0] pb-1",
-  ghost: "text-primary-foreground rounded-md shadow-sm p-2",
+  ghost: "text-primary-foreground font-semibold rounded-md shadow-sm p-2",
 };
 
 const Button = ({

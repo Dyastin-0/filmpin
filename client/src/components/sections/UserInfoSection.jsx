@@ -2,7 +2,7 @@ import { motion } from "framer-motion";
 import { useModal } from "../hooks/useModal";
 import SelectProfile from "../SelectProfile";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faEllipsisH, faImage } from "@fortawesome/free-solid-svg-icons";
+import { faEllipsisV, faImage } from "@fortawesome/free-solid-svg-icons";
 import { Dropdown, DropdownItem } from "../ui/Dropdown";
 import { useAuth } from "../../hooks/useAuth";
 import SelectBackdrop from "../SelectBackdrop";
@@ -57,7 +57,13 @@ const UserInfoSection = ({ userData, user }) => {
       </div>
       {token && userData?._id === user?._id && (
         <div className="absolute top-4 right-4">
-          <Dropdown name={<FontAwesomeIcon icon={faEllipsisH} />}>
+          <Dropdown
+            name={
+              <div className="flex box-border justify-center items-center h-[14px] w-[14px]">
+                <FontAwesomeIcon icon={faEllipsisV} />
+              </div>
+            }
+          >
             <DropdownItem
               onClick={() => {
                 setModal(<SelectProfile />);
