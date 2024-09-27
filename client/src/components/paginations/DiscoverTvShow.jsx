@@ -1,7 +1,36 @@
 import Pagination from "../ui/Pagination";
 import TvShow from "../TvShow";
+import useAxios from "../../hooks/useAxios";
+import { useLoading } from "../hooks/useLoading";
+import { fetchDiscovery } from "../../helpers/api";
+import useSWR from "swr";
+import { LoadingDiscover } from "../loaders/MovieLoaders";
 
-const DiscoverTvShow = ({ data, currentPage, onPageChange }) => {
+const DiscoverTvShow = ({
+  genresString,
+  sortBy,
+  currentPage,
+  onPageChange,
+}) => {
+  const { api, isAxiosReady } = useAxios();
+  const { setLoading } = useLoading();
+
+  const { data, isLoading, isError } = useSWR(
+    isAxiosReady
+      ? `/discover/tvshows?genres=${genresString}&sort_by=${sortBy}&page=${currentPage}`
+      : null,
+    () => fetchDiscovery(api, "tvshows", genresString, sortBy, currentPage),
+    {
+      onSuccess: () => {
+        setLoading(false);
+      },
+    }
+  );
+
+  if (isLoading) return <LoadingDiscover />;
+
+  if (isError) return <section>Failed to load</section>;
+
   return (
     <section className="flex flex-col items-center gap-4">
       <div className="flex flex-wrap justify-center gap-3 w-full h-full">

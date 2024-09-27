@@ -1,21 +1,16 @@
 import { useEffect, useState } from "react";
 import Selector from "../components/ui/Selector";
 import { useNavigate, useSearchParams } from "react-router-dom";
-import { LoadingDiscover } from "../components/loaders/MovieLoaders";
 import { useLoading } from "../components/hooks/useLoading";
 import Accordion from "../components/ui/Accordion";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faFilter } from "@fortawesome/free-solid-svg-icons";
 import { movieGenres } from "../models/genres";
-import useAxios from "../hooks/useAxios";
-import { fetchDiscovery } from "../helpers/api";
-import useSWR from "swr";
 import { Helmet } from "react-helmet";
 import DiscoverMovie from "../components/paginations/DiscoverMovie";
 
 const DiscoverMovieSlug = () => {
   const navigate = useNavigate();
-  const { api, isAxiosReady } = useAxios();
   const [searchParams] = useSearchParams();
   const { setLoading } = useLoading();
   const [selectedGenres, setSelectedGenres] = useState();
@@ -26,18 +21,6 @@ const DiscoverMovieSlug = () => {
       ? selectedGenres.join("_").toLowerCase()
       : searchParams.get("genres") || "";
   const sortBy = "vote_count";
-
-  const { data, isLoading, isError } = useSWR(
-    isAxiosReady
-      ? `/discover/movies?genres=${genresString}&sort_by=${sortBy}&page=${currentPage}`
-      : null,
-    () => fetchDiscovery(api, "movies", genresString, sortBy, currentPage),
-    {
-      onSuccess: () => {
-        setLoading(false);
-      },
-    }
-  );
 
   useEffect(() => {
     window.scrollTo({ top: 0, left: 0, behavior: "smooth" });
@@ -86,19 +69,12 @@ const DiscoverMovieSlug = () => {
           setSelectedGenres={setSelectedGenres}
         />
       </Accordion>
-      {isLoading ? (
-        selectedGenres && <LoadingDiscover />
-      ) : isError ? (
-        <p className="text-xs text-error text-center font-bold">
-          Something went wrong.
-        </p>
-      ) : (
-        <DiscoverMovie
-          data={data}
-          currentPage={currentPage}
-          onPageChange={onPageChange}
-        />
-      )}
+      <DiscoverMovie
+        genresString={genresString}
+        sortBy={sortBy}
+        currentPage={currentPage}
+        onPageChange={onPageChange}
+      />
     </div>
   );
 };

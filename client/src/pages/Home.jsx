@@ -11,6 +11,7 @@ import useSWR from "swr";
 import { Helmet } from "react-helmet";
 import HomeSlider from "../components/sliders/HomeSlider";
 import BackdropLoader from "../components/loaders/BackdropLoader";
+import { cache } from "swr/_internal";
 
 const Home = () => {
   const { api, isAxiosReady } = useAxios();
@@ -19,17 +20,32 @@ const Home = () => {
   const { data: topMovies, isLoading: isLoadingTopMovies } = useSWR(
     isAxiosReady ? `/movies/list?category=top_rated&page=1` : null,
     () =>
-      fetchDiscovery(api, "movies", "[]").then((response) => response.results)
+      fetchDiscovery(api, "movies", "[]").then((response) => response.results),
+    {
+      revalidateOnMount: cache.get("/movies/list?category=top_rated&page=1")
+        ? false
+        : true,
+    }
   );
 
   const { data: popularMovies, isLoading: isLoadingPopularMovies } = useSWR(
-    isAxiosReady ? `/movies/list?category=popular&page=1` : null,
-    () => fetchCategory(api, "movies", "popular")
+    isAxiosReady ? "/movies/list?category=popular&page=1" : null,
+    () => fetchCategory(api, "movies", "popular"),
+    {
+      revalidateOnMount: cache.get("/movies/list?category=popular&page=1")
+        ? false
+        : true,
+    }
   );
 
   const { data: topTvShows, isLoading: isLoadingTopTvShows } = useSWR(
-    isAxiosReady ? `/tvshows/list?category=top_rated&page=1` : null,
-    () => fetchCategory(api, "tvshows", "top_rated")
+    isAxiosReady ? "/tvshows/list?category=top_rated&page=1" : null,
+    () => fetchCategory(api, "tvshows", "top_rated"),
+    {
+      revalidateOnMount: cache.get("/tvshows/list?category=top_rated&page=1")
+        ? false
+        : true,
+    }
   );
 
   useEffect(() => {

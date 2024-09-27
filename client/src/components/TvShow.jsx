@@ -11,6 +11,7 @@ import {
 import useAxios from "../hooks/useAxios";
 import { fetchShow } from "../helpers/api";
 import useSWR from "swr";
+import { cache } from "swr/_internal";
 
 const TvShow = ({ info }) => {
   const { api, isAxiosReady } = useAxios();
@@ -21,8 +22,14 @@ const TvShow = ({ info }) => {
     data: details,
     isLoading,
     isError,
-  } = useSWR(isAxiosReady ? `/tvshows/details?show_id=${info.id}` : null, () =>
-    fetchShow(api, info.id)
+  } = useSWR(
+    isAxiosReady ? `/tvshows/details?show_id=${info.id}` : null,
+    () => fetchShow(api, info.id),
+    {
+      revalidateOnMount: cache.get(`/tvshows/details?show_id=${info.id}`)
+        ? false
+        : true,
+    }
   );
 
   const handleImageLoad = () => {

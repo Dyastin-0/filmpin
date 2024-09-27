@@ -7,6 +7,7 @@ import { useLoading } from "../components/hooks/useLoading";
 import useAxios from "../hooks/useAxios";
 import useSWR from "swr";
 import { Helmet } from "react-helmet";
+import { cache } from "swr/_internal";
 
 const Discover = () => {
   const { api, isAxiosReady } = useAxios();
@@ -17,12 +18,26 @@ const Discover = () => {
 
   const { data: movies, isLoading: areMoviesLoading } = useSWR(
     isAxiosReady ? "/movies/discover?genres=&sort_by=vote_count&page=1" : null,
-    () => fetchCategory(api, "movies", "top_rated", 1)
+    () => fetchCategory(api, "movies", "top_rated", 1),
+    {
+      revalidateOnMount: cache.get(
+        "/movies/discover?genres=&sort_by=vote_count&page=1"
+      )
+        ? false
+        : true,
+    }
   );
 
   const { data: shows, isLoading: areShowsLoading } = useSWR(
     isAxiosReady ? "/tvshows/discover?genres=&sort_by=vote_count&page=1" : null,
-    () => fetchCategory(api, "tvshows", "top_rated", 1)
+    () => fetchCategory(api, "tvshows", "top_rated", 1),
+    {
+      revalidateOnMount: cache.get(
+        "/tvshows/discover?genres=&sort_by=vote_count&page=1"
+      )
+        ? false
+        : true,
+    }
   );
 
   useEffect(() => {

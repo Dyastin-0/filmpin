@@ -10,6 +10,7 @@ import {
 import useAxios from "../hooks/useAxios";
 import { fetchMovie } from "../helpers/api";
 import useSWR from "swr";
+import { cache } from "swr/_internal";
 
 const Movie = ({ info, isEditMode }) => {
   const navigate = useNavigate();
@@ -21,8 +22,14 @@ const Movie = ({ info, isEditMode }) => {
     data: details,
     isError,
     isLoading,
-  } = useSWR(isAxiosReady ? `/movies/details?movie_id=${info.id}` : null, () =>
-    fetchMovie(api, info.id)
+  } = useSWR(
+    isAxiosReady ? `/movies/details?movie_id=${info.id}` : null,
+    () => fetchMovie(api, info.id),
+    {
+      revalidateOnMount: cache.get(`/movies/details?movie_id=${info.id}`)
+        ? false
+        : true,
+    }
   );
 
   useEffect(() => {
