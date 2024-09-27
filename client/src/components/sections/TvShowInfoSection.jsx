@@ -11,7 +11,7 @@ const TvShowInfoSection = ({ details, trailerYoutubeKey }) => {
   const { setModal, setOpen } = useModal();
 
   return (
-    <>
+    <section className="w-full">
       <div className="relative w-full h-[400px] rounded-md overflow-hidden">
         <div className="absolute w-full h-full bg-gradient-to-b from-transparent to-primary"></div>
         <img
@@ -71,7 +71,7 @@ const TvShowInfoSection = ({ details, trailerYoutubeKey }) => {
           />
         </div>
       </motion.div>
-    </>
+    </section>
   );
 };
 

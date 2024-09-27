@@ -4,12 +4,12 @@ const UserList = ({ list }) => {
   const navigate = useNavigate();
 
   const handleClick = (listParam) => {
-    navigate(`/list?list_id=${list._id}`, { state: { list: listParam } });
+    navigate(`/list?list_id=${list._id}`);
   };
 
   return (
     <div
-      className="flex flex-col rounded-lg drop-shadow-sm gap-4 p-4 max-w-[200px] h-fit
+      className="flex flex-col rounded-lg drop-shadow-sm gap-4 p-4 w-[200px] h-[260px]
 			text-primary-foreground border border-secondary-accent
 			transition-all duration-300
 			hover:cursor-pointer hover:scale-95"
@@ -21,7 +21,7 @@ const UserList = ({ list }) => {
         </h1>
       )}
       {list?.list?.length >= 4 ? (
-        <div className="flex flex-wrap h-[240px] overflow-hidden rounded-md bg-black">
+        <div className="flex flex-wrap overflow-hidden rounded-md bg-black">
           <img
             className="h-[120px] w-1/2"
             loading="lazy"

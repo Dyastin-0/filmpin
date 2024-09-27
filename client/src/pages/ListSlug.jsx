@@ -143,7 +143,7 @@ const ListSlug = () => {
       <Helmet>
         <title>{listData?.name}</title>
       </Helmet>
-      <div className="relative flex justify-center items-center w-full max-h-[400px] rounded-md">
+      <div className="relative flex justify-center items-center w-full max-h-[400px] min-h-[400px] rounded-md">
         <div className="absolute w-full h-full bg-gradient-to-b from-transparent to-primary"></div>
         {isLoading ? (
           <ListBackdropDummy />
@@ -165,6 +165,7 @@ const ListSlug = () => {
             listData={listData}
             listItems={listItems}
             ownerData={ownerData}
+            toggleEditMode={toggleEditMode}
           />
         )}
       </motion.div>
@@ -199,19 +200,6 @@ const ListSlug = () => {
                     </div>
                   </div>
                 )}
-                <div className="flex gap-2 justify-self-end">
-                  <Dropdown
-                    name={
-                      <div className="flex box-border justify-center items-center h-[14px] w-[14px]">
-                        <FontAwesomeIcon icon={faEllipsisV} />
-                      </div>
-                    }
-                  >
-                    <DropdownItem onClick={toggleEditMode}>
-                      Edit <FontAwesomeIcon icon={faEdit} />
-                    </DropdownItem>
-                  </Dropdown>
-                </div>
               </div>
             )}
             <ListItemSection
