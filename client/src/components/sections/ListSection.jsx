@@ -72,7 +72,7 @@ const ListSection = ({ userData }) => {
 
   if (!token) {
     <motion.section
-      initial={{ marginTop: -120 }}
+      initial={{ marginTop: -70 }}
       className="flex justify-center items-center gap-4 w-full p-4 bg-accent rounded-md"
     >
       <h1 className="text-xs text-primary-foreground font-semibold">{`Sign in to view ${userData?.username}'s lists.`}</h1>
@@ -82,7 +82,7 @@ const ListSection = ({ userData }) => {
   if (!list.length > 0)
     return (
       <motion.section
-        initial={{ marginTop: -120 }}
+        initial={{ marginTop: -70 }}
         className="relative flex flex-col gap-4 w-full p-4"
       >
         <h1 className="text-primary-foreground text-center text-xs font-semibold">
@@ -101,23 +101,25 @@ const ListSection = ({ userData }) => {
 
   return (
     <motion.section
-      initial={{ marginTop: -120 }}
-      className="relative flex flex-col gap-4 w-full p-4"
+      initial={{ marginTop: -70 }}
+      className="relative flex flex-col gap-4 w-full pr-4 pl-4 pb-4"
     >
-      <h1 className="text-primary-foreground pb-4 text-sm font-semibold">
-        Lists
-      </h1>
-      {token && user?.username === userData?.username && (
-        <Button
-          className="absolute top-4 right-4"
-          onClick={() => {
-            setModal(<CreateList />);
-            setOpen(true);
-          }}
-          icon={<FontAwesomeIcon icon={faPlus} />}
-          text="Create a list"
-        />
-      )}
+      <div className="flex w-fit justify-center items-center gap-2">
+        <h1 className="h-fit text-primary-foreground text-sm font-semibold">
+          Lists
+        </h1>
+        {token && user?.username === userData?.username && (
+          <Button
+            className="w-fit"
+            onClick={() => {
+              setModal(<CreateList />);
+              setOpen(true);
+            }}
+            icon={<FontAwesomeIcon icon={faPlus} />}
+            text="Create"
+          />
+        )}
+      </div>
       <div className="flex flex-wrap justify-center w-full gap-4">
         {list.length > 0 &&
           list.map((item) => <UserList key={item._id} list={item} />)}

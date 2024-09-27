@@ -18,7 +18,7 @@ import useSWR from "swr";
 import { Helmet } from "react-helmet";
 import MovieInfoSection from "../components/sections/MovieInfoSection";
 import CreditsSection from "../components/sections/CreditsSection";
-import MovieReviewSection from "../components/sections/MovieReviewSection";
+import ReviewSection from "../components/sections/ReviewSection";
 
 const MovieSlug = () => {
   const [searchParams] = useSearchParams();
@@ -78,7 +78,7 @@ const MovieSlug = () => {
       )}
       <motion.div
         initial={{ marginTop: -120 }}
-        className="flex flex-col rounded-lg gap-4 p-0 w-[calc(100%-2rem)] overflow-hidden"
+        className="flex flex-col rounded-lg gap-4 w-[calc(100%-2rem)] overflow-hidden"
       >
         <h1 className="text-primary-foreground text-sm font-semibold">
           Credits
@@ -108,7 +108,7 @@ const MovieSlug = () => {
           }))}
         />
       </div>
-      <MovieReviewSection details={details} />
+      <ReviewSection details={details} />
     </div>
   );
 };

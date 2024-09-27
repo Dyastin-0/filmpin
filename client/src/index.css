@@ -27,7 +27,7 @@
 :root.dark {
   --bg-primary: #212830;
   --bg-secondary: #1a2028;
-  --accent: #2b333e;
+  --accent: #2d343d;
   --accent-secondary: #343d49;
   --text-highlight: #f2f2f3;
   --text-secondary: #cacaca;
@@ -38,7 +38,7 @@
   --bg-primary: #f0f0f0;
   --bg-secondary: #e4e6eb;
   --accent-secondary: #e4e6eb;
-  --accent: #545454;
+  --accent: #ffffff;
   --text-highlight: #ffffff;
   --text-secondary: #888888;
   --text-primary: #2f3338;
@@ -61,7 +61,7 @@
     --bg-primary: #f0f0f0;
     --bg-secondary: #e4e6eb;
     --accent-secondary: #e4e6eb;
-    --accent: #545454;
+    --accent: #ffffff;
     --text-highlight: #ffffff;
     --text-secondary: #888888;
     --text-primary: #2f3338;

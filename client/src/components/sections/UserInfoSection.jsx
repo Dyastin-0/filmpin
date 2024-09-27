@@ -14,7 +14,7 @@ const UserInfoSection = ({ userData, user }) => {
 
   return (
     <motion.section
-      initial={{ y: -120 }}
+      initial={{ y: -70 }}
       className="flex gap-4 w-full h-fit p-4"
     >
       <div className="flex flex-col max-w-full items-center gap-4">
@@ -32,7 +32,9 @@ const UserInfoSection = ({ userData, user }) => {
                 );
                 setOpen(true);
               }}
-              className="w-[100px] h-[100px] object-cover rounded-full transition-all duration-300 hover:cursor-pointer hover:opacity-70"
+              className="w-[100px] h-[100px] object-cover rounded-full
+              shadow-[var(--accent)_0_0_0_2px]
+              transition-all duration-300 hover:cursor-pointer hover:opacity-70"
             />
           </div>
         ) : (
@@ -47,7 +49,35 @@ const UserInfoSection = ({ userData, user }) => {
           </div>
         )}
         <div>
-          <h1 className="text-primary-foreground text-sm font-semibold">
+          {token && userData?._id === user?._id && (
+            <div className="mb-2">
+              <Dropdown
+                name={
+                  <div className="flex box-border justify-center items-center h-[14px] w-[14px]">
+                    <FontAwesomeIcon icon={faEllipsisV} />
+                  </div>
+                }
+              >
+                <DropdownItem
+                  onClick={() => {
+                    setModal(<SelectProfile />);
+                    setOpen(true);
+                  }}
+                >
+                  Change profile picture
+                </DropdownItem>
+                <DropdownItem
+                  onClick={() => {
+                    setModal(<SelectBackdrop />);
+                    setOpen(true);
+                  }}
+                >
+                  Change backdrop
+                </DropdownItem>
+              </Dropdown>
+            </div>
+          )}
+          <h1 className="text-primary-foreground text-md font-semibold">
             {userData?.username}
           </h1>
           <h1 className="text-center text-primary-foreground mt-2 text-xs line-clamp-1">
@@ -55,34 +85,6 @@ const UserInfoSection = ({ userData, user }) => {
           </h1>
         </div>
       </div>
-      {token && userData?._id === user?._id && (
-        <div className="absolute top-4 right-4">
-          <Dropdown
-            name={
-              <div className="flex box-border justify-center items-center h-[14px] w-[14px]">
-                <FontAwesomeIcon icon={faEllipsisV} />
-              </div>
-            }
-          >
-            <DropdownItem
-              onClick={() => {
-                setModal(<SelectProfile />);
-                setOpen(true);
-              }}
-            >
-              Change profile
-            </DropdownItem>
-            <DropdownItem
-              onClick={() => {
-                setModal(<SelectBackdrop />);
-                setOpen(true);
-              }}
-            >
-              Change background
-            </DropdownItem>
-          </Dropdown>
-        </div>
-      )}
     </motion.section>
   );
 };

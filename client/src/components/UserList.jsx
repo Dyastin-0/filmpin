@@ -9,7 +9,7 @@ const UserList = ({ list }) => {
 
   return (
     <div
-      className="flex flex-col rounded-lg drop-shadow-sm gap-4 p-4 w-[200px] h-[260px]
+      className="flex flex-col rounded-lg drop-shadow-sm gap-4 p-4 w-[200px] h-fit
 			text-primary-foreground border border-secondary-accent
 			transition-all duration-300
 			hover:cursor-pointer hover:scale-95"
@@ -49,7 +49,7 @@ const UserList = ({ list }) => {
         </div>
       ) : (
         <img
-          className="rounded-md"
+          className="rounded-md h-[240px]"
           loading="lazy"
           src={`https://image.tmdb.org/t/p/w200/${list?.list[0]?.poster_path}`}
           alt={`${list?.list[0]?.title || list?.list[0]?.name} poster `}

@@ -12,7 +12,7 @@ const UserBackdropSection = ({ userData, user }) => {
 
   return (
     <section className="relative flex justify-center items-center w-full max-h-[400px] rounded-md">
-      <div className="absolute w-full h-full bg-gradient-to-b from-transparent to-primary"></div>
+      {/* <div className="absolute w-full h-full bg-gradient-to-b from-transparent to-primary"></div> */}
       {userData?.backdropPath ? (
         <UserBackdrop
           username={userData.username}

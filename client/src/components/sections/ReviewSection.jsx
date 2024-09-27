@@ -15,7 +15,7 @@ const updateReviewHearts = (review, change) => {
   return { ...review, hearts: updatedHearts };
 };
 
-const MovieReviewSection = ({ details }) => {
+const ReviewSection = ({ details }) => {
   const { token } = useAuth();
   const { api } = useAxios();
   const [currentPage, setCurrentPage] = useState(1);
@@ -93,4 +93,4 @@ const MovieReviewSection = ({ details }) => {
   );
 };
 
-export default MovieReviewSection;
+export default ReviewSection;
