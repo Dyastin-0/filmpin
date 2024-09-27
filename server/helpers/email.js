@@ -23,7 +23,7 @@ const transporter = nodemailer.createTransport({
 const sendTextEmail = async (to, subject, text) => {
   try {
     await transporter.sendMail({
-      from: process.env.SERVER_EMAIL,
+      from: `"Filmpin" process.env.SERVER_EMAIL`,
       to: to,
       subject: subject,
       text: text,
@@ -46,7 +46,7 @@ const sendTextEmail = async (to, subject, text) => {
 const sendHtmlEmail = async (to, subject, html) => {
   try {
     await transporter.sendMail({
-      from: process.env.SERVER_EMAIL,
+      from: `"Filmpin" process.env.SERVER_EMAIL`,
       to: to,
       subject: subject,
       html: html,

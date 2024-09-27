@@ -67,8 +67,8 @@ const handleSignup = async (req, res) => {
       email,
       "Verify your Filmpin account",
       emailTemplate(
-        "Verify your account",
-        "To proceed with accessing our app, please click the link below. You may disregard this email if you did not request it.",
+        `Welcome to Filmpin, ${username}!`,
+        "To proceed with accessing our app, please click the link below. You may disregard this email if you did not sign up to our up.",
         `${process.env.BASE_CLIENT_URL}/account/verification?verificationToken=${verificationToken}`,
         "Verify your account"
       )

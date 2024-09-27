@@ -37,12 +37,10 @@ const handleSendVerification = async (req, res) => {
     }
 
     if (hasActiveToken)
-      return res
-        .status(400)
-        .json({
-          message:
-            "You have an active verification token, check your email for the link.",
-        });
+      return res.status(400).json({
+        message:
+          "You have an active verification token, check your email for the link.",
+      });
 
     const verificationToken = jwt.sign(
       { email: email },
@@ -59,8 +57,8 @@ const handleSendVerification = async (req, res) => {
       email,
       "Verification",
       emailTemplate(
-        "Verify your account",
-        "To proceed with accessing our app, please click the link below. You may disregard this email if you did not request it.",
+        `Verify your account, ${email}.`,
+        "To proceed with verifying your account, please click the link below. You may disregard this email if you did not request it.",
         `${process.env.BASE_CLIENT_URL}/account/verification?verificationToken=${verificationToken}`,
         "Verify your account"
       )
@@ -211,12 +209,10 @@ const handleSendRecovery = async (req, res) => {
     }
 
     if (hasActiveToken)
-      return res
-        .status(400)
-        .json({
-          message:
-            "You have an active recovery token, check your email for the link.",
-        });
+      return res.status(400).json({
+        message:
+          "You have an active recovery token, check your email for the link.",
+      });
 
     const recoveryToken = jwt.sign(
       { email: email },
