@@ -1,5 +1,5 @@
 import { useEffect, useState, useCallback, useMemo } from "react";
-import { Link, useSearchParams } from "react-router-dom";
+import { useNavigate, useSearchParams } from "react-router-dom";
 import { motion } from "framer-motion";
 import { useAuth } from "../hooks/useAuth";
 import { io } from "socket.io-client";
@@ -24,6 +24,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faEdit, faEllipsisV, faSave } from "@fortawesome/free-solid-svg-icons";
 
 const ListSlug = () => {
+  const navigate = useNavigate();
   const { token, user } = useAuth();
   const { api, isAxiosReady } = useAxios();
   const [searchParams] = useSearchParams();
@@ -52,6 +53,7 @@ const ListSlug = () => {
         );
       }
     },
+    onError: (error) => navigate("/404"),
   });
 
   const { data: ownerData } = useSWR(
