@@ -5,6 +5,7 @@ import UserList from "../UserList";
 import { Dropdown, DropdownItem } from "../ui/Dropdown";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faEdit, faEllipsisV } from "@fortawesome/free-solid-svg-icons";
+import ListPoster from "../ListPoster";
 
 const ListTitleSection = ({
   listData,
@@ -14,8 +15,10 @@ const ListTitleSection = ({
 }) => {
   return (
     <section className="flex lg:flex-row md:flex-row flex-col gap-4">
-      <UserList list={{ list: listItems }} />
-      <div className="flex justify-end flex-col gap-2">
+      <div className="w-[165.79px]">
+        <ListPoster list={{ list: listItems }} />
+      </div>
+      <div className="flex text-primary-foreground justify-end flex-col gap-2">
         <div className="flex gap-2 h-fit w-fit">
           <Dropdown
             name={
@@ -29,26 +32,28 @@ const ListTitleSection = ({
             </DropdownItem>
           </Dropdown>
         </div>
-        <h1 className="text-md text-primary-foreground font-semibold">
-          {listData?.name}
-        </h1>
-        <p className="text-xs text-secondary-foreground">
-          Description:
-          <br />
-          <span className="text-xs text-primary-foreground">
-            {listData?.description}
-          </span>
-        </p>
-        <div className="flex gap-1">
-          <h1 className="text-xs text-primary-foreground">{`List of ${
-            listTypes[listData?.type]
-          } by`}</h1>
+        <h1 className="text-md font-semibold">{listData?.name}</h1>
+        {listData?.description && (
+          <p className="text-xs text-secondary-foreground">
+            Description:
+            <br />
+            <span className="text-xs">{listData?.description}</span>
+          </p>
+        )}
+        <div className="flex items-center gap-1">
           <Link
-            className="w-fit outline-none text-primary-foreground text-xs transition-colors duration-300 underline hover:text-primary-highlight focus:text-primary-highlight"
+            className="w-fit outline-none text-primary-foreground text-xs
+            font-semibold underline
+            transition-colors duration-300
+            hover:text-primary-highlight focus:text-primary-highlight"
             to={`/${ownerData?.username}`}
           >
             {ownerData?.username}
           </Link>
+          &#8226;
+          <span className="text-xs">{`${listItems?.length} ${listTypes[
+            listData?.type
+          ].toLowerCase()}`}</span>
         </div>
       </div>
     </section>

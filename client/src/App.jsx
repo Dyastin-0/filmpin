@@ -1,8 +1,11 @@
-import { lazy, Suspense } from "react";
+import { lazy, Suspense, useState } from "react";
 import { Routes, Route } from "react-router-dom";
 import Navbar from "./components/Navbar";
 import axios from "axios";
 import ProtectedRoute from "./utils/protectedRoute";
+
+import SideNavbar from "./components/SideNavbar";
+import { authRoutes, routes } from "./utils/routes";
 
 import "swiper/css";
 import "swiper/css/pagination";
@@ -32,9 +35,17 @@ axios.defaults.baseURL = import.meta.env.VITE_BASE_API_URL;
 axios.defaults.withCredentials = true;
 
 function App() {
+  const [opensideNavbar, setOpenSideNavbar] = useState(false);
+
   return (
     <>
-      <Navbar />
+      <Navbar toggleSideNavbar={() => setOpenSideNavbar(!opensideNavbar)} />
+      <SideNavbar
+        isOpen={opensideNavbar}
+        toggle={() => setOpenSideNavbar(!opensideNavbar)}
+        authRoutes={authRoutes}
+        routes={routes}
+      />
       <Suspense>
         <Routes>
           <Route path="/" element={<Root />} />

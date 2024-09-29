@@ -141,7 +141,6 @@ const handleAddItem = async (req, res) => {
  * @param {Array} req.body.new_list - The new list of items.
  * @param {string} req.id - The ID of the user.
  * @param {Object} res - The response object.
- * @returns {Object} JSON object containing a success message.
  * @returns {string} returns.message - A success message indicating the list was updated.
  */
 const handlePatchList = async (req, res) => {

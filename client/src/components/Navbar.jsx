@@ -1,10 +1,5 @@
-import React, { useState, useEffect } from "react";
-import {
-  Link,
-  useLocation,
-  useNavigate,
-  useSearchParams,
-} from "react-router-dom";
+import { useState, useEffect } from "react";
+import { Link as DomLink, useLocation, useNavigate } from "react-router-dom";
 import { useAuth } from "../hooks/useAuth";
 import axios from "axios";
 import SearchInput from "./ui/SearchInput";
@@ -18,19 +13,10 @@ import {
   faSignOutAlt,
   faUser,
 } from "@fortawesome/free-solid-svg-icons";
-import SideNavbar from "./SideNavbar";
+import { routes, authRoutes } from "../utils/routes";
+import Link from "./Link";
 
-const routes = [
-  { path: "/home", name: "Home" },
-  { path: "/discover", name: "Discover" },
-];
-const authRoutes = [
-  { path: "/sign-in", name: "Sign in" },
-  { path: "/sign-up", name: "Sign up" },
-];
-
-const Navbar = () => {
-  const [searchParams] = useSearchParams();
+const Navbar = ({ toggleSideNavbar }) => {
   const navigate = useNavigate();
   const location = useLocation();
   const { toggleTheme, icon } = useThemeToggle();
@@ -39,7 +25,6 @@ const Navbar = () => {
   const [isScrollingDown, setIsScrollingDown] = useState(false);
   const [lastScrollY, setLastScrollY] = useState(0);
   const [viewWidth, setViewWidth] = useState(window.innerWidth);
-  const [opensideNavbar, setOpenSideNavbar] = useState(false);
 
   const handleSignout = async () => {
     try {
@@ -62,8 +47,6 @@ const Navbar = () => {
         )}&movies-page=1&tvshows-page=1`
       );
   };
-
-  const toggleSideNavbar = () => setOpenSideNavbar(!opensideNavbar);
 
   useEffect(() => {
     const handleScroll = () => {
@@ -99,49 +82,27 @@ const Navbar = () => {
             className="hover:cursor-pointer"
           />
         )}
-        <Link className="outline-none" to="/">
+        <DomLink className="outline-none" to="/">
           <div className="flex justify-center items-center h-full font-semibold">
             <h1 className="text-md text-primary-highlight">Film</h1>
             <h1 className="text-md text-primary-foreground">pin</h1>
           </div>
-        </Link>
+        </DomLink>
       </div>
-      <SideNavbar
-        isOpen={opensideNavbar}
-        toggle={toggleSideNavbar}
-        authRoutes={authRoutes}
-        routes={routes}
-        token={token}
-      />
       <div className="flex w-fit items-center gap-3">
         {token &&
           viewWidth > 500 &&
           routes.map((route, index) => (
-            <Button
-              key={index}
-              onClick={() => navigate(route.path)}
-              variant="link"
-              text={route.name}
-              className={`${
-                route.path === location.pathname
-                  ? "text-primary-highlight shadow-[var(--highlight)_0_2px_0_0]"
-                  : ""
-              }`}
-            />
+            <Link key={index} path={route.path} icon={route.icon} />
           ))}
         {!token &&
           viewWidth > 500 &&
           authRoutes.map((route, index) => (
-            <Button
+            <Link
               key={index}
-              onClick={() => navigate(route.path)}
-              variant="link"
-              text={route.name}
-              className={`${
-                route.path === location.pathname
-                  ? "text-primary-highlight shadow-[var(--highlight)_0_2px_0_0]"
-                  : ""
-              }`}
+              path={route.path}
+              name={route.name}
+              icon={route.icon}
             />
           ))}
         <div className="max-w-full">
