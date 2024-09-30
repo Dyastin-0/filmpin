@@ -10,14 +10,18 @@ import useAxios from "../hooks/useAxios";
 import { useToast } from "./hooks/useToast";
 import dayjs from "dayjs";
 import relativeTime from "dayjs/plugin/relativeTime";
+import { useState, useRef, useEffect } from "react";
 
 dayjs.extend(relativeTime);
 
 const Review = ({ review, details }) => {
   const { api } = useAxios();
   const { user } = useAuth();
-  const { toastError } = useToast();
+  const { toastInfo } = useToast();
   const { created_on, content, owner, hearts } = review;
+  const [isExpanded, setIsExpanded] = useState(false);
+  const contentRef = useRef(null);
+  const [isOverflowing, setIsOverflowing] = useState(false);
 
   const { data: ownerData } = useSWR(
     review ? `/public/account?id=${owner}` : null,
@@ -27,13 +31,21 @@ const Review = ({ review, details }) => {
     }
   );
 
+  useEffect(() => {
+    if (contentRef.current) {
+      setIsOverflowing(
+        contentRef.current.scrollHeight > contentRef.current.clientHeight
+      );
+    }
+  }, [content]);
+
   const handleLike = async () => {
     try {
       const response = await api.post(
         `/reviews/like?id=${details.id}&title=${details.title}&owner=${ownerData._id}`
       );
     } catch (error) {
-      toastError(error.response.data.message);
+      toastInfo(error.response.data.message);
     }
   };
 
@@ -50,7 +62,7 @@ const Review = ({ review, details }) => {
           />
           <div className="flex flex-col items-start gap-2">
             <div className="flex flex-col rounded-md gap-2">
-              <div className="flex lg:flex-row md:flex-row flex-col gap-2">
+              <div className="flex gap-2">
                 <Link
                   to={`/${ownerData?.username}`}
                   className="text-primary-foreground text-xs font-semibold
@@ -62,9 +74,20 @@ const Review = ({ review, details }) => {
                   {dayjs.unix(created_on / 1000).fromNow()}
                 </span>
               </div>
-              <span className="text-primary-foreground text-xs whitespace-pre-wrap">
+              <span
+                ref={contentRef}
+                className={`text-primary-foreground text-xs whitespace-pre-wrap ${isExpanded ? "" : "line-clamp-2"}`}
+              >
                 {content}
               </span>
+              {isOverflowing && (
+                <button
+                  className="text-xs text-primary-highlight"
+                  onClick={() => setIsExpanded(!isExpanded)}
+                >
+                  {isExpanded ? "Read Less" : "Read More"}
+                </button>
+              )}
             </div>
           </div>
         </div>

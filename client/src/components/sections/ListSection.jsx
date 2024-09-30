@@ -86,16 +86,19 @@ const ListSection = ({ userData }) => {
         className="relative flex flex-col gap-4 w-full p-4"
       >
         <h1 className="text-primary-foreground text-center text-xs font-semibold">
-          {isOwner ? "You don't" : userData?.username} have a list yet.
+          {isOwner ? "You don't" : `${userData?.username} doesn't`} have a list
+          yet.
         </h1>
-        <Button
-          text="Create one."
-          className="self-center"
-          onClick={() => {
-            setModal(<CreateList />);
-            setOpen(true);
-          }}
-        />
+        {isOwner && (
+          <Button
+            text="Create one."
+            className="self-center"
+            onClick={() => {
+              setModal(<CreateList />);
+              setOpen(true);
+            }}
+          />
+        )}
       </motion.section>
     );
 

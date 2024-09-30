@@ -30,7 +30,7 @@ const ReviewSection = ({ details }) => {
         details.title || details.name,
         currentPage
       ).then((response) => setData(response));
-  }, [details]);
+  }, [details, currentPage]);
 
   useEffect(() => {
     if (details) {

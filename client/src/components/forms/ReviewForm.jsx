@@ -1,21 +1,21 @@
-import { useEffect, useRef, useState } from "react";
+import { useRef, useState } from "react";
 import { useAuth } from "../../hooks/useAuth";
 import { useToast } from "../hooks/useToast";
 import useAxios from "../../hooks/useAxios";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faReply } from "@fortawesome/free-solid-svg-icons";
+import { faPaperPlane } from "@fortawesome/free-solid-svg-icons";
 
 const ReviewForm = ({ details }) => {
   const { api } = useAxios();
   const { user } = useAuth();
-  const { toastError, toastInfo } = useToast();
+  const { toastInfo } = useToast();
   const [review, setReview] = useState("");
   const textareaRef = useRef(null);
 
   const handlePost = async (e) => {
     e.preventDefault();
 
-    if (!review) return toastError("Review cannot be empty.");
+    if (!review) return toastInfo("A review cannot be empty.");
 
     try {
       const response = await api
@@ -29,7 +29,7 @@ const ReviewForm = ({ details }) => {
       setReview("");
       textareaRef.current.style.height = "auto";
     } catch (error) {
-      toastError(error.response.data.message);
+      toastInfo(error.response.data.message);
     }
   };
 
@@ -63,7 +63,7 @@ const ReviewForm = ({ details }) => {
         transition-all duration-300 focus:text-primary-highlight hover:text-primary-highlight"
           type="submit"
         >
-          <FontAwesomeIcon icon={faReply} />
+          <FontAwesomeIcon icon={faPaperPlane} />
         </button>
       </form>
     </div>

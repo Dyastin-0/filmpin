@@ -1,7 +1,6 @@
 import React from "react";
 import listTypes from "../../models/listTypes";
 import { Link } from "react-router-dom";
-import UserList from "../UserList";
 import { Dropdown, DropdownItem } from "../ui/Dropdown";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faEdit, faEllipsisV } from "@fortawesome/free-solid-svg-icons";
@@ -12,27 +11,15 @@ const ListTitleSection = ({
   listItems,
   ownerData,
   toggleEditMode,
+  isOwner,
 }) => {
   return (
     <section className="flex lg:flex-row md:flex-row flex-col gap-4">
       <div className="w-[165.79px]">
         <ListPoster list={{ list: listItems }} />
       </div>
-      <div className="flex text-primary-foreground justify-end flex-col gap-2">
-        <div className="flex gap-2 h-fit w-fit">
-          <Dropdown
-            name={
-              <div className="flex box-border justify-center items-center h-[14px] w-[14px]">
-                <FontAwesomeIcon icon={faEllipsisV} />
-              </div>
-            }
-          >
-            <DropdownItem onClick={toggleEditMode}>
-              Edit <FontAwesomeIcon icon={faEdit} />
-            </DropdownItem>
-          </Dropdown>
-        </div>
-        <h1 className="text-md font-semibold">{listData?.name}</h1>
+      <div className="flex text-primary-foreground flex-col gap-2">
+        <h1 className="text-4xl font-bold">{listData?.name}</h1>
         {listData?.description && (
           <p className="text-xs text-secondary-foreground">
             Description:
@@ -51,10 +38,27 @@ const ListTitleSection = ({
             {ownerData?.username}
           </Link>
           &#8226;
-          <span className="text-xs">{`${listItems?.length} ${listTypes[
-            listData?.type
-          ].toLowerCase()}`}</span>
+          <span className="text-xs">{`${listItems?.length} ${
+            listItems?.length > 1
+              ? listTypes[listData?.type].toLowerCase()
+              : listTypes[listData?.type].toLowerCase().slice(0, -1)
+          }`}</span>
         </div>
+        {isOwner && (
+          <div className="flex gap-2 h-fit w-fit">
+            <Dropdown
+              name={
+                <div className="flex box-border justify-center items-center h-[14px] w-[14px]">
+                  <FontAwesomeIcon icon={faEllipsisV} />
+                </div>
+              }
+            >
+              <DropdownItem onClick={toggleEditMode}>
+                Edit <FontAwesomeIcon icon={faEdit} />
+              </DropdownItem>
+            </Dropdown>
+          </div>
+        )}
       </div>
     </section>
   );

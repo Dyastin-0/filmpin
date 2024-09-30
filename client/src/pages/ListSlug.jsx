@@ -1,4 +1,4 @@
-import { useEffect, useState, useCallback, useMemo } from "react";
+import { useEffect, useState, useCallback } from "react";
 import { useNavigate, useSearchParams } from "react-router-dom";
 import { motion } from "framer-motion";
 import { useAuth } from "../hooks/useAuth";
@@ -18,10 +18,7 @@ import ImageLazy from "../components/ui/ImageLazy";
 import ListTitleSection from "../components/sections/ListTitleSection";
 import ListItemSection from "../components/sections/ListItemSection";
 import axios from "axios";
-import Button from "../components/ui/Button";
-import { Dropdown, DropdownItem } from "../components/ui/Dropdown";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faEdit, faEllipsisV, faSave } from "@fortawesome/free-solid-svg-icons";
+import EditModeSection from "../components/sections/EditModeSection";
 
 const ListSlug = () => {
   const navigate = useNavigate();
@@ -61,6 +58,8 @@ const ListSlug = () => {
     () => fetchOwner(axios, listData.owner)
   );
 
+  const isOwner = user && ownerData && user._id === ownerData._id;
+
   useEffect(() => {
     if (token && user && listData && ownerData) {
       const randomId = crypto.randomUUID();
@@ -87,11 +86,10 @@ const ListSlug = () => {
               JSON.stringify(listItems) !== JSON.stringify(change.list);
             if (hasChanges) {
               setListItems(change.list);
-              const isOwner = ownerData.username === user.username;
               toastInfo(
                 isOwner
                   ? `Your list has been updated.`
-                  : `${ownerData.username} updated ${listData.list.name}.`
+                  : `${ownerData.username} updated this list.`
               );
             }
           }
@@ -127,16 +125,9 @@ const ListSlug = () => {
     setIsEditMode(!isEditMode);
   }, [isEditMode, listItems, initialListItems]);
 
-  const editButtonText = useMemo(
-    () => (isEditMode ? "Save" : "Edit"),
-    [isEditMode]
-  );
-  const editButtonIcon = useMemo(
-    () => (isEditMode ? faSave : faEdit),
-    [isEditMode]
-  );
-
-  const isOwner = user && ownerData && user._id === ownerData._id;
+  useEffect(() => {
+    window.scrollTo({ top: 0, left: 0, behavior: "smooth" });
+  }, []);
 
   return (
     <div className="relative flex flex-col items-center p-4 gap-4 w-full h-full bg-primary rounded-md">
@@ -166,6 +157,7 @@ const ListSlug = () => {
             listItems={listItems}
             ownerData={ownerData}
             toggleEditMode={toggleEditMode}
+            isOwner={isOwner}
           />
         )}
       </motion.div>
@@ -182,26 +174,11 @@ const ListSlug = () => {
         ) : (
           <>
             {isOwner && (
-              <div className="flex justify-end items-center gap-2 w-full">
-                {isEditMode && (
-                  <div className="flex flex-col gap-2 w-full items-center text-xs text-primary-foreground">
-                    <div className="flex items-center gap-2">
-                      <span>You are in edit mode.</span>
-                      <Button text="Save" onClick={handleSave} />
-                      <Button
-                        variant="ghost"
-                        text="Exit"
-                        onClick={toggleEditMode}
-                      />
-                    </div>
-                    <span>
-                      Tip: drag and drop to reorder items in the list; the first
-                      item in the list will be the list's backdrop; the first
-                      four items will be displayed in the list's poster.
-                    </span>
-                  </div>
-                )}
-              </div>
+              <EditModeSection
+                isEditMode={isEditMode}
+                handleSave={handleSave}
+                toggleEditMode={toggleEditMode}
+              />
             )}
             <ListItemSection
               listItems={listItems}

@@ -17,7 +17,7 @@ const UserInfoSection = ({ userData, user }) => {
       initial={{ y: -70 }}
       className="flex gap-4 w-full h-fit p-4"
     >
-      <div className="flex flex-col max-w-full items-center gap-4">
+      <div className="flex flex-col max-w-full items-center gap-2">
         {userData?.profileImageURL ? (
           <div className="flex flex-col justify-center items-center gap-2">
             <img
@@ -34,7 +34,7 @@ const UserInfoSection = ({ userData, user }) => {
               }}
               className="w-[100px] h-[100px] object-cover rounded-full
               shadow-[var(--accent)_0_0_0_2px]
-              transition-all duration-300 hover:cursor-pointer hover:opacity-70"
+              transition-all duration-300 hover:cursor-pointer hover:opacity-90"
             />
           </div>
         ) : (
@@ -48,9 +48,17 @@ const UserInfoSection = ({ userData, user }) => {
             <FontAwesomeIcon icon={faImage} />
           </div>
         )}
-        <div>
+        <div className="flex flex-col gap-2">
+          <div>
+            <h1 className="text-primary-foreground text-md font-semibold">
+              {userData?.username}
+            </h1>
+            <h1 className="text-center text-primary-foreground text-xs line-clamp-1">
+              {userData?.email}
+            </h1>
+          </div>
           {token && userData?._id === user?._id && (
-            <div className="mb-2">
+            <div>
               <Dropdown
                 name={
                   <div className="flex box-border justify-center items-center h-[14px] w-[14px]">
@@ -77,12 +85,6 @@ const UserInfoSection = ({ userData, user }) => {
               </Dropdown>
             </div>
           )}
-          <h1 className="text-primary-foreground text-md font-semibold">
-            {userData?.username}
-          </h1>
-          <h1 className="text-center text-primary-foreground mt-2 text-xs line-clamp-1">
-            {userData?.email}
-          </h1>
         </div>
       </div>
     </motion.section>

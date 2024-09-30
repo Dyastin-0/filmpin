@@ -22,12 +22,12 @@ const handlePostReview = async (req, res) => {
   if (!user_id) return res.status(400).json({ message: "Missing user ID." });
 
   try {
-    const hasReviewed = await Reviews.findOne({ id, title, owner: user_id });
+    const hasReviewed = false;
 
     if (hasReviewed)
       return res
         .status(409)
-        .json({ message: "You have already reviewed this." });
+        .json({ message: `You have already posted a reviewed for ${title}.` });
 
     const newReview = await Reviews.create({
       id,
@@ -56,18 +56,20 @@ const handlePostReview = async (req, res) => {
  * @throws {Error} If the request fails, returns a 500 status.
  */
 const handleGetReview = async (req, res) => {
-  const { id, title, page } = req.query;
-  const limit = parseInt(req.query.limit) || 20;
+  const { id, title, page, limit } = req.query;
+  const paginationSize = parseInt(limit) || 5;
   const skip = (page - 1) * limit;
 
   if (!id) return res.status(400).json({ message: "Missing ID." });
   if (!title) return res.status(400).json({ message: "Missing title." });
 
   try {
-    const reviews = await Reviews.find({ id: id }).skip(skip).limit(limit);
+    const reviews = await Reviews.find({ id: id })
+      .skip(skip)
+      .limit(paginationSize);
 
     const total = await Reviews.countDocuments({ id, title });
-    const total_pages = Math.ceil(total / limit);
+    const total_pages = Math.ceil(total / paginationSize);
 
     res.json({
       reviews,
