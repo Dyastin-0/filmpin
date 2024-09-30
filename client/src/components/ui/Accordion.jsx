@@ -8,17 +8,14 @@ const Accordion = ({ title, children }) => {
   const [isOpen, setIsOpen] = useState(false);
   const contentRef = useRef(null);
 
-  // Toggles accordion when the button is clicked
   const toggleAccordion = () => {
     setIsOpen((prev) => !prev);
   };
 
-  // Open accordion when any child is focused
   const handleFocus = () => {
     setIsOpen(true);
   };
 
-  // Close accordion when focus is lost from all children
   const handleBlur = (e) => {
     if (!contentRef.current.contains(e.relatedTarget)) {
       setIsOpen(false);
@@ -26,7 +23,7 @@ const Accordion = ({ title, children }) => {
   };
 
   return (
-    <div className="w-fit max-w-full text-primary-foreground rounded-md">
+    <div className="flex flex-col w-fit max-w-full text-primary-foreground gap-2 rounded-md">
       <button
         className="flex w-fit outline-none items-center text-primary-foreground text-xs font-semibold
         transition-colors duration-300 focus:text-primary-highlight hover:text-primary-highlight"
