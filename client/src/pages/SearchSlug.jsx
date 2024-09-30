@@ -29,6 +29,7 @@ const DiscoverMovieSlug = () => {
       : null,
     () => fetchSearchQueryResults(api, "movies", query, moviesCurrentPage),
     {
+      dedupingInterval: 60000,
       onSuccess: () => setLoading(false),
     }
   );
@@ -39,6 +40,7 @@ const DiscoverMovieSlug = () => {
       : null,
     () => fetchSearchQueryResults(api, "tvshows", query, tvShowsCurrentPage),
     {
+      dedupingInterval: 60000,
       onSuccess: () => setLoading(false),
     }
   );

@@ -21,7 +21,10 @@ const Review = ({ review, details }) => {
 
   const { data: ownerData } = useSWR(
     review ? `/public/account?id=${owner}` : null,
-    () => fetchOwner(axios, owner)
+    () => fetchOwner(axios, owner),
+    {
+      dedupingInterval: 60000,
+    }
   );
 
   const handleLike = async () => {

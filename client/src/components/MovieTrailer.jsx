@@ -4,7 +4,6 @@ import useAxios from "../hooks/useAxios";
 import Clip from "./Clip";
 import { fetchVideos } from "../helpers/api";
 import useSWR from "swr";
-import { cache } from "swr/_internal";
 
 const MovieTrailer = ({ id, title }) => {
   const { api, isAxiosReady } = useAxios();
@@ -15,9 +14,7 @@ const MovieTrailer = ({ id, title }) => {
     isAxiosReady ? `/movies/videos?movie_id=${id}` : null,
     () => fetchVideos(api, "movies", "movie_id", id),
     {
-      revalidateOnMount: cache.get(`/movies/videos?movie_id=${id}`)
-        ? false
-        : true,
+      dedupingInterval: 60000,
     }
   );
 

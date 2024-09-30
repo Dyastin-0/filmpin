@@ -21,6 +21,7 @@ const DiscoverTvShow = ({
       : null,
     () => fetchDiscovery(api, "tvshows", genresString, sortBy, currentPage),
     {
+      dedupingInterval: 60000,
       onSuccess: () => {
         setLoading(false);
       },

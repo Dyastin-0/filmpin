@@ -25,7 +25,10 @@ const TvShowSeasonSlug = () => {
     isAxiosReady
       ? `/tvshows/season?tvshow_id=${id}&season_number=${seasonNumber}`
       : null,
-    () => fetchTvShowSeason(api, id, seasonNumber)
+    () => fetchTvShowSeason(api, id, seasonNumber),
+    {
+      dedupingInterval: 60000,
+    }
   );
 
   const { data: videos } = useSWR(
@@ -34,6 +37,7 @@ const TvShowSeasonSlug = () => {
       : null,
     () => fetchTvShowSeasonVideos(api, id, seasonNumber),
     {
+      dedupingInterval: 60000,
       onSuccess: (data) => setTrailerYoutubeKey(data[0].key),
     }
   );

@@ -15,6 +15,7 @@ const SelectBackdrop = () => {
     isAxiosReady ? `/movies/search?query=${query}&page=1` : null,
     () => fetchSearchQueryResults(api, "movies", query, 1),
     {
+      dedupingInterval: 60000,
       onError: () => toastError("Failed to search for backdrops."),
     }
   );

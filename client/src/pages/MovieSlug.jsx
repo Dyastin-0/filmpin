@@ -29,7 +29,10 @@ const MovieSlug = () => {
 
   const { data: details, isLoading: isDetailsLoading } = useSWR(
     isAxiosReady ? `/movies/details?movie_id=${id}` : null,
-    () => fetchMovie(api, id)
+    () => fetchMovie(api, id),
+    {
+      dedupingInterval: 60000,
+    }
   );
 
   const genres = details?.genres
@@ -40,13 +43,17 @@ const MovieSlug = () => {
     isAxiosReady && details
       ? `/movies/discover?genres=${genres}&sort_by=vote_count&page=1`
       : null,
-    () => fetchDiscovery(api, "movies", genres)
+    () => fetchDiscovery(api, "movies", genres),
+    {
+      dedupingInterval: 60000,
+    }
   );
 
   const { data: videos, isLoading: isVideosLoading } = useSWR(
     isAxiosReady ? `/movies/videos?movie_id=${id}` : null,
     () => fetchVideos(api, "movies", "movie_id", id),
     {
+      dedupingInterval: 60000,
       onSuccess: (data) =>
         setTrailerYoutubeKey(
           data.find((video) => video.type === "Trailer").key
@@ -56,7 +63,10 @@ const MovieSlug = () => {
 
   const { data: credits, isLoading: isCreditsLoading } = useSWR(
     isAxiosReady ? `/movies/credits?movie_id=${id}` : null,
-    () => fetchCredits(api, "movies", id)
+    () => fetchCredits(api, "movies", id),
+    {
+      dedupingInterval: 60000,
+    }
   );
 
   useEffect(() => {

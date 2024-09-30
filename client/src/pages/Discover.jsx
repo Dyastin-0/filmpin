@@ -7,7 +7,6 @@ import { useLoading } from "../components/hooks/useLoading";
 import useAxios from "../hooks/useAxios";
 import useSWR from "swr";
 import { Helmet } from "react-helmet";
-import { cache } from "swr/_internal";
 
 const Discover = () => {
   const { api, isAxiosReady } = useAxios();
@@ -17,26 +16,18 @@ const Discover = () => {
   const [isMovieHovered, setIsMovieHovered] = useState(true);
 
   const { data: movies, isLoading: areMoviesLoading } = useSWR(
-    isAxiosReady ? "/movies/discover?genres=&sort_by=vote_count&page=1" : null,
+    isAxiosReady ? "/movies/list?category=top_ratedt&page=1" : null,
     () => fetchCategory(api, "movies", "top_rated", 1),
     {
-      revalidateOnMount: cache.get(
-        "/movies/discover?genres=&sort_by=vote_count&page=1"
-      )
-        ? false
-        : true,
+      dedupingInterval: 60000,
     }
   );
 
   const { data: shows, isLoading: areShowsLoading } = useSWR(
-    isAxiosReady ? "/tvshows/discover?genres=&sort_by=vote_count&page=1" : null,
+    isAxiosReady ? "/tvshows/list?category=top_rated&page=1" : null,
     () => fetchCategory(api, "tvshows", "top_rated", 1),
     {
-      revalidateOnMount: cache.get(
-        "/tvshows/discover?genres=&sort_by=vote_count&page=1"
-      )
-        ? false
-        : true,
+      dedupingInterval: 60000,
     }
   );
 

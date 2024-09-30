@@ -16,9 +16,8 @@ const DiscoverMovie = ({ genresString, sortBy, currentPage, onPageChange }) => {
       : null,
     () => fetchDiscovery(api, "movies", genresString, sortBy, currentPage),
     {
-      onSuccess: () => {
-        setLoading(false);
-      },
+      dedupingInterval: 60000, // Cache data for 60 seconds
+      onSuccess: () => setLoading(false),
     }
   );
 

@@ -24,7 +24,10 @@ const TvShowSlug = () => {
 
   const { data: details, isLoading: isShowLoading } = useSWR(
     isAxiosReady ? `/tvshows?show_id=${id}` : null,
-    () => fetchShow(api, id)
+    () => fetchShow(api, id),
+    {
+      dedupingInterval: 60000,
+    }
   );
 
   const { data: similarShows, isLoading: isSimilarShowsLoading } = useSWR(
@@ -41,6 +44,7 @@ const TvShowSlug = () => {
         1
       ),
     {
+      dedupingInterval: 60000,
       onSuccess: () => setLoading(false),
     }
   );
@@ -49,6 +53,7 @@ const TvShowSlug = () => {
     isAxiosReady && details ? `/tvshows/videos?show_id=${id}` : null,
     () => fetchTvShowVideos(api, id),
     {
+      dedupingInterval: 60000,
       onSuccess: (videos) =>
         setTrailerYoutubeKey(
           videos.find((video) => video.type === "Trailer").key
