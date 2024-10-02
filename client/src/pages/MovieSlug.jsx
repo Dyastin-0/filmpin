@@ -88,7 +88,7 @@ const MovieSlug = () => {
       )}
       <motion.div
         initial={{ marginTop: -120 }}
-        className="flex flex-col rounded-lg gap-4 w-[calc(100%-2rem)] overflow-hidden"
+        className="flex flex-col rounded-lg gap-4 w-full overflow-hidden"
       >
         <h1 className="text-primary-foreground text-sm font-semibold">
           Credits

@@ -74,13 +74,15 @@ const ReviewSection = ({ details }) => {
   };
 
   return (
-    <section className="flex flex-col w-full rounded-lg gap-4 p-4">
+    <section className="flex flex-col w-full rounded-lg gap-4">
       <h1 className="text-primary-foreground text-sm font-semibold">Reviews</h1>
-      <div className="flex flex-col gap-4">
-        {data?.reviews?.map((review, index) => (
-          <Review key={index} review={review} details={details} />
-        ))}
-      </div>
+      {data?.reviews > 0 && (
+        <div className="flex flex-col gap-4">
+          {data.reviews.map((review, index) => (
+            <Review key={index} review={review} details={details} />
+          ))}
+        </div>
+      )}
       {data?.total_pages > 1 && (
         <Pagination
           currentPage={currentPage}

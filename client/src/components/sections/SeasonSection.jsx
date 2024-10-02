@@ -4,7 +4,7 @@ import { swiperConfig } from "../../configs/swiperConfig";
 
 const SeasonSection = ({ seasons, showId, title, backdropPath }) => {
   return (
-    <section className="w-full ml-4 mr-4 mb-4 bg-transparent overflow-hidden gap-4">
+    <section className="w-full bg-transparent overflow-hidden gap-4">
       <h1 className="text-primary-foreground pb-4 text-sm font-semibold">
         Seasons
       </h1>
