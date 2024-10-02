@@ -130,3 +130,12 @@ export const fetchReviews = async (api, id, title, currentPage = 1) => {
   );
   return response.data;
 };
+
+export const fetchUserList = async (api, id) => {
+  try {
+    const response = await api.get(`/list?user_id=${id}`);
+    return response.data;
+  } catch (error) {
+    console.error("Failed to fetch list.", error);
+  }
+};

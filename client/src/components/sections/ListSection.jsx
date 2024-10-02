@@ -10,22 +10,14 @@ import CreateList from "../CreateList";
 import UserList from "../UserList";
 import { io } from "socket.io-client";
 import { useToast } from "../hooks/useToast";
+import { fetchUserList } from "../../helpers/api";
+import useSWR from "swr";
 
 const ListSection = ({ userData }) => {
   const { token, user } = useAuth();
   const { api } = useAxios();
   const { toastInfo } = useToast();
   const { setModal, setOpen } = useModal();
-  const [list, setList] = useState([]);
-
-  const handleGetList = async () => {
-    try {
-      const response = await api.get(`/list?user_id=${userData?._id}`);
-      setList(response.data);
-    } catch (error) {
-      console.error("Failed to fetch list.", error);
-    }
-  };
 
   useEffect(() => {
     if (token && user && userData) {
@@ -64,9 +56,10 @@ const ListSection = ({ userData }) => {
     }
   }, [token, userData, user]);
 
-  useEffect(() => {
-    if (token && userData) handleGetList();
-  }, [token, userData]);
+  const { data: list } = useSWR(
+    userData ? `/lists?owner=${userData._id}` : null,
+    () => fetchUserList(api, userData._id)
+  );
 
   const isOwner = userData?.username === user?.username;
 
@@ -79,7 +72,7 @@ const ListSection = ({ userData }) => {
     </motion.section>;
   }
 
-  if (!list.length > 0)
+  if (!list?.length > 0)
     return (
       <motion.section
         initial={{ marginTop: -70 }}
@@ -123,7 +116,7 @@ const ListSection = ({ userData }) => {
           />
         )}
       </div>
-      <div className="flex flex-wrap justify-center w-full gap-4">
+      <div className="flex flex-wrap w-full gap-4">
         {list.length > 0 &&
           list.map((item) => <UserList key={item._id} list={item} />)}
       </div>

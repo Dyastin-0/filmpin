@@ -11,6 +11,7 @@ import useSWR from "swr";
 import { Helmet } from "react-helmet";
 import HomeSlider from "../components/sliders/HomeSlider";
 import BackdropLoader from "../components/loaders/BackdropLoader";
+import HomeListSection from "../components/sections/HomeListSection";
 
 const Home = () => {
   const { api, isAxiosReady } = useAxios();
@@ -59,6 +60,7 @@ const Home = () => {
       ) : (
         <BackdropLoader />
       )}
+      <HomeListSection />
       {!isLoadingPopularMovies ? (
         <MovieSection title="Popular movies" movies={popularMovies} />
       ) : (

@@ -1,5 +1,5 @@
 import Button from "../components/ui/Button";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 import { fetchCategory } from "../helpers/api";
@@ -7,6 +7,8 @@ import { useLoading } from "../components/hooks/useLoading";
 import useAxios from "../hooks/useAxios";
 import useSWR from "swr";
 import { Helmet } from "react-helmet";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faFilm, faTv } from "@fortawesome/free-solid-svg-icons";
 
 const Discover = () => {
   const { api, isAxiosReady } = useAxios();
@@ -72,21 +74,25 @@ const Discover = () => {
             />
           )}
         </AnimatePresence>
-        <div className="absolute top-4 left-4 flex rounded-md p-2 gap-2 z-30">
-          <Button
-            text="TV Shows"
-            onClick={() =>
-              navigate("/discover/tvshows?genres=&sort_by=vote_count&page=1")
-            }
+        <div className="flex w-fit h-fit rounded-md text-xs font-semibold p-4 gap-4 z-30">
+          <Link
+            to={"/discover/tvshows?genres=&sort_by=vote_count&page=1"}
             onMouseEnter={() => setIsMovieHovered(false)}
-          />
-          <Button
-            text="Movies"
-            onClick={() =>
-              navigate("/discover/movies?genres=&sort_by=vote_count&page=1")
-            }
+            className={`rounded-md p-2
+            transition-all duration-300
+            ${isMovieHovered ? "bg-primary text-primary-foreground" : "bg-primary-highlight text-primary-highlight-foreground"}`}
+          >
+            TV Shows <FontAwesomeIcon icon={faTv} />
+          </Link>
+          <Link
+            to={"/discover/movies?genres=&sort_by=vote_count&page=1"}
             onMouseEnter={() => setIsMovieHovered(true)}
-          />
+            className={`rounded-md p-2
+            transition-all duration-300
+            ${!isMovieHovered ? "bg-primary text-primary-foreground" : "bg-primary-highlight text-primary-highlight-foreground"}`}
+          >
+            Movies <FontAwesomeIcon icon={faFilm} />
+          </Link>
         </div>
       </div>
     </div>
