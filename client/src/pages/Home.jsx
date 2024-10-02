@@ -1,4 +1,3 @@
-import { useEffect } from "react";
 import { LoadingMovieSection } from "../components/loaders/MovieLoaders";
 import { LoadingTrailerSection } from "../components/loaders/TrailerLoaders";
 import { useLoading } from "../components/hooks/useLoading";
@@ -22,6 +21,7 @@ const Home = () => {
     () =>
       fetchDiscovery(api, "movies", "[]").then((response) => response.results),
     {
+      onSuccess: () => setLoading(false),
       dedupingInterval: 60000,
     }
   );
@@ -30,6 +30,7 @@ const Home = () => {
     isAxiosReady ? "/movies/list?category=popular&page=1" : null,
     () => fetchCategory(api, "movies", "popular"),
     {
+      onSuccess: () => setLoading(false),
       dedupingInterval: 60000,
     }
   );
@@ -38,13 +39,10 @@ const Home = () => {
     isAxiosReady ? "/tvshows/list?category=top_rated&page=1" : null,
     () => fetchCategory(api, "tvshows", "top_rated"),
     {
+      onSuccess: () => setLoading(false),
       dedupingInterval: 60000,
     }
   );
-
-  useEffect(() => {
-    setLoading(isLoadingPopularMovies || isLoadingTopMovies);
-  }, [isLoadingPopularMovies, isLoadingTopMovies, setLoading]);
 
   return (
     <div className="flex flex-col bg-primary rounded-lg gap-4 p-4 justify-center items-center h-full w-full">
@@ -52,7 +50,7 @@ const Home = () => {
         <title>Home</title>
         <meta
           name="description"
-          content="Browse, find, and save your next watch!"
+          content="Browse and find movies and TV shows to watch"
         />
       </Helmet>
       {!isLoadingTopMovies ? (

@@ -3,24 +3,18 @@ import { fetchUserList } from "../../helpers/api";
 import { useAuth } from "../../hooks/useAuth";
 import useSWR from "swr";
 import useAxios from "../../hooks/useAxios";
+import { LoadingMovieSection } from "../loaders/MovieLoaders";
 
 const HomeListSection = () => {
   const { isAxiosReady, api } = useAxios();
   const { user } = useAuth();
 
-  const { data: list } = useSWR(
+  const { data: list, isLoading } = useSWR(
     isAxiosReady ? `/lists?owner=${user._id}` : null,
     () => fetchUserList(api, user._id)
   );
 
-  if (!list)
-    return (
-      <section className="flex w-full justify-center">
-        <h1 className="h-fit text-primary-foreground text-sm font-semibold">
-          You don't have a list yet.
-        </h1>
-      </section>
-    );
+  if (isLoading) return <LoadingMovieSection title="Your lists" />;
 
   return (
     <section className="flex flex-col gap-4 w-full">
