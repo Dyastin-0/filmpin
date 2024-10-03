@@ -4,6 +4,8 @@ import { useAuth } from "../../hooks/useAuth";
 import useSWR from "swr";
 import useAxios from "../../hooks/useAxios";
 import { LoadingMovieSection } from "../loaders/MovieLoaders";
+import { Swiper, SwiperSlide } from "swiper/react";
+import { swiperConfig } from "../../configs/swiperConfig";
 
 const HomeListSection = () => {
   const { isAxiosReady, api } = useAxios();
@@ -23,9 +25,15 @@ const HomeListSection = () => {
           Your Lists
         </h1>
       </div>
-      <div className="flex flex-wrap w-full gap-4">
-        {list?.length > 0 &&
-          list.map((item) => <UserList key={item._id} list={item} />)}
+      <div className="flex flex-wrap justify-start w-full gap-4">
+        <Swiper {...swiperConfig}>
+          {list?.length > 0 &&
+            list.map((item, index) => (
+              <SwiperSlide key={index}>
+                <UserList key={item._id} list={item} />
+              </SwiperSlide>
+            ))}
+        </Swiper>
       </div>
     </section>
   );
