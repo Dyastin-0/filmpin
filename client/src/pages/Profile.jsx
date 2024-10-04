@@ -7,6 +7,7 @@ import { Helmet } from "react-helmet";
 import UserBackdropSection from "../components/sections/UserBackdropSection";
 import axios from "axios";
 import UserInfoSection from "../components/sections/UserInfoSection";
+import UserReviewsSection from "../components/sections/UserReviewsSection";
 
 const Profile = () => {
   const { user } = useAuth();
@@ -34,9 +35,12 @@ const Profile = () => {
       <Helmet>
         <title>{userData?.username}</title>
       </Helmet>
-      <UserBackdropSection userData={userData} user={user} />
-      <UserInfoSection userData={userData} user={user} />
-      <ListSection userData={userData} />
+      <UserBackdropSection userData={userData} />
+      <div className="flex flex-col w-full gap-4 p-4">
+        <UserInfoSection userData={userData} />
+        <ListSection userData={userData} />
+        <UserReviewsSection userData={userData} />
+      </div>
     </div>
   );
 };

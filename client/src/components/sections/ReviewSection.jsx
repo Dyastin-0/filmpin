@@ -76,7 +76,7 @@ const ReviewSection = ({ details }) => {
   return (
     <section className="flex flex-col w-full rounded-lg gap-4">
       <h1 className="text-primary-foreground text-sm font-semibold">Reviews</h1>
-      {data?.reviews > 0 && (
+      {data?.reviews?.length > 0 && (
         <div className="flex flex-col gap-4">
           {data.reviews.map((review, index) => (
             <Review key={index} review={review} details={details} />

@@ -2,18 +2,17 @@ const express = require("express");
 const router = express.Router();
 
 const cacheService = require("express-api-cache");
-const cache = cacheService.cache;
 
 const {
   handlePostReview,
   handleGetReview,
   handleLike,
+  handleGetUserReviews,
 } = require("../../controllers/api/reviews");
 
-router
-  .route("/")
-  .post(cache("10 minutes"), handlePostReview)
-  .get(handleGetReview);
+router.route("/").post(handlePostReview).get(handleGetReview);
+
+router.route("/:user_id").get(handleGetUserReviews);
 
 router.route("/like").post(handleLike);
 

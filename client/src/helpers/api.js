@@ -139,3 +139,8 @@ export const fetchUserList = async (api, id) => {
     console.error("Failed to fetch list.", error);
   }
 };
+
+export const fetchUserReviews = async (api, id, page = 1) => {
+  const response = await api.get(`/reviews/${id}?page=${page}`);
+  return response.data;
+};

@@ -8,15 +8,12 @@ import { useAuth } from "../../hooks/useAuth";
 import SelectBackdrop from "../SelectBackdrop";
 import { Image } from "../ui/Image";
 
-const UserInfoSection = ({ userData, user }) => {
-  const { token } = useAuth();
+const UserInfoSection = ({ userData }) => {
+  const { token, user } = useAuth();
   const { setModal, setOpen } = useModal();
 
   return (
-    <motion.section
-      initial={{ y: -70 }}
-      className="flex gap-4 w-full h-fit p-4"
-    >
+    <motion.section initial={{ y: -70 }} className="flex gap-4 w-full h-fit">
       <div className="flex flex-col max-w-full items-center gap-2">
         {userData?.profileImageURL ? (
           <div className="flex flex-col justify-center items-center gap-2">

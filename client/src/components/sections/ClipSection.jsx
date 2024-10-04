@@ -1,5 +1,5 @@
 import { SwiperSlide, Swiper } from "swiper/react";
-import { swiperConfigStart } from "../../configs/swiperConfig";
+import { swiperConfig } from "../../configs/swiperConfig";
 import Clip from "../Clip";
 
 export const ClipSection = ({ title, keys }) => {
@@ -8,7 +8,7 @@ export const ClipSection = ({ title, keys }) => {
       <h1 className="text-primary-foreground pb-4 text-sm font-semibold">
         {title}
       </h1>
-      <Swiper {...swiperConfigStart}>
+      <Swiper {...swiperConfig}>
         {keys?.map((key, index) => (
           <SwiperSlide
             className="max-h-fit transition-all duration-300 hover:scale-95"

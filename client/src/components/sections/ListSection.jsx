@@ -66,7 +66,7 @@ const ListSection = ({ userData }) => {
   if (!token) {
     <motion.section
       initial={{ marginTop: -70 }}
-      className="flex justify-center items-center gap-4 w-full p-4 bg-accent rounded-md"
+      className="flex justify-center items-center gap-4 w-full bg-accent rounded-md"
     >
       <h1 className="text-xs text-primary-foreground font-semibold">{`Sign in to view ${userData?.username}'s lists.`}</h1>
     </motion.section>;
@@ -76,7 +76,7 @@ const ListSection = ({ userData }) => {
     return (
       <motion.section
         initial={{ marginTop: -70 }}
-        className="relative flex flex-col gap-4 w-full p-4"
+        className="relative flex flex-col gap-4 w-full"
       >
         <h1 className="text-primary-foreground text-center text-xs font-semibold">
           {isOwner ? "You don't" : `${userData?.username} doesn't`} have a list
@@ -98,7 +98,7 @@ const ListSection = ({ userData }) => {
   return (
     <motion.section
       initial={{ marginTop: -70 }}
-      className="relative flex flex-col gap-4 w-full pr-4 pl-4 pb-4"
+      className="relative flex flex-col gap-4 w-full"
     >
       <div className="flex w-fit justify-center items-center gap-2">
         <h1 className="h-fit text-primary-foreground text-sm font-semibold">

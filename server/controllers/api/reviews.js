@@ -1,4 +1,5 @@
 const Reviews = require("../../models/review");
+const Users = require("../../models/user");
 
 /**
  * Handles posting a review.
@@ -23,7 +24,6 @@ const handlePostReview = async (req, res) => {
 
   try {
     const hasReviewed = false;
-
     if (hasReviewed)
       return res
         .status(409)
@@ -131,7 +131,29 @@ const handleLike = async (req, res) => {
       message: hasLiked ? "Review unliked." : "Review liked.",
     });
   } catch (error) {
+    console.error(error);
     res.status(500).json({ message: "Error updating like status", error });
+  }
+};
+
+const handleGetUserReviews = async (req, res) => {
+  const { page, limit } = req.query;
+  const { user_id: id } = req.params;
+  const paginationSize = limit || 5;
+  const skip = (page - 1) * limit;
+
+  try {
+    const user = await Users.findById(id);
+    if (!user) return res.status(404).json({ message: "User not found." });
+
+    const reviews = await Reviews.find({ owner: id })
+      .skip(skip)
+      .limit(paginationSize);
+
+    res.json(reviews);
+  } catch (error) {
+    console.error(error);
+    res.status(500).send("Error fetching user reviews.");
   }
 };
 
@@ -139,4 +161,5 @@ module.exports = {
   handleGetReview,
   handlePostReview,
   handleLike,
+  handleGetUserReviews,
 };

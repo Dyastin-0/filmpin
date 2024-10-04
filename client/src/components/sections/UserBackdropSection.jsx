@@ -6,9 +6,9 @@ import UserBackdrop from "../UserBackdrop";
 import { useAuth } from "../../hooks/useAuth";
 import { useModal } from "../hooks/useModal";
 
-const UserBackdropSection = ({ userData, user }) => {
+const UserBackdropSection = ({ userData }) => {
   const { setModal, setOpen } = useModal();
-  const { token } = useAuth();
+  const { token, user } = useAuth();
 
   return (
     <section className="relative flex justify-center items-center w-full max-h-[400px] rounded-md">

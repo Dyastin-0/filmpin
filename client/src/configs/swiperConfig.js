@@ -6,18 +6,6 @@ export const swiperConfig = {
   slidesPerView: "auto",
   navigation: true,
   loop: true,
-  centeredSlides: true,
-  lazy: "true",
-  modules: [Navigation],
-  className: "swiper-slide",
-};
-
-export const swiperConfigStart = {
-  speed: 1000,
-  spaceBetween: 14,
-  slidesPerView: "auto",
-  navigation: true,
-  loop: true,
   lazy: "true",
   modules: [Navigation],
   className: "swiper-slide",
