@@ -8,7 +8,7 @@ const UserReviewsSection = ({ userData }) => {
   const { user } = useAuth();
   const { api, isAxiosReady } = useAxios();
 
-  const { data: reviews, isLoading } = useSWR(
+  const { data, isLoading } = useSWR(
     isAxiosReady && userData ? "/api/reviews" : null,
     () => fetchUserReviews(api, userData._id, 1)
   );
@@ -18,7 +18,7 @@ const UserReviewsSection = ({ userData }) => {
       <h1 className="text-sm font-semibold">{`${user?.username === userData?.username ? "Your" : userData?.username} reviews`}</h1>
       <div className="flex w-full flex-wrap gap-2">
         {!isLoading &&
-          reviews?.map((review, index) => (
+          data?.reviews?.map((review, index) => (
             <UserReview key={index} review={review} />
           ))}
       </div>

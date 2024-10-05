@@ -150,7 +150,15 @@ const handleGetUserReviews = async (req, res) => {
       .skip(skip)
       .limit(paginationSize);
 
-    res.json(reviews);
+    const total = await Reviews.countDocuments({ owner: id });
+    const total_pages = Math.ceil(total / paginationSize);
+
+    res.json({
+      reviews,
+      current_page: page,
+      total_pages,
+      total_reviews: total,
+    });
   } catch (error) {
     console.error(error);
     res.status(500).send("Error fetching user reviews.");

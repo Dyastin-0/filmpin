@@ -25,15 +25,17 @@ const UserReview = ({ review }) => {
       <div className="tex-xs p-4 rounded-md w-full border border-secondary-accent">
         <div className="flex flex-col items-start gap-2">
           <div className="flex flex-col rounded-md gap-2">
-            <div className="flex gap-2">
+            <div className="relative flex w-full gap-2">
               <div className="text-xs text-primary-foreground font-semibold">
                 {review.title}
               </div>
               <span className="text-xs text-secondary-foreground">
                 {dayjs.unix(created_on / 1000).fromNow()}
               </span>
-              <span className="text-xs">{review.hearts.length}</span>
-              <FontAwesomeIcon size="xs" icon={faHeart} />
+              <div className="absolute right-0 flex items-center justify-center gap-1">
+                <span className="text-xs">{hearts.length}</span>
+                <FontAwesomeIcon size="xs" icon={faHeart} />
+              </div>
             </div>
             <span
               ref={contentRef}
