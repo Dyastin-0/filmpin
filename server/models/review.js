@@ -10,6 +10,9 @@ const reviewSchema = Schema({
     type: String,
     index: true,
   },
+  poster_path: {
+    type: String,
+  },
   owner: {
     type: String,
   },

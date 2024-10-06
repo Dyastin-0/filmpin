@@ -22,6 +22,7 @@ const ReviewForm = ({ details }) => {
         .post("/reviews", {
           id: details.id,
           title: details.title || details.name,
+          poster_path: details.poster_path,
           content: review,
         })
         .then((response) => response.data.newReview);

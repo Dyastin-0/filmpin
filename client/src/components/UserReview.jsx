@@ -23,19 +23,24 @@ const UserReview = ({ review }) => {
   return (
     <div className="flex lg:w-[500px] md:w-[400px] sm:w-full flex-col gap-2">
       <div className="tex-xs p-4 rounded-md w-full border border-secondary-accent">
-        <div className="flex flex-col items-start gap-2">
-          <div className="flex flex-col rounded-md gap-2">
-            <div className="relative flex w-full gap-2">
-              <div className="text-xs text-primary-foreground font-semibold">
+        <div className="relative flex gap-2">
+          <img
+            loading="lazy"
+            className="w-[60px] h-[90px] rounded-md object-cover"
+            src={`https://image.tmdb.org/t/p/original/${review.poster_path}`}
+          />
+          <div className="absolute right-0 flex items-center justify-center gap-1">
+            <span className="text-xs">{hearts.length}</span>
+            <FontAwesomeIcon size="xs" icon={faHeart} />
+          </div>
+          <div className="flex flex-col gap-2 justify-end w-full">
+            <div className="flex gap-2">
+              <span className="text-xs text-primary-foreground font-semibold">
                 {review.title}
-              </div>
+              </span>
               <span className="text-xs text-secondary-foreground">
                 {dayjs.unix(created_on / 1000).fromNow()}
               </span>
-              <div className="absolute right-0 flex items-center justify-center gap-1">
-                <span className="text-xs">{hearts.length}</span>
-                <FontAwesomeIcon size="xs" icon={faHeart} />
-              </div>
             </div>
             <span
               ref={contentRef}
@@ -45,7 +50,7 @@ const UserReview = ({ review }) => {
             </span>
             {isOverflowing && (
               <button
-                className="text-xs text-primary-highlight"
+                className="text-xs text-primary-highlight self-center"
                 onClick={() => setIsExpanded(!isExpanded)}
               >
                 {isExpanded ? "Read Less" : "Read More"}

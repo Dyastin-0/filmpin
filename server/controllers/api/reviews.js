@@ -14,7 +14,7 @@ const Users = require("../../models/user");
  * @throws {Error} If the request fails, returns a 500 status.
  */
 const handlePostReview = async (req, res) => {
-  const { id, title, content } = req.body;
+  const { id, title, poster_path, content } = req.body;
   const { id: user_id } = req;
 
   if (!id) return res.status(400).json({ message: "Missing ID." });
@@ -32,6 +32,7 @@ const handlePostReview = async (req, res) => {
     const newReview = await Reviews.create({
       id,
       title,
+      poster_path,
       owner: user_id,
       content,
     });
