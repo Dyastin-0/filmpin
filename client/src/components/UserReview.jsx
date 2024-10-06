@@ -26,7 +26,7 @@ const UserReview = ({ review }) => {
         <div className="relative flex gap-2">
           <img
             loading="lazy"
-            className="w-[60px] h-[90px] rounded-md object-cover"
+            className="w-[80px] h-[120px] rounded-md object-cover"
             src={`https://image.tmdb.org/t/p/original/${review.poster_path}`}
           />
           <div className="absolute right-0 flex items-center justify-center gap-1">
