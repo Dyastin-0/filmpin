@@ -23,18 +23,18 @@ const UserReview = ({ review }) => {
   return (
     <div className="flex lg:w-[500px] md:w-[400px] sm:w-full flex-col gap-2">
       <div className="tex-xs p-4 rounded-md w-full border border-secondary-accent">
-        <div className="relative flex gap-2">
+        <div className="relative flex gap-4">
           <img
             loading="lazy"
             className="w-[80px] h-[120px] rounded-md object-cover"
             src={`https://image.tmdb.org/t/p/original/${review.poster_path}`}
           />
-          <div className="absolute right-0 flex items-center justify-center gap-1">
-            <span className="text-xs">{hearts.length}</span>
-            <FontAwesomeIcon size="xs" icon={faHeart} />
+          <div className="absolute text-sm right-0 flex items-center justify-center gap-1">
+            <span>{hearts.length}</span>
+            <FontAwesomeIcon icon={faHeart} />
           </div>
-          <div className="flex flex-col gap-2 justify-end w-full">
-            <div className="flex gap-2">
+          <div className="flex flex-col justify-end w-full">
+            <div className="flex gap-2 mb-2">
               <span className="text-xs text-primary-foreground font-semibold">
                 {review.title}
               </span>
