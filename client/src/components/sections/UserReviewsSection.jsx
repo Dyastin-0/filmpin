@@ -15,12 +15,15 @@ const UserReviewsSection = ({ userData }) => {
 
   return (
     <section className="flex flex-col w-full gap-4">
-      <h1 className="text-sm font-semibold">{`${user?.username === userData?.username ? "Your" : userData?.username} reviews`}</h1>
+      <h1 className="text-sm font-semibold">Reviews</h1>
       <div className="flex w-full flex-wrap gap-2">
-        {!isLoading &&
-          data?.reviews?.map((review, index) => (
+        {!isLoading && data?.reviews?.length > 0 ? (
+          data.reviews.map((review, index) => (
             <UserReview key={index} review={review} />
-          ))}
+          ))
+        ) : (
+          <p className="text-xs text-secondary-foreground">No reviews yet.</p>
+        )}
       </div>
     </section>
   );

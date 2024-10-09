@@ -23,7 +23,7 @@ const MovieInfoSection = ({ details, trailerYoutubeKey }) => {
       </div>
       <motion.div
         initial={{ y: -120 }}
-        className="flex md:flex-row flex-col p-4 rounded-md max-w-full w-full gap-4"
+        className="flex md:flex-row flex-col rounded-md max-w-full w-full gap-4 p-4"
       >
         <Poster details={details} trailerYoutubeKey={trailerYoutubeKey} />
         <div className="flex flex-col gap-2 w-full">

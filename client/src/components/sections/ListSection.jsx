@@ -56,7 +56,7 @@ const ListSection = ({ userData }) => {
     }
   }, [token, userData, user]);
 
-  const { data: list } = useSWR(
+  const { data: list, isLoading } = useSWR(
     userData ? `/lists?owner=${userData._id}` : null,
     () => fetchUserList(api, userData._id)
   );
@@ -71,29 +71,6 @@ const ListSection = ({ userData }) => {
       <h1 className="text-xs text-primary-foreground font-semibold">{`Sign in to view ${userData?.username}'s lists.`}</h1>
     </motion.section>;
   }
-
-  if (!list?.length > 0)
-    return (
-      <motion.section
-        initial={{ marginTop: -70 }}
-        className="relative flex flex-col gap-4 w-full"
-      >
-        <h1 className="text-primary-foreground text-center text-xs font-semibold">
-          {isOwner ? "You don't" : `${userData?.username} doesn't`} have a list
-          yet.
-        </h1>
-        {isOwner && (
-          <Button
-            text="Create one."
-            className="self-center"
-            onClick={() => {
-              setModal(<CreateList />);
-              setOpen(true);
-            }}
-          />
-        )}
-      </motion.section>
-    );
 
   return (
     <motion.section
@@ -117,8 +94,11 @@ const ListSection = ({ userData }) => {
         )}
       </div>
       <div className="flex flex-wrap w-full gap-4">
-        {list.length > 0 &&
-          list.map((item) => <UserList key={item._id} list={item} />)}
+        {!isLoading && list?.length > 0 ? (
+          list.map((item) => <UserList key={item._id} list={item} />)
+        ) : (
+          <p className="text-xs text-secondary-foreground">No lists yet.</p>
+        )}
       </div>
     </motion.section>
   );

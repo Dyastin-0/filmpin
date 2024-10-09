@@ -11,7 +11,7 @@ export const ClipSection = ({ title, keys }) => {
       <Swiper {...swiperConfig}>
         {keys?.map((key, index) => (
           <SwiperSlide
-            className="max-h-fit transition-all duration-300 hover:scale-95"
+            className="max-h-fit transition-all duration-300"
             key={index}
           >
             <Clip title={key.name} trailerKey={key.value} key={index} />

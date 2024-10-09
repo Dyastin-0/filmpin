@@ -42,7 +42,7 @@ const Pagination = ({ currentPage, totalPages, onPageChange }) => {
         className="px-2 py-1 text-xs bg-accent shadow-sm disabled:bg-secondary rounded-md text-primary-foreground
         transition-all duration-300"
       >
-        Prev
+        <FontAwesomeIcon icon={faChevronLeft} />
       </button>
       {pageNumbers.map((page, index) => (
         <button
@@ -66,7 +66,7 @@ const Pagination = ({ currentPage, totalPages, onPageChange }) => {
         className="px-2 py-1 text-xs bg-accent disabled:bg-secondary shadow-sm rounded-md text-primary-foreground
         transition-all duration-300"
       >
-        Next
+        <FontAwesomeIcon icon={faChevronRight} />
       </button>
     </div>
   );

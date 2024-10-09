@@ -16,14 +16,12 @@ const DiscoverMovie = ({ genresString, sortBy, currentPage, onPageChange }) => {
       : null,
     () => fetchDiscovery(api, "movies", genresString, sortBy, currentPage),
     {
-      dedupingInterval: 60000, // Cache data for 60 seconds
+      dedupingInterval: 60000,
       onSuccess: () => setLoading(false),
     }
   );
 
   if (isLoading) return <LoadingDiscover />;
-
-  if (isError) return <section>Failed to load</section>;
 
   return (
     <section className="flex flex-col items-center gap-4">

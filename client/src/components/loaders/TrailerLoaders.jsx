@@ -22,7 +22,7 @@ export const TrailerDummy = () => (
   <motion.div
     className="flex flex-col items-center rounded-md drop-shadow-sm gap-1 p-3 w-[270px] h-fit
 		text-primary-foreground border border-secondary-accent
-		hover:scale-95 hover:cursor-pointer duration-300"
+		hover:cursor-pointer duration-300"
   >
     <TrailerImageDummy />
     <TrailerTitleDummy />

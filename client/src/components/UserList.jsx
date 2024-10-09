@@ -13,7 +13,7 @@ const UserList = ({ list }) => {
       className="flex flex-col rounded-lg drop-shadow-sm gap-4 p-4 w-[200px] h-fit
 			text-primary-foreground border border-secondary-accent
 			transition-all duration-300
-			hover:cursor-pointer hover:scale-95"
+			hover:cursor-pointer"
       onClick={() => handleClick(list)}
     >
       {list?.name && (

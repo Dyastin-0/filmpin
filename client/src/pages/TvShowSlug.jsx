@@ -79,8 +79,8 @@ const TvShowSlug = () => {
           trailerYoutubeKey={trailerYoutubeKey}
         />
       )}
-      <motion.section
-        className="flex flex-col rounded-lg gap-4 items-center w-full"
+      <motion.div
+        className="flex flex-col rounded-lg gap-4 p-4 items-center w-full"
         initial={{ marginTop: -120 }}
       >
         {isShowLoading ? (
@@ -93,8 +93,6 @@ const TvShowSlug = () => {
             backdropPath={details?.backdrop_path}
           />
         )}
-      </motion.section>
-      <motion.div className="flex flex-col rounded-lg gap-4 items-center w-full">
         {isSimilarShowsLoading ? (
           <LoadingMovieSection title="Recommendations" />
         ) : (
@@ -105,9 +103,7 @@ const TvShowSlug = () => {
             )}
           />
         )}
-      </motion.div>
-      {videos?.length > 0 && (
-        <div className="flex flex-col rounded-md max-w-full w-full gap-4">
+        {videos?.length > 0 && (
           <ClipSection
             keys={videos.map((video) => ({
               name: video.name,
@@ -115,9 +111,9 @@ const TvShowSlug = () => {
             }))}
             title="Videos"
           />
-        </div>
-      )}
-      <ReviewSection details={details} />
+        )}
+        <ReviewSection details={details} />
+      </motion.div>
     </div>
   );
 };

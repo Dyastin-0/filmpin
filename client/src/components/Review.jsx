@@ -82,7 +82,9 @@ const Review = ({ review, details }) => {
               </span>
               {isOverflowing && (
                 <button
-                  className="text-xs text-primary-highlight"
+                  className="w-fit text-xs text-primary-foreground underline outline-none
+                  transition-all duration-300
+                  focus:text-primary-highlight hover:text-primary-highlight hover:cursor-pointer"
                   onClick={() => setIsExpanded(!isExpanded)}
                 >
                   {isExpanded ? "Read Less" : "Read More"}

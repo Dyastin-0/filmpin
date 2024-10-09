@@ -26,7 +26,7 @@ const Season = ({ info, showId, title, backdropPath }) => {
     <motion.div
       className="flex flex-col rounded-lg drop-shadow-none gap-1 p-4 w-[200px] h-[370px]
 			text-primary-foreground border border-secondary-accent
-			hover:scale-95 hover:cursor-pointer duration-300"
+			hover:cursor-pointer duration-300"
       onClick={() =>
         navigate(
           `/tvshows/${showId}/season?id=${showId}_${info.name}&season_number=${info.season_number}&title=${title}&backdrop_path=${backdropPath}`

@@ -15,7 +15,7 @@ const DiscoverTvShow = ({
   const { api, isAxiosReady } = useAxios();
   const { setLoading } = useLoading();
 
-  const { data, isLoading, isError } = useSWR(
+  const { data, isLoading } = useSWR(
     isAxiosReady
       ? `/discover/tvshows?genres=${genresString}&sort_by=${sortBy}&page=${currentPage}`
       : null,
@@ -29,8 +29,6 @@ const DiscoverTvShow = ({
   );
 
   if (isLoading) return <LoadingDiscover />;
-
-  if (isError) return <section>Failed to load</section>;
 
   return (
     <section className="flex flex-col items-center gap-4">
