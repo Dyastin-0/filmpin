@@ -3,6 +3,7 @@ import dayjs from "dayjs";
 import relativeTime from "dayjs/plugin/relativeTime";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faHeart } from "@fortawesome/free-solid-svg-icons";
+import { Link } from "react-router-dom";
 
 dayjs.extend(relativeTime);
 
@@ -35,9 +36,13 @@ const UserReview = ({ review }) => {
           </div>
           <div className="flex flex-col justify-end w-full">
             <div className="flex gap-2 mb-2">
-              <span className="text-xs text-primary-foreground font-semibold">
+              <Link
+                className="text-xs text-primary-foreground font-semibold
+                transition-all duration-300 hover:text-primary-highlight"
+                to={`/movies?id=${review.id}${review.title}`}
+              >
                 {review.title}
-              </span>
+              </Link>
               <span className="text-xs text-secondary-foreground">
                 {dayjs.unix(created_on / 1000).fromNow()}
               </span>
@@ -50,7 +55,9 @@ const UserReview = ({ review }) => {
             </span>
             {isOverflowing && (
               <button
-                className="text-xs text-primary-highlight self-center"
+                className="w-fit text-xs text-primary-foreground underline outline-none
+                transition-all duration-300
+                focus:text-primary-highlight hover:text-primary-highlight hover:cursor-pointer"
                 onClick={() => setIsExpanded(!isExpanded)}
               >
                 {isExpanded ? "Read Less" : "Read More"}
