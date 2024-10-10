@@ -169,10 +169,45 @@ const handlePatchList = async (req, res) => {
   }
 };
 
+const handleSearchList = async (req, res) => {
+  const { query } = req.params;
+  const { page, limit } = req.query;
+
+  if (!query) return res.status(400).json({ message: "Missing query." });
+  if (!page) return res.status(400).json({ message: "Missing page." });
+
+  const paginationSize = parseInt(limit) || 5;
+  const skip = (page - 1) * limit;
+
+  try {
+    const lists = await Lists.find({
+      name: { $regex: query, $options: "i" },
+    })
+      .skip(skip)
+      .limit(paginationSize);
+
+    const total = await Lists.countDocuments({
+      name: { $regex: query, $options: "i" },
+    });
+    const total_pages = Math.ceil(total / paginationSize);
+
+    res.json({
+      lists,
+      current_page: page,
+      total_pages,
+      total_lists: total,
+    });
+  } catch (error) {
+    console.error("Failed to search for list.", error);
+    res.sendStatus(500);
+  }
+};
+
 module.exports = {
   handleGeUserLists,
   handleCreateList,
   handleGetList,
   handleAddItem,
   handlePatchList,
+  handleSearchList,
 };

@@ -8,6 +8,8 @@ import { Helmet } from "react-helmet";
 import SearchMovie from "../components/paginations/SearchMovie";
 import SearchTvShow from "../components/paginations/SearchTvShow";
 import Button from "../components/ui/Button";
+import SearchList from "../components/paginations/SearchList";
+import clsx from "clsx";
 
 const DiscoverMovieSlug = () => {
   const { api, isAxiosReady } = useAxios();
@@ -20,6 +22,9 @@ const DiscoverMovieSlug = () => {
   );
   const [tvShowsCurrentPage, setTvShowsCurrentPage] = useState(
     parseInt(searchParams.get("tvshows-page")) || 1
+  );
+  const [listsCurrentPage, setListsCurrentPage] = useState(
+    parseInt(searchParams.get("lists-page")) || 1
   );
   const [query, setQuery] = useState(searchParams.get("query") || "");
 
@@ -39,6 +44,15 @@ const DiscoverMovieSlug = () => {
       ? `/tvshows/search?query=${query}&page=${tvShowsCurrentPage}`
       : null,
     () => fetchSearchQueryResults(api, "tvshows", query, tvShowsCurrentPage),
+    {
+      dedupingInterval: 60000,
+      onSuccess: () => setLoading(false),
+    }
+  );
+
+  const { data: listResults } = useSWR(
+    isAxiosReady ? `/lists/search?query=${query}&page=1&limit=20` : null,
+    () => api.get(`/lists/search/${query}?&page=1`).then((res) => res.data),
     {
       dedupingInterval: 60000,
       onSuccess: () => setLoading(false),
@@ -83,6 +97,10 @@ const DiscoverMovieSlug = () => {
     setTvShowsCurrentPage(page);
   };
 
+  const onListsPageChange = (page) => {
+    setListsCurrentPage(page);
+  };
+
   return (
     <div className="flex flex-col bg-primary rounded-lg gap-4 p-4 items-center h-full w-full">
       <Helmet>
@@ -93,35 +111,49 @@ const DiscoverMovieSlug = () => {
           Results
         </h1>
         <Button
-          className={
-            tab === "Movies" &&
-            "bg-[var(--highlight)] text-[var(--text-highlight)]"
-          }
+          className={clsx({
+            "bg-primary-highlight text-primary-highlight": tab === "Movies",
+          })}
           variant="default_rounded"
           text="Movies"
           onClick={() => setTab("Movies")}
         />
         <Button
-          className={
-            tab === "TV Shows" &&
-            "bg-[var(--highlight)] text-[var(--text-highlight)]"
-          }
+          className={clsx({
+            "bg-primary-highlight text-primary-highlight": tab === "TV Shows",
+          })}
           variant="default_rounded"
           text="TV Shows"
           onClick={() => setTab("TV Shows")}
         />
+        <Button
+          className={clsx({
+            "text-primary-highlight": tab === "Lists",
+          })}
+          variant="default_rounded"
+          text="Lists"
+          onClick={() => setTab("Lists")}
+        />
       </div>
-      {tab === "Movies" ? (
+      {tab === "Movies" && (
         <SearchMovie
           data={movieResults}
           currentPage={moviesCurrentPage}
           onPageChange={onMoviesPageChange}
         />
-      ) : (
+      )}
+      {tab === "TV Shows" && (
         <SearchTvShow
           data={tvShowResults}
           currentPage={tvShowsCurrentPage}
           onPageChange={onTvShowsPageChange}
+        />
+      )}
+      {tab === "Lists" && (
+        <SearchList
+          data={listResults}
+          currentPage={listsCurrentPage}
+          onPageChange={onListsPageChange}
         />
       )}
     </div>

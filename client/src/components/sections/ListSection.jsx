@@ -17,6 +17,7 @@ const ListSection = ({ userData }) => {
   const { token, user } = useAuth();
   const { api } = useAxios();
   const { toastInfo } = useToast();
+  const [list, setList] = useState([]);
   const { setModal, setOpen } = useModal();
 
   useEffect(() => {
@@ -56,9 +57,12 @@ const ListSection = ({ userData }) => {
     }
   }, [token, userData, user]);
 
-  const { data: list, isLoading } = useSWR(
+  const { isLoading } = useSWR(
     userData ? `/lists?owner=${userData._id}` : null,
-    () => fetchUserList(api, userData._id)
+    () => fetchUserList(api, userData._id),
+    {
+      onSuccess: (data) => setList(data),
+    }
   );
 
   const isOwner = userData?.username === user?.username;

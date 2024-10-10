@@ -166,9 +166,40 @@ const handleGetUserReviews = async (req, res) => {
   }
 };
 
+const handleSearchReviews = async (req, res) => {
+  const { query, page, limit } = req.query;
+
+  if (!query) return res.status(400).json({ message: "Missing query." });
+  if (!page) return res.status(400).json({ message: "Missing page." });
+  if (!limit) return res.status(400).json({ message: "Missing limit." });
+
+  const paginationSize = parseInt(limit) || 5;
+  const skip = (page - 1) * limit;
+
+  try {
+    const reviews = await Reviews.find({ $text: { $search: query } })
+      .skip(skip)
+      .limit(paginationSize);
+
+    const total = await Reviews.countDocuments({ $text: { $search: query } });
+    const total_pages = Math.ceil(total / paginationSize);
+
+    res.json({
+      reviews,
+      current_page: page,
+      total_pages,
+      total_reviews: total,
+    });
+  } catch (error) {
+    console.error(error);
+    res.status(500).send("Error searching reviews.");
+  }
+};
+
 module.exports = {
   handleGetReview,
   handlePostReview,
   handleLike,
   handleGetUserReviews,
+  handleSearchReviews,
 };

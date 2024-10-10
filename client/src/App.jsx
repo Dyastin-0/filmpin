@@ -73,7 +73,7 @@ function App() {
               path="/tvshows/:show_id/:season/episode"
               element={<TvShowEpisodeSlug />}
             />
-            <Route path="/list" element={<ListSlug />} />
+            <Route path="/lists/:list_id" element={<ListSlug />} />
           </Route>
         </Routes>
       </Suspense>

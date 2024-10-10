@@ -4,7 +4,7 @@ export const fetchOwner = async (axios, id) => {
 };
 
 export const fetchList = async (api, id) => {
-  const response = await api.get(`/list/${id}`);
+  const response = await api.get(`/lists/${id}`);
   return response.data;
 };
 
@@ -133,7 +133,7 @@ export const fetchReviews = async (api, id, title, currentPage = 1) => {
 
 export const fetchUserList = async (api, id) => {
   try {
-    const response = await api.get(`/list?user_id=${id}`);
+    const response = await api.get(`/lists?user_id=${id}`);
     return response.data;
   } catch (error) {
     console.error("Failed to fetch list.", error);

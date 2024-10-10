@@ -1,5 +1,5 @@
 import { useEffect, useState, useCallback } from "react";
-import { useNavigate, useSearchParams } from "react-router-dom";
+import { useNavigate, useParams, useSearchParams } from "react-router-dom";
 import { motion } from "framer-motion";
 import { useAuth } from "../hooks/useAuth";
 import { io } from "socket.io-client";
@@ -24,10 +24,10 @@ const ListSlug = () => {
   const navigate = useNavigate();
   const { token, user } = useAuth();
   const { api, isAxiosReady } = useAxios();
-  const [searchParams] = useSearchParams();
+  const params = useParams();
   const { toastInfo } = useToast();
 
-  const id = searchParams.get("list_id");
+  const id = params.list_id.split("=").pop();
 
   const [listItems, setListItems] = useState([]);
   const [initialListItems, setInitialListItems] = useState([]);
@@ -37,7 +37,7 @@ const ListSlug = () => {
     data: listData,
     isLoading,
     isError,
-  } = useSWR(isAxiosReady ? `/list/${id}` : null, () => fetchList(api, id), {
+  } = useSWR(isAxiosReady ? `/lists/${id}` : null, () => fetchList(api, id), {
     onSuccess: (data) => {
       if (data && data.list) {
         const fetchItem =
@@ -50,7 +50,7 @@ const ListSlug = () => {
         );
       }
     },
-    onError: (error) => navigate("/404"),
+    onError: (error) => console.log(error),
   });
 
   const { data: ownerData } = useSWR(
@@ -107,7 +107,9 @@ const ListSlug = () => {
     if (!hasChanges) return toastInfo("No changes detected.");
 
     try {
-      await api.patch(`/list?list_id=${listData._id}`, { new_list: listItems });
+      await api.patch(`/lists?list_id=${listData._id}`, {
+        new_list: listItems,
+      });
       toastInfo("Changes saved successfully.");
       setInitialListItems(listItems);
       setIsEditMode(false);

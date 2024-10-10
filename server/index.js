@@ -50,7 +50,7 @@ app.use("/api/public/backdrops", require("./routes/public/backdrops"));
 
 app.use(verifyJsonWebToken);
 app.use("/api/account", require("./routes/api/account/account"));
-app.use("/api/list", require("./routes/api/account/list"));
+app.use("/api/lists", require("./routes/api/account/list"));
 app.use("/api/movies", require("./routes/api/movies"));
 app.use("/api/tvshows", require("./routes/api/tvshows"));
 app.use("/api/reviews", require("./routes/api/reviews"));

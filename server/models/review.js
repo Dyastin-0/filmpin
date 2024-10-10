@@ -1,7 +1,7 @@
 const mongoose = require("mongoose");
 const { Schema } = mongoose;
 
-const reviewSchema = Schema({
+const ReviewSchema = Schema({
   id: {
     type: String,
     index: true,
@@ -29,6 +29,8 @@ const reviewSchema = Schema({
   },
 });
 
-const ReviewModel = mongoose.model("Review", reviewSchema);
+ReviewSchema.index({ title: "text", content: "text" });
+
+const ReviewModel = mongoose.model("Review", ReviewSchema);
 
 module.exports = ReviewModel;

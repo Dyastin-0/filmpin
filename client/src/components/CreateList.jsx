@@ -30,7 +30,7 @@ const CreateList = () => {
 
     const randomIndex = Math.floor(Math.random() * fetched.length);
     try {
-      await api.post("/list", {
+      await api.post("/lists", {
         list: {
           type: type,
           list: [

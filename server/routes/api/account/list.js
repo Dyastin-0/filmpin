@@ -6,6 +6,7 @@ const {
   handleGetList,
   handleAddItem,
   handlePatchList,
+  handleSearchList,
 } = require("../../../controllers/account/list");
 
 router.route("/:list_id").get(handleGetList);
@@ -17,5 +18,7 @@ router
   .patch(handlePatchList);
 
 router.route("/item").post(handleAddItem);
+
+router.route("/search/:query").get(handleSearchList);
 
 module.exports = router;
