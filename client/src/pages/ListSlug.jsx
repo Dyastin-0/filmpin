@@ -172,7 +172,7 @@ const ListSlug = () => {
             Failed to load {listTypes[listData.type]}, Something went wrong.
           </p>
         ) : (
-          <>
+          <div>
             {isOwner && (
               <EditModeSection
                 isEditMode={isEditMode}
@@ -186,7 +186,7 @@ const ListSlug = () => {
               setListItems={setListItems}
               isEditMode={isEditMode}
             />
-          </>
+          </div>
         )}
       </motion.div>
     </div>

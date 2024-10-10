@@ -39,6 +39,7 @@ export const Dropdown = ({ name, children }) => {
 					w-fit max-h-[200px] overflow-auto
 					p-2 gap-2 shadow-md rounded-md`}
         onBlur={handleBlur}
+        onMouseUp={() => setIsOpen(false)}
       >
         {children}
       </motion.div>

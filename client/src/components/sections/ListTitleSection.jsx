@@ -24,7 +24,9 @@ const ListTitleSection = ({
           <p className="text-xs text-secondary-foreground">
             Description:
             <br />
-            <span className="text-xs">{listData?.description}</span>
+            <span className="text-xs text-primary-foreground">
+              {listData?.description}
+            </span>
           </p>
         )}
         <div className="flex items-center gap-1">
