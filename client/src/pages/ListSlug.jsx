@@ -50,7 +50,6 @@ const ListSlug = () => {
         );
       }
     },
-    onError: (error) => console.log(error),
   });
 
   const { data: ownerData } = useSWR(

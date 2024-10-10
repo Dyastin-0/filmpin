@@ -19,10 +19,7 @@ const Profile = () => {
     () =>
       axios
         .get(`/public/account?username=${username}`)
-        .then((response) => response.data.user),
-    {
-      onError: (error) => console.log(error),
-    }
+        .then((response) => response.data.user)
   );
 
   useEffect(() => {
