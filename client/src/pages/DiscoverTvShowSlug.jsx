@@ -1,7 +1,6 @@
 import { useEffect, useState } from "react";
 import Selector from "../components/ui/Selector";
 import { useNavigate, useSearchParams } from "react-router-dom";
-import { useLoading } from "../components/hooks/useLoading";
 import Accordion from "../components/ui/Accordion";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faFilter } from "@fortawesome/free-solid-svg-icons";
