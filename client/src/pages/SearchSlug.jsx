@@ -1,6 +1,5 @@
 import { useEffect, useState } from "react";
-import { useNavigate, useSearchParams } from "react-router-dom";
-import { useLoading } from "../components/hooks/useLoading";
+import { useSearchParams } from "react-router-dom";
 import useAxios from "../hooks/useAxios";
 import { fetchSearchQueryResults } from "../helpers/api";
 import useSWR from "swr";
@@ -11,22 +10,15 @@ import Button from "../components/ui/Button";
 import SearchList from "../components/paginations/SearchList";
 import clsx from "clsx";
 
-const DiscoverMovieSlug = () => {
+const SearchSlug = () => {
   const { api, isAxiosReady } = useAxios();
-  const [searchParams] = useSearchParams();
-  const navigate = useNavigate();
-  const { setLoading } = useLoading();
+  const [searchParams, setSearchParams] = useSearchParams();
   const [tab, setTab] = useState("Movies");
-  const [moviesCurrentPage, setMoviesCurrentPage] = useState(
-    parseInt(searchParams.get("movies-page")) || 1
-  );
-  const [tvShowsCurrentPage, setTvShowsCurrentPage] = useState(
-    parseInt(searchParams.get("tvshows-page")) || 1
-  );
-  const [listsCurrentPage, setListsCurrentPage] = useState(
-    parseInt(searchParams.get("lists-page")) || 1
-  );
-  const [query, setQuery] = useState(searchParams.get("query") || "");
+
+  const query = searchParams.get("query") || "";
+  const moviesCurrentPage = parseInt(searchParams.get("movies-page")) || 1;
+  const tvShowsCurrentPage = parseInt(searchParams.get("tvshows-page")) || 1;
+  const listsCurrentPage = parseInt(searchParams.get("lists-page")) || 1;
 
   const { data: movieResults } = useSWR(
     isAxiosReady
@@ -35,7 +27,6 @@ const DiscoverMovieSlug = () => {
     () => fetchSearchQueryResults(api, "movies", query, moviesCurrentPage),
     {
       dedupingInterval: 60000,
-      onSuccess: () => setLoading(false),
     }
   );
 
@@ -46,7 +37,6 @@ const DiscoverMovieSlug = () => {
     () => fetchSearchQueryResults(api, "tvshows", query, tvShowsCurrentPage),
     {
       dedupingInterval: 60000,
-      onSuccess: () => setLoading(false),
     }
   );
 
@@ -55,50 +45,38 @@ const DiscoverMovieSlug = () => {
     () => api.get(`/lists/search/${query}?&page=1`).then((res) => res.data),
     {
       dedupingInterval: 60000,
-      onSuccess: () => setLoading(false),
     }
   );
 
   useEffect(() => {
-    setQuery(searchParams.get("query") || "");
-    setMoviesCurrentPage(parseInt(searchParams.get("movies-page")) || 1);
-    setTvShowsCurrentPage(parseInt(searchParams.get("tvshows-page")) || 1);
-  }, [searchParams]);
-
-  useEffect(() => {
-    setLoading(true);
-    navigate(
-      `/search?query=${query}&movies-page=${moviesCurrentPage}&tvshows-page=${tvShowsCurrentPage}`,
-      {
-        replace: true,
-      }
-    );
-  }, [query, moviesCurrentPage, navigate]);
-
-  useEffect(() => {
-    setLoading(true);
-    navigate(
-      `/search?query=${query}&movies-page=${moviesCurrentPage}&tvshows-page=${tvShowsCurrentPage}`,
-      {
-        replace: true,
-      }
-    );
-  }, [query, tvShowsCurrentPage, navigate]);
-
-  useEffect(() => {
     window.scrollTo({ top: 0, left: 0, behavior: "smooth" });
-  }, [moviesCurrentPage, tvShowsCurrentPage]);
+  }, [moviesCurrentPage, tvShowsCurrentPage, listsCurrentPage]);
 
   const onMoviesPageChange = (page) => {
-    setMoviesCurrentPage(page);
+    setSearchParams({
+      query,
+      "movies-page": page,
+      "tvshows-page": tvShowsCurrentPage,
+      "lists-page": listsCurrentPage,
+    });
   };
 
   const onTvShowsPageChange = (page) => {
-    setTvShowsCurrentPage(page);
+    setSearchParams({
+      query,
+      "movies-page": moviesCurrentPage,
+      "tvshows-page": page,
+      "lists-page": listsCurrentPage,
+    });
   };
 
   const onListsPageChange = (page) => {
-    setListsCurrentPage(page);
+    setSearchParams({
+      query,
+      "movies-page": moviesCurrentPage,
+      "tvshows-page": tvShowsCurrentPage,
+      "lists-page": page,
+    });
   };
 
   return (
@@ -160,4 +138,4 @@ const DiscoverMovieSlug = () => {
   );
 };
 
-export default DiscoverMovieSlug;
+export default SearchSlug;

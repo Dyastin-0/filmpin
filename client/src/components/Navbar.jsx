@@ -41,10 +41,7 @@ const Navbar = ({ toggleSideNavbar }) => {
     e.preventDefault();
     if (query)
       navigate(
-        `/search?query=${query.replace(
-          /[_\s]/g,
-          "+"
-        )}&movies-page=1&tvshows-page=1`
+        `/search?query=${query.replace(/[_\s]/g, "+")}&movies-page=1&tvshows-page=1&lists-page=1`
       );
   };
 

@@ -1,6 +1,5 @@
 import { LoadingMovieSection } from "../components/loaders/MovieLoaders";
 import { LoadingTrailerSection } from "../components/loaders/TrailerLoaders";
-import { useLoading } from "../components/hooks/useLoading";
 import { MovieSection } from "../components/sections/MovieSection";
 import { TrailerSection } from "../components/sections/TrailerSection";
 import { TvShowSection } from "../components/sections/tvShowSection";
@@ -13,14 +12,12 @@ import BackdropLoader from "../components/loaders/BackdropLoader";
 
 const Home = () => {
   const { api, isAxiosReady } = useAxios();
-  const { setLoading } = useLoading();
 
   const { data: topMovies, isLoading: isLoadingTopMovies } = useSWR(
     isAxiosReady ? `/movies/list?category=top_rated&page=1` : null,
     () =>
       fetchDiscovery(api, "movies", "[]").then((response) => response.results),
     {
-      onSuccess: () => setLoading(false),
       dedupingInterval: 60000,
     }
   );
@@ -29,7 +26,6 @@ const Home = () => {
     isAxiosReady ? "/movies/list?category=popular&page=1" : null,
     () => fetchCategory(api, "movies", "popular"),
     {
-      onSuccess: () => setLoading(false),
       dedupingInterval: 60000,
     }
   );
@@ -38,7 +34,6 @@ const Home = () => {
     isAxiosReady ? "/tvshows/list?category=top_rated&page=1" : null,
     () => fetchCategory(api, "tvshows", "top_rated"),
     {
-      onSuccess: () => setLoading(false),
       dedupingInterval: 60000,
     }
   );

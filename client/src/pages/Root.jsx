@@ -20,17 +20,14 @@ const fetchBackdrops = async () => {
 const Root = () => {
   const [backdropIndex, setBackdropIndex] = useState(0);
   const [backdrops, setBackdrops] = useState([]);
-  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     const loadBackdrops = async () => {
       try {
         const fetchedBackdrops = await fetchBackdrops();
         setBackdrops(fetchedBackdrops);
-        setLoading(false);
       } catch (error) {
         console.error("Error loading backdrops:", error);
-        setLoading(false);
       }
     };
 

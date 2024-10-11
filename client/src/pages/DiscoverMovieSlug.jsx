@@ -1,7 +1,6 @@
 import { useEffect, useState } from "react";
 import Selector from "../components/ui/Selector";
 import { useNavigate, useSearchParams } from "react-router-dom";
-import { useLoading } from "../components/hooks/useLoading";
 import Accordion from "../components/ui/Accordion";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faFilter } from "@fortawesome/free-solid-svg-icons";
@@ -12,7 +11,6 @@ import DiscoverMovie from "../components/paginations/DiscoverMovie";
 const DiscoverMovieSlug = () => {
   const navigate = useNavigate();
   const [searchParams] = useSearchParams();
-  const { setLoading } = useLoading();
   const [selectedGenres, setSelectedGenres] = useState();
   const [currentPage, setCurrentPage] = useState(searchParams.get("page") || 1);
 
@@ -42,7 +40,6 @@ const DiscoverMovieSlug = () => {
 
   const onPageChange = (page) => {
     setCurrentPage(page);
-    setLoading(true);
     navigate(
       `/discover/movies?genres=${genresString}&sort_by=${sortBy}&page=${page}`
     );

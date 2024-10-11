@@ -12,7 +12,6 @@ import DiscoverTvShow from "../components/paginations/DiscoverTvShow";
 const DiscoverTvShowSlug = () => {
   const [searchParams] = useSearchParams();
   const navigate = useNavigate();
-  const { setLoading } = useLoading();
   const [selectedGenres, setSelectedGenres] = useState([]);
   const [currentPage, setCurrentPage] = useState(searchParams.get("page") || 1);
 
@@ -43,7 +42,6 @@ const DiscoverTvShowSlug = () => {
 
   const onPageChange = (page) => {
     setCurrentPage(page);
-    setLoading(true);
     navigate(
       `/discover/tvshows?genres=${genresString}&sort_by=${sortBy}&page=${page}`
     );

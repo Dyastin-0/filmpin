@@ -1,9 +1,7 @@
-import Button from "../components/ui/Button";
-import { Link, useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 import { fetchCategory } from "../helpers/api";
-import { useLoading } from "../components/hooks/useLoading";
 import useAxios from "../hooks/useAxios";
 import useSWR from "swr";
 import { Helmet } from "react-helmet";
@@ -12,8 +10,6 @@ import { faFilm, faTv } from "@fortawesome/free-solid-svg-icons";
 
 const Discover = () => {
   const { api, isAxiosReady } = useAxios();
-  const { setLoading } = useLoading();
-  const navigate = useNavigate();
   const [imageIndex, setImageIndex] = useState(0);
   const [isMovieHovered, setIsMovieHovered] = useState(true);
 
@@ -43,10 +39,6 @@ const Discover = () => {
       return () => clearInterval(intervalId);
     }
   }, [movies, shows, isMovieHovered]);
-
-  useEffect(() => {
-    setLoading(areMoviesLoading || areShowsLoading);
-  }, [areMoviesLoading, areShowsLoading]);
 
   if (!movies || !shows) return;
 

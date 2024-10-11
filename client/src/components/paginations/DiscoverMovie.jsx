@@ -1,5 +1,4 @@
 import useSWR from "swr";
-import { useLoading } from "../hooks/useLoading";
 import Movie from "../Movie";
 import Pagination from "../ui/Pagination";
 import useAxios from "../../hooks/useAxios";
@@ -8,7 +7,6 @@ import { LoadingDiscover } from "../loaders/MovieLoaders";
 
 const DiscoverMovie = ({ genresString, sortBy, currentPage, onPageChange }) => {
   const { api, isAxiosReady } = useAxios();
-  const { setLoading } = useLoading();
 
   const { data, isLoading, isError } = useSWR(
     isAxiosReady
@@ -17,7 +15,6 @@ const DiscoverMovie = ({ genresString, sortBy, currentPage, onPageChange }) => {
     () => fetchDiscovery(api, "movies", genresString, sortBy, currentPage),
     {
       dedupingInterval: 60000,
-      onSuccess: () => setLoading(false),
     }
   );
 

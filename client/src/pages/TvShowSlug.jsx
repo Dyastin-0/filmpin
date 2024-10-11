@@ -11,11 +11,9 @@ import { ClipSection } from "../components/sections/ClipSection";
 import useSWR from "swr";
 import { Helmet } from "react-helmet";
 import TvShowInfoSection from "../components/sections/TvShowInfoSection";
-import { useLoading } from "../components/hooks/useLoading";
 import ReviewSection from "../components/sections/ReviewSection";
 
 const TvShowSlug = () => {
-  const { setLoading } = useLoading();
   const [searchParams] = useSearchParams();
   const { api, isAxiosReady } = useAxios();
   const [trailerYoutubeKey, setTrailerYoutubeKey] = useState(null);
@@ -45,7 +43,6 @@ const TvShowSlug = () => {
       ),
     {
       dedupingInterval: 60000,
-      onSuccess: () => setLoading(false),
     }
   );
 
@@ -62,7 +59,6 @@ const TvShowSlug = () => {
   );
 
   useEffect(() => {
-    setLoading(true);
     window.scrollTo({ top: 0, left: 0, behavior: "smooth" });
   }, [details]);
 

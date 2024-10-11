@@ -1,7 +1,6 @@
 import Pagination from "../ui/Pagination";
 import TvShow from "../TvShow";
 import useAxios from "../../hooks/useAxios";
-import { useLoading } from "../hooks/useLoading";
 import { fetchDiscovery } from "../../helpers/api";
 import useSWR from "swr";
 import { LoadingDiscover } from "../loaders/MovieLoaders";
@@ -13,7 +12,6 @@ const DiscoverTvShow = ({
   onPageChange,
 }) => {
   const { api, isAxiosReady } = useAxios();
-  const { setLoading } = useLoading();
 
   const { data, isLoading } = useSWR(
     isAxiosReady
@@ -22,9 +20,6 @@ const DiscoverTvShow = ({
     () => fetchDiscovery(api, "tvshows", genresString, sortBy, currentPage),
     {
       dedupingInterval: 60000,
-      onSuccess: () => {
-        setLoading(false);
-      },
     }
   );
 
