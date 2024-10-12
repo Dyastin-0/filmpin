@@ -6,6 +6,7 @@ import { Link } from "react-router-dom";
 import Button from "../ui/Button";
 import AddToList from "../AddToList";
 import Poster from "../Poster";
+import CircularProgess from "../ui/CircularProgess";
 
 const TvShowInfoSection = ({ details, trailerYoutubeKey }) => {
   const { setModal, setOpen } = useModal();
@@ -60,6 +61,7 @@ const TvShowInfoSection = ({ details, trailerYoutubeKey }) => {
           <p className="text-primary-foreground text-xs">
             {`${details.number_of_seasons} seasons, ${details.number_of_episodes} episodes`}
           </p>
+          <CircularProgess value={details.vote_average?.toFixed(1)} />
           <Button
             text="Add to list"
             icon={<FontAwesomeIcon icon={faPlus} />}

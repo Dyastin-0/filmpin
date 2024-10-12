@@ -1,5 +1,6 @@
 import { motion } from "framer-motion";
 import Poster from "../Poster";
+import CircularProgess from "../ui/CircularProgess";
 
 const TvShowInfoSection = ({
   details,
@@ -33,6 +34,7 @@ const TvShowInfoSection = ({
             details?.runtime % 60
           }m`}{" "}
         </p>
+        <CircularProgess value={details.vote_average?.toFixed(1)} />
       </div>
     </motion.section>
   );

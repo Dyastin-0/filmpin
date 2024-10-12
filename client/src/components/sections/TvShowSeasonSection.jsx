@@ -1,6 +1,7 @@
 import { motion } from "framer-motion";
 import { useModal } from "../hooks/useModal";
 import Poster from "../Poster";
+import CircularProgess from "../ui/CircularProgess";
 
 const TvShowSeasonSection = ({
   details,
@@ -48,6 +49,7 @@ const TvShowSeasonSection = ({
             {" "}
             {`${details.episodes.length} episodes`}{" "}
           </p>
+          <CircularProgess value={details.vote_average?.toFixed(1)} />
         </div>
       </motion.div>
     </section>

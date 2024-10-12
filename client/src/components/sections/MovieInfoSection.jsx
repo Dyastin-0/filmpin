@@ -6,6 +6,7 @@ import { Link } from "react-router-dom";
 import { useModal } from "../hooks/useModal";
 import AddToList from "../AddToList";
 import Poster from "../Poster";
+import CircularProgess from "../ui/CircularProgess";
 
 const MovieInfoSection = ({ details, trailerYoutubeKey }) => {
   const { setModal, setOpen } = useModal();
@@ -54,6 +55,7 @@ const MovieInfoSection = ({ details, trailerYoutubeKey }) => {
           <p className="text-primary-foreground text-xs">
             {`${Math.floor(details.runtime / 60)}h ${details.runtime % 60}m`}
           </p>
+          <CircularProgess value={details.vote_average?.toFixed(1)} />
           <Button
             text="Add to list"
             icon={<FontAwesomeIcon icon={faPlus} />}

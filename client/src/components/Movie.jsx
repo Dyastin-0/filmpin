@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import { CircularProgress, CircularProgressLabel } from "@chakra-ui/react";
+import CircularProgress from "./ui/CircularProgess";
 import {
   ImageDummy,
   TitleDummy,
@@ -77,17 +77,7 @@ const Movie = ({ info, isEditMode }) => {
       )}
       {details && (
         <div className="absolute bottom-4 right-4">
-          <CircularProgress
-            size="40px"
-            color="var(--highlight)"
-            trackColor="var(--bg-primary)"
-            value={details.vote_average}
-            max={10}
-          >
-            <CircularProgressLabel>
-              {details.vote_average?.toFixed(1)}
-            </CircularProgressLabel>
-          </CircularProgress>
+          <CircularProgress value={details.vote_average?.toFixed(1)} />
         </div>
       )}
     </div>
