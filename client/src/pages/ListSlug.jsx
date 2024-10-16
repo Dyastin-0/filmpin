@@ -173,7 +173,7 @@ const ListSlug = () => {
             Failed to load {listTypes[listData.type]}, Something went wrong.
           </p>
         ) : (
-          <div>
+          <div className="flex flex-col gap-4">
             {isOwner && (
               <EditModeSection
                 isEditMode={isEditMode}
