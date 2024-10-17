@@ -175,9 +175,8 @@ const ListSlug = () => {
           </p>
         ) : (
           <div className="flex flex-col gap-4">
-            {isOwner && (
+            {isOwner && isEditMode && (
               <EditModeSection
-                isEditMode={isEditMode}
                 handleSave={handleSave}
                 toggleEditMode={toggleEditMode}
               />

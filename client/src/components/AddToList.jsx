@@ -28,7 +28,7 @@ const AddToList = ({ selected, type }) => {
     if (!selectedList?.length > 0) return toastError("No list selected.");
     selectedList.map((list, _) =>
       api
-        .post("/list/item", {
+        .post("/lists/item", {
           list_id: list,
           list_item: {
             id: selected.id,
