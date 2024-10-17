@@ -1,5 +1,5 @@
 import { useEffect, useState, useCallback } from "react";
-import { useNavigate, useParams, useSearchParams } from "react-router-dom";
+import { useParams } from "react-router-dom";
 import { motion } from "framer-motion";
 import { useAuth } from "../hooks/useAuth";
 import { io } from "socket.io-client";
@@ -21,7 +21,6 @@ import axios from "axios";
 import EditModeSection from "../components/sections/EditModeSection";
 
 const ListSlug = () => {
-  const navigate = useNavigate();
   const { token, user } = useAuth();
   const { api, isAxiosReady } = useAxios();
   const params = useParams();
@@ -31,6 +30,7 @@ const ListSlug = () => {
 
   const [listItems, setListItems] = useState([]);
   const [initialListItems, setInitialListItems] = useState([]);
+  const [deletedItems, setDeletedItems] = useState([]);
   const [isEditMode, setIsEditMode] = useState(false);
 
   const {
@@ -122,6 +122,7 @@ const ListSlug = () => {
       setListItems(initialListItems);
     } else {
       setInitialListItems(listItems);
+      setDeletedItems([]);
     }
     setIsEditMode(!isEditMode);
   }, [isEditMode, listItems, initialListItems]);
@@ -186,6 +187,8 @@ const ListSlug = () => {
               listData={listData}
               setListItems={setListItems}
               isEditMode={isEditMode}
+              deletedItems={deletedItems}
+              setDeletedItems={setDeletedItems}
             />
           </div>
         )}
