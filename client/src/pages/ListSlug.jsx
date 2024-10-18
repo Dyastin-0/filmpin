@@ -119,7 +119,7 @@ const ListSlug = () => {
       JSON.stringify(listItems.map(({ originalIndex, ...rest }) => rest)) !==
       JSON.stringify(initialListItems);
 
-    if (!hasChanges) return toastInfo("No changes detected.");
+    if (!hasChanges) return toastInfo("No changes made.");
 
     confirm({
       message: "Save changes?",
@@ -147,7 +147,6 @@ const ListSlug = () => {
         setIsEditMode(false);
       }
     } else {
-      console.log("TEST");
       setInitialListItems(listItems);
       setDeletedItems([]);
       setIsEditMode(true);
