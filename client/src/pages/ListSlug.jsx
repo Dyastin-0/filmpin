@@ -19,12 +19,14 @@ import ListTitleSection from "../components/sections/ListTitleSection";
 import ListItemSection from "../components/sections/ListItemSection";
 import axios from "axios";
 import EditModeSection from "../components/sections/EditModeSection";
+import useConfirm from "../components/hooks/useConfirm";
 
 const ListSlug = () => {
   const { token, user } = useAuth();
   const { api, isAxiosReady } = useAxios();
   const params = useParams();
   const { toastInfo } = useToast();
+  const confirm = useConfirm();
 
   const id = params.list_id.split("=").pop();
 
@@ -99,12 +101,7 @@ const ListSlug = () => {
     }
   }, [token, listData, user, ownerData, toastInfo]);
 
-  const handleSave = useCallback(async () => {
-    const hasChanges =
-      JSON.stringify(listItems) !== JSON.stringify(initialListItems);
-
-    if (!hasChanges) return toastInfo("No changes detected.");
-
+  const saveChanges = useCallback(async () => {
     try {
       await api.patch(`/lists?list_id=${listData._id}`, {
         new_list: listItems,
@@ -117,19 +114,45 @@ const ListSlug = () => {
     }
   }, [api, listData, listItems, initialListItems, toastInfo]);
 
+  const handleSave = () => {
+    const hasChanges =
+      JSON.stringify(listItems.map(({ originalIndex, ...rest }) => rest)) !==
+      JSON.stringify(initialListItems);
+
+    if (!hasChanges) return toastInfo("No changes detected.");
+
+    confirm({
+      message: "Save changes?",
+      onConfirm: saveChanges,
+    });
+  };
+
   const toggleEditMode = useCallback(() => {
+    const hasChanges =
+      JSON.stringify(listItems.map(({ originalIndex, ...rest }) => rest)) !==
+      JSON.stringify(initialListItems);
+
     if (isEditMode) {
-      setListItems(initialListItems);
+      if (hasChanges) {
+        confirm({
+          message:
+            "You have unsaved changes. Are you sure you want to exit edit mode?",
+          onConfirm: () => {
+            setListItems(initialListItems);
+            setIsEditMode(false);
+          },
+        });
+      } else {
+        setListItems(initialListItems);
+        setIsEditMode(false);
+      }
     } else {
+      console.log("TEST");
       setInitialListItems(listItems);
       setDeletedItems([]);
+      setIsEditMode(true);
     }
-    setIsEditMode(!isEditMode);
-  }, [isEditMode, listItems, initialListItems]);
-
-  useEffect(() => {
-    window.scrollTo({ top: 0, left: 0, behavior: "smooth" });
-  }, []);
+  }, [isEditMode, listItems, initialListItems, confirm]);
 
   return (
     <div className="relative flex flex-col items-center p-4 gap-4 w-full h-full bg-primary rounded-md">
@@ -177,7 +200,7 @@ const ListSlug = () => {
           <div className="flex flex-col gap-4">
             {isOwner && isEditMode && (
               <EditModeSection
-                handleSave={handleSave}
+                handleSave={() => handleSave()}
                 toggleEditMode={toggleEditMode}
               />
             )}

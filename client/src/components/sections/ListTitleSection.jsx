@@ -3,7 +3,11 @@ import listTypes from "../../models/listTypes";
 import { Link } from "react-router-dom";
 import { Dropdown, DropdownItem } from "../ui/Dropdown";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faEdit, faEllipsisV } from "@fortawesome/free-solid-svg-icons";
+import {
+  faEdit,
+  faEllipsisV,
+  faRemove,
+} from "@fortawesome/free-solid-svg-icons";
 import ListPoster from "../ListPoster";
 
 const ListTitleSection = ({
@@ -57,6 +61,9 @@ const ListTitleSection = ({
             >
               <DropdownItem onClick={toggleEditMode}>
                 Edit <FontAwesomeIcon icon={faEdit} />
+              </DropdownItem>
+              <DropdownItem>
+                Delete <FontAwesomeIcon icon={faRemove} />
               </DropdownItem>
             </Dropdown>
           </div>
