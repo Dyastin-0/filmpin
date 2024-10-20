@@ -45,11 +45,11 @@ app.use("/api/log-out", require("./routes/auth"));
 app.use("/api/email", require("./routes/email"));
 app.use("/api/recover", require("./routes/email"));
 
-app.use("/api/public/account", require("./routes/public/account"));
-app.use("/api/public/backdrops", require("./routes/public/backdrops"));
+app.use("/api/public/account", require("./routes/public/api/account/details"));
+app.use("/api/public/backdrops", require("./routes/public/api/backdrops"));
 
 app.use(verifyJsonWebToken);
-app.use("/api/account", require("./routes/api/account/account"));
+app.use("/api/account", require("./routes/api/account/details"));
 app.use("/api/lists", require("./routes/api/account/list"));
 app.use("/api/movies", require("./routes/api/movies"));
 app.use("/api/tvshows", require("./routes/api/tvshows"));

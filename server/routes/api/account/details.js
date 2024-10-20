@@ -20,6 +20,6 @@ router
     handleSetProfile
   );
 
-router.route("/list", require("../../../routes/api/account/list"));
+router.route("/list", require("./list"));
 
 module.exports = router;
