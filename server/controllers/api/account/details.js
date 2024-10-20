@@ -1,5 +1,5 @@
-const Users = require("../../models/user");
-const { uploadImage } = require("../../helpers/cloudinaryApi");
+const Users = require("../../../models/user");
+const { uploadImage } = require("../../../helpers/cloudinaryApi");
 
 /**
  * Sets the backdrop image path for a user.

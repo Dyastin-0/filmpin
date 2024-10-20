@@ -1,9 +1,9 @@
-const Users = require("../../models/user");
+const Users = require("../../../models/user");
 const dotenv = require("dotenv").config();
 const jwt = require("jsonwebtoken");
-const { sendHtmlEmail } = require("../../helpers/email");
-const { emailTemplate } = require("../../templates/email");
-const { hash } = require("../../helpers/hash");
+const { sendHtmlEmail } = require("../../../helpers/email");
+const { emailTemplate } = require("../../../templates/email");
+const { hash } = require("../../../helpers/hash");
 
 /**
  * Sends a verification email to the user if they have not already been verified.

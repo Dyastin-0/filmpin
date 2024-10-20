@@ -5,7 +5,7 @@ const {
   handleSendVerification,
   handleRecoverAccount,
   handleSendRecovery,
-} = require("../controllers/account/security");
+} = require("../controllers/api/account/security");
 
 router.route("/").get((_, res) => res.send(200));
 

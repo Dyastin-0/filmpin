@@ -7,7 +7,7 @@ const {
   handleAddItem,
   handlePatchList,
   handleSearchList,
-} = require("../../../controllers/account/list");
+} = require("../../../controllers/api/account/list");
 
 router.route("/:list_id").get(handleGetList);
 

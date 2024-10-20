@@ -1,6 +1,6 @@
-const Lists = require("../../models/list");
-const Users = require("../../models/user");
-const listTypes = require("../../models/listTypes");
+const Lists = require("../../../models/list");
+const Users = require("../../../models/user");
+const listTypes = require("../../../models/listTypes");
 
 /**
  * Creates a new list for a user.

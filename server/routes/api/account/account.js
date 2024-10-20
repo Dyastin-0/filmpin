@@ -6,7 +6,7 @@ const userRoles = require("../../../models/roleList");
 const {
   handleSetBackdrop,
   handleSetProfile,
-} = require("../../../controllers/account/details");
+} = require("../../../controllers/api/account/details");
 
 router
   .route("/set-backdrop")
