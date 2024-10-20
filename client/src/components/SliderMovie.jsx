@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { motion } from "framer-motion";
 import { blinkVariants } from "../configs/motionConfig";
+import Button from "./ui/Button";
 
 const SliderMovie = ({ movie }) => {
   const navigate = useNavigate();
@@ -26,7 +27,7 @@ const SliderMovie = ({ movie }) => {
 
   return (
     <div className="flex h-full items-center justify-center lg:justify-start relative">
-      <div className="absolute w-full h-full bg-black opacity-20 rounded-md z-10"></div>
+      <div className="absolute w-full h-full bg-black opacity-40 rounded-md z-10"></div>
       {backdropLoaded ? (
         <img
           loading="lazy"
@@ -56,12 +57,16 @@ const SliderMovie = ({ movie }) => {
         )}
         <div className="flex flex-col items-start text-primary-highlight-foreground">
           {movie ? (
-            <>
-              <button className="outline-none" onClick={handleClick}>
-                <FontAwesomeIcon size="sm" icon={faInfoCircle} />
-              </button>
+            <div className="flex flex-col gap-2">
               <h1 className="text-sm font-bold">{movie.title}</h1>
-            </>
+              <p className="lg:flex hidden w-1/2 text-sm">{movie.overview}</p>
+              <Button
+                text="More Info"
+                icon={<FontAwesomeIcon icon={faInfoCircle} />}
+                className="w-fit font-semibold"
+                onClick={handleClick}
+              />
+            </div>
           ) : (
             <>
               <motion.div

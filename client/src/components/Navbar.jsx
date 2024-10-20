@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { Link as DomLink, useLocation, useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import { useAuth } from "../hooks/useAuth";
 import axios from "axios";
 import SearchInput from "./ui/SearchInput";
@@ -15,6 +15,7 @@ import {
 } from "@fortawesome/free-solid-svg-icons";
 import { routes, authRoutes } from "../utils/routes";
 import Link from "./Link";
+import { Filmpin } from "./Filmpin";
 
 const Navbar = ({ toggleSideNavbar }) => {
   const navigate = useNavigate();
@@ -79,12 +80,7 @@ const Navbar = ({ toggleSideNavbar }) => {
             className="hover:cursor-pointer"
           />
         )}
-        <DomLink className="outline-none" to="/">
-          <div className="flex justify-center items-center h-full font-semibold">
-            <h1 className="text-md text-primary-highlight">Film</h1>
-            <h1 className="text-md text-primary-foreground">pin</h1>
-          </div>
-        </DomLink>
+        <Filmpin />
       </div>
       <div className="flex w-fit items-center gap-3">
         {token &&

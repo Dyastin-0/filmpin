@@ -19,10 +19,11 @@ const Poster = ({ details, trailerYoutubeKey }) => {
       />
       <Button
         text={
-          <p className="text-md font-semibold">
+          <p>
             Watch trailer <FontAwesomeIcon size="lg" icon={faPlay} />
           </p>
         }
+        className="text-md font-semibold"
         onClick={() => {
           setModal(
             <Frame youtubeKey={trailerYoutubeKey} title={details.name} />

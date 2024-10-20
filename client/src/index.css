@@ -30,8 +30,8 @@
   --accent: #2d343d;
   --accent-secondary: #343d49;
   --text-highlight: #f2f2f3;
-  --text-secondary: #cacaca;
-  --text-primary: #ffffff;
+  --text-secondary: #878787;
+  --text-primary: #c7c7c7;
 }
 
 :root.light {

@@ -30,6 +30,9 @@ const TvShowEpisodeSlug = lazy(() => import("./pages/TvShowEpisodeSlug"));
 const NotFound = lazy(() => import("./pages/NotFound"));
 const Profile = lazy(() => import("./pages/Profile"));
 const ListSlug = lazy(() => import("./pages/ListSlug"));
+const Footer = lazy(() => import("./components/Footer"));
+const About = lazy(() => import("./pages/About"));
+const PrivacyPolicy = lazy(() => import("./pages/PrivacyPolicy"));
 
 axios.defaults.baseURL = import.meta.env.VITE_BASE_API_URL;
 axios.defaults.withCredentials = true;
@@ -56,6 +59,8 @@ function App() {
           <Route path="/account/verification" element={<Verification />} />
           <Route path="/account/recovery" element={<AccountRecovery />} />
           <Route path="/account/recover" element={<Recovery />} />
+          <Route path="/about" element={<About />} />
+          <Route path="/privacy" element={<PrivacyPolicy />} />
           <Route element={<ProtectedRoute />}>
             <Route path="/:username" element={<Profile />} />
             <Route path="/home" element={<Home />} />
@@ -77,6 +82,7 @@ function App() {
           </Route>
         </Routes>
       </Suspense>
+      <Footer />
     </>
   );
 }
