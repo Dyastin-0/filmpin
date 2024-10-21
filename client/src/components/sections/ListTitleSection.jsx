@@ -9,6 +9,9 @@ import {
   faRemove,
 } from "@fortawesome/free-solid-svg-icons";
 import ListPoster from "../ListPoster";
+import useConfirm from "../hooks/useConfirm";
+import useAxios from "../../hooks/useAxios";
+import { useToast } from "../hooks/useToast";
 
 const ListTitleSection = ({
   listData,
@@ -17,6 +20,26 @@ const ListTitleSection = ({
   toggleEditMode,
   isOwner,
 }) => {
+  const confirm = useConfirm();
+  const { toastInfo } = useToast();
+  const { api } = useAxios();
+
+  const handleDeleteList = () => {
+    confirm({
+      title: "Delete List",
+      message: `Are you sure you want to delete the list '${listData?.name}'?`,
+      onConfirm: async () => {
+        try {
+          await api.delete(`/lists/${listData?._id}`);
+          toastInfo(`List '${listData?.name}' has been deleted.`);
+        } catch (error) {
+          console.error("Failed to delete list.", error);
+          toastInfo("Failed to delete list.");
+        }
+      },
+    });
+  };
+
   return (
     <section className="flex lg:flex-row md:flex-row flex-col gap-4">
       <div className="w-[165.79px]">
@@ -62,7 +85,7 @@ const ListTitleSection = ({
               <DropdownItem onClick={toggleEditMode}>
                 Edit <FontAwesomeIcon icon={faEdit} />
               </DropdownItem>
-              <DropdownItem>
+              <DropdownItem onClick={handleDeleteList}>
                 Delete <FontAwesomeIcon icon={faRemove} />
               </DropdownItem>
             </Dropdown>

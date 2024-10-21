@@ -203,6 +203,30 @@ const handleSearchList = async (req, res) => {
   }
 };
 
+const handleDeleteList = async (req, res) => {
+  const { list_id } = req.params;
+  const { id } = req;
+
+  if (!list_id) return res.status(400).json({ message: "Missing list ID." });
+
+  try {
+    const list = await Lists.findOne({ _id: list_id });
+
+    if (!list) return res.status(400).json({ message: "List does not exist." });
+
+    if (list.owner !== id)
+      return res
+        .status(403)
+        .json({ message: "You can't delete someone else's list." });
+
+    await Lists.deleteOne({ _id: list_id });
+    res.json({ message: "List deleted." });
+  } catch (error) {
+    console.error("Failed to delete list.", error);
+    res.sendStatus(500);
+  }
+};
+
 module.exports = {
   handleGeUserLists,
   handleCreateList,
@@ -210,4 +234,5 @@ module.exports = {
   handleAddItem,
   handlePatchList,
   handleSearchList,
+  handleDeleteList,
 };

@@ -7,9 +7,10 @@ const {
   handleAddItem,
   handlePatchList,
   handleSearchList,
+  handleDeleteList,
 } = require("../../../controllers/api/account/list");
 
-router.route("/:list_id").get(handleGetList);
+router.route("/:list_id").get(handleGetList).delete(handleDeleteList);
 
 router
   .route("/")

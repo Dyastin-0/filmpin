@@ -31,29 +31,44 @@ const ListSection = ({ userData }) => {
         query: {
           owner: userData._id,
           accesor: user._id,
-          randomId: randomId,
+          randomId,
           targetStream: "list",
         },
       });
 
-      newSocket.on(
-        `stream/list/${userData._id}/${user._id}/${randomId}`,
-        (change) => {
-          if (change.type === "delete")
-            setList((prevList) =>
-              prevList.filter((list) => list._id !== change.list)
+      const eventName = `stream/list/${userData._id}/${user._id}/${randomId}`;
+      newSocket.on(eventName, (change) => {
+        const isOwner = userData.username === user.username;
+
+        if (change.type === "delete") {
+          setList((prevList) =>
+            prevList.filter((list) => list._id !== change.list)
+          );
+
+          if (!isOwner) {
+            toastInfo(
+              `${userData.username} deleted the list '${change.list.name}'.`
             );
-          if (change.type === "insert") {
-            setList((prevList) => [...prevList, change.list]);
-            const isOwner = userData.username === user.username;
-            !isOwner &&
-              toastInfo(
-                `${userData.username} added a new list '${change.list.name}'.`
-              );
+          }
+        } else if (change.type === "insert") {
+          setList((prevList) => [...prevList, change.list]);
+
+          if (!isOwner) {
+            toastInfo(
+              `${userData.username} added a new list '${change.list.name}'.`
+            );
           }
         }
-      );
-      return () => newSocket.disconnect();
+      });
+
+      newSocket.on("error", (err) => {
+        console.error("Socket error:", err);
+      });
+
+      return () => {
+        newSocket.off(eventName);
+        newSocket.disconnect();
+      };
     }
   }, [token, userData, user]);
 
@@ -64,8 +79,6 @@ const ListSection = ({ userData }) => {
       onSuccess: (data) => setList(data),
     }
   );
-
-  const isOwner = userData?.username === user?.username;
 
   if (!token) {
     <motion.section
