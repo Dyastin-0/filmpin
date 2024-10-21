@@ -1,6 +1,6 @@
 import React from "react";
 import listTypes from "../../models/listTypes";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { Dropdown, DropdownItem } from "../ui/Dropdown";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
@@ -23,6 +23,7 @@ const ListTitleSection = ({
   const confirm = useConfirm();
   const { toastInfo } = useToast();
   const { api } = useAxios();
+  const navigate = useNavigate();
 
   const handleDeleteList = () => {
     confirm({
@@ -32,6 +33,7 @@ const ListTitleSection = ({
         try {
           await api.delete(`/lists/${listData?._id}`);
           toastInfo(`List '${listData?.name}' has been deleted.`);
+          navigate(`/${ownerData?.username}`);
         } catch (error) {
           console.error("Failed to delete list.", error);
           toastInfo("Failed to delete list.");
