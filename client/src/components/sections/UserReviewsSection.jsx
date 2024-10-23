@@ -2,10 +2,8 @@ import useSWR from "swr";
 import useAxios from "../../hooks/useAxios";
 import { fetchUserReviews } from "../../helpers/api";
 import UserReview from "../UserReview";
-import { useAuth } from "../../hooks/useAuth";
 
 const UserReviewsSection = ({ userData }) => {
-  const { user } = useAuth();
   const { api, isAxiosReady } = useAxios();
 
   const { data, isLoading } = useSWR(
