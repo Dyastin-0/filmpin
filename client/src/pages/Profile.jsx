@@ -27,7 +27,7 @@ const Profile = () => {
   }, [user]);
 
   return (
-    <div className="relative flex flex-col items-center p-4 gap-4 w-full h-full bg-primary rounded-md">
+    <div className="relative flex flex-col items-center p-4 gap-4 lg:w-[1100px] md:w-full w-full max-w-full h-full bg-primary rounded-md self-center">
       <Helmet>
         <title>{userData?.username}</title>
       </Helmet>

@@ -22,7 +22,7 @@ const UserReview = ({ review }) => {
   }, [content]);
 
   return (
-    <div className="flex lg:w-[500px] md:w-[400px] sm:w-full flex-col gap-2">
+    <div className="flex w-full flex-col gap-2">
       <div className="tex-xs p-4 rounded-md w-full border border-secondary-accent">
         <div className="relative flex gap-4">
           <img

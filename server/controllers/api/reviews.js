@@ -149,7 +149,8 @@ const handleGetUserReviews = async (req, res) => {
 
     const reviews = await Reviews.find({ owner: id })
       .skip(skip)
-      .limit(paginationSize);
+      .limit(paginationSize)
+      .sort({ created_on: -1 });
 
     const total = await Reviews.countDocuments({ owner: id });
     const total_pages = Math.ceil(total / paginationSize);
