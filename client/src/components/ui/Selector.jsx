@@ -10,7 +10,7 @@ const Selector = ({ items, selectedGenres, setSelectedGenres }) => {
   };
 
   return (
-    <div className="flex flex-wrap justify-center gap-2">
+    <div className="flex flex-wrap justify-center gap-2 p-1">
       {items.map((item, index) => (
         <Checkbox
           key={index}

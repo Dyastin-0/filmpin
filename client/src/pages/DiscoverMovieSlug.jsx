@@ -15,7 +15,7 @@ const DiscoverMovieSlug = () => {
   const [currentPage, setCurrentPage] = useState(searchParams.get("page") || 1);
 
   const genresString =
-    selectedGenres?.length > 0
+    selectedGenres?.length >= 0
       ? selectedGenres.join("_").toLowerCase()
       : searchParams.get("genres") || "";
   const sortBy = "vote_count";
