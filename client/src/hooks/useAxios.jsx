@@ -53,7 +53,7 @@ const useAxios = () => {
 
   const refreshAccessToken = async () => {
     try {
-      const response = await axios.get("/refreshAccessToken");
+      const response = await axios.get("/auth/refresh-access-token");
 
       const newAccessToken = response.data.accessToken;
       setToken(newAccessToken);

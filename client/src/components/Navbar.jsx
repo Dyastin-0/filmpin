@@ -29,7 +29,7 @@ const Navbar = ({ toggleSideNavbar }) => {
 
   const handleSignout = async () => {
     try {
-      await axios.post("/sign-out");
+      await axios.post("/auth/sign-out");
       setToken(null);
       setUser(null);
       navigate("/");

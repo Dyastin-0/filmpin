@@ -37,11 +37,7 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 
-app.use("/api/", require("./routes/auth"));
-app.use("/api/sign-up", require("./routes/auth"));
-app.use("/api/sign-in", require("./routes/auth"));
-app.use("/api/refreshAccessToken", require("./routes/auth"));
-app.use("/api/log-out", require("./routes/auth"));
+app.use("/api/auth", require("./routes/auth"));
 app.use("/api/email", require("./routes/email"));
 app.use("/api/recover", require("./routes/email"));
 

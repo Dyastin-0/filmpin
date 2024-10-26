@@ -14,7 +14,7 @@ export function AuthProvider({ children }) {
   useEffect(() => {
     const getToken = async () => {
       try {
-        const response = await axios.get("/refreshAccessToken");
+        const response = await axios.get("/auth/refresh-access-token");
         setToken(response.data.accessToken);
         setUser(response.data.user);
         setSigningIn(false);

@@ -7,7 +7,7 @@ const handleSignout = require("../controllers/signout");
 const handleRoot = require("../controllers/root");
 
 router.get("/", handleRoot);
-router.get("/refreshAccessToken", handleRefreshAccessToken);
+router.get("/refresh-access-token", handleRefreshAccessToken);
 router.post("/sign-out", handleSignout);
 router.post("/sign-up", handleSignup);
 router.post("/sign-in", handleAuth);
