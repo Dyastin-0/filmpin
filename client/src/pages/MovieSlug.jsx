@@ -27,6 +27,21 @@ const MovieSlug = () => {
 
   const id = searchParams.get("id").split("_")[0];
 
+  const {
+    data: aiGenratedRecommendations,
+    isLoading: isAiGenratedRecommendationsLoading,
+  } = useSWR(
+    isAxiosReady ? "/ai/gemini/recommend" : null,
+    () =>
+      api.post("/ai/movie/recommend", {
+        id: id,
+      }),
+    {
+      dedupingInterval: 60000,
+      onSuccess: (result) => console.log(result.data),
+    }
+  );
+
   const { data: details, isLoading: isDetailsLoading } = useSWR(
     isAxiosReady ? `/movies/details?movie_id=${id}` : null,
     () => fetchMovie(api, id),

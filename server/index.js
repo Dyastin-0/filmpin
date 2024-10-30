@@ -50,6 +50,7 @@ app.use("/api/lists", require("./routes/api/account/list"));
 app.use("/api/movies", require("./routes/api/movies"));
 app.use("/api/tvshows", require("./routes/api/tvshows"));
 app.use("/api/reviews", require("./routes/api/reviews"));
+app.use("/api/ai", require("./routes/api/ai/gemini"));
 
 io.use(verifySocketJsonWebToken);
 io.on("connection", (socket) => {
