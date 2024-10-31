@@ -32,7 +32,7 @@ const updateAndRestartServices = (commits) => {
 
   if (hasChangesInDirectory(commits, "server/")) {
     console.log("server/");
-    commands.push("cd server && npm install && cd ..");
+    commands.push("cd server && npm install && npm run init && cd ..");
     commands.push("sudo systemctl restart filmpin.service");
   }
 

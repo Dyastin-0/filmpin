@@ -17,6 +17,7 @@ const generateKeys = async () => {
     const cloudinaryCloudName = await getSecret("CLOUDINARY_CLOUD_NAME");
     const cloudinaryApiKey = await getSecret("CLOUDINARY_API_KEY");
     const cloudinaryApiSecret = await getSecret("CLOUDINARY_API_SECRET");
+    const geminiApiKey = await getSecret("GEMINI_API_KEY");
 
     const newVariables = [
       `MONGODB_URL=${dbUrl}`,
@@ -29,6 +30,7 @@ const generateKeys = async () => {
       `CLOUDINARY_CLOUD_NAME=${cloudinaryCloudName}`,
       `CLOUDINARY_API_KEY=${cloudinaryApiKey}`,
       `CLOUDINARY_API_SECRET=${cloudinaryApiSecret}`,
+      `GEMINI_API_KEY=${geminiApiKey}`,
       `BASE_CLIENT_URL=filmpin.dyastin.tech`,
     ];
 
