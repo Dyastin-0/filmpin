@@ -28,21 +28,6 @@ const MovieSlug = () => {
   const id = searchParams.get("id").split("_")[0];
   const title = searchParams.get("id").split("_")[1];
 
-  const {
-    data: aiGenratedRecommendations,
-    isLoading: isAiGenratedRecommendationsLoading,
-  } = useSWR(
-    isAxiosReady ? `/ai/gemini/recommend/${title}` : null,
-    () =>
-      api.post("/ai/movie/recommend", {
-        id: id,
-        title: title,
-      }),
-    {
-      onSuccess: (result) => console.log(result.data),
-    }
-  );
-
   const { data: details, isLoading: isDetailsLoading } = useSWR(
     isAxiosReady ? `/movies/details?movie_id=${id}` : null,
     () => fetchMovie(api, id),
@@ -121,14 +106,6 @@ const MovieSlug = () => {
           />
         ) : (
           <LoadingMovieSection title="Recommendations" />
-        )}
-        {aiGenratedRecommendations ? (
-          <MovieSection
-            title="AI-Powered Recommendations"
-            movies={JSON.parse(aiGenratedRecommendations.data)}
-          />
-        ) : (
-          <LoadingMovieSection title="AI Recommendations" />
         )}
         <ClipSection
           title={"Videos"}
