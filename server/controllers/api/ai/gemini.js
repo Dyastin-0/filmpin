@@ -2,14 +2,15 @@ const { GoogleGenerativeAI } = require("@google/generative-ai");
 const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY);
 
 const handleRecommend = async (req, res) => {
-  const { id } = req.body;
+  const { id, title } = req.body;
 
   try {
     const model = genAI.getGenerativeModel({ model: "gemini-1.5-flash" });
     const result =
-      await model.generateContent(`Help me with generating similar movies using the TMDb API.
-      Create a list of at least 20 movies with similar themes/genres with ${id};
-      return the result as plain JSON with no additional information, including their id and name. Do not include anything else to your responose.`);
+      await model.generateContent(`Using the TMDb API; create a list of 20 movies similar to the movie ${title} with id ${id};
+      make sure that their IDs are correct fromy the TMDb.
+      return the result as array of objects with no additional information of at least 20 movies, including their id and title.
+      Do not include anything else to your responose.`);
 
     const response = result.response.text();
     const sanitizedResponse = response

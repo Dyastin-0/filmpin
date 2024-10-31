@@ -37,6 +37,8 @@ const Movie = ({ info, isEditMode }) => {
     }
   }, [details]);
 
+  if (!details) return;
+
   return (
     <div
       className="flex flex-col rounded-lg drop-shadow-none gap-1 p-4 w-[200px] h-[370px]

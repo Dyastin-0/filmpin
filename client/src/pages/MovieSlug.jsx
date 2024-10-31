@@ -26,18 +26,19 @@ const MovieSlug = () => {
   const [trailerYoutubeKey, setTrailerYoutubeKey] = useState(null);
 
   const id = searchParams.get("id").split("_")[0];
+  const title = searchParams.get("id").split("_")[1];
 
   const {
     data: aiGenratedRecommendations,
     isLoading: isAiGenratedRecommendationsLoading,
   } = useSWR(
-    isAxiosReady ? "/ai/gemini/recommend" : null,
+    isAxiosReady ? `/ai/gemini/recommend/${title}` : null,
     () =>
       api.post("/ai/movie/recommend", {
         id: id,
+        title: title,
       }),
     {
-      dedupingInterval: 60000,
       onSuccess: (result) => console.log(result.data),
     }
   );
@@ -120,6 +121,14 @@ const MovieSlug = () => {
           />
         ) : (
           <LoadingMovieSection title="Recommendations" />
+        )}
+        {aiGenratedRecommendations ? (
+          <MovieSection
+            title="AI-Powered Recommendations"
+            movies={JSON.parse(aiGenratedRecommendations.data)}
+          />
+        ) : (
+          <LoadingMovieSection title="AI Recommendations" />
         )}
         <ClipSection
           title={"Videos"}
