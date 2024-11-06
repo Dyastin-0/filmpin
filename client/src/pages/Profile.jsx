@@ -12,6 +12,7 @@ import UserReviewsSection from "../components/sections/UserReviewsSection";
 const Profile = () => {
   const { user } = useAuth();
   const location = useLocation();
+  const navigate = useNavigate();
   const username = location.pathname.slice(1);
 
   const { data: userData, mutate } = useSWR(
@@ -20,6 +21,9 @@ const Profile = () => {
       axios
         .get(`/public/account?username=${username}`)
         .then((response) => response.data.user)
+        .catch(() => {
+          navigate("/404");
+        })
   );
 
   useEffect(() => {
