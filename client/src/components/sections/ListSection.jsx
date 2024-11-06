@@ -92,7 +92,7 @@ const ListSection = ({ userData }) => {
   return (
     <motion.section
       initial={{ marginTop: -70 }}
-      className="relative flex flex-col gap-4 w-full"
+      className="relative flex flex-col gap-4 w-full z-10"
     >
       <div className="flex w-fit justify-center items-center gap-2">
         <h1 className="h-fit text-primary-foreground text-sm font-semibold">
@@ -110,7 +110,7 @@ const ListSection = ({ userData }) => {
           />
         )}
       </div>
-      <div className="flex flex-wrap w-full gap-4">
+      <div className="flex flex-wrap justify-center w-full gap-4">
         {!isLoading && list?.length > 0 ? (
           list.map((item) => <UserList key={item._id} list={item} />)
         ) : (

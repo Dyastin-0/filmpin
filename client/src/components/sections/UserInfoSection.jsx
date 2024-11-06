@@ -13,7 +13,10 @@ const UserInfoSection = ({ userData }) => {
   const { setModal, setOpen } = useModal();
 
   return (
-    <motion.section initial={{ y: -70 }} className="flex gap-4 w-full h-fit">
+    <motion.section
+      initial={{ y: -70 }}
+      className="flex gap-4 w-full h-fit z-20"
+    >
       <div className="flex flex-col max-w-full items-center gap-2">
         {userData?.profileImageURL ? (
           <div className="flex flex-col justify-center items-center gap-2">

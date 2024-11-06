@@ -10,6 +10,7 @@ import { motion } from "framer-motion";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   faBars,
+  faGear,
   faSignOutAlt,
   faUser,
 } from "@fortawesome/free-solid-svg-icons";
@@ -140,6 +141,10 @@ const Navbar = ({ toggleSideNavbar }) => {
             <DropdownItem onClick={handleSignout}>
               Sign out
               <FontAwesomeIcon size="xs" icon={faSignOutAlt} className="ml-1" />
+            </DropdownItem>
+            <DropdownItem>
+              Settings
+              <FontAwesomeIcon size="xs" icon={faGear} className="ml-1" />
             </DropdownItem>
           </Dropdown>
         )}
