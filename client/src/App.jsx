@@ -45,7 +45,7 @@ function App() {
       <Navbar toggleSideNavbar={() => setOpenSideNavbar(!opensideNavbar)} />
       <SideNavbar
         isOpen={opensideNavbar}
-        toggle={() => setOpenSideNavbar(!opensideNavbar)}
+        close={() => setOpenSideNavbar(false)}
         authRoutes={authRoutes}
         routes={routes}
       />

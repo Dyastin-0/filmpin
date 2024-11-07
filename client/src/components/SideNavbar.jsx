@@ -11,7 +11,7 @@ const variants = {
   closed: { x: "-100%", opacity: 0 },
 };
 
-const SideNavbar = ({ isOpen, toggle, routes, authRoutes }) => {
+const SideNavbar = ({ isOpen, close, routes, authRoutes }) => {
   const { token } = useAuth();
 
   useEffect(() => {
@@ -26,11 +26,11 @@ const SideNavbar = ({ isOpen, toggle, routes, authRoutes }) => {
           opacity: isOpen ? 0.3 : 0,
           visibility: isOpen ? "visible" : "hidden",
         }}
-        onClick={toggle}
+        onClick={close}
         className="fixed inset-0 bg-black opacity-30 z-40 rounded-md"
       />
       <motion.div
-        onBlur={toggle}
+        onBlur={close}
         initial={false}
         animate={isOpen ? "open" : "closed"}
         variants={variants}
@@ -47,7 +47,7 @@ const SideNavbar = ({ isOpen, toggle, routes, authRoutes }) => {
           <FontAwesomeIcon
             icon={faX}
             size="xs"
-            onClick={toggle}
+            onClick={close}
             className="hover:cursor-pointer"
           />
         </div>
@@ -55,7 +55,7 @@ const SideNavbar = ({ isOpen, toggle, routes, authRoutes }) => {
           {token
             ? routes.map((route, index) => (
                 <Link
-                  onClick={toggle}
+                  onClick={close}
                   key={index}
                   path={route.path}
                   icon={route.icon}
@@ -64,7 +64,7 @@ const SideNavbar = ({ isOpen, toggle, routes, authRoutes }) => {
               ))
             : authRoutes.map((route, index) => (
                 <Link
-                  onClick={toggle}
+                  onClick={close}
                   key={index}
                   path={route.path}
                   icon={route.icon}

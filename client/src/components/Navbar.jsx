@@ -138,13 +138,13 @@ const Navbar = ({ toggleSideNavbar }) => {
               Profile
               <FontAwesomeIcon size="xs" icon={faUser} className="ml-1" />
             </DropdownItem>
-            <DropdownItem onClick={handleSignout}>
-              Sign out
-              <FontAwesomeIcon size="xs" icon={faSignOutAlt} className="ml-1" />
-            </DropdownItem>
             <DropdownItem>
               Settings
               <FontAwesomeIcon size="xs" icon={faGear} className="ml-1" />
+            </DropdownItem>
+            <DropdownItem onClick={handleSignout}>
+              Sign out
+              <FontAwesomeIcon size="xs" icon={faSignOutAlt} className="ml-1" />
             </DropdownItem>
           </Dropdown>
         )}
