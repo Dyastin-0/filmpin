@@ -1,8 +1,7 @@
 import { useState, useEffect } from "react";
-import { useLocation, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { useAuth } from "../hooks/useAuth";
 import axios from "axios";
-import SearchInput from "./ui/SearchInput";
 import Button from "./ui/Button";
 import { Dropdown, DropdownItem } from "./ui/Dropdown";
 import { useThemeToggle } from "../hooks/useTheme";
@@ -17,13 +16,12 @@ import {
 import { routes, authRoutes } from "../utils/routes";
 import Link from "./Link";
 import { Filmpin } from "./Filmpin";
+import Search from "./Search";
 
 const Navbar = ({ toggleSideNavbar }) => {
   const navigate = useNavigate();
-  const location = useLocation();
   const { toggleTheme, icon } = useThemeToggle();
   const { setToken, token, setUser, user } = useAuth();
-  const [query, setQuery] = useState(null);
   const [isScrollingDown, setIsScrollingDown] = useState(false);
   const [lastScrollY, setLastScrollY] = useState(0);
   const [viewWidth, setViewWidth] = useState(window.innerWidth);
@@ -37,14 +35,6 @@ const Navbar = ({ toggleSideNavbar }) => {
     } catch (error) {
       console.error(error);
     }
-  };
-
-  const handleSearch = (e) => {
-    e.preventDefault();
-    if (query)
-      navigate(
-        `/search?query=${query.replace(/[_\s]/g, "+")}&movies-page=1&tvshows-page=1&lists-page=1`
-      );
   };
 
   useEffect(() => {
@@ -99,17 +89,9 @@ const Navbar = ({ toggleSideNavbar }) => {
               icon={route.icon}
             />
           ))}
-        <div className="max-w-full">
-          {token && (
-            <SearchInput
-              onSubmit={handleSearch}
-              type="text"
-              id="search"
-              placeholder="Search"
-              onChange={(e) => setQuery(e.target.value)}
-            />
-          )}
-        </div>
+        {token && (
+          <Search isScrollingDown={isScrollingDown} viewWidth={viewWidth} />
+        )}
       </div>
       <div className="flex w-fit gap-3 justify-center items-center">
         <Button
