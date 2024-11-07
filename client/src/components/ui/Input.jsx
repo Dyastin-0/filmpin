@@ -2,7 +2,19 @@ import React, { useState } from "react";
 import { motion } from "framer-motion";
 
 const Input = React.forwardRef(
-  ({ onChange, type, value, id, placeholder, required, className }, ref) => {
+  (
+    {
+      onChange,
+      type,
+      value,
+      id,
+      placeholder,
+      required,
+      className,
+      autoComplete,
+    },
+    ref
+  ) => {
     const [focus, setFocus] = useState(false);
 
     return (
@@ -41,6 +53,7 @@ const Input = React.forwardRef(
           required={required}
           onFocus={() => setFocus(true)}
           onBlur={() => setFocus(false)}
+          autoComplete={autoComplete}
           className={`bg-transparent rounded-md p-2 outline-none text-primary-foreground
 				transition-all duration-300
 				focus:shadow-[var(--accent-secondary)_0_2px_0_0]

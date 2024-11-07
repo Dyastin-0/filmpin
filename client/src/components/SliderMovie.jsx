@@ -27,13 +27,15 @@ const SliderMovie = ({ movie }) => {
 
   return (
     <div className="flex h-full items-center justify-center lg:justify-start relative">
-      <div className="absolute w-full h-full bg-black opacity-40 rounded-md z-10"></div>
       {backdropLoaded ? (
-        <img
-          loading="lazy"
-          src={`https://image.tmdb.org/t/p/original/${movie.backdrop_path}`}
-          className="absolute top-0 left-0 w-full h-full rounded-md object-cover z-0"
-        />
+        <>
+          <div className="absolute w-full h-full bg-gradient-to-b from-transparent to-black z-20" />
+          <img
+            loading="lazy"
+            src={`https://image.tmdb.org/t/p/original/${movie.backdrop_path}`}
+            className="absolute top-0 left-0 w-full h-full rounded-md object-cover z-0"
+          />
+        </>
       ) : (
         <motion.div
           className="absolute w-full h-[400px] bg-secondary rounded-md overflow-hidden"
@@ -61,7 +63,7 @@ const SliderMovie = ({ movie }) => {
               <h1 className="text-sm font-bold">{movie.title}</h1>
               <p className="lg:flex hidden w-1/2 text-sm">{movie.overview}</p>
               <Button
-                text="More Info"
+                variant="default_rounded"
                 icon={<FontAwesomeIcon icon={faInfoCircle} />}
                 className="w-fit font-semibold"
                 onClick={handleClick}

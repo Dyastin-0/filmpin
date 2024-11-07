@@ -32,7 +32,7 @@ const UserInfoSection = ({ userData }) => {
                 );
                 setOpen(true);
               }}
-              className="w-[100px] h-[100px] object-cover rounded-full
+              className="w-[150px] h-[150px] object-cover rounded-full
               shadow-[var(--accent)_0_0_0_2px]
               transition-all duration-300 hover:cursor-pointer hover:opacity-90"
             />

@@ -72,6 +72,7 @@ const SigninForm = ({}) => {
       />
       <div className="relative">
         <Input
+          autoComplete="current-password"
           required={true}
           type={showPassword ? "text" : "password"}
           placeholder="Password"

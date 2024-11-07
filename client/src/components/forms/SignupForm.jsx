@@ -122,6 +122,7 @@ const SignupForm = () => {
 
       <div className="relative">
         <Input
+          autoComplete="current-password"
           placeholder="Password"
           required={true}
           id="password"
@@ -152,6 +153,7 @@ const SignupForm = () => {
 
       <div className="relative">
         <Input
+          autoComplete="current-password"
           placeholder="Confirm password"
           required={true}
           id="confirm_password"

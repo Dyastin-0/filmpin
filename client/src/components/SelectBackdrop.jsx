@@ -16,7 +16,7 @@ const SelectBackdrop = () => {
     () => fetchSearchQueryResults(api, "movies", query, 1),
     {
       dedupingInterval: 60000,
-      onError: () => toastError("Failed to search for backdrops."),
+      onError: () => query && toastError("No results found."),
     }
   );
 
