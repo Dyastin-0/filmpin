@@ -1,6 +1,5 @@
-import { motion } from "framer-motion";
 import { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { CircularProgress, CircularProgressLabel } from "@chakra-ui/react";
 import {
   ImageDummy,
@@ -40,11 +39,11 @@ const TvShow = ({ info }) => {
   }
 
   return (
-    <motion.div
+    <Link
       className="flex flex-col rounded-lg drop-shadow-none gap-1 p-4 w-[200px] h-[370px]
         text-primary-foreground border border-secondary-accent
-        hover:cursor-pointer duration-300"
-      onClick={() => navigate(`/tvshows?id=${details.id}_${details.name}`)}
+        hover:cursor-pointer hover:border-primary-highlight duration-300"
+      to={`/tvshows?id=${details?.id}_${details?.name}`}
     >
       {imageLoaded ? (
         <img
@@ -92,7 +91,7 @@ const TvShow = ({ info }) => {
           </CircularProgress>
         </div>
       )}
-    </motion.div>
+    </Link>
   );
 };
 

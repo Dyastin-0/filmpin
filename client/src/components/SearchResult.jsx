@@ -6,8 +6,9 @@ const SearchResult = ({ result, setVisible }) => {
   return (
     <div
       className="flex items-end gap-2 p-2 rounded-md text-primary-foreground text-xs
-			border border-accent
-			hover:cursor-pointer"
+      transition-all duration-300
+			border border-secondary
+			hover:cursor-pointer hover:border-primary-highlight"
       onClick={() => {
         setVisible(false);
         navigate(`/movies?id=${result.id}_${result.title}`);

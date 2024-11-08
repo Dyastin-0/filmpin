@@ -4,7 +4,7 @@ import { swiperAutoPlayConfig } from "../../configs/swiperConfig";
 
 const HomeSlider = ({ data }) => {
   return (
-    <section className="w-full h-[400px] rounded-md ml-4 mr-4 mb-4 bg-transparent overflow-hidden">
+    <section className="w-full h-[400px] rounded-md ml-4 mr-4 bg-transparent overflow-hidden">
       <Swiper {...swiperAutoPlayConfig}>
         {data?.map((movie, index) => (
           <SwiperSlide key={index}>

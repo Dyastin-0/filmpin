@@ -1,6 +1,5 @@
-import { motion } from "framer-motion";
 import { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { CircularProgress, CircularProgressLabel } from "@chakra-ui/react";
 import {
   ImageDummy,
@@ -8,7 +7,6 @@ import {
   YearDummy,
   GenresDummy,
 } from "./loaders/MovieLoaders";
-import useAxios from "../hooks/useAxios";
 
 const Season = ({ info, showId, title, backdropPath }) => {
   const navigate = useNavigate();
@@ -23,15 +21,11 @@ const Season = ({ info, showId, title, backdropPath }) => {
   }, []);
 
   return (
-    <motion.div
+    <Link
       className="flex flex-col rounded-lg drop-shadow-none gap-1 p-4 w-[200px] h-[370px]
 			text-primary-foreground border border-secondary-accent
-			hover:cursor-pointer duration-300"
-      onClick={() =>
-        navigate(
-          `/tvshows/${showId}/season?id=${showId}_${info.name}&season_number=${info.season_number}&title=${title}&backdrop_path=${backdropPath}`
-        )
-      }
+			hover:cursor-pointer hover:border-primary-highlight duration-300"
+      to={`/tvshows/${showId}/season?id=${showId}_${info.name}&season_number=${info.season_number}&title=${title}&backdrop_path=${backdropPath}`}
     >
       {imageLoaded ? (
         <img
@@ -71,7 +65,7 @@ const Season = ({ info, showId, title, backdropPath }) => {
           </CircularProgressLabel>
         </CircularProgress>
       </div>
-    </motion.div>
+    </Link>
   );
 };
 

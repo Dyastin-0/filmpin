@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import CircularProgress from "./ui/CircularProgess";
 import {
   ImageDummy,
@@ -40,13 +40,11 @@ const Movie = ({ info, isEditMode }) => {
   if (!details) return;
 
   return (
-    <div
+    <Link
       className="flex flex-col rounded-lg drop-shadow-none gap-1 p-4 w-[200px] h-[370px]
         text-primary-foreground border border-secondary-accent
-        hover:cursor-pointer duration-300"
-      onClick={() => {
-        !isEditMode && navigate(`/movies?id=${details.id}_${details.title}`);
-      }}
+        hover:cursor-pointer hover:border-primary-highlight duration-300"
+      to={`/movies?id=${details.id}_${details.title}`}
     >
       {imageLoaded ? (
         <img
@@ -82,7 +80,7 @@ const Movie = ({ info, isEditMode }) => {
           <CircularProgress value={details.vote_average?.toFixed(1)} />
         </div>
       )}
-    </div>
+    </Link>
   );
 };
 

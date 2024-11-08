@@ -29,7 +29,8 @@ const SliderMovie = ({ movie }) => {
     <div className="flex h-full items-center justify-center lg:justify-start relative">
       {backdropLoaded ? (
         <>
-          <div className="absolute w-full h-full bg-gradient-to-b from-transparent to-black z-20" />
+          <div className="absolute w-full h-full bg-gradient-to-b from-transparent to-primary z-20" />
+          {/* <div className="absolute w-full h-full bg-black opacity-50 z-10" /> */}
           <img
             loading="lazy"
             src={`https://image.tmdb.org/t/p/original/${movie.backdrop_path}`}
@@ -57,31 +58,23 @@ const SliderMovie = ({ movie }) => {
             animate="blink"
           />
         )}
-        <div className="flex flex-col items-start text-primary-highlight-foreground">
+        <div className="flex flex-col items-start text-primary-foreground">
           {movie ? (
             <div className="flex flex-col gap-2">
-              <h1 className="text-sm font-bold">{movie.title}</h1>
-              <p className="lg:flex hidden w-1/2 text-sm">{movie.overview}</p>
+              <h1 className="text-lg font-bold">{movie.title}</h1>
               <Button
                 variant="default_rounded"
                 icon={<FontAwesomeIcon icon={faInfoCircle} />}
-                className="w-fit font-semibold"
+                className="w-fit font-semibold p-[0] text-[1rem]"
                 onClick={handleClick}
               />
             </div>
           ) : (
-            <>
-              <motion.div
-                className="rounded-full w-[14px] h-[14px] bg-secondary"
-                variants={blinkVariants}
-                animate="blink"
-              />
-              <motion.div
-                className="rounded-md w-[200px] h-[25px] bg-secondary"
-                variants={blinkVariants}
-                animate="blink"
-              />
-            </>
+            <motion.div
+              className="rounded-full w-[14px] h-[14px] bg-secondary"
+              variants={blinkVariants}
+              animate="blink"
+            />
           )}
         </div>
       </div>

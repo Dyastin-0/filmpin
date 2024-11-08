@@ -8,7 +8,9 @@ const Clip = ({ title, trailerKey }) => {
 
   return (
     <div
-      className="h-fit max-w-[270px] hover:cursor-pointer group border border-secondary-accent p-4 rounded-md"
+      className="h-fit max-w-[270px] group border border-secondary-accent p-4 rounded-md
+      transition-all duration-300
+      hover:cursor-pointer hover:border-primary-highlight"
       onClick={() => {
         setModal(<Frame youtubeKey={trailerKey} title={title} />);
         setOpen(true);
