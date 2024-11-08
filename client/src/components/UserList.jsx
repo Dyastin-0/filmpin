@@ -6,7 +6,7 @@ const UserList = ({ list }) => {
   const navigate = useNavigate();
 
   const handleClick = (listParam) => {
-    navigate(`/lists/list_id=${list._id}`);
+    navigate(`/lists/${list._id}`);
   };
 
   return (

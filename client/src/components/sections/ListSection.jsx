@@ -1,6 +1,4 @@
-import { useState, useEffect } from "react";
 import { motion } from "framer-motion";
-import useAxios from "../../hooks/useAxios";
 import { useAuth } from "../../hooks/useAuth";
 import Button from "../ui/Button";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -8,77 +6,17 @@ import { faPlus } from "@fortawesome/free-solid-svg-icons";
 import { useModal } from "../hooks/useModal";
 import CreateList from "../CreateList";
 import UserList from "../UserList";
-import { io } from "socket.io-client";
-import { useToast } from "../hooks/useToast";
-import { fetchUserList } from "../../helpers/api";
-import useSWR from "swr";
+import useList from "../../hooks/useList";
+import { useEffect } from "react";
 
 const ListSection = ({ userData }) => {
   const { token, user } = useAuth();
-  const { api } = useAxios();
-  const { toastInfo } = useToast();
-  const [list, setList] = useState([]);
   const { setModal, setOpen } = useModal();
+  const { list, isLoading } = useList({ userData });
 
   useEffect(() => {
-    if (token && user && userData) {
-      const randomId = crypto.randomUUID();
-
-      const newSocket = io(import.meta.env.VITE_SOCKET_URL, {
-        extraHeaders: {
-          Authorization: `Bearer ${token}`,
-        },
-        query: {
-          owner: userData._id,
-          accesor: user._id,
-          randomId,
-          targetStream: "list",
-        },
-      });
-
-      const eventName = `stream/list/${userData._id}/${user._id}/${randomId}`;
-      newSocket.on(eventName, (change) => {
-        const isOwner = userData.username === user.username;
-
-        if (change.type === "delete") {
-          setList((prevList) =>
-            prevList.filter((list) => list._id !== change.list)
-          );
-
-          if (!isOwner) {
-            toastInfo(
-              `${userData.username} deleted the list '${change.list.name}'.`
-            );
-          }
-        } else if (change.type === "insert") {
-          setList((prevList) => [...prevList, change.list]);
-
-          if (!isOwner) {
-            toastInfo(
-              `${userData.username} added a new list '${change.list.name}'.`
-            );
-          }
-        }
-      });
-
-      newSocket.on("error", (err) => {
-        console.error("Socket error:", err);
-      });
-
-      return () => {
-        newSocket.off(eventName);
-        newSocket.disconnect();
-      };
-    }
-  }, [token, userData, user]);
-
-  const { isLoading } = useSWR(
-    userData ? `/lists?owner=${userData._id}` : null,
-    () => fetchUserList(api, userData._id),
-    {
-      onSuccess: (data) => setList(data),
-    }
-  );
+    console.log(list);
+  }, [list]);
 
   if (!token) {
     <motion.section
