@@ -9,7 +9,7 @@ import { fetchUserList } from "../helpers/api";
 const useList = ({ userData }) => {
   const { token, user } = useAuth();
 
-  const { api } = useAxios();
+  const { api, isAxiosReady } = useAxios();
   const { toastInfo } = useToast();
   const [list, setList] = useState([]);
 
@@ -64,9 +64,8 @@ const useList = ({ userData }) => {
       };
     }
   }, [token, userData, user]);
-
   const { isLoading } = useSWR(
-    userData ? `/lists?owner=${userData._id}` : null,
+    isAxiosReady && userData && token ? `/lists?user_id=${userData._id}` : null,
     () => fetchUserList(api, userData._id),
     {
       onSuccess: (data) => setList(data),

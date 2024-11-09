@@ -35,7 +35,7 @@ const SideNavbar = ({ isOpen, close, routes, authRoutes }) => {
         animate={isOpen ? "open" : "closed"}
         variants={variants}
         transition={{ type: "spring", stiffness: 300, damping: 30 }}
-        className="fixed top-0 left-0 h-[calc(100vh-2rem)] w-[180px] m-4 bg-primary rounded-md text-primary-foreground z-50"
+        className="fixed top-0 left-0 h-[calc(100vh-2rem)] w-[200px] m-4 bg-primary rounded-md text-primary-foreground z-50"
       >
         <div className="p-4 flex justify-between">
           <DomLink className="outline-none" to="/">

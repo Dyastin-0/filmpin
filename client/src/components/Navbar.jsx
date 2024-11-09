@@ -17,14 +17,15 @@ import { routes, authRoutes } from "../utils/routes";
 import Link from "./Link";
 import { Filmpin } from "./Filmpin";
 import Search from "./Search";
+import useViewport from "../hooks/useViewport";
 
 const Navbar = ({ toggleSideNavbar }) => {
   const navigate = useNavigate();
   const { toggleTheme, icon } = useThemeToggle();
   const { setToken, token, setUser, user } = useAuth();
+  const viewWidth = useViewport();
   const [isScrollingDown, setIsScrollingDown] = useState(false);
   const [lastScrollY, setLastScrollY] = useState(0);
-  const [viewWidth, setViewWidth] = useState(window.innerWidth);
 
   const handleSignout = async () => {
     try {
@@ -64,7 +65,7 @@ const Navbar = ({ toggleSideNavbar }) => {
       transition={{ type: "spring", stiffness: 100, damping: 20 }}
     >
       <div className="flex justify-center items-center gap-2">
-        {viewWidth < 500 && (
+        {viewWidth < 768 && (
           <FontAwesomeIcon
             icon={faBars}
             onClick={toggleSideNavbar}
@@ -75,12 +76,12 @@ const Navbar = ({ toggleSideNavbar }) => {
       </div>
       <div className="flex w-fit items-center gap-3">
         {token &&
-          viewWidth > 500 &&
+          viewWidth > 768 &&
           routes.map((route, index) => (
             <Link key={index} path={route.path} icon={route.icon} />
           ))}
         {!token &&
-          viewWidth > 500 &&
+          viewWidth > 768 &&
           authRoutes.map((route, index) => (
             <Link
               key={index}

@@ -8,11 +8,11 @@ const QuickList = ({ list }) => {
       <p className="text-xs text-primary-foreground font-semibold">
         Your lists
       </p>
-      <ul className="flex flex-col items-center gap-4">
+      <ul className="flex flex-col max-w-full items-center gap-4">
         {list &&
           list.length > 0 &&
-          list.map((item) => (
-            <Link to={`/lists/${item._id}`}>
+          list.map((item, index) => (
+            <Link key={index} to={`/lists/${item._id}`}>
               <li
                 className="flex flex-col p-4 gap-2 items-center max-w-[134.21px] rounded-md border border-secondary-accent
 								transition-all duration-300 text-xs text-primary-foreground

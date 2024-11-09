@@ -11,12 +11,12 @@ import HomeSlider from "../components/sliders/HomeSlider";
 import BackdropLoader from "../components/loaders/BackdropLoader";
 import useList from "../hooks/useList";
 import { useAuth } from "../hooks/useAuth";
-import { Link } from "react-router-dom";
-import ListPoster from "../components/ListPoster";
 import QuickList from "../components/QuickList";
+import useViewport from "../hooks/useViewport";
 
 const Home = () => {
   const { api, isAxiosReady } = useAxios();
+  const viewWidth = useViewport();
   const { user } = useAuth();
   const { list } = useList({ userData: user });
 
@@ -54,8 +54,11 @@ const Home = () => {
           content="Browse and find movies and TV shows to watch"
         />
       </Helmet>
-      <QuickList list={list} />
-      <div className="flex flex-col bg-primary rounded-lg gap-4 p-4 justify-center items-center h-full w-[calc(100%-200px)]">
+      {viewWidth >= 768 && <QuickList list={list} />}
+      <div
+        className={`flex flex-col bg-primary rounded-lg gap-4 p-4 justify-center items-center h-full 
+          ${viewWidth >= 768 ? "w-[calc(100%-200px)]" : "w-full"}`}
+      >
         {!isLoadingTopMovies ? (
           <HomeSlider data={topMovies} />
         ) : (
