@@ -31,7 +31,6 @@ export const useList = ({ userData }) => {
 
       const eventName = `stream/list/${userData._id}/${user._id}/${randomId}`;
       newSocket.on(eventName, (change) => {
-        console.log(change);
         const isOwner = userData.username === user.username;
 
         if (change.type === "delete") {
