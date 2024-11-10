@@ -13,7 +13,7 @@ import {
   faSignOutAlt,
   faUser,
 } from "@fortawesome/free-solid-svg-icons";
-import { routes, authRoutes } from "../utils/routes";
+import { routes, authRoutes } from "../helpers/routes";
 import Link from "./Link";
 import { Filmpin } from "./Filmpin";
 import Search from "./Search";
@@ -23,7 +23,7 @@ const Navbar = ({ toggleSideNavbar }) => {
   const navigate = useNavigate();
   const { toggleTheme, icon } = useThemeToggle();
   const { setToken, token, setUser, user } = useAuth();
-  const viewWidth = useViewport();
+  const { viewWidth } = useViewport();
   const [isScrollingDown, setIsScrollingDown] = useState(false);
   const [lastScrollY, setLastScrollY] = useState(0);
 

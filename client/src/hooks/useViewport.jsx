@@ -13,7 +13,7 @@ function useViewport() {
     return () => window.removeEventListener("resize", handleResize);
   }, []);
 
-  return viewWidth;
+  return { viewWidth };
 }
 
 export default useViewport;

@@ -6,17 +6,12 @@ import { faPlus } from "@fortawesome/free-solid-svg-icons";
 import { useModal } from "../hooks/useModal";
 import CreateList from "../CreateList";
 import UserList from "../UserList";
-import useList from "../../hooks/useList";
-import { useEffect } from "react";
+import { useList } from "../../hooks/useList";
 
 const ListSection = ({ userData }) => {
   const { token, user } = useAuth();
   const { setModal, setOpen } = useModal();
   const { list, isLoading } = useList({ userData });
-
-  useEffect(() => {
-    console.log(list);
-  }, [list]);
 
   if (!token) {
     <motion.section

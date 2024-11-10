@@ -9,6 +9,7 @@ import { BrowserRouter } from "react-router-dom";
 import { AuthProvider } from "./hooks/useAuth";
 import { ModalProvider } from "./components/hooks/useModal.jsx";
 import { ToastProvider } from "./components/hooks/useToast.jsx";
+import { ListProvider } from "./hooks/useList.jsx";
 
 ReactDOM.createRoot(document.getElementById("root")).render(
   <AuthProvider>
@@ -22,7 +23,9 @@ ReactDOM.createRoot(document.getElementById("root")).render(
               revalidateOnReconnect: true,
             }}
           >
-            <App />
+            <ListProvider>
+              <App />
+            </ListProvider>
           </SWRConfig>
         </ModalProvider>
       </ToastProvider>

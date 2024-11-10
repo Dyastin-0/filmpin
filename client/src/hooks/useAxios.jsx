@@ -19,37 +19,40 @@ const useAxios = () => {
   const [isAxiosReady, setIsAxiosReady] = useState(false);
 
   useEffect(() => {
-    const interceptor = api.interceptors.request.use(
-      async (config) => {
-        const decodedAccessToken = jwtDecode(token);
-        const isExpired = dayjs.unix(decodedAccessToken.exp).diff(dayjs()) < 1;
+    if (token) {
+      const interceptor = api.interceptors.request.use(
+        async (config) => {
+          const decodedAccessToken = jwtDecode(token);
+          const isExpired =
+            dayjs.unix(decodedAccessToken.exp).diff(dayjs()) < 1;
 
-        if (!isExpired) {
-          setIsAxiosReady(true);
-          config.headers.Authorization = `Bearer ${token}`;
-          return config;
-        }
+          if (!isExpired) {
+            setIsAxiosReady(true);
+            config.headers.Authorization = `Bearer ${token}`;
+            return config;
+          }
 
-        if (!refreshTokenPromise) {
-          refreshTokenPromise = refreshAccessToken();
-        }
+          if (!refreshTokenPromise) {
+            refreshTokenPromise = refreshAccessToken();
+          }
 
-        try {
-          const newToken = await refreshTokenPromise;
-          config.headers.Authorization = `Bearer ${newToken}`;
-          return config;
-        } catch (error) {
-          return Promise.reject(error);
-        } finally {
-          refreshTokenPromise = null;
-        }
-      },
-      (error) => Promise.reject(error)
-    );
+          try {
+            const newToken = await refreshTokenPromise;
+            config.headers.Authorization = `Bearer ${newToken}`;
+            return config;
+          } catch (error) {
+            return Promise.reject(error);
+          } finally {
+            refreshTokenPromise = null;
+          }
+        },
+        (error) => Promise.reject(error)
+      );
 
-    setIsAxiosReady(true);
-    return () => api.interceptors.request.eject(interceptor);
-  }, [setToken]);
+      setIsAxiosReady(true);
+      return () => api.interceptors.request.eject(interceptor);
+    }
+  }, [setToken, token]);
 
   const refreshAccessToken = async () => {
     try {

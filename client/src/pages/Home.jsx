@@ -9,14 +9,14 @@ import useSWR from "swr";
 import { Helmet } from "react-helmet";
 import HomeSlider from "../components/sliders/HomeSlider";
 import BackdropLoader from "../components/loaders/BackdropLoader";
-import useList from "../hooks/useList";
+import { useList } from "../hooks/useList";
 import { useAuth } from "../hooks/useAuth";
 import QuickList from "../components/QuickList";
 import useViewport from "../hooks/useViewport";
 
 const Home = () => {
   const { api, isAxiosReady } = useAxios();
-  const viewWidth = useViewport();
+  const { viewWidth } = useViewport();
   const { user } = useAuth();
   const { list } = useList({ userData: user });
 

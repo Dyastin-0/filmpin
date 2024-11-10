@@ -1,20 +1,22 @@
+import React, { createContext, useContext, useEffect, useState } from "react";
 import { useToast } from "@chakra-ui/react";
 import { useAuth } from "./useAuth";
 import useAxios from "./useAxios";
-import { useEffect, useState } from "react";
 import { io } from "socket.io-client";
 import useSWR from "swr";
 import { fetchUserList } from "../helpers/api";
 
-const useList = ({ userData }) => {
-  const { token, user } = useAuth();
+const ListContext = createContext();
 
+export const ListProvider = ({ children }) => {
+  const { token, user } = useAuth();
   const { api, isAxiosReady } = useAxios();
-  const { toastInfo } = useToast();
+  const toast = useToast();
   const [list, setList] = useState([]);
+  const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
-    if (token && user && userData) {
+    if (token && user && isAxiosReady) {
       const randomId = crypto.randomUUID();
 
       const newSocket = io(import.meta.env.VITE_SOCKET_URL, {
@@ -22,16 +24,16 @@ const useList = ({ userData }) => {
           Authorization: `Bearer ${token}`,
         },
         query: {
-          owner: userData._id,
+          owner: user._id,
           accesor: user._id,
           randomId,
           targetStream: "list",
         },
       });
 
-      const eventName = `stream/list/${userData._id}/${user._id}/${randomId}`;
+      const eventName = `stream/list/${user._id}/${user._id}/${randomId}`;
       newSocket.on(eventName, (change) => {
-        const isOwner = userData.username === user.username;
+        const isOwner = user.username === user.username;
 
         if (change.type === "delete") {
           setList((prevList) =>
@@ -39,17 +41,23 @@ const useList = ({ userData }) => {
           );
 
           if (!isOwner) {
-            toastInfo(
-              `${userData.username} deleted the list '${change.list.name}'.`
-            );
+            toast({
+              title: `${user.username} deleted the list '${change.list.name}'.`,
+              status: "info",
+              duration: 5000,
+              isClosable: true,
+            });
           }
         } else if (change.type === "insert") {
           setList((prevList) => [...prevList, change.list]);
 
           if (!isOwner) {
-            toastInfo(
-              `${userData.username} added a new list '${change.list.name}'.`
-            );
+            toast({
+              title: `${user.username} added a new list '${change.list.name}'.`,
+              status: "info",
+              duration: 5000,
+              isClosable: true,
+            });
           }
         }
       });
@@ -63,16 +71,30 @@ const useList = ({ userData }) => {
         newSocket.disconnect();
       };
     }
-  }, [token, userData, user]);
-  const { isLoading } = useSWR(
-    isAxiosReady && userData && token ? `/lists?user_id=${userData._id}` : null,
-    () => fetchUserList(api, userData._id),
+  }, [token, user, isAxiosReady]);
+
+  const { data } = useSWR(
+    isAxiosReady && user && token ? `/lists?user_id=${user._id}` : null,
+    () => fetchUserList(api, user._id),
     {
-      onSuccess: (data) => setList(data),
+      onSuccess: (data) => {
+        setList(data);
+        setIsLoading(false);
+      },
     }
   );
 
-  return { list, isLoading };
+  return (
+    <ListContext.Provider value={{ list, isLoading }}>
+      {children}
+    </ListContext.Provider>
+  );
 };
 
-export default useList;
+export const useList = () => {
+  const context = useContext(ListContext);
+  if (!context) {
+    throw new Error("useList must be used within a ListProvider");
+  }
+  return context;
+};
