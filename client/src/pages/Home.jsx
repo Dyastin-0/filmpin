@@ -13,7 +13,6 @@ import { useList } from "../hooks/useList";
 import { useAuth } from "../hooks/useAuth";
 import QuickList from "../components/QuickList";
 import useViewport from "../hooks/useViewport";
-import { motion } from "framer-motion";
 
 const Home = () => {
   const { api, isAxiosReady } = useAxios();
@@ -60,10 +59,9 @@ const Home = () => {
         />
       </Helmet>
       {viewWidth >= 768 && <QuickList list={list} />}
-      <motion.div
-        className={`flex flex-col bg-primary rounded-lg gap-4 p-4 justify-center items-center h-full`}
-        animate={{ width: viewWidth >= 768 ? "calc(100% - 200px)" : "100%" }}
-        transition={{ duration: 0.5 }}
+      <div
+        className={`flex flex-col bg-primary rounded-lg gap-4 p-4 justify-center items-center
+        h-full w-${viewWidth >= 768 ? "[calc(100%-200px)]" : "full"}`}
       >
         {!isLoadingTopMovies ? (
           <HomeSlider data={topMovies} />
@@ -93,7 +91,7 @@ const Home = () => {
         ) : (
           <LoadingMovieSection title="Top rated TV shows" />
         )}
-      </motion.div>
+      </div>
     </div>
   );
 };
