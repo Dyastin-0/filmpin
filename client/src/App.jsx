@@ -34,6 +34,7 @@ const ListSlug = lazy(() => import("./pages/ListSlug"));
 const Footer = lazy(() => import("./components/Footer"));
 const About = lazy(() => import("./pages/About"));
 const PrivacyPolicy = lazy(() => import("./pages/PrivacyPolicy"));
+const PasswordReset = lazy(() => import("./pages/PasswordReset"));
 
 axios.defaults.baseURL = import.meta.env.VITE_BASE_API_URL;
 axios.defaults.withCredentials = true;
@@ -63,6 +64,7 @@ function App() {
           <Route path="/account/verification" element={<Verification />} />
           <Route path="/account/recovery" element={<AccountRecovery />} />
           <Route path="/account/recover" element={<Recovery />} />
+          <Route path="/account/reset/password" element={<PasswordReset />} />
           <Route path="/about" element={<About />} />
           <Route path="/privacy" element={<PrivacyPolicy />} />
           <Route element={<ProtectedRoute />}>

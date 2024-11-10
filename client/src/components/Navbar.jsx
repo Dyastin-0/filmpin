@@ -18,10 +18,13 @@ import Link from "./Link";
 import { Filmpin } from "./Filmpin";
 import Search from "./Search";
 import useViewport from "../hooks/useViewport";
+import { useModal } from "../components/hooks/useModal";
+import Settings from "./Settings";
 
 const Navbar = ({ toggleSideNavbar }) => {
   const navigate = useNavigate();
   const { toggleTheme, icon } = useThemeToggle();
+  const { setModal, setOpen } = useModal();
   const { setToken, token, setUser, user } = useAuth();
   const { viewWidth } = useViewport();
   const [isScrollingDown, setIsScrollingDown] = useState(false);
@@ -121,7 +124,12 @@ const Navbar = ({ toggleSideNavbar }) => {
               Profile
               <FontAwesomeIcon size="xs" icon={faUser} className="ml-1" />
             </DropdownItem>
-            <DropdownItem>
+            <DropdownItem
+              onClick={() => {
+                setModal(<Settings />);
+                setOpen(true);
+              }}
+            >
               Settings
               <FontAwesomeIcon size="xs" icon={faGear} className="ml-1" />
             </DropdownItem>

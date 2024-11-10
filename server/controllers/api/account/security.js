@@ -146,9 +146,7 @@ const handleRecoverAccount = async (req, res) => {
       process.env.EMAIL_TOKEN_SECRET,
       async (error, decoded) => {
         if (error)
-          return res
-            .status(404)
-            .json({ message: "Recovery token is expired." });
+          return res.status(404).json({ message: "Invalid or expired token." });
 
         const user = await Users.findOne({
           email: decoded.email,
@@ -243,9 +241,111 @@ const handleSendRecovery = async (req, res) => {
   }
 };
 
+/**
+ * Sends a password update link to the user's email.
+ * @param {Object} req - The request object.
+ * @param {string} req.query.email - The user's email.
+ * @param {Object} res - The response object.
+ * @returns {Object} - JSON status message.
+ */
+const handleSendPasswordUpdate = async (req, res) => {
+  const { email } = req.body;
+
+  if (!email) return res.status(400).json({ message: "Missing email." });
+
+  try {
+    const user = await Users.findOne({ email });
+    if (!user) return res.status(404).json({ message: "Account not found." });
+
+    const passwordResetToken = jwt.sign(
+      {
+        UserInfo: {
+          username: user.username,
+          email: user.email,
+          roles: user.roles,
+          id: user._id,
+        },
+      },
+      process.env.EMAIL_TOKEN_SECRET,
+      { expiresIn: "15m" }
+    );
+
+    await Users.updateOne({ email }, { $set: { passwordResetToken } });
+
+    sendHtmlEmail(
+      email,
+      "Password Reset",
+      emailTemplate(
+        "Reset your password",
+        "To reset your password, click the link below. If you didn't request a password change, you may disregard this email.",
+        `${process.env.BASE_CLIENT_URL}/account/reset/password?passwordResetToken=${passwordResetToken}`,
+        "Reset your password"
+      )
+    );
+
+    res.status(200).json({ message: "Password update link sent." });
+  } catch (error) {
+    console.error("Failed to send password update link.", error);
+    res.sendStatus(500);
+  }
+};
+
+/**
+ * Updates the user's password using a valid token.
+ * @param {Object} req - The request object.
+ * @param {string} req.query.token - The password update token.
+ * @param {string} req.body.new_password - The new password for the account.
+ * @param {Object} res - The response object.
+ * @returns {Object} - JSON message indicating success or failure.
+ */
+const handleUpdatePassword = async (req, res) => {
+  const { passwordResetToken } = req.query;
+  const { new_password } = req.body;
+
+  if (!passwordResetToken)
+    return res.status(400).json({ message: "Missing token." });
+
+  if (!new_password)
+    return res.status(400).json({ message: "Missing new password." });
+
+  try {
+    jwt.verify(
+      passwordResetToken,
+      process.env.EMAIL_TOKEN_SECRET,
+      async (error, decoded) => {
+        const { email } = decoded.UserInfo;
+        if (error)
+          return res.status(400).json({ message: "Invalid or expired token." });
+
+        const user = await Users.findOne({
+          email: email,
+          passwordResetToken: passwordResetToken,
+        });
+
+        if (!user)
+          return res.status(404).json({ message: "Account not found." });
+
+        const hashedPassword = await hash(new_password);
+
+        await Users.updateOne(
+          { email: email },
+          { $set: { password: hashedPassword, passwordResetToken: null } }
+        );
+
+        res.status(200).json({ message: "Password updated successfully." });
+      }
+    );
+  } catch (error) {
+    console.error("Failed to update password.", error);
+    res.sendStatus(500);
+  }
+};
+
 module.exports = {
   handleVerifyEmail,
   handleSendVerification,
   handleRecoverAccount,
   handleSendRecovery,
+  handleSendPasswordUpdate,
+  handleUpdatePassword,
 };

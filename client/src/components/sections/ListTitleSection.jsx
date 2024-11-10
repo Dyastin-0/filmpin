@@ -27,7 +27,6 @@ const ListTitleSection = ({
 
   const handleDeleteList = () => {
     confirm({
-      title: "Delete List",
       message: `Are you sure you want to delete the list '${listData?.name}'?`,
       onConfirm: async () => {
         try {

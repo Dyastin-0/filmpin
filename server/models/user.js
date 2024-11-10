@@ -16,6 +16,9 @@ const userSchema = new Schema({
   verificationToken: {
     type: String,
   },
+  passwordResetToken: {
+    type: String,
+  },
   recoveryToken: {
     type: String,
   },

@@ -38,8 +38,9 @@ app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 
 app.use("/api/auth", require("./routes/auth"));
-app.use("/api/email", require("./routes/email"));
-app.use("/api/recover", require("./routes/email"));
+app.use("/api/email", require("./routes/api/account/security"));
+app.use("/api/recover", require("./routes/api/account/security"));
+app.use("/api/reset", require("./routes/api/account/security"));
 
 app.use("/api/public/account", require("./routes/public/api/account/details"));
 app.use("/api/public/backdrops", require("./routes/public/api/backdrops"));

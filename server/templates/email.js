@@ -15,7 +15,7 @@ const emailTemplate = (title, message, link, linkTitle) => {
 					<tr>
 						<td style='text-align: center;'>
 							<div style="display: inline-block; font-size: 0; text-align: center; font-weight: 600;">
-								<h1 style="display: inline; color: #508C9B; font-size: 26px; margin: 0;">Film</h1>
+								<h1 style="display: inline; color: #4daafc; font-size: 26px; margin: 0;">Film</h1>
 								<h1 style="display: inline; color: #686D76; font-size: 26px; margin: 0;">pin</h1>
 							</div>
 							<h1 style='font-size: 16px; color: #686D76; margin-top: 1rem;'>${title}</h1>
