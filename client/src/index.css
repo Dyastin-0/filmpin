@@ -41,7 +41,7 @@
   --accent: #ffffff;
   --text-highlight: #ffffff;
   --text-secondary: #888888;
-  --text-primary: #2f3338;
+  --text-primary: #3d3d3e;
 }
 
 @media (prefers-color-scheme: dark) {
@@ -64,7 +64,7 @@
     --accent: #ffffff;
     --text-highlight: #ffffff;
     --text-secondary: #888888;
-    --text-primary: #2f3338;
+    --text-primary: #3d3d3e;
   }
 }
 

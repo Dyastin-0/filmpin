@@ -65,14 +65,14 @@ const Navbar = ({ toggleSideNavbar }) => {
       transition={{ type: "spring", stiffness: 100, damping: 20 }}
     >
       <div className="flex justify-center items-center gap-2">
-        {viewWidth < 768 && (
+        {viewWidth <= 768 && (
           <FontAwesomeIcon
             icon={faBars}
             onClick={toggleSideNavbar}
             className="hover:cursor-pointer"
           />
         )}
-        <Filmpin />
+        {viewWidth > 768 && <Filmpin />}
       </div>
       <div className="flex w-fit items-center gap-3">
         {token &&

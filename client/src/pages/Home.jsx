@@ -1,5 +1,3 @@
-import { LoadingMovieSection } from "../components/loaders/MovieLoaders";
-import { LoadingTrailerSection } from "../components/loaders/TrailerLoaders";
 import { MovieSection } from "../components/sections/MovieSection";
 import { TrailerSection } from "../components/sections/TrailerSection";
 import { TvShowSection } from "../components/sections/tvShowSection";
@@ -21,7 +19,7 @@ const Home = () => {
   const { user } = useAuth();
   const { list } = useList({ userData: user });
 
-  const { data: topMovies, isLoading: isLoadingTopMovies } = useSWR(
+  const { data: topMovies } = useSWR(
     isAxiosReady ? `/movies/list?category=top_rated&page=1` : null,
     () =>
       fetchDiscovery(api, "movies", "[]").then((response) => response.results),
@@ -30,7 +28,7 @@ const Home = () => {
     }
   );
 
-  const { data: popularMovies, isLoading: isLoadingPopularMovies } = useSWR(
+  const { data: popularMovies } = useSWR(
     isAxiosReady ? "/movies/list?category=popular&page=1" : null,
     () => fetchCategory(api, "movies", "popular"),
     {
@@ -38,7 +36,7 @@ const Home = () => {
     }
   );
 
-  const { data: topTvShows, isLoading: isLoadingTopTvShows } = useSWR(
+  const { data: topTvShows } = useSWR(
     isAxiosReady ? "/tvshows/list?category=top_rated&page=1" : null,
     () => fetchCategory(api, "tvshows", "top_rated"),
     {
@@ -65,34 +63,14 @@ const Home = () => {
         animate={{ width: viewWidth >= 768 ? "calc(100% - 200px)" : "100%" }}
         transition={{ duration: 0.5 }}
       >
-        {!isLoadingTopMovies ? (
-          <HomeSlider data={topMovies} />
-        ) : (
-          <BackdropLoader />
-        )}
-        {!isLoadingPopularMovies ? (
-          <MovieSection title="Popular movies" movies={popularMovies} />
-        ) : (
-          <LoadingMovieSection title="Popular movies" />
-        )}
-        {!isLoadingPopularMovies ? (
-          <TrailerSection
-            title="Trailers from popular movies"
-            movies={popularMovies}
-          />
-        ) : (
-          <LoadingTrailerSection title="Trailers from popular movies" />
-        )}
-        {!isLoadingTopMovies ? (
-          <MovieSection title="Top rated movies" movies={topMovies} />
-        ) : (
-          <LoadingMovieSection title="Top rated" />
-        )}
-        {!isLoadingTopTvShows ? (
-          <TvShowSection title="Top rated TV shows" shows={topTvShows} />
-        ) : (
-          <LoadingMovieSection title="Top rated TV shows" />
-        )}
+        <HomeSlider data={topMovies} />
+        <MovieSection title="Popular movies" movies={popularMovies} />
+        <TrailerSection
+          title="Trailers from popular movies"
+          movies={popularMovies}
+        />
+        <MovieSection title="Top rated movies" movies={topMovies} />
+        <TvShowSection title="Top rated TV shows" shows={topTvShows} />
       </motion.div>
     </div>
   );

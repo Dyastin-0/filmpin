@@ -4,11 +4,15 @@ import { Link } from "react-router-dom";
 
 const SideNavbarQuickList = ({ list, close }) => {
   return (
-    <div className="flex flex-col items-center gap-2 top-4 pl-4 pr-4 pb-4 bg-primary rounded-md">
-      <p className="text-xs text-primary-foreground font-semibold">
-        Your lists
-      </p>
-      <ul className="flex flex-col max-w-full items-center gap-4">
+    <div
+      className="flex flex-col h-full w-full items-center gap-4 top-4 bg-primary rounded-md
+    overflow-hidden"
+    >
+      <p className="text-xs text-primary-foreground font-bold">Your lists</p>
+      <ul
+        className="flex flex-col max-w-full items-center gap-4 p-4 w-full h-full
+      overflow-y-scroll scrollbar-thin scrollbar-track-primary scrollbar-thumb-secondary-accent"
+      >
         {list &&
           list.length > 0 &&
           list.map((item, index) => (

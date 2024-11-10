@@ -21,14 +21,14 @@ const SelectBackdrop = () => {
   );
 
   return (
-    <div className="flex flex-col w-[800px] h-[400px] max-w-full p-4 gap-4 bg-primary rounded-md overflow-hidden">
+    <div className="flex flex-col w-fit h-[400px] max-w-full p-4 gap-4 bg-primary rounded-md overflow-hidden">
       <SearchInput
         onChange={(e) => setQuery(e.target.value)}
         placeholder="Search for your favorite movie or TV show"
       />
       <div
-        className="h-full flex flex-col items-center gap-4 overflow-y-auto
-				scrollbar scrollbar-thumb-secondary scrollbar-track-transparent"
+        className="h-full flex flex-wrap justify-center gap-4 p-4 overflow-y-auto
+				scrollbar-thin scrollbar-thumb-secondary scrollbar-track-transparent"
       >
         {backdrops?.results.length > 0 ? (
           backdrops?.results.map(

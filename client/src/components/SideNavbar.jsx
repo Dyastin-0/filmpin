@@ -7,7 +7,7 @@ import Link from "../components/Link";
 import { useEffect } from "react";
 import { useList } from "../hooks/useList";
 import SideNavbarQuickList from "./SideNavbarQuickList";
-import Separator from "./Separator";
+import Separator from "./ui/Separator";
 import useViewport from "../hooks/useViewport";
 
 const variants = {
@@ -48,7 +48,6 @@ const SideNavbar = ({ isOpen, close, routes, authRoutes }) => {
         variants={variants}
         transition={{ type: "spring", stiffness: 300, damping: 30 }}
         className="fixed flex gap-4 flex-col top-0 left-0 p-4 h-[calc(100vh-2rem)] w-[200px] m-4
-        overflow-y-scroll scrollbar-none
         bg-primary rounded-md text-primary-foreground z-50"
       >
         <div className="sticky top-0 flex justify-between">

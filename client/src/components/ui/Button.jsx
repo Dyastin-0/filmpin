@@ -24,7 +24,8 @@ const Button = ({
       disabled={disabled}
       onMouseEnter={onMouseEnter}
       className={clsx(
-        "flex h-fit items-center gap-1 justify-center text-xs outline-none transition-all duration-300 focus:shadow-[var(--accent-secondary)_0_0_0_2px] hover:shadow-[var(--accent-secondary)_0_0_0_2px]",
+        "flex h-fit items-center gap-1 justify-center text-xs outline-none transition-all duration-300 " +
+          "focus:shadow-[var(--accent-secondary)_0_0_0_2px] active:shadow-[var(--highlight)_0_0_0_2px] hover:shadow-[var(--accent-secondary)_0_0_0_2px]",
         variants[variant],
         className
       )}

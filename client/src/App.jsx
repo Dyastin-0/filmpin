@@ -10,6 +10,7 @@ import { authRoutes, routes } from "./helpers/routes";
 import "swiper/css";
 import "swiper/css/pagination";
 import "swiper/css/navigation";
+import useViewport from "./hooks/useViewport";
 
 const Root = lazy(() => import("./pages/Root"));
 const Signin = lazy(() => import("./pages/Signin"));
@@ -39,16 +40,19 @@ axios.defaults.withCredentials = true;
 
 function App() {
   const [opensideNavbar, setOpenSideNavbar] = useState(false);
+  const { viewWidth } = useViewport();
 
   return (
     <>
       <Navbar toggleSideNavbar={() => setOpenSideNavbar(!opensideNavbar)} />
-      <SideNavbar
-        isOpen={opensideNavbar}
-        close={() => setOpenSideNavbar(false)}
-        authRoutes={authRoutes}
-        routes={routes}
-      />
+      {viewWidth < 768 && (
+        <SideNavbar
+          isOpen={opensideNavbar}
+          close={() => setOpenSideNavbar(false)}
+          authRoutes={authRoutes}
+          routes={routes}
+        />
+      )}
       <Suspense>
         <Routes>
           <Route path="/" element={<Root />} />

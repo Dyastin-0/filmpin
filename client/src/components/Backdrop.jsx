@@ -38,7 +38,7 @@ export const Backdrop = ({ backdrop_path, title }) => {
         src={`https://image.tmdb.org/t/p/original/${backdrop_path}`}
         alt={`${title} backdrop`}
       />
-      <h1 className="text-center text-primary-foreground text-xs font-semibold">
+      <h1 className="text-center text-primary-foreground text-xs font-semibold line-clamp-1 text-ellipsis">
         {title}
       </h1>
     </div>
