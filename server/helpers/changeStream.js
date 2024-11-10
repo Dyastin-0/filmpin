@@ -41,6 +41,7 @@ const handleDisconnect = (socket, changeStream) => {
  * @returns {void} No return value.
  */
 const startListStream = (socket, mongoose, owner, randomId) => {
+  const { id } = socket;
   const changeStream = mongoose.model("List").watch([
     {
       $match: {
@@ -53,20 +54,25 @@ const startListStream = (socket, mongoose, owner, randomId) => {
     },
   ]);
 
-  changeStream.on("change", (change) => {
-    const type = change.operationType;
-    const changeData =
-      type === "delete"
-        ? change.documentKey._id
-        : type === "insert"
-        ? change.fullDocument
-        : change.updateDescription.updatedFields.list;
+  try {
+    changeStream.on("change", (change) => {
+      const type = change.operationType;
+      const changeData =
+        type === "delete"
+          ? change.documentKey._id
+          : type === "insert"
+            ? change.fullDocument
+            : change.updateDescription.updatedFields.list;
 
-    socket.emit(`stream/list/${owner}/${socket.id}/${randomId}`, {
-      type: type,
-      list: changeData,
+      socket.emit(`stream/list/${owner}/${id}/${randomId}`, {
+        type: type,
+        _id: change.documentKey._id,
+        list: changeData,
+      });
     });
-  });
+  } catch (error) {
+    console.error("List stream error:", error);
+  }
 
   handleDisconnect(socket, changeStream);
 };
@@ -124,9 +130,9 @@ const startReviewStream = (socket, mongoose, randomId, itemId) => {
       type === "delete"
         ? change.documentKey._id
         : type === "insert"
-        ? change.fullDocument
-        : change.updateDescription.updatedFields.hearts ||
-          change.updateDescription.updatedFields["hearts.1"];
+          ? change.fullDocument
+          : change.updateDescription.updatedFields.hearts ||
+            change.updateDescription.updatedFields["hearts.1"];
     socket.emit(`stream/review/${itemId}/${randomId}`, {
       newReview: changeData,
       key: change.documentKey,

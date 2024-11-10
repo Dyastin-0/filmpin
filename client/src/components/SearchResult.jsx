@@ -7,7 +7,7 @@ const SearchResult = ({ result, setVisible }) => {
     <div
       className="flex items-end gap-2 p-2 rounded-md text-primary-foreground text-xs
       transition-all duration-300
-			border border-secondary
+			border border-secondary-accent
 			hover:cursor-pointer hover:border-primary-highlight"
       onClick={() => {
         setVisible(false);

@@ -5,10 +5,8 @@ import { faX } from "@fortawesome/free-solid-svg-icons";
 import { useAuth } from "../hooks/useAuth";
 import Link from "../components/Link";
 import { useEffect } from "react";
-import QuickList from "./QuickList";
 import { useList } from "../hooks/useList";
 import SideNavbarQuickList from "./SideNavbarQuickList";
-import { BreadcrumbSeparator, StepSeparator } from "@chakra-ui/react";
 import Separator from "./Separator";
 import useViewport from "../hooks/useViewport";
 
