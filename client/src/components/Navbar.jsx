@@ -77,7 +77,7 @@ const Navbar = ({ toggleSideNavbar }) => {
         )}
         {viewWidth > 768 && <Filmpin />}
       </div>
-      <div className="flex w-fit items-center gap-3">
+      <div className="flex w-full justify-center items-center gap-3">
         {token &&
           viewWidth > 768 &&
           routes.map((route, index) => (
@@ -93,9 +93,7 @@ const Navbar = ({ toggleSideNavbar }) => {
               icon={route.icon}
             />
           ))}
-        {token && (
-          <Search isScrollingDown={isScrollingDown} viewWidth={viewWidth} />
-        )}
+        {token && <Search isScrollingDown={isScrollingDown} />}
       </div>
       <div className="flex w-fit gap-3 justify-center items-center">
         <Button
@@ -114,7 +112,10 @@ const Navbar = ({ toggleSideNavbar }) => {
                   className="max-w-[30px] max-h-[30px] object-cover aspect-square rounded-full"
                 />
               ) : (
-                <div className="flex justify-center items-center w-[30px] h-[30px] rounded-full bg-secondary text-primary-highlight text-xs">
+                <div
+                  className="flex justify-center items-center w-[30px] h-[30px] rounded-full bg-secondary
+                font-semibold text-primary-highlight text-xs"
+                >
                   {user.username[0]}
                 </div>
               )

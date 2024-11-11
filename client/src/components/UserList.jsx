@@ -1,6 +1,9 @@
 import { useNavigate } from "react-router-dom";
 import ListPoster from "./ListPoster";
 import dayjs from "dayjs";
+import relativeTime from "dayjs/plugin/relativeTime";
+
+dayjs.extend(relativeTime);
 
 const UserList = ({ list }) => {
   const navigate = useNavigate();
@@ -18,15 +21,15 @@ const UserList = ({ list }) => {
       onClick={() => handleClick(list)}
     >
       {list && (
-        <h1 className="text-xs text-center text-primary-foreground font-semibold line-clamp-1">
-          {list.name}
-        </h1>
-      )}
-      <ListPoster list={list} />
-      {list && (
-        <span className="text-xs text-secondary-foreground">
-          {dayjs.unix(list.created_on / 1000).fromNow()}
-        </span>
+        <>
+          <h1 className="text-xs text-center text-primary-foreground font-semibold line-clamp-1">
+            {list.name}
+          </h1>
+          <ListPoster list={list} />
+          <span className="text-xs text-center text-secondary-foreground">
+            {dayjs.unix(list.created_on / 1000).fromNow()}
+          </span>
+        </>
       )}
     </div>
   );
