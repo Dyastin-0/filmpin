@@ -21,6 +21,7 @@ const SearchListResult = ({ list }) => {
       className="flex items-end gap-2 p-2 rounded-md border border-secondary-accent
 			transition-all duration-300 outline-none
 			hover:cursor-pointer focus:border-primary-highlight hover:border-primary-highlight"
+      to={`/lists/${list._id}`}
     >
       <ListPoster list={list} multipleSize="45px" />
       <div className="flex flex-col gap-1 text-primary-foreground">
