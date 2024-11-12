@@ -19,13 +19,13 @@ const SearchListResult = ({ list, setVisible }) => {
   return (
     <Link
       className="flex items-end gap-2 p-2 rounded-md border border-secondary-accent
-			transition-all duration-300 outline-none
+			transition-all duration-300 outline-none overflow-hidden
 			hover:cursor-pointer focus:border-primary-highlight hover:border-primary-highlight"
       to={`/lists/${list._id}`}
       onClick={() => setVisible(false)}
     >
       <ListPoster list={list} multipleSize="45px" />
-      <div className="flex flex-col gap-1 text-primary-foreground">
+      <div className="flex flex-col gap-1 text-primary-foreground overflow-hidden">
         <p className="text-xs font-semibold text-ellipsis line-clamp-1">
           {list.name}
         </p>

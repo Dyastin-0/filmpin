@@ -18,7 +18,7 @@ const SearchResultsSection = ({
           ? { height: "auto", y: 10, opacity: 1, display: "flex" }
           : { height: 0, y: 0, opacity: 0, display: "none" }
       }
-      className="absolute flex flex-col p-4 gap-2 w-full bg-primary rounded-md
+      className="absolute flex flex-col p-4 gap-2 w-full bg-secondary rounded-md
       h-fit max-h-[calc(100vh-5.75rem)] overflow-y-hidden"
     >
       <p className="text-xs">Quick results</p>
