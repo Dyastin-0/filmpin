@@ -10,8 +10,8 @@ const {
   handleDeleteList,
 } = require("../../../controllers/api/account/list");
 
+router.route("/search").get(handleSearchList);
 router.route("/:list_id").get(handleGetList).delete(handleDeleteList);
-
 router
   .route("/")
   .get(handleGeUserLists)
@@ -19,7 +19,5 @@ router
   .patch(handlePatchList);
 
 router.route("/item").post(handleAddItem);
-
-router.route("/search/:query").get(handleSearchList);
 
 module.exports = router;

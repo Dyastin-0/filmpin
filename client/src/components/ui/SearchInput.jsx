@@ -12,8 +12,10 @@ const SearchInput = ({
   onSubmit,
   onClick,
   onBlur,
+  onKeyDown,
 }) => {
   const [focus, setFocus] = useState(false);
+
   return (
     <form
       className={`flex gap-2 max-w-full text-primary-foreground bg-secondary pt-1 pb-1 pl-3 pr-3 rounded-full
@@ -22,6 +24,7 @@ const SearchInput = ({
       onSubmit={onSubmit}
       onClick={onClick}
       onBlur={onBlur}
+      onKeyDown={onKeyDown}
     >
       <button
         type="submit"

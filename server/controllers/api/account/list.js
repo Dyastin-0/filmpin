@@ -170,8 +170,7 @@ const handlePatchList = async (req, res) => {
 };
 
 const handleSearchList = async (req, res) => {
-  const { query } = req.params;
-  const { page, limit } = req.query;
+  const { query, page, limit } = req.query;
 
   if (!query) return res.status(400).json({ message: "Missing query." });
   if (!page) return res.status(400).json({ message: "Missing page." });

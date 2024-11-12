@@ -1,7 +1,6 @@
 import { useState, useRef, useEffect } from "react";
 import { useNavigate } from "react-router";
 import SearchInput from "./ui/SearchInput";
-import { useAuth } from "../hooks/useAuth";
 import useSWR from "swr";
 import useAxios from "../hooks/useAxios";
 import { fetchSearchQueryResults } from "../helpers/api";
@@ -31,11 +30,13 @@ const Search = ({ isScrollingDown }) => {
   );
 
   const { data: lists } = useSWR(
-    isAxiosReady && query
+    isAxiosReady && query !== ""
       ? `/lists/search?query=${query}&page=1&limit=20`
       : null,
     () =>
-      api.get(`/lists/search/${query}?&page=1`).then((res) => res.data.lists),
+      fetchSearchQueryResults(api, "lists", query, 1).then(
+        (data) => data.lists
+      ),
     {
       dedupingInterval: 60000,
     }
@@ -57,6 +58,12 @@ const Search = ({ isScrollingDown }) => {
     }
   };
 
+  const handleKeyDown = (e) => {
+    if (e.key === "Escape") {
+      setVisible(false);
+    }
+  };
+
   useEffect(() => {
     document.addEventListener("mousedown", handleClickOutside);
     return () => {
@@ -74,6 +81,7 @@ const Search = ({ isScrollingDown }) => {
         id="search"
         placeholder="Search"
         onChange={(e) => setQuery(e.target.value)}
+        onKeyDown={handleKeyDown}
       />
       <SearchResultsSection
         movies={movies}

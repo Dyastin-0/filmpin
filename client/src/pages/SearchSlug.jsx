@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { useSearchParams } from "react-router-dom";
+import { useLocation, useSearchParams } from "react-router-dom";
 import useAxios from "../hooks/useAxios";
 import { fetchSearchQueryResults } from "../helpers/api";
 import useSWR from "swr";
@@ -14,11 +14,15 @@ const SearchSlug = () => {
   const { api, isAxiosReady } = useAxios();
   const [searchParams, setSearchParams] = useSearchParams();
   const [tab, setTab] = useState("Movies");
+  const [query, setQuery] = useState(searchParams.get("query") || "");
 
-  const query = searchParams.get("query") || "";
   const moviesCurrentPage = parseInt(searchParams.get("movies-page")) || 1;
   const tvShowsCurrentPage = parseInt(searchParams.get("tvshows-page")) || 1;
   const listsCurrentPage = parseInt(searchParams.get("lists-page")) || 1;
+
+  useEffect(() => {
+    setQuery(searchParams.get("query") || "");
+  }, [searchParams]);
 
   const { data: movieResults } = useSWR(
     isAxiosReady
@@ -41,8 +45,10 @@ const SearchSlug = () => {
   );
 
   const { data: listResults } = useSWR(
-    isAxiosReady ? `/lists/search?query=${query}&page=1&limit=20` : null,
-    () => api.get(`/lists/search/${query}?&page=1`).then((res) => res.data),
+    isAxiosReady && query
+      ? `/lists/search?query=${query}&page=${listsCurrentPage}&limit=20`
+      : null,
+    () => fetchSearchQueryResults(api, "lists", query, listsCurrentPage),
     {
       dedupingInterval: 60000,
     }
