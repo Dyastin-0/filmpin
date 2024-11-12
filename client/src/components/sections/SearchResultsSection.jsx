@@ -64,7 +64,11 @@ const SearchResultsSection = ({
             lists
               .slice(0, 3)
               .map((list, index) => (
-                <SearchListResult key={index} list={list} />
+                <SearchListResult
+                  key={index}
+                  list={list}
+                  setVisible={setVisible}
+                />
               ))}
         </div>
       </div>

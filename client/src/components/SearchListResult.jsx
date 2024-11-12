@@ -5,7 +5,7 @@ import useSWR from "swr";
 import { fetchOwner } from "../helpers/api";
 import listTypes from "../models/listTypes";
 
-const SearchListResult = ({ list }) => {
+const SearchListResult = ({ list, setVisible }) => {
   const { api, isAxiosReady } = useAxios();
 
   const { data: owner } = useSWR(
@@ -22,6 +22,7 @@ const SearchListResult = ({ list }) => {
 			transition-all duration-300 outline-none
 			hover:cursor-pointer focus:border-primary-highlight hover:border-primary-highlight"
       to={`/lists/${list._id}`}
+      onClick={() => setVisible(false)}
     >
       <ListPoster list={list} multipleSize="45px" />
       <div className="flex flex-col gap-1 text-primary-foreground">
