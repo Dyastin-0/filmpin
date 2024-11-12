@@ -45,7 +45,7 @@ const SearchSlug = () => {
   );
 
   const { data: listResults } = useSWR(
-    isAxiosReady && query
+    isAxiosReady && query !== ""
       ? `/lists/search?query=${query}&page=${listsCurrentPage}&limit=20`
       : null,
     () => fetchSearchQueryResults(api, "lists", query, listsCurrentPage),
