@@ -1,9 +1,6 @@
 /** @type {import('tailwindcss').Config} */
 export default {
-  content: [
-    "./index.html",
-    "./src/**/*.{js,ts,jsx,tsx}",
-  ],
+  content: ["./index.html", "./src/**/*.{js,ts,jsx,tsx}"],
   theme: {
     extend: {
       colors: {
@@ -12,20 +9,20 @@ export default {
           foreground: "var(--text-primary)",
           highlight: {
             DEFAULT: "var(--highlight)",
-            foreground: "var(--text-highlight)"
-          }
+            foreground: "var(--text-highlight)",
+          },
         },
         secondary: {
           DEFAULT: "var(--bg-secondary)",
           foreground: "var(--text-secondary)",
-          accent: "var(--accent-secondary)"
+          accent: "var(--accent-secondary)",
         },
         accent: "var(--accent)",
         success: "var(--success)",
-        error: "var(--error)",
-        light: "var(--light)"
+        danger: "var(--danger)",
+        light: "var(--light)",
       },
     },
   },
-  plugins: [require('tailwind-scrollbar')],
-}
+  plugins: [require("tailwind-scrollbar")],
+};

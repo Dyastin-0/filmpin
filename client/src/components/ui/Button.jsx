@@ -3,6 +3,8 @@ import clsx from "clsx";
 const variants = {
   default: "p-2 text-primary-foreground bg-secondary rounded-md",
   default_rounded: "p-2 text-primary-foreground bg-secondary rounded-full",
+  danger:
+    "p-2 font-semibold bg-secondary text-danger rounded-md hover:bg-danger hover:text-primary-foreground",
   link: "text-primary-foreground font-bold transition-all duration-300 hover:cursor-pointer hover:text-primary-highlight focus:shadow-[var(--highlight)_0_2px_0_0] pb-1",
   ghost: "text-primary-foreground rounded-md shadow-sm p-2",
 };

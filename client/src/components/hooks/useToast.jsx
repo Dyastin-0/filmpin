@@ -46,7 +46,7 @@ export const useToast = () => {
   const { addToast } = useContext(ToastContext);
 
   const toastSuccess = (message) => addToast(message, "text-success");
-  const toastError = (message) => addToast(message, "text-error");
+  const toastError = (message) => addToast(message, "text-danger");
   const toastInfo = (message) => addToast(message, "text-primary-foreground");
 
   return { toastSuccess, toastError, toastInfo };

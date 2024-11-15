@@ -45,6 +45,27 @@ const Settings = () => {
         />
       </div>
       <Separator />
+      <div className=" flex flex-col gap-2">
+        <h2 className="text-xs font-semibold">Delete account</h2>
+        <p className="text-xs text-primary-foreground">
+          Once you delete your account, there is no going back. Please be
+          certain.
+        </p>
+        <Button
+          variant="danger"
+          text="Delete your account"
+          className="w-fit"
+          onClick={() =>
+            confirm({
+              message: "Are you sure you want to delete your account?",
+              onConfirm: async () => {
+                await axios.delete("/user/delete");
+                toastInfo("Account deleted.");
+              },
+            })
+          }
+        />
+      </div>
     </div>
   );
 };
