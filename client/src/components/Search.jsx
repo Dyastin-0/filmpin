@@ -79,7 +79,7 @@ const Search = ({ isScrollingDown }) => {
         onSubmit={handleSearch}
         type="text"
         id="search"
-        placeholder="Search"
+        placeholder="Search Filmpin"
         onChange={(e) => setQuery(e.target.value)}
         onKeyDown={handleKeyDown}
       />

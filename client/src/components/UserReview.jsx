@@ -49,7 +49,7 @@ const UserReview = ({ review }) => {
             </div>
             <span
               ref={contentRef}
-              className={`text-primary-foreground text-xs whitespace-pre-wrap ${isExpanded ? "" : "line-clamp-1"}`}
+              className={`text-primary-foreground text-xs whitespace-pre-wrap ${isExpanded ? "" : "line-clamp-2"}`}
             >
               {content}
             </span>

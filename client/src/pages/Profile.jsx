@@ -31,13 +31,13 @@ const Profile = () => {
   }, [user]);
 
   return (
-    <div className="relative flex flex-col items-center p-4 gap-4 lg:w-[1100px] md:w-full w-full max-w-full h-full bg-primary rounded-md self-center">
+    <div className="relative flex lg:flex-row md:flex-row flex-col gap-4 w-full h-full">
       <Helmet>
         <title>{userData?.username}</title>
       </Helmet>
-      <UserBackdropSection userData={userData} />
-      <div className="flex flex-col w-full gap-4 p-4">
-        <UserInfoSection userData={userData} />
+      <UserInfoSection userData={userData} />
+      <div className="flex flex-col w-full bg-primary rounded-md p-4 gap-4">
+        {/* <UserBackdropSection userData={userData} /> */}
         <ListSection userData={userData} />
         <UserReviewsSection userData={userData} />
       </div>
