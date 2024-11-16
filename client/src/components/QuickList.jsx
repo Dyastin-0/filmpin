@@ -4,7 +4,7 @@ import { Link } from "react-router-dom";
 
 const QuickList = ({ list }) => {
   return (
-    <div className="sticky flex flex-col items-center gap-4 top-4 p-4 w-[200px] h-fit bg-primary rounded-md">
+    <div className="sticky flex flex-col items-center gap-4 top-4 p-4 min-w-[200px] h-fit bg-primary rounded-md">
       <p className="text-xs text-primary-foreground font-semibold">
         Your lists
       </p>
