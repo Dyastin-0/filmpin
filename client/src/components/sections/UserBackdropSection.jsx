@@ -11,8 +11,7 @@ const UserBackdropSection = ({ userData }) => {
   const { token, user } = useAuth();
 
   return (
-    <section className="relative flex justify-center items-center w-full max-h-[400px] rounded-md">
-      {/* <div className="absolute w-full h-full bg-gradient-to-b from-transparent to-primary"></div> */}
+    <section className="flex justify-center items-center w-full max-h-[400px] rounded-md">
       {userData?.backdropPath ? (
         <UserBackdrop
           username={userData.username}
@@ -20,7 +19,7 @@ const UserBackdropSection = ({ userData }) => {
         />
       ) : token && userData?._id === user?._id ? (
         <div
-          className="relative flex justify-center gap-2 p-4 items-center w-full min-h-[400px] rounded-md hover:cursor-pointer"
+          className="flex justify-center gap-2 p-4 items-center w-full min-h-[400px] rounded-md hover:cursor-pointer"
           onClick={() => {
             setModal(<SelectBackdrop />);
             setOpen(true);
@@ -35,7 +34,7 @@ const UserBackdropSection = ({ userData }) => {
           </p>
         </div>
       ) : (
-        <div className="relative flex justify-center gap-2 p-4 items-center w-full min-h-[400px] rounded-md"></div>
+        <div className="flex justify-center gap-2 p-4 items-center w-full min-h-[400px] rounded-md"></div>
       )}
     </section>
   );

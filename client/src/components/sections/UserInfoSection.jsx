@@ -7,6 +7,7 @@ import { Dropdown, DropdownItem } from "../ui/Dropdown";
 import { useAuth } from "../../hooks/useAuth";
 import SelectBackdrop from "../SelectBackdrop";
 import { Image } from "../ui/Image";
+import Button from "../ui/Button";
 
 const UserInfoSection = ({ userData }) => {
   const { token, user } = useAuth();
@@ -15,9 +16,9 @@ const UserInfoSection = ({ userData }) => {
   return (
     <motion.section
       className="flex gap-4 p-4 bg-primary rounded-md h-fit
-    lg:w-fit md:w-fit w-full"
+    lg:w-fit md:w-fit w-full justify-center"
     >
-      <div className="flex flex-col max-w-full items-center gap-2">
+      <div className="flex lg:flex-col md:flex-col flex-row max-w-full items-center gap-4">
         {userData?.profileImageURL ? (
           <div className="flex flex-col justify-center items-center gap-2">
             <img
@@ -33,7 +34,8 @@ const UserInfoSection = ({ userData }) => {
                 setOpen(true);
               }}
               className=" object-cover rounded-full
-              lg:w-[150px] lg:h-[150px] md:w-[100px] md:h-[100px] w-[80px] h-[80px]
+              lg:max-h[150px] lg:max-w-[150px] md:max-h-[130px] md:max-w-[130px] max-h-[100px] max-w-[100px]
+              lg:min-w-[150px] lg:min-h-[150px] md:min-w-[100px] md:min-h-[100px] min-w-[80px] min-h-[80px]
               shadow-[var(--accent)_0_0_0_2px]
               transition-all duration-300 hover:cursor-pointer hover:opacity-90"
             />
@@ -41,7 +43,8 @@ const UserInfoSection = ({ userData }) => {
         ) : (
           <div
             className="flex justify-center items-center
-            lg:w-[150px] lg:h-[150px] md:w-[130px] md:h-[130px] w-[100px] h-[100px]
+            lg:max-h[150px] lg:max-w-[150px] md:max-h-[130px] md:max-w-[130px] max-h-[100px] max-w-[100px]
+            lg:min-w-[150px] lg:min-h-[150px] md:min-w-[130px] md:min-h-[130px] min-w-[100px] min-h-[100px]
             rounded-full bg-secondary hover:cursor-pointer"
             onClick={() => {
               setModal(<SelectProfile />);
@@ -51,43 +54,22 @@ const UserInfoSection = ({ userData }) => {
             <FontAwesomeIcon icon={faImage} />
           </div>
         )}
-        <div className="flex flex-col gap-2">
+        <div className="flex flex-col overflow-hidden p-1 gap-2">
           <div>
-            <h1 className="text-primary-foreground text-md font-semibold text-ellipsis line-clamp-1">
+            <h1 className="text-primary-foreground text-md font-semibold truncate">
               {userData?.username}
             </h1>
-            <h1 className="text-center text-primary-foreground text-xs text-ellipsis line-clamp-1">
+            <h1 className="text-center text-primary-foreground text-xs truncate">
               {userData?.email}
             </h1>
           </div>
-          {token && userData?._id === user?._id && (
-            <div>
-              <Dropdown
-                name={
-                  <div className="flex box-border justify-center items-center h-[14px] w-[14px]">
-                    <FontAwesomeIcon icon={faEllipsisV} />
-                  </div>
-                }
-              >
-                <DropdownItem
-                  onClick={() => {
-                    setModal(<SelectProfile />);
-                    setOpen(true);
-                  }}
-                >
-                  Change profile picture
-                </DropdownItem>
-                <DropdownItem
-                  onClick={() => {
-                    setModal(<SelectBackdrop />);
-                    setOpen(true);
-                  }}
-                >
-                  Change backdrop
-                </DropdownItem>
-              </Dropdown>
-            </div>
-          )}
+          <Button
+            text="Edit profile"
+            onClick={() => {
+              setModal(<SelectProfile />);
+              setOpen(true);
+            }}
+          />
         </div>
       </div>
     </motion.section>
