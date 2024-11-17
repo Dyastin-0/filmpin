@@ -43,7 +43,7 @@ const Footer = () => {
           className="outline-none transition-all duration-300"
         >
           <img
-            src="tmdb-logo.png"
+            src="/tmdb-logo.png"
             alt="The Movie Database logo"
             className="h-[12px]"
           />
