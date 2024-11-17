@@ -13,9 +13,15 @@ passport.use(
     async (_, __, profile, done) => {
       try {
         let user = await Users.findOne({ googleId: profile.id });
+
         if (user) {
           return done(null, user);
         }
+
+        if (await Users.findOne({ email: profile.emails[0].value })) {
+          return done(null, false, { message: "Email is already used." });
+        }
+
         user = await Users.create({
           profileImageURL: profile.photos[0].value,
           googleId: profile.id,
