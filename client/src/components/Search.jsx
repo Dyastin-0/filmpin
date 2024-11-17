@@ -33,10 +33,7 @@ const Search = ({ isScrollingDown }) => {
     isAxiosReady && query !== ""
       ? `/lists/search?query=${query}&page=1&limit=20`
       : null,
-    () =>
-      fetchSearchQueryResults(api, "lists", query, 1).then(
-        (data) => data.lists
-      ),
+    () => fetchSearchQueryResults(api, "lists", query, 1),
     {
       dedupingInterval: 60000,
     }
@@ -86,7 +83,7 @@ const Search = ({ isScrollingDown }) => {
       <SearchResultsSection
         movies={movies}
         shows={shows}
-        lists={lists}
+        lists={lists?.lists}
         visible={visible}
         setVisible={setVisible}
       />

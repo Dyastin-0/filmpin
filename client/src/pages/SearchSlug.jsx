@@ -21,11 +21,12 @@ const SearchSlug = () => {
   const listsCurrentPage = parseInt(searchParams.get("lists-page")) || 1;
 
   useEffect(() => {
+    console.log(searchParams.get("query"));
     setQuery(searchParams.get("query") || "");
   }, [searchParams]);
 
   const { data: movieResults } = useSWR(
-    isAxiosReady
+    isAxiosReady && tab === "Movies"
       ? `/movies/search?query=${query}&page=${moviesCurrentPage}`
       : null,
     () => fetchSearchQueryResults(api, "movies", query, moviesCurrentPage),
@@ -35,7 +36,7 @@ const SearchSlug = () => {
   );
 
   const { data: tvShowResults } = useSWR(
-    isAxiosReady
+    isAxiosReady && tab === "TV Shows"
       ? `/tvshows/search?query=${query}&page=${tvShowsCurrentPage}`
       : null,
     () => fetchSearchQueryResults(api, "tvshows", query, tvShowsCurrentPage),
@@ -45,7 +46,7 @@ const SearchSlug = () => {
   );
 
   const { data: listResults } = useSWR(
-    isAxiosReady && query !== ""
+    isAxiosReady && query !== "" && tab === "Lists"
       ? `/lists/search?query=${query}&page=${listsCurrentPage}&limit=20`
       : null,
     () => fetchSearchQueryResults(api, "lists", query, listsCurrentPage),
