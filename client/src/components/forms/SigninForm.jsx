@@ -148,7 +148,7 @@ const SigninForm = ({}) => {
           icon={<FontAwesomeIcon icon={faGoogle} />}
           onClick={(e) => {
             e.preventDefault();
-            window.location.href = "http://localhost:3000/api/auth/google";
+            window.location.href = `${import.meta.env.VITE_BASE_API_URL}/auth/google`;
           }}
         />
       </div>

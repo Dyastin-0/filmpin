@@ -34,7 +34,7 @@ const io = new Server(server, {
 
 app.use(
   session({
-    secret: "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",
+    secret: process.env.GOOGLE_CLIENT_SECRET,
     resave: false,
     saveUninitialized: true,
   })
