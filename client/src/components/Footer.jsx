@@ -6,6 +6,7 @@ const links = [
   { name: "Home", to: "/" },
   { name: "About", to: "/about" },
   { name: "Privacy Policy", to: "/privacy" },
+  { name: "Terms of Service", to: "/tos" },
 ];
 
 const Footer = () => {
