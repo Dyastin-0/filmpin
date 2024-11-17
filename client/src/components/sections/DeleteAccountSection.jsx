@@ -5,11 +5,9 @@ import useAxios from "../../hooks/useAxios";
 import { useNavigate } from "react-router-dom";
 import { useToast } from "../hooks/useToast";
 import { useAuth } from "../../hooks/useAuth";
-import { useList } from "../../hooks/useList";
 
 const DeleteAccountSection = () => {
   const { setUser, setToken } = useAuth();
-  const { setList } = useList();
   const { api } = useAxios();
   const confirm = useConfirm();
   const { toastInfo } = useToast();
@@ -26,7 +24,6 @@ const DeleteAccountSection = () => {
             navigate("/");
             setUser(null);
             setToken(null);
-            setList([]);
           })
           .catch((error) => {
             toastInfo("Failed to delete account.");
@@ -42,6 +39,8 @@ const DeleteAccountSection = () => {
       <Separator />
       <p className="text-xs text-primary-foreground">
         Once you delete your account, there is no going back. Please be certain.
+        All your data will be permanently deleted; your personal data, lists,
+        and reviews.
       </p>
       <Button
         variant="danger"
