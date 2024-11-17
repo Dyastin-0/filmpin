@@ -18,6 +18,8 @@ const generateKeys = async () => {
     const cloudinaryApiKey = await getSecret("CLOUDINARY_API_KEY");
     const cloudinaryApiSecret = await getSecret("CLOUDINARY_API_SECRET");
     const geminiApiKey = await getSecret("GEMINI_API_KEY");
+    const googleClientId = await getSecret("GOOGLE_CLIENT_ID");
+    const googleClientSecret = await getSecret("GOOGLE_CLIENT_SECRET");
 
     const newVariables = [
       `MONGODB_URL=${dbUrl}`,
@@ -32,6 +34,8 @@ const generateKeys = async () => {
       `CLOUDINARY_API_SECRET=${cloudinaryApiSecret}`,
       `GEMINI_API_KEY=${geminiApiKey}`,
       `BASE_CLIENT_URL=filmpin.dyastin.tech`,
+      `GOOGLE_CLIENT_ID=${googleClientId}`,
+      `GOOGLE_CLIENT_SECRET=${googleClientSecret}`,
     ];
 
     const fileContent = fs.readFileSync(envFilePath, { encoding: "utf8" });
