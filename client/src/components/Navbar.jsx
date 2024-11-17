@@ -100,7 +100,7 @@ const Navbar = ({ toggleSideNavbar }) => {
                 <img
                   loading="lazy"
                   src={user.profileImageURL}
-                  className="max-w-[30px] max-h-[30px] object-cover aspect-square rounded-full"
+                  className="overflow-hidden max-w-[30px] max-h-[30px] rounded-full"
                 />
               ) : (
                 <div

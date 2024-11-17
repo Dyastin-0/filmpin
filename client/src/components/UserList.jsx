@@ -1,4 +1,4 @@
-import { useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 import ListPoster from "./ListPoster";
 import dayjs from "dayjs";
 import relativeTime from "dayjs/plugin/relativeTime";
@@ -6,19 +6,13 @@ import relativeTime from "dayjs/plugin/relativeTime";
 dayjs.extend(relativeTime);
 
 const UserList = ({ list }) => {
-  const navigate = useNavigate();
-
-  const handleClick = (listParam) => {
-    navigate(`/lists/${list._id}`);
-  };
-
   return (
-    <div
+    <Link
       className="flex flex-col rounded-lg drop-shadow-sm gap-4 p-4 w-[200px] h-fit
 			text-primary-foreground border border-secondary-accent
 			transition-all duration-300
-			hover:cursor-pointer"
-      onClick={() => handleClick(list)}
+			hover:cursor-pointer hover:border-primary-highlight"
+      to={`/lists/${list._id}`}
     >
       {list && (
         <>
@@ -31,7 +25,7 @@ const UserList = ({ list }) => {
           </span>
         </>
       )}
-    </div>
+    </Link>
   );
 };
 

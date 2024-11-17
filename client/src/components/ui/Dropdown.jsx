@@ -2,7 +2,7 @@ import { useState, useRef } from "react";
 import Button from "./Button";
 import { motion } from "framer-motion";
 
-export const Dropdown = ({ name, children }) => {
+export const Dropdown = ({ name, icon, children }) => {
   const [isOpen, setIsOpen] = useState(false);
   const dropdownRef = useRef(null);
 
@@ -20,6 +20,7 @@ export const Dropdown = ({ name, children }) => {
   return (
     <div className="relative flex items-center z-50" ref={dropdownRef}>
       <Button
+        icon={icon}
         variant="default_rounded"
         text={name}
         onClick={toggle}
