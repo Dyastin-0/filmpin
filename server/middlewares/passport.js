@@ -12,9 +12,9 @@ passport.use(
     },
     async (_, __, profile, done) => {
       try {
-        let user = await Users.findOne({ email: profile.emails[0].value });
+        let user = await Users.findOne({ googleId: profile.id });
         if (user) {
-          return done(null, null);
+          return done(null, user);
         }
         user = await Users.create({
           profileImageURL: profile.photos[0].value,
@@ -24,6 +24,7 @@ passport.use(
           verified: true,
           roles: ["122602"],
         });
+
         return done(null, user);
       } catch (error) {
         console.error(error);

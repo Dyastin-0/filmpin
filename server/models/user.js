@@ -46,6 +46,9 @@ const userSchema = new Schema({
     type: Number,
     default: Date.now,
   },
+  googleId: {
+    type: String,
+  },
 });
 
 const UserModel = mongoose.model("User", userSchema);
