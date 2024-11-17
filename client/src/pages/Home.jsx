@@ -59,9 +59,10 @@ const Home = () => {
       </Helmet>
       {viewWidth >= 768 && <QuickList list={list} />}
       <motion.div
-        className={`flex flex-col bg-primary rounded-lg gap-4 p-4 justify-center items-center h-full`}
-        animate={{ width: viewWidth >= 768 ? "calc(100% - 200px)" : "100%" }}
-        transition={{ duration: 0.5 }}
+        className="flex flex-col bg-primary rounded-lg gap-4 p-4 justify-center items-center h-full"
+        animate={{
+          width: viewWidth >= 768 ? "calc(calc(100% - 200px) - 1rem)" : "100%",
+        }}
       >
         <HomeSlider data={topMovies} />
         <MovieSection title="Popular movies" movies={popularMovies} />

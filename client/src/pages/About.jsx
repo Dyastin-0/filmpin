@@ -1,7 +1,5 @@
-import React from "react";
 import { Helmet } from "react-helmet";
 import { Filmpin } from "../components/Filmpin";
-import Button from "../components/ui/Button";
 
 const info = [
   "Filmpin is a movie and TV show database that provides information about the latest releases, upcoming titles, and popular content; powered by TMDb API. Our platform is designed to help you discover new films and shows, explore different genres, and stay up-to-date with the entertainment industry.",

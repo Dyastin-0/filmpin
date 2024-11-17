@@ -1,4 +1,3 @@
-import React from "react";
 import listTypes from "../../models/listTypes";
 import { Link, useNavigate } from "react-router-dom";
 import { Dropdown, DropdownItem } from "../ui/Dropdown";

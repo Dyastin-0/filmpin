@@ -1,4 +1,3 @@
-import React from "react";
 import ListPoster from "./ListPoster";
 import { Link } from "react-router-dom";
 

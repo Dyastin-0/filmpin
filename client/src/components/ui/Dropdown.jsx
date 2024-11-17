@@ -54,7 +54,7 @@ export const DropdownItem = ({ onClick, children, setOpen, asChild }) => {
     <button
       className="text-right w-full text-nowrap text-primary-foreground text-xs outline-none p-1.5 rounded-md
 			transition-all duration-300
-			hover:bg-secondary hover:cursor-pointer focus:bg-primary"
+			hover:bg-secondary hover:cursor-pointer focus:bg-secondary"
       onFocus={setOpen}
       onClick={(e) => {
         e.preventDefault();

@@ -36,4 +36,13 @@ async function uploadImage(imageBuffer, publicId) {
   }
 }
 
-module.exports = { uploadImage };
+const deleteImage = async (publicId) => {
+  try {
+    const result = await cloudinary.uploader.destroy(publicId);
+    return result;
+  } catch (error) {
+    console.error("Failed to delete image.", error);
+  }
+};
+
+module.exports = { uploadImage, deleteImage };

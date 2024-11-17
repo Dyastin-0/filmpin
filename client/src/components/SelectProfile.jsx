@@ -37,15 +37,11 @@ const SelectProfile = () => {
     const formData = new FormData();
     formData.set("imageFile", file);
     try {
-      const response = await api.post(
-        `/account/set-profile?user_id=${user._id}`,
-        formData,
-        {
-          headers: {
-            "Content-Type": "multipart/form-data",
-          },
-        }
-      );
+      const response = await api.post(`/account/profile-photo`, formData, {
+        headers: {
+          "Content-Type": "multipart/form-data",
+        },
+      });
       setUser((prev) => ({
         ...prev,
         profileImageURL: response.data.secure_url,
@@ -92,9 +88,9 @@ const SelectProfile = () => {
           text={`${uploading ? "Uploading..." : "Upload"}`}
         />
       </form>
-      {preview ? (
+      {preview || user.profileImageURL ? (
         <img
-          src={preview}
+          src={preview || user.profileImageURL}
           alt="Preview"
           className="w-[200px] h-[200px] rounded-full object-cover aspect-square"
         />

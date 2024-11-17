@@ -4,7 +4,6 @@ import { useAuth } from "../hooks/useAuth";
 import ListSection from "../components/sections/ListSection";
 import useSWR from "swr";
 import { Helmet } from "react-helmet";
-import UserBackdropSection from "../components/sections/UserBackdropSection";
 import axios from "axios";
 import UserInfoSection from "../components/sections/UserInfoSection";
 import UserReviewsSection from "../components/sections/UserReviewsSection";
@@ -37,7 +36,6 @@ const Profile = () => {
       </Helmet>
       <UserInfoSection userData={userData} />
       <div className="flex flex-col w-full bg-primary rounded-md p-4 gap-4">
-        {/* <UserBackdropSection userData={userData} /> */}
         <ListSection userData={userData} />
         <UserReviewsSection userData={userData} />
       </div>

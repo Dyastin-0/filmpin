@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { useNavigate } from "react-router-dom";
+import { Navigate, useNavigate } from "react-router-dom";
 import { useAuth } from "../hooks/useAuth";
 import axios from "axios";
 import Button from "./ui/Button";
@@ -15,16 +15,14 @@ import {
 } from "@fortawesome/free-solid-svg-icons";
 import { routes, authRoutes } from "../helpers/routes";
 import Link from "./Link";
+import { Link as DomLink } from "react-router-dom";
 import { Filmpin } from "./Filmpin";
 import Search from "./Search";
 import useViewport from "../hooks/useViewport";
-import { useModal } from "../components/hooks/useModal";
-import Settings from "./Settings";
 
 const Navbar = ({ toggleSideNavbar }) => {
   const navigate = useNavigate();
   const { toggleTheme, icon } = useThemeToggle();
-  const { setModal, setOpen } = useModal();
   const { setToken, token, setUser, user } = useAuth();
   const { viewWidth } = useViewport();
   const [isScrollingDown, setIsScrollingDown] = useState(false);
@@ -51,13 +49,6 @@ const Navbar = ({ toggleSideNavbar }) => {
     window.addEventListener("scroll", handleScroll);
     return () => window.removeEventListener("scroll", handleScroll);
   }, [lastScrollY]);
-
-  useEffect(() => {
-    const handleResize = () => setViewWidth(window.innerWidth);
-
-    window.addEventListener("resize", handleResize);
-    return () => window.removeEventListener("resize", handleResize);
-  }, [viewWidth]);
 
   return (
     <motion.div
@@ -121,18 +112,27 @@ const Navbar = ({ toggleSideNavbar }) => {
               )
             }
           >
-            <DropdownItem onClick={() => navigate(`/${user.username}`)}>
-              Profile
-              <FontAwesomeIcon size="xs" icon={faUser} className="ml-1" />
+            <DropdownItem asChild={true}>
+              <DomLink
+                to={`/${user.username}`}
+                className="flex p-2 text-xs text-primary-foreground outline-none rounded-md
+                transition-all duration-300 w-full justify-end items-center
+                hover:bg-secondary hover:cursor-pointer focus:bg-secondary"
+              >
+                Profile
+                <FontAwesomeIcon size="xs" icon={faUser} className="ml-1" />
+              </DomLink>
             </DropdownItem>
-            <DropdownItem
-              onClick={() => {
-                setModal(<Settings />);
-                setOpen(true);
-              }}
-            >
-              Settings
-              <FontAwesomeIcon size="xs" icon={faGear} className="ml-1" />
+            <DropdownItem asChild={true}>
+              <DomLink
+                to="/settings"
+                className="flex p-2 text-xs text-primary-foreground outline-none rounded-md
+                transition-all duration-300 w-full justify-end items-center
+                hover:bg-secondary hover:cursor-pointer focus:bg-secondary"
+              >
+                Settings
+                <FontAwesomeIcon size="xs" icon={faGear} className="ml-1" />
+              </DomLink>
             </DropdownItem>
             <DropdownItem onClick={handleSignout}>
               Sign out

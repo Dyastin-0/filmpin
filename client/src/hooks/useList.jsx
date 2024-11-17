@@ -3,13 +3,12 @@ import { useAuth } from "./useAuth";
 import useAxios from "./useAxios";
 import { useEffect, useState } from "react";
 import { io } from "socket.io-client";
-import useSWR from "swr";
 import { fetchUserList } from "../helpers/api";
 
 export const useList = ({ userData }) => {
   const { token, user } = useAuth();
 
-  const { api, isAxiosReady } = useAxios();
+  const { api } = useAxios();
   const { toastInfo } = useToast();
   const [list, setList] = useState([]);
 
@@ -81,5 +80,5 @@ export const useList = ({ userData }) => {
     }
   }, [token, userData, user]);
 
-  return { list };
+  return { list, setList };
 };

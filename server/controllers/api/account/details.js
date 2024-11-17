@@ -1,36 +1,8 @@
+const mongoose = require("mongoose");
 const Users = require("../../../models/user");
-const { uploadImage } = require("../../../helpers/cloudinaryApi");
-
-/**
- * Sets the backdrop image path for a user.
- * @param {Object} req - The request object.
- * @param {string} req.query.user_id - The user ID from the request query.
- * @param {string} req.query.backdrop_path - The new backdrop image path.
- * @param {string} req.id - The authenticated user's ID from the request.
- * @param {Object} res - The response object.
- * @returns {Object} JSON containing the updated backdropPath.
- * @throws {Error} If user is not found or an internal server error occurs, returns appropriate status codes.
- */
-const handleSetBackdrop = async (req, res) => {
-  const { user_id, backdrop_path } = req.query;
-  const { id } = req;
-
-  if (!user_id) return res.status(400).json({ message: "Missing ID." });
-  if (user_id !== id) return res.status(400).json({ message: "Invalid ID." });
-
-  try {
-    const user = await Users.findOne({ _id: id });
-    if (!user) return res.status(404).json({ message: "User not found." });
-    await Users.updateOne(
-      { _id: id },
-      { $set: { backdropPath: backdrop_path } }
-    );
-    res.json({ backdropPath: backdrop_path });
-  } catch (error) {
-    console.error("Failed to set backdrop.", error);
-    res.sendStatus(500);
-  }
-};
+const Lists = require("../../../models/list");
+const Reviews = require("../../../models/review");
+const { uploadImage, deleteImage } = require("../../../helpers/cloudinaryApi");
 
 /**
  * Sets the profile image for a user by uploading it to Cloudinary.
@@ -43,20 +15,17 @@ const handleSetBackdrop = async (req, res) => {
  * @throws {Error} If user is not found, file is missing, or an internal server error occurs, returns appropriate status codes.
  */
 const handleSetProfile = async (req, res) => {
-  const { user_id } = req.query;
   const { id } = req;
   const file = req.file;
 
-  if (!user_id) return res.status(400).json({ message: "Missing ID." });
-  if (user_id !== id) return res.status(400).json({ message: "Invalid ID." });
   if (!file) return res.status(400).json({ message: "Missing file." });
 
   try {
-    const publicId = `${id}-profile`;
-    const result = await uploadImage(file.buffer, publicId);
-
     const user = await Users.findOne({ _id: id });
     if (!user) return res.status(404).json({ message: "User not found." });
+
+    const publicId = `${id}-profile`;
+    const result = await uploadImage(file.buffer, publicId);
 
     const profileURL = result.secure_url;
     await Users.updateOne(
@@ -71,7 +40,85 @@ const handleSetProfile = async (req, res) => {
   }
 };
 
+const handleDeleteProfile = async (req, res) => {
+  const { id } = req;
+
+  try {
+    const user = await Users.findOne({ _id: id });
+
+    if (!user) return res.status(404).json({ message: "User not found." });
+
+    await deleteImage(`${id}-profile`);
+
+    await Users.updateOne({ _id: id }, { $set: { profileImageURL: null } });
+
+    res.sendStatus(200);
+  } catch (error) {
+    console.error("Failed to delete profile.", error);
+    res.sendStatus(500);
+  }
+};
+
+const handleUpdateUsername = async (req, res) => {
+  const { username } = req.body;
+  const { id } = req;
+
+  if (!username) return res.status(400).json({ message: "Missing username." });
+
+  try {
+    const user = await Users.findOne({ _id: id });
+    if (!user) return res.status(404).json({ message: "User not found." });
+
+    await Users.updateOne({ _id: id }, { $set: { username } });
+
+    res.sendStatus(200);
+  } catch (error) {
+    console.error("Failed to update username.", error);
+    res.sendStatus(500);
+  }
+};
+
+const handleDelete = async (req, res) => {
+  const { id } = req;
+
+  const session = await mongoose.startSession();
+  session.startTransaction();
+
+  try {
+    const user = await Users.findOne({ _id: id }).session(session);
+    if (!user) {
+      await session.abortTransaction();
+      return res.status(404).json({ message: "User not found." });
+    }
+
+    await Lists.deleteMany({ owner: id }).session(session);
+    await Reviews.deleteMany({ owner: id }).session(session);
+    await deleteImage(`${id}-profile`);
+    await Users.deleteOne({ _id: id }).session(session);
+
+    await session.commitTransaction();
+    session.endSession();
+
+    res.clearCookie("jwt", {
+      httpOnly: true,
+      sameSite: "None",
+      secure: true,
+    });
+
+    res.status(200).json({ message: "Account deleted successfully." });
+  } catch (error) {
+    await session.abortTransaction();
+    session.endSession();
+    console.error("Failed to delete user.", error);
+    res
+      .status(500)
+      .json({ message: "An error occurred while deleting the account." });
+  }
+};
+
 module.exports = {
-  handleSetBackdrop,
   handleSetProfile,
+  handleDeleteProfile,
+  handleUpdateUsername,
+  handleDelete,
 };

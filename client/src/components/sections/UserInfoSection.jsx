@@ -1,20 +1,17 @@
-import { motion } from "framer-motion";
+import { useNavigate } from "react-router-dom";
 import { useModal } from "../hooks/useModal";
 import SelectProfile from "../SelectProfile";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faEllipsisV, faImage } from "@fortawesome/free-solid-svg-icons";
-import { Dropdown, DropdownItem } from "../ui/Dropdown";
-import { useAuth } from "../../hooks/useAuth";
-import SelectBackdrop from "../SelectBackdrop";
+import { faImage } from "@fortawesome/free-solid-svg-icons";
 import { Image } from "../ui/Image";
 import Button from "../ui/Button";
 
 const UserInfoSection = ({ userData }) => {
-  const { token, user } = useAuth();
+  const navigate = useNavigate();
   const { setModal, setOpen } = useModal();
 
   return (
-    <motion.section
+    <section
       className="flex gap-4 p-4 bg-primary rounded-md h-fit
     lg:w-fit md:w-fit w-full justify-center"
     >
@@ -65,14 +62,11 @@ const UserInfoSection = ({ userData }) => {
           </div>
           <Button
             text="Edit profile"
-            onClick={() => {
-              setModal(<SelectProfile />);
-              setOpen(true);
-            }}
+            onClick={() => navigate("/settings/profile")}
           />
         </div>
       </div>
-    </motion.section>
+    </section>
   );
 };
 

@@ -218,6 +218,13 @@ const handleDeleteList = async (req, res) => {
         .status(403)
         .json({ message: "You can't delete someone else's list." });
 
+    const user = await Users.findOne({ _id: id });
+    if (!user) return res.status(400).json({ message: "User not found." });
+
+    const newUserLists = user.lists.filter((list) => list !== list_id);
+
+    await Users.updateOne({ _id: id }, { $set: { lists: newUserLists } });
+
     await Lists.deleteOne({ _id: list_id });
     res.json({ message: "List deleted." });
   } catch (error) {

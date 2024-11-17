@@ -35,6 +35,8 @@ const Footer = lazy(() => import("./components/Footer"));
 const About = lazy(() => import("./pages/About"));
 const PrivacyPolicy = lazy(() => import("./pages/PrivacyPolicy"));
 const PasswordReset = lazy(() => import("./pages/PasswordReset"));
+const Settings = lazy(() => import("./pages/Settings"));
+const ProfileSettings = lazy(() => import("./pages/ProfileSettings"));
 
 axios.defaults.baseURL = import.meta.env.VITE_BASE_API_URL;
 axios.defaults.withCredentials = true;
@@ -76,6 +78,8 @@ function App() {
             <Route path="/discover" element={<Discover />} />
             <Route path="/discover/movies" element={<DiscoverMovieSlug />} />
             <Route path="/discover/tvshows" element={<DiscoverTvShowSlug />} />
+            <Route path="/settings" element={<Settings />} />
+            <Route path="/settings/profile" element={<ProfileSettings />} />
             <Route
               path="/tvshows/:show_id/season"
               element={<TvShowSeasonSlug />}
