@@ -46,6 +46,7 @@ const handleAuth = async (req, res) => {
     return res.status(403).json({ message: "Verify your account." });
 
   const matched = await compare(password, user.password);
+
   if (matched) {
     const accessToken = jwt.sign(
       {
@@ -112,6 +113,79 @@ const handleAuth = async (req, res) => {
   }
 };
 
+const handleGoogleAuth = async (req, res) => {
+  const { user } = req;
+  const cookies = req.cookies;
+
+  if (!user) {
+    return res
+      .status(400)
+      .json({ message: "Invalid request. User not provided." });
+  }
+
+  const accessToken = jwt.sign(
+    {
+      UserInfo: {
+        username: user.username,
+        email: user.email,
+        roles: user.roles,
+        id: user._id,
+      },
+    },
+    process.env.ACCESS_TOKEN_SECRET,
+    { expiresIn: "15m" }
+  );
+
+  const newRefreshToken = jwt.sign(
+    { username: user.username, email: user.email },
+    process.env.REFRESH_TOKEN_SECRET,
+    { expiresIn: "1d" }
+  );
+
+  let newRefreshTokens = user.refreshToken || [];
+
+  if (cookies?.jwt) {
+    const refreshToken = cookies.jwt;
+
+    newRefreshTokens = newRefreshTokens.filter((rt) => rt !== refreshToken);
+    res.clearCookie("jwt", {
+      httpOnly: true,
+      sameSite: "None",
+      secure: true,
+    });
+  }
+
+  newRefreshTokens.push(newRefreshToken);
+
+  await Users.updateOne(
+    { email: user.email },
+    { $set: { refreshToken: newRefreshTokens } }
+  );
+
+  res.cookie("jwt", newRefreshToken, {
+    httpOnly: true,
+    sameSite: "None",
+    secure: true,
+    maxAge: 1 * 24 * 60 * 60 * 1000,
+  });
+
+  const {
+    password,
+    refreshToken,
+    verificationToken,
+    recoveryToken,
+    __v,
+    ...userData
+  } = user.toJSON();
+
+  res.redirect(
+    `${process.env.BASE_CLIENT_URL}/sign-in?token=${accessToken}&user=${JSON.stringify(
+      userData
+    )}`
+  );
+};
+
 module.exports = {
   handleAuth,
+  handleGoogleAuth,
 };

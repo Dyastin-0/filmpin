@@ -1,11 +1,19 @@
 import { useEffect, useRef, useState } from "react";
-import { Link, useLocation, useNavigate } from "react-router-dom";
+import {
+  Link,
+  useLocation,
+  useNavigate,
+  useSearchParams,
+} from "react-router-dom";
 import { useAuth } from "../../hooks/useAuth";
 import { useToast } from "../hooks/useToast";
 import { ShowPassword } from "../utils/ShowPassword";
 import Input from "../ui/Input";
 import Button from "../ui/Button";
 import axios from "axios";
+import Separtor from "../ui/Separator";
+import { faGoogle } from "@fortawesome/free-brands-svg-icons";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 const SigninForm = ({}) => {
   const emailRef = useRef(null);
@@ -16,6 +24,23 @@ const SigninForm = ({}) => {
   const { toastError, toastInfo } = useToast();
 
   const previousPath = location.state?.from || "/home";
+
+  const [searchParams, setSearchParams] = useSearchParams();
+
+  useEffect(() => {
+    const token = searchParams.get("token");
+    const user = JSON.parse(searchParams.get("user"));
+    const gae = searchParams.get("gae");
+    if (gae) {
+      toastInfo("Google authentication error. Email is already used.");
+      setSearchParams({});
+    }
+    if (token && user) {
+      setToken(token);
+      setUser(user);
+      navigate("/home");
+    }
+  }, [searchParams]);
 
   useEffect(() => {
     emailRef.current.focus();
@@ -115,6 +140,18 @@ const SigninForm = ({}) => {
         {" "}
         Don't have an account? click here{" "}
       </Link>
+      <div className="flex flex-col gap-2 mt-2">
+        <Separtor />
+        <p className="text-center text-xs">Or sign in with</p>
+        <Button
+          text="Google"
+          icon={<FontAwesomeIcon icon={faGoogle} />}
+          onClick={(e) => {
+            e.preventDefault();
+            window.location.href = "http://localhost:3000/api/auth/google";
+          }}
+        />
+      </div>
     </form>
   );
 };

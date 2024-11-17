@@ -21,7 +21,6 @@ const SearchSlug = () => {
   const listsCurrentPage = parseInt(searchParams.get("lists-page")) || 1;
 
   useEffect(() => {
-    console.log(searchParams.get("query"));
     setQuery(searchParams.get("query") || "");
   }, [searchParams]);
 

@@ -2,6 +2,7 @@ const express = require("express");
 const http = require("http");
 const { Server } = require("socket.io");
 const dotenv = require("dotenv").config();
+const session = require("express-session");
 const cors = require("cors");
 const cookieParser = require("cookie-parser");
 const { mongoose } = require("mongoose");
@@ -30,6 +31,14 @@ const io = new Server(server, {
     credentials: true,
   },
 });
+
+app.use(
+  session({
+    secret: "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",
+    resave: false,
+    saveUninitialized: true,
+  })
+);
 
 app.use(credentials);
 app.use(cors(corsOptions));
