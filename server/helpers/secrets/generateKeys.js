@@ -33,7 +33,7 @@ const generateKeys = async () => {
       `CLOUDINARY_API_KEY=${cloudinaryApiKey}`,
       `CLOUDINARY_API_SECRET=${cloudinaryApiSecret}`,
       `GEMINI_API_KEY=${geminiApiKey}`,
-      `BASE_CLIENT_URL=filmpin.dyastin.tech`,
+      `BASE_CLIENT_URL=https://filmpin.dyastin.tech`,
       `GOOGLE_CLIENT_ID=${googleClientId}`,
       `GOOGLE_CLIENT_SECRET=${googleClientSecret}`,
     ];
