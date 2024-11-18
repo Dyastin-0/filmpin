@@ -11,7 +11,13 @@ import {
 } from "../components/loaders/ListSlugLoader";
 import { LoadingDiscover as ListLoader } from "../components/loaders/MovieLoaders";
 import useAxios from "../hooks/useAxios";
-import { fetchList, fetchOwner, fetchMovie, fetchShow } from "../helpers/api";
+import {
+  fetchList,
+  fetchOwner,
+  fetchMovie,
+  fetchShow,
+  fetchDiscovery,
+} from "../helpers/api";
 import useSWR from "swr";
 import { Helmet } from "react-helmet";
 import ImageLazy from "../components/ui/ImageLazy";
@@ -20,6 +26,8 @@ import ListItemSection from "../components/sections/ListItemSection";
 import axios from "axios";
 import EditModeSection from "../components/sections/EditModeSection";
 import useConfirm from "../components/hooks/useConfirm";
+import { MovieSection } from "../components/sections/MovieSection";
+import { TvShowSection } from "../components/sections/tvShowSection";
 
 const ListSlug = () => {
   const { token, user } = useAuth();
@@ -53,6 +61,22 @@ const ListSlug = () => {
       }
     },
   });
+
+  const randomItem = listItems[Math.floor(Math.random() * listItems.length)];
+  const type = listTypes[listData?.type]?.replace(" ", "").toLowerCase();
+  const genres = randomItem?.genres
+    .map((genre) => genre.name.toLowerCase())
+    .join("_");
+
+  console.log(genres);
+
+  const { data: recommendations } = useSWR(
+    isAxiosReady && listData && randomItem && genres
+      ? `/${type}/discover?genres=${genres}&sort_by=vote_count&page=1`
+      : null,
+    () => fetchDiscovery(api, type, genres).then((data) => data.results),
+    { onSuccess: (data) => console.log(data) }
+  );
 
   const { data: ownerData } = useSWR(
     listData ? `/public/account?id=${listData.owner}` : null,
@@ -213,6 +237,15 @@ const ListSlug = () => {
             />
           </div>
         )}
+        {recommendations &&
+        listData &&
+        listTypes[listData.type] === "Movies" ? (
+          <MovieSection title="Recommendations" movies={recommendations} />
+        ) : recommendations &&
+          listData &&
+          listTypes[listData.type] === "TV Shows" ? (
+          <TvShowSection title="Recommendations" shows={recommendations} />
+        ) : null}
       </motion.div>
     </div>
   );
