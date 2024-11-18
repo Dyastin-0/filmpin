@@ -70,8 +70,7 @@ const SelectProfile = () => {
           htmlFor="imageFile"
           className="text-xs text-primary-foreground bg-secondary p-2 rounded-md
 					transition-all duration-300
-					hover:cursor-pointer hover:shadow-[var(--accent-secondary)_0_0_0_2px] active:shadow-[var(--highlight)_0_0_0_2px]
-					"
+					hover:cursor-pointer hover:shadow-[var(--accent-secondary)_0_0_0_2px] active:shadow-[var(--highlight)_0_0_0_2px]"
         >
           Select an image
           <FontAwesomeIcon className="ml-1" icon={faImage} />
