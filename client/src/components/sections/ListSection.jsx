@@ -39,7 +39,9 @@ const ListSection = ({ userData }) => {
       </div>
       <div className="flex flex-wrap justify-center w-full gap-4">
         {!isLoading && list?.length > 0 ? (
-          list.map((item) => <UserList key={item._id} list={item} />)
+          list
+            .filter((value) => value.list.length !== 0)
+            .map((item) => <UserList key={item._id} list={item} />)
         ) : (
           <p className="text-xs text-secondary-foreground">No lists yet.</p>
         )}

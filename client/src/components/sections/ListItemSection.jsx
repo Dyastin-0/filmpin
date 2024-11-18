@@ -34,11 +34,7 @@ const ListItemSection = ({
   const handleDragEnd = (event) => {
     const { active, over } = event;
     if (over && over.id === "trash") {
-      if (listItems.length === 1) {
-        toastInfo("A list must, at least, have one item.");
-      } else {
-        handleDelete(active.id);
-      }
+      handleDelete(active.id);
     } else if (active.id !== over.id) {
       setListItems((items) => {
         const oldIndex = items.findIndex((item) => item.id === active.id);

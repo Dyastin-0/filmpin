@@ -9,7 +9,7 @@ import listTypes from "../models/listTypes";
 import { useToast } from "./hooks/useToast";
 import { useModal } from "./hooks/useModal";
 import CreateList from "../components/CreateList";
-import { fetchList } from "../helpers/api";
+import { addListItem, fetchList } from "../helpers/api";
 import useSWR from "swr";
 
 const AddToList = ({ selected, type }) => {
@@ -27,16 +27,12 @@ const AddToList = ({ selected, type }) => {
   const handleAddMovie = async () => {
     if (!selectedList?.length > 0) return toastError("No list selected.");
     selectedList.map((list, _) =>
-      api
-        .post("/lists/item", {
-          list_id: list,
-          list_item: {
-            id: selected.id,
-            title: selected.title || selected.name,
-            poster_path: selected.poster_path,
-            backdrop_path: selected.backdrop_path,
-          },
-        })
+      addListItem(api, list, {
+        id: selected.id,
+        title: selected.title || selected.name,
+        poster_path: selected.poster_path,
+        backdrop_path: selected.backdrop_path,
+      })
         .then((response) => {
           toastInfo(
             `${selected.title || selected.name} added to ${

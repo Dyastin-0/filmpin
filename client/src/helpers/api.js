@@ -144,3 +144,32 @@ export const fetchUserReviews = async (api, id, page = 1) => {
   const response = await api.get(`/reviews/${id}?page=${page}`);
   return response.data;
 };
+
+export const createList = async (api, listName, listType, list) => {
+  const res = await api.post("/lists", {
+    list: {
+      name: listName,
+      type: listType,
+      list: list,
+    },
+  });
+
+  return res;
+};
+
+export const addListItem = async (api, listId, list) => {
+  const res = await api.post("/lists/item", {
+    list_id: listId,
+    list_item: list,
+  });
+
+  return res;
+};
+
+export const patchList = async (api, listId, list) => {
+  const res = await api.patch(`/lists?list_id=${listId}`, {
+    new_list: list,
+  });
+
+  return res;
+};

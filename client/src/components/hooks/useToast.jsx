@@ -71,7 +71,7 @@ const Toast = ({ message, onClose, id, color = "text-primary-foreground" }) => {
       <Button
         variant="default_rounded"
         onClick={onClose}
-        text={<FontAwesomeIcon icon={faX} />}
+        icon={<FontAwesomeIcon icon={faX} />}
       />
     </motion.div>
   );

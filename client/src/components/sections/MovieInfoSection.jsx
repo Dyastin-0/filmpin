@@ -1,4 +1,4 @@
-import { faPlus } from "@fortawesome/free-solid-svg-icons";
+import { faCheck, faPlus } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { motion } from "framer-motion";
 import Button from "../ui/Button";
@@ -7,9 +7,58 @@ import { useModal } from "../hooks/useModal";
 import AddToList from "../AddToList";
 import Poster from "../Poster";
 import CircularProgess from "../ui/CircularProgess";
+import { useAuth } from "../../hooks/useAuth";
+import { useList } from "../../hooks/useList";
+import useAxios from "../../hooks/useAxios";
+import useConfirm from "../../components/hooks/useConfirm";
+import { useToast } from "../hooks/useToast";
+import { addListItem, createList, patchList } from "../../helpers/api";
 
 const MovieInfoSection = ({ details, trailerYoutubeKey }) => {
+  const { api } = useAxios();
+  const confirm = useConfirm();
+  const { toastInfo } = useToast();
+  const { user } = useAuth();
+  const { list } = useList({ userData: user });
   const { setModal, setOpen } = useModal();
+
+  const watchedList = list?.find((item) => item.name === "Watched");
+  const isWatched = watchedList?.list?.find((item) => item.id == details.id);
+
+  const handleAddToWatched = () => {
+    confirm({
+      message: isWatched
+        ? `Remove ${details.title} from watched list?`
+        : `Add ${details.title} to watched list?`,
+      onConfirm: async () => {
+        if (isWatched) {
+          patchList(
+            api,
+            watchedList._id,
+            watchedList.list.filter((item) => item.id != details.id)
+          ).then(() =>
+            toastInfo(`${details.title} removed from watched list.`)
+          );
+          return;
+        }
+        if (watchedList) {
+          addListItem(api, watchedList._id, {
+            id: details.id,
+            title: details.title,
+            poster_path: details.poster_path,
+            backdrop_path: details.backdrop_path,
+          }).then(() => toastInfo(`${details.title} added to watched list.`));
+        } else {
+          createList(api, "Watched", "Movies", {
+            id: details.id,
+            title: details.title,
+            poster_path: details.poster_path,
+            backdrop_path: details.backdrop_path,
+          }).then(() => toastInfo(`${details.title} added to watched list.`));
+        }
+      },
+    });
+  };
 
   return (
     <section className="w-full">
@@ -56,15 +105,23 @@ const MovieInfoSection = ({ details, trailerYoutubeKey }) => {
             {`${Math.floor(details.runtime / 60)}h ${details.runtime % 60}m`}
           </p>
           <CircularProgess value={details.vote_average?.toFixed(1)} />
-          <Button
-            text="Add to list"
-            icon={<FontAwesomeIcon icon={faPlus} />}
-            className="w-fit"
-            onClick={() => {
-              setModal(<AddToList selected={details} type="Movies" />);
-              setOpen(true);
-            }}
-          />
+          <div className="flex gap-2">
+            <Button
+              text="Add to list"
+              icon={<FontAwesomeIcon icon={faPlus} />}
+              className="w-fit"
+              onClick={() => {
+                setModal(<AddToList selected={details} type="Movies" />);
+                setOpen(true);
+              }}
+            />
+            <Button
+              text="Watched"
+              icon={<FontAwesomeIcon icon={!isWatched ? faPlus : faCheck} />}
+              className="w-fit"
+              onClick={handleAddToWatched}
+            />
+          </div>
         </div>
       </motion.div>
     </section>
