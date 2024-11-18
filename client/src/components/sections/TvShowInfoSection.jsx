@@ -1,4 +1,4 @@
-import { faPlus } from "@fortawesome/free-solid-svg-icons";
+import { faPlus, faCheck } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { motion } from "framer-motion";
 import { useModal } from "../hooks/useModal";
@@ -7,9 +7,56 @@ import Button from "../ui/Button";
 import AddToList from "../AddToList";
 import Poster from "../Poster";
 import CircularProgess from "../ui/CircularProgess";
+import useAxios from "../../hooks/useAxios";
+import { useAuth } from "../../hooks/useAuth";
+import { useList } from "../../hooks/useList";
+import useConfirm from "../../components/hooks/useConfirm";
+import { useToast } from "../hooks/useToast";
+import { addListItem, createList, patchList } from "../../helpers/api";
 
 const TvShowInfoSection = ({ details, trailerYoutubeKey }) => {
+  const { api } = useAxios();
+  const confirm = useConfirm();
+  const { toastInfo } = useToast();
+  const { user } = useAuth();
+  const { list } = useList({ userData: user });
   const { setModal, setOpen } = useModal();
+
+  const watchedList = list?.find((item) => item.name === "Watched TV Shows");
+  const isWatched = watchedList?.list?.find((item) => item.id == details.id);
+
+  const handleAddToWatched = () => {
+    confirm({
+      message: isWatched
+        ? `Remove ${details.name} from watched list?`
+        : `Add ${details.name} to watched list?`,
+      onConfirm: async () => {
+        if (isWatched) {
+          patchList(
+            api,
+            watchedList._id,
+            watchedList.list.filter((item) => item.id != details.id)
+          ).then(() => toastInfo(`${details.name} removed from watched list.`));
+          return;
+        }
+        if (watchedList) {
+          addListItem(api, watchedList._id, {
+            id: details.id,
+            title: details.name,
+            poster_path: details.poster_path,
+            backdrop_path: details.backdrop_path,
+          }).then(() => toastInfo(`${details.name} added to watched list.`));
+        } else {
+          createList(api, "Watched TV Shows", "TV Shows", {
+            id: details.id,
+            title: details.name,
+            poster_path: details.poster_path,
+            backdrop_path: details.backdrop_path,
+          }).then(() => toastInfo(`${details.name} added to watched list.`));
+        }
+      },
+    });
+  };
 
   return (
     <section className="w-full">
@@ -62,15 +109,22 @@ const TvShowInfoSection = ({ details, trailerYoutubeKey }) => {
             {`${details.number_of_seasons} seasons, ${details.number_of_episodes} episodes`}
           </p>
           <CircularProgess value={details.vote_average?.toFixed(1)} />
-          <Button
-            text="Add to list"
-            icon={<FontAwesomeIcon icon={faPlus} />}
-            className="w-fit"
-            onClick={() => {
-              setModal(<AddToList selected={details} type="TV Shows" />);
-              setOpen(true);
-            }}
-          />
+          <div className="flex gap-2">
+            <Button
+              text="Add to list"
+              icon={<FontAwesomeIcon icon={faPlus} />}
+              className="w-fit"
+              onClick={() => {
+                setModal(<AddToList selected={details} type="TV Shows" />);
+                setOpen(true);
+              }}
+            />
+            <Button
+              onClick={handleAddToWatched}
+              text="Watched"
+              icon={<FontAwesomeIcon icon={!isWatched ? faPlus : faCheck} />}
+            />
+          </div>
         </div>
       </motion.div>
     </section>

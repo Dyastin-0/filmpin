@@ -22,7 +22,7 @@ const MovieInfoSection = ({ details, trailerYoutubeKey }) => {
   const { list } = useList({ userData: user });
   const { setModal, setOpen } = useModal();
 
-  const watchedList = list?.find((item) => item.name === "Watched");
+  const watchedList = list?.find((item) => item.name === "Watched Movies");
   const isWatched = watchedList?.list?.find((item) => item.id == details.id);
 
   const handleAddToWatched = () => {
