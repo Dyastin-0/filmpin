@@ -68,14 +68,12 @@ const ListSlug = () => {
     .map((genre) => genre.name.toLowerCase())
     .join("_");
 
-  console.log(genres);
-
   const { data: recommendations } = useSWR(
     isAxiosReady && listData && randomItem && genres
       ? `/${type}/discover?genres=${genres}&sort_by=vote_count&page=1`
       : null,
     () => fetchDiscovery(api, type, genres).then((data) => data.results),
-    { onSuccess: (data) => console.log(data) }
+    { dedupingInterval: 60000 }
   );
 
   const { data: ownerData } = useSWR(
