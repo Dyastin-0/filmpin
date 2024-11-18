@@ -5,6 +5,7 @@ import useAxios from "../hooks/useAxios";
 import useConfirm from "./hooks/useConfirm";
 import { useAuth } from "../hooks/useAuth";
 import { useToast } from "./hooks/useToast";
+import Separator from "./ui/Separator";
 
 const ChangeUsername = () => {
   const { setUser } = useAuth();
@@ -37,6 +38,7 @@ const ChangeUsername = () => {
   return (
     <div className="flex flex-col items-center w-fit h-fit max-w-full p-4 gap-4 bg-primary rounded-md overflow-hidden">
       <h1 className="text-center text-xs font-semibold">Change Username</h1>
+      <Separator />
       <form
         className="flex flex-col gap-4 text-xs text-primary-foreground"
         onSubmit={handleSubmit}

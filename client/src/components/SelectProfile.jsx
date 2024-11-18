@@ -6,6 +6,7 @@ import { useToast } from "../components/hooks/useToast";
 import { useModal } from "./hooks/useModal";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faImage, faUser } from "@fortawesome/free-solid-svg-icons";
+import Separator from "./ui/Separator";
 
 const SelectProfile = () => {
   const { setOpen } = useModal();
@@ -63,12 +64,13 @@ const SelectProfile = () => {
   return (
     <div className="flex flex-col items-center w-[400px] h-fit max-w-full p-4 gap-4 bg-primary rounded-md overflow-hidden">
       <h1 className="text-center text-xs font-semibold">Upload Profile</h1>
+      <Separator />
       <form className="flex flex-col gap-4" onSubmit={handleSubmit}>
         <label
           htmlFor="imageFile"
           className="text-xs text-primary-foreground bg-secondary p-2 rounded-md
 					transition-all duration-300
-					hover:cursor-pointer hover:shadow-[var(--accent)_0_0_0_2px]
+					hover:cursor-pointer hover:shadow-[var(--accent-secondary)_0_0_0_2px] active:shadow-[var(--highlight)_0_0_0_2px]
 					"
         >
           Select an image

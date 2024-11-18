@@ -11,6 +11,7 @@ import { useModal } from "./hooks/useModal";
 import CreateList from "../components/CreateList";
 import { addListItem, fetchList } from "../helpers/api";
 import useSWR from "swr";
+import Separator from "./ui/Separator";
 
 const AddToList = ({ selected, type }) => {
   const { user } = useAuth();
@@ -56,6 +57,7 @@ const AddToList = ({ selected, type }) => {
       <h1 className="text-center text-xs font-semibold">{`Add ${
         selected?.title || selected?.name
       } to your list`}</h1>
+      <Separator />
       <h1 className="text-xs text-primary-foreground">
         {lists?.length > 0
           ? `Your ${type} Lists`

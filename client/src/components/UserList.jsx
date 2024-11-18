@@ -8,7 +8,7 @@ dayjs.extend(relativeTime);
 const UserList = ({ list }) => {
   return (
     <Link
-      className="flex flex-col rounded-lg drop-shadow-sm gap-4 p-4 w-[200px] h-fit
+      className="flex flex-col rounded-lg drop-shadow-none gap-4 p-4 w-[200px] h-fit
 			text-primary-foreground border border-secondary-accent
 			transition-all duration-300
 			hover:cursor-pointer hover:border-primary-highlight"

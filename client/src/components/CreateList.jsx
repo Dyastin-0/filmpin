@@ -9,6 +9,7 @@ import { useModal } from "./hooks/useModal";
 import listTypes from "../models/listTypes";
 import DefaultInput from "./ui/DefaultInput";
 import { fetchDiscovery } from "../helpers/api";
+import Separator from "./ui/Separator";
 
 const CreateList = () => {
   const { setOpen } = useModal();
@@ -85,6 +86,7 @@ const CreateList = () => {
       onSubmit={handleCreateList}
     >
       <h1 className="text-center text-xs font-semibold">Create a List</h1>
+      <Separator />
       <DefaultInput
         ref={titleRef}
         onChange={(e) => setName(e.target.value)}
