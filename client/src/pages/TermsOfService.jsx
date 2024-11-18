@@ -68,10 +68,7 @@ const TermsOfService = () => {
         <Separator />
         <p>
           Your use of the Service is governed by our{" "}
-          <a
-            href="/privacy-policy"
-            className="text-primary-highlight hover:underline"
-          >
+          <a href="/privacy" className="text-primary-highlight hover:underline">
             Privacy Policy
           </a>
           , which details how we collect and use your personal information.

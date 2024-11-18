@@ -35,7 +35,7 @@ const handleAuth = async (req, res) => {
     return res
       .status(400)
       .json({ error: "Bad request. Missing input: Email." });
-  if (!password || password.length < 6)
+  if (!password)
     return res
       .status(400)
       .json({ message: "Bad request. Invalid input: Password." });
