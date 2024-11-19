@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { Link, useSearchParams } from "react-router-dom";
+import { useSearchParams } from "react-router-dom";
 import { motion } from "framer-motion";
 import { MovieSection } from "../components/sections/MovieSection";
 import { LoadingMovieSection } from "../components/loaders/MovieLoaders";
@@ -8,17 +8,13 @@ import CastSection from "../components/sections/CastSection";
 import CrewSection from "../components/sections/CrewSection";
 import { ClipSection } from "../components/sections/ClipSection";
 import useAxios from "../hooks/useAxios";
-import {
-  fetchCredits,
-  fetchDiscovery,
-  fetchMovie,
-  fetchVideos,
-} from "../helpers/api";
+import { fetchCredits, fetchMovie, fetchVideos } from "../helpers/api";
 import useSWR from "swr";
 import { Helmet } from "react-helmet";
 import MovieInfoSection from "../components/sections/MovieInfoSection";
 import CreditsSection from "../components/sections/CreditsSection";
 import ReviewSection from "../components/sections/ReviewSection";
+import useSimilar from "../hooks/useSimilar";
 
 const MovieSlug = () => {
   const [searchParams] = useSearchParams();
@@ -39,15 +35,12 @@ const MovieSlug = () => {
     .map((genre) => genre.name.toLowerCase())
     .join("_");
 
-  const { data: similarMovies } = useSWR(
-    isAxiosReady && details
-      ? `/movies/discover?genres=${genres}&sort_by=vote_count&page=1`
-      : null,
-    () => fetchDiscovery(api, "movies", genres),
-    {
-      dedupingInterval: 60000,
-    }
-  );
+  const { similar: similarMovies } = useSimilar({
+    type: "movies",
+    genres: genres,
+    page: 1,
+    isResultOnly: false,
+  });
 
   const { data: videos } = useSWR(
     isAxiosReady ? `/movies/videos?movie_id=${id}` : null,
@@ -99,7 +92,7 @@ const MovieSlug = () => {
         {similarMovies ? (
           <MovieSection
             title="Recommendations"
-            movies={similarMovies.results.filter(
+            movies={similarMovies.results?.filter(
               (similarMovie) => similarMovie.title !== details.title
             )}
           />

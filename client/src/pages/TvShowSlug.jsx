@@ -12,6 +12,7 @@ import useSWR from "swr";
 import { Helmet } from "react-helmet";
 import TvShowInfoSection from "../components/sections/TvShowInfoSection";
 import ReviewSection from "../components/sections/ReviewSection";
+import useSimilar from "../hooks/useSimilar";
 
 const TvShowSlug = () => {
   const [searchParams] = useSearchParams();
@@ -28,23 +29,17 @@ const TvShowSlug = () => {
     }
   );
 
-  const { data: similarShows, isLoading: isSimilarShowsLoading } = useSWR(
-    isAxiosReady && details ? `/discover/tvshows?` : null,
-    () =>
-      fetchDiscovery(
-        api,
-        "tvshows",
-        details.genres
-          .map((genre) => genre?.name)
-          .join("_")
-          .toLowerCase(),
-        "vote_count",
-        1
-      ),
-    {
-      dedupingInterval: 60000,
-    }
-  );
+  const genres = details?.genres
+    .map((genre) => genre?.name)
+    .join("_")
+    .toLowerCase();
+
+  const { similar: similarShows, loading: isSimilarShowsLoading } = useSimilar({
+    type: "tvshows",
+    genres: genres,
+    page: 1,
+    isResultOnly: false,
+  });
 
   const { data: videos } = useSWR(
     isAxiosReady && details ? `/tvshows/videos?show_id=${id}` : null,
