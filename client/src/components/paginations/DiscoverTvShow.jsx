@@ -1,9 +1,7 @@
 import Pagination from "../ui/Pagination";
 import TvShow from "../TvShow";
-import useAxios from "../../hooks/useAxios";
-import { fetchDiscovery } from "../../helpers/api";
-import useSWR from "swr";
 import { LoadingDiscover } from "../loaders/MovieLoaders";
+import useSimilar from "../../hooks/useSimilar";
 
 const DiscoverTvShow = ({
   genresString,
@@ -11,17 +9,13 @@ const DiscoverTvShow = ({
   currentPage,
   onPageChange,
 }) => {
-  const { api, isAxiosReady } = useAxios();
-
-  const { data, isLoading } = useSWR(
-    isAxiosReady
-      ? `/discover/tvshows?genres=${genresString}&sort_by=${sortBy}&page=${currentPage}`
-      : null,
-    () => fetchDiscovery(api, "tvshows", genresString, sortBy, currentPage),
-    {
-      dedupingInterval: 60000,
-    }
-  );
+  const { similar: data, isLoading } = useSimilar({
+    type: "tvshows",
+    genres: genresString,
+    page: currentPage,
+    sortBy: sortBy,
+    isResultOnly: false,
+  });
 
   if (isLoading) return <LoadingDiscover />;
 

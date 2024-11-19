@@ -13,7 +13,7 @@ const Discover = () => {
   const [imageIndex, setImageIndex] = useState(0);
   const [isMovieHovered, setIsMovieHovered] = useState(true);
 
-  const { data: movies, isLoading: areMoviesLoading } = useSWR(
+  const { data: movies } = useSWR(
     isAxiosReady ? "/movies/list?category=top_ratedt&page=1" : null,
     () => fetchCategory(api, "movies", "top_rated", 1),
     {
@@ -21,7 +21,7 @@ const Discover = () => {
     }
   );
 
-  const { data: shows, isLoading: areShowsLoading } = useSWR(
+  const { data: shows } = useSWR(
     isAxiosReady ? "/tvshows/list?category=top_rated&page=1" : null,
     () => fetchCategory(api, "tvshows", "top_rated", 1),
     {

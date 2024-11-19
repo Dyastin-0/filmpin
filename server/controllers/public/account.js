@@ -26,6 +26,7 @@ const handleGetProfile = async (req, res) => {
       verificationToken,
       recoveryToken,
       refreshToken,
+      passwordResetToken,
       ...userData
     } = user.toJSON();
 

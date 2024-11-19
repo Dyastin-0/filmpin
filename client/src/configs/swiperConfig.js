@@ -2,7 +2,7 @@ import { Autoplay, Navigation, Pagination } from "swiper/modules";
 
 export const swiperConfig = {
   speed: 1000,
-  spaceBetween: 14,
+  spaceBetween: 16,
   slidesPerView: "auto",
   navigation: true,
   loop: true,
@@ -13,7 +13,7 @@ export const swiperConfig = {
 
 export const swiperAutoPlayConfig = {
   speed: 1000,
-  spaceBetween: 14,
+  spaceBetween: 16,
   loop: true,
   slidesPerView: 1,
   autoplay: {
@@ -27,7 +27,7 @@ export const swiperAutoPlayConfig = {
 
 export const swiperConfigNormal = {
   speed: 1000,
-  spaceBetween: 14,
+  spaceBetween: 16,
   slidesPerView: "auto",
   lazy: "true",
   className: "swiper-slide",

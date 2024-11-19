@@ -26,9 +26,8 @@ const MovieSlug = () => {
   const [trailerYoutubeKey, setTrailerYoutubeKey] = useState(null);
 
   const id = searchParams.get("id").split("_")[0];
-  const title = searchParams.get("id").split("_")[1];
 
-  const { data: details, isLoading: isDetailsLoading } = useSWR(
+  const { data: details } = useSWR(
     isAxiosReady ? `/movies/details?movie_id=${id}` : null,
     () => fetchMovie(api, id),
     {
@@ -40,7 +39,7 @@ const MovieSlug = () => {
     .map((genre) => genre.name.toLowerCase())
     .join("_");
 
-  const { data: similarMovies, isLoading: isDiscoverLoading } = useSWR(
+  const { data: similarMovies } = useSWR(
     isAxiosReady && details
       ? `/movies/discover?genres=${genres}&sort_by=vote_count&page=1`
       : null,
@@ -50,7 +49,7 @@ const MovieSlug = () => {
     }
   );
 
-  const { data: videos, isLoading: isVideosLoading } = useSWR(
+  const { data: videos } = useSWR(
     isAxiosReady ? `/movies/videos?movie_id=${id}` : null,
     () => fetchVideos(api, "movies", "movie_id", id),
     {
@@ -62,7 +61,7 @@ const MovieSlug = () => {
     }
   );
 
-  const { data: credits, isLoading: isCreditsLoading } = useSWR(
+  const { data: credits } = useSWR(
     isAxiosReady ? `/movies/credits?movie_id=${id}` : null,
     () => fetchCredits(api, "movies", id),
     {

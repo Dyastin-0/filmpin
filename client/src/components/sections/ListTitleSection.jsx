@@ -13,9 +13,9 @@ import useAxios from "../../hooks/useAxios";
 import { useToast } from "../hooks/useToast";
 
 const ListTitleSection = ({
-  listData,
+  listInfo,
   listItems,
-  ownerData,
+  ownerInfo,
   toggleEditMode,
   isOwner,
 }) => {
@@ -26,12 +26,12 @@ const ListTitleSection = ({
 
   const handleDeleteList = () => {
     confirm({
-      message: `Are you sure you want to delete the list '${listData?.name}'?`,
+      message: `Are you sure you want to delete the list '${listInfo?.name}'?`,
       onConfirm: async () => {
         try {
-          await api.delete(`/lists/${listData?._id}`);
-          toastInfo(`List '${listData?.name}' has been deleted.`);
-          navigate(`/${ownerData?.username}`);
+          await api.delete(`/lists/${listInfo?._id}`);
+          toastInfo(`List '${listInfo?.name}' has been deleted.`);
+          navigate(`/${ownerInfo?.username}`);
         } catch (error) {
           console.error("Failed to delete list.", error);
           toastInfo("Failed to delete list.");
@@ -43,16 +43,16 @@ const ListTitleSection = ({
   return (
     <section className="flex lg:flex-row md:flex-row flex-col gap-4">
       <div className="w-[165.79px]">
-        <ListPoster list={{ list: listItems }} />
+        {listItems && <ListPoster list={{ list: listItems }} />}
       </div>
       <div className="flex text-primary-foreground flex-col gap-2">
-        <h1 className="text-4xl font-bold">{listData?.name}</h1>
-        {listData?.description && (
+        <h1 className="text-4xl font-bold">{listInfo?.name}</h1>
+        {listInfo?.description && (
           <p className="text-xs text-secondary-foreground">
             Description:
             <br />
             <span className="text-xs text-primary-foreground">
-              {listData?.description}
+              {listInfo?.description}
             </span>
           </p>
         )}
@@ -62,15 +62,15 @@ const ListTitleSection = ({
             font-semibold underline
             transition-colors duration-300
             hover:text-primary-highlight focus:text-primary-highlight"
-            to={`/${ownerData?.username}`}
+            to={`/${ownerInfo?.username}`}
           >
-            {ownerData?.username}
+            {ownerInfo?.username}
           </Link>
           &#8226;
           <span className="text-xs">{`${listItems?.length} ${
             listItems?.length > 1
-              ? listTypes[listData?.type].toLowerCase()
-              : listTypes[listData?.type].toLowerCase().slice(0, -1)
+              ? listTypes[listInfo?.type].toLowerCase()
+              : listTypes[listInfo?.type].toLowerCase().slice(0, -1)
           }`}</span>
         </div>
         {isOwner && (

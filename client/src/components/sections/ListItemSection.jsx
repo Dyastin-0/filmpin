@@ -17,19 +17,30 @@ import Movie from "../Movie";
 import TvShow from "../TvShow";
 import SortableItem from "../SortableItem";
 import TrashArea from "../TrashArea";
-import { useToast } from "../hooks/useToast";
 
 const ListItemSection = ({
   listItems,
-  listData,
+  listInfo,
   setListItems,
   isEditMode,
   deletedItems,
   setDeletedItems,
 }) => {
-  const { toastInfo } = useToast();
   const sensors = useSensors(useSensor(PointerSensor));
   const [activeId, setActiveId] = useState(null);
+
+  const handleDelete = (id) => {
+    const itemToDelete = listItems.find((item) => item.id === id);
+    const originalIndex = listItems.findIndex((item) => item.id === id);
+    setListItems(
+      (prevItems) => prevItems.filter((item) => item.id !== id),
+      false
+    );
+    setDeletedItems((prevDeleted) => [
+      ...prevDeleted,
+      { ...itemToDelete, originalIndex },
+    ]);
+  };
 
   const handleDragEnd = (event) => {
     const { active, over } = event;
@@ -40,19 +51,9 @@ const ListItemSection = ({
         const oldIndex = items.findIndex((item) => item.id === active.id);
         const newIndex = items.findIndex((item) => item.id === over.id);
         return arrayMove(items, oldIndex, newIndex);
-      });
+      }, false);
     }
     setActiveId(null);
-  };
-
-  const handleDelete = (id) => {
-    const itemToDelete = listItems.find((item) => item.id === id);
-    const originalIndex = listItems.findIndex((item) => item.id === id);
-    setListItems((prevItems) => prevItems.filter((item) => item.id !== id));
-    setDeletedItems((prevDeleted) => [
-      ...prevDeleted,
-      { ...itemToDelete, originalIndex },
-    ]);
   };
 
   return (
@@ -66,7 +67,7 @@ const ListItemSection = ({
         items={listItems.map((item) => item.id)}
         strategy={rectSortingStrategy}
       >
-        <section className={`flex flex-wrap justify-center max-w-full gap-4`}>
+        <section className={`flex flex-wrap max-w-full gap-4`}>
           {isEditMode && (
             <TrashArea
               deletedItems={deletedItems}
@@ -81,9 +82,9 @@ const ListItemSection = ({
                 id={item.id}
                 item={item}
                 isEditMode={isEditMode}
-                type={listTypes[listData?.type]}
+                type={listTypes[listInfo?.type]}
               />
-            ) : listTypes[listData?.type] === "Movies" ? (
+            ) : listTypes[listInfo?.type] === "Movies" ? (
               <Movie info={item} key={item.id} />
             ) : (
               <TvShow info={item} key={item.id} />
@@ -94,7 +95,7 @@ const ListItemSection = ({
       <DragOverlay>
         {activeId ? (
           <div className="drag-overlay">
-            {listTypes[listData?.type] === "Movies" ? (
+            {listTypes[listInfo?.type] === "Movies" ? (
               <Movie
                 info={listItems.find((item) => item.id === activeId)}
                 isEditMode={isEditMode}

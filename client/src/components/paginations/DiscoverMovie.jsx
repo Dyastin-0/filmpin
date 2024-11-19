@@ -1,22 +1,16 @@
-import useSWR from "swr";
 import Movie from "../Movie";
 import Pagination from "../ui/Pagination";
-import useAxios from "../../hooks/useAxios";
-import { fetchDiscovery } from "../../helpers/api";
 import { LoadingDiscover } from "../loaders/MovieLoaders";
+import useSimilar from "../../hooks/useSimilar";
 
 const DiscoverMovie = ({ genresString, sortBy, currentPage, onPageChange }) => {
-  const { api, isAxiosReady } = useAxios();
-
-  const { data, isLoading, isError } = useSWR(
-    isAxiosReady
-      ? `/discover/movies?genres=${genresString}&sort_by=${sortBy}&page=${currentPage}`
-      : null,
-    () => fetchDiscovery(api, "movies", genresString, sortBy, currentPage),
-    {
-      dedupingInterval: 60000,
-    }
-  );
+  const { similar: data, isLoading } = useSimilar({
+    type: "movies",
+    genres: genresString,
+    page: currentPage,
+    sortBy: sortBy,
+    isResultOnly: false,
+  });
 
   if (isLoading) return <LoadingDiscover />;
 
