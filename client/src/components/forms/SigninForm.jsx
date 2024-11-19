@@ -126,6 +126,18 @@ const SigninForm = ({}) => {
         disabled={signingIn}
         text={`${signingIn ? "Signing in..." : "Sign in"}`}
       />
+      <div className="flex flex-col gap-2 mt-2">
+        <Separtor />
+        <p className="text-center text-xs">Or sign in with</p>
+        <Button
+          text="Google"
+          icon={<FontAwesomeIcon icon={faGoogle} />}
+          onClick={(e) => {
+            e.preventDefault();
+            window.location.href = `${import.meta.env.VITE_BASE_API_URL}/auth/google`;
+          }}
+        />
+      </div>
       <Link
         to={`/account/verify`}
         className="self-center w-fit pt-2 outline-none text-primary-foreground text-xs transition-colors duration-300 focus:text-primary-highlight focus:underline"
@@ -140,18 +152,6 @@ const SigninForm = ({}) => {
         {" "}
         Don't have an account? click here{" "}
       </Link>
-      <div className="flex flex-col gap-2 mt-2">
-        <Separtor />
-        <p className="text-center text-xs">Or sign in with</p>
-        <Button
-          text="Google"
-          icon={<FontAwesomeIcon icon={faGoogle} />}
-          onClick={(e) => {
-            e.preventDefault();
-            window.location.href = `${import.meta.env.VITE_BASE_API_URL}/auth/google`;
-          }}
-        />
-      </div>
     </form>
   );
 };

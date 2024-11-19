@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { Navigate, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { useAuth } from "../hooks/useAuth";
 import axios from "axios";
 import Button from "./ui/Button";

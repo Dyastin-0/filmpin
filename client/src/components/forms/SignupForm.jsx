@@ -8,6 +8,9 @@ import { ShowPassword } from "../utils/ShowPassword";
 import Button from "../ui/Button";
 import { testEmail, testPassword, testUsername } from "../../helpers/regex";
 import axios from "axios";
+import Separator from "../ui/Separator";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faGoogle } from "@fortawesome/free-brands-svg-icons";
 
 const SignupForm = () => {
   const navigate = useNavigate();
@@ -178,6 +181,18 @@ const SignupForm = () => {
         disabled={signingUp}
         text={`${signingUp ? "Signing up..." : "Sign up"}`}
       />
+      <div className="flex flex-col gap-2 mt-2">
+        <Separator />
+        <p className="text-center text-xs">Or sign up with</p>
+        <Button
+          text="Google"
+          icon={<FontAwesomeIcon icon={faGoogle} />}
+          onClick={(e) => {
+            e.preventDefault();
+            window.location.href = `${import.meta.env.VITE_BASE_API_URL}/auth/google`;
+          }}
+        />
+      </div>
       <Link
         to={`/sign-in`}
         className="self-center w-fit pt-2 outline-none text-primary-foreground text-xs transition-colors duration-300 focus:text-primary-highlight focus:underline"
