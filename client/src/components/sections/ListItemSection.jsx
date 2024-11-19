@@ -67,7 +67,7 @@ const ListItemSection = ({
         items={listItems.map((item) => item.id)}
         strategy={rectSortingStrategy}
       >
-        <section className={`flex flex-wrap max-w-full gap-4`}>
+        <section className={`flex flex-wrap justify-center max-w-full gap-4`}>
           {isEditMode && (
             <TrashArea
               deletedItems={deletedItems}
