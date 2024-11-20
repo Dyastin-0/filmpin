@@ -5,10 +5,14 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faImage } from "@fortawesome/free-solid-svg-icons";
 import { Image } from "../ui/Image";
 import Button from "../ui/Button";
+import { useAuth } from "../../hooks/useAuth";
 
 const UserInfoSection = ({ userData }) => {
+  const { user } = useAuth();
   const navigate = useNavigate();
   const { setModal, setOpen } = useModal();
+
+  const isOwner = userData?._id === user?._id;
 
   return (
     <section
@@ -31,8 +35,8 @@ const UserInfoSection = ({ userData }) => {
                 setOpen(true);
               }}
               className=" object-cover rounded-full
-              lg:max-h[150px] lg:max-w-[150px] md:max-h-[130px] md:max-w-[130px] max-h-[100px] max-w-[100px]
-              lg:min-w-[150px] lg:min-h-[150px] md:min-w-[100px] md:min-h-[100px] min-w-[80px] min-h-[80px]
+              lg:min-w-[150px] lg:min-h-[150px] md:min-w-[130px] md:min-h-[130px] min-w-[100px] min-h-[100px]
+              lg:max-w-[150px] lg:max-h-[150px] md:max-w-[130px] md:max-h-[130px] max-w-[100px] max-h-[100px]
               shadow-[var(--accent)_0_0_0_2px]
               transition-all duration-300 hover:cursor-pointer hover:opacity-90"
             />
@@ -60,10 +64,12 @@ const UserInfoSection = ({ userData }) => {
               {userData?.email}
             </h1>
           </div>
-          <Button
-            text="Edit profile"
-            onClick={() => navigate("/settings/profile")}
-          />
+          {isOwner && (
+            <Button
+              text="Edit profile"
+              onClick={() => navigate("/settings/profile")}
+            />
+          )}
         </div>
       </div>
     </section>
