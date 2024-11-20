@@ -12,7 +12,7 @@ const useSimilar = ({
   const { api, isAxiosReady } = useAxios();
 
   const { data: similar, isLoading } = useSWR(
-    type && isAxiosReady
+    type && isAxiosReady && genres && page
       ? `/${type}/discover?genres=${genres}&sort_by=${sortBy}&page=${page}`
       : null,
     () =>

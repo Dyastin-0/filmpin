@@ -31,14 +31,6 @@ const DiscoverTvShowSlug = () => {
     setCurrentPage(parseInt(searchParams.get("page")) || 1);
   }, [searchParams]);
 
-  useEffect(() => {
-    const query = `?${searchParams.toString()}`;
-    const newQuery = `?genres=${genresString}&sort_by=${sortBy}&page=${currentPage}`;
-    if (query !== newQuery) {
-      navigate(newQuery);
-    }
-  }, [selectedGenres]);
-
   const onPageChange = (page) => {
     setCurrentPage(page);
     navigate(

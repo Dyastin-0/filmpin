@@ -32,6 +32,7 @@ const MovieSlug = () => {
   );
 
   const genres = details?.genres
+    ?.slice(0, 3)
     .map((genre) => genre.name.toLowerCase())
     .join("_");
 

@@ -6,7 +6,7 @@ import { LoadingMovieSection } from "../components/loaders/MovieLoaders";
 import { MovieSlugLoader } from "../components/loaders/MovieSlugLoader";
 import useAxios from "../hooks/useAxios";
 import SeasonSection from "../components/sections/SeasonSection";
-import { fetchDiscovery, fetchShow, fetchTvShowVideos } from "../helpers/api";
+import { fetchShow, fetchTvShowVideos } from "../helpers/api";
 import { ClipSection } from "../components/sections/ClipSection";
 import useSWR from "swr";
 import { Helmet } from "react-helmet";
@@ -30,9 +30,9 @@ const TvShowSlug = () => {
   );
 
   const genres = details?.genres
-    .map((genre) => genre?.name)
-    .join("_")
-    .toLowerCase();
+    ?.slice(0, 3)
+    .map((genre) => genre.name.toLowerCase())
+    .join("_");
 
   const { similar: similarShows, loading: isSimilarShowsLoading } = useSimilar({
     type: "tvshows",

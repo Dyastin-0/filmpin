@@ -11,7 +11,7 @@ const DiscoverTvShow = ({
 }) => {
   const { similar: data, isLoading } = useSimilar({
     type: "tvshows",
-    genres: genresString,
+    genres: genresString || "[]",
     page: currentPage,
     sortBy: sortBy,
     isResultOnly: false,

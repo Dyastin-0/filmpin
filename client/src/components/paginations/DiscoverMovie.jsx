@@ -6,7 +6,7 @@ import useSimilar from "../../hooks/useSimilar";
 const DiscoverMovie = ({ genresString, sortBy, currentPage, onPageChange }) => {
   const { similar: data, isLoading } = useSimilar({
     type: "movies",
-    genres: genresString,
+    genres: genresString || "[]",
     page: currentPage,
     sortBy: sortBy,
     isResultOnly: false,
