@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 import { CircularProgress, CircularProgressLabel } from "@chakra-ui/react";
 import {
   ImageDummy,
@@ -13,8 +13,8 @@ import useSWR from "swr";
 
 const TvShow = ({ info }) => {
   const { api, isAxiosReady } = useAxios();
-  const navigate = useNavigate();
   const [imageLoaded, setImageLoaded] = useState(false);
+  const [imageError, setImageError] = useState(false);
 
   const {
     data: details,
@@ -32,6 +32,7 @@ const TvShow = ({ info }) => {
     const img = new Image();
     img.src = `https://image.tmdb.org/t/p/w500/${details?.poster_path}`;
     img.onload = () => setImageLoaded(true);
+    img.onerror = () => setImageError(true);
   };
 
   if (details && !imageLoaded) {
@@ -52,8 +53,10 @@ const TvShow = ({ info }) => {
           src={`https://image.tmdb.org/t/p/w200/${details?.poster_path}`}
           alt={`${info.title} poster`}
         />
-      ) : (
+      ) : !imageError ? (
         <ImageDummy />
+      ) : (
+        <div className="w-full h-[250px] bg-secondary rounded-md" />
       )}
       {isLoading ? (
         <>

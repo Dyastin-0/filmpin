@@ -11,11 +11,11 @@ import useAxios from "../hooks/useAxios";
 import { fetchMovie } from "../helpers/api";
 import useSWR from "swr";
 
-const Movie = ({ info, isEditMode }) => {
-  const navigate = useNavigate();
+const Movie = ({ info }) => {
   const { api, isAxiosReady } = useAxios();
 
   const [imageLoaded, setImageLoaded] = useState(false);
+  const [imageError, setImageError] = useState(false);
 
   const {
     data: details,
@@ -34,6 +34,7 @@ const Movie = ({ info, isEditMode }) => {
       const img = new Image();
       img.src = `https://image.tmdb.org/t/p/w500/${details?.poster_path}`;
       img.onload = () => setImageLoaded(true);
+      img.onerror = () => setImageError(true);
     }
   }, [details]);
 
@@ -53,8 +54,10 @@ const Movie = ({ info, isEditMode }) => {
           src={`https://image.tmdb.org/t/p/w200/${details?.poster_path}`}
           alt={`${info.title} poster`}
         />
-      ) : (
+      ) : !imageError ? (
         <ImageDummy />
+      ) : (
+        <div className="w-full h-[250px] bg-secondary rounded-md" />
       )}
       {isLoading ? (
         <>
