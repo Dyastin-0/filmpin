@@ -27,8 +27,8 @@ router.route("/:show_id/videos").get(cache("10 minutes"), handleGetVideo);
 router
   .route("/:show_id/:season_number")
   .get(cache("10 minutes"), handleGetSeason);
-router.route("/:show_id").get(cache("10 minutes"), handleGetDetails);
 router.route("/:show_id/credits").get(cache("10 minutes"), handleGetCredits);
+router.route("/:show_id").get(cache("10 minutes"), handleGetDetails);
 router
   .route("/:show_id/:season_number/videos")
   .get(cache("10 minutes"), handleGetSeasonVideo);
