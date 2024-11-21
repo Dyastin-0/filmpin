@@ -186,7 +186,7 @@ const handleGetEpisode = async (req, res) => {
  */
 const handleGetSeasonVideo = async (req, res) => {
   const { show_id, season_number } = req.params;
-  console.log({ show_id, season_number });
+
   try {
     const response = await api.get(
       `tv/${show_id}/season/${season_number}/videos?language=en-US`
