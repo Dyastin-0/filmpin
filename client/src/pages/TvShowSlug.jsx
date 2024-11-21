@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { useSearchParams } from "react-router-dom";
+import { useParams, useSearchParams } from "react-router-dom";
 import { motion } from "framer-motion";
 import { TvShowSection } from "../components/sections/tvShowSection";
 import { LoadingMovieSection } from "../components/loaders/MovieLoaders";
@@ -15,14 +15,14 @@ import ReviewSection from "../components/sections/ReviewSection";
 import useSimilar from "../hooks/useSimilar";
 
 const TvShowSlug = () => {
-  const [searchParams] = useSearchParams();
+  const params = useParams();
   const { api, isAxiosReady } = useAxios();
   const [trailerYoutubeKey, setTrailerYoutubeKey] = useState(null);
 
-  const id = searchParams.get("id");
+  const id = params["id"];
 
   const { data: details, isLoading: isShowLoading } = useSWR(
-    isAxiosReady ? `/tvshows?show_id=${id}` : null,
+    isAxiosReady ? `/tvshows/${id}` : null,
     () => fetchShow(api, id),
     {
       dedupingInterval: 60000,

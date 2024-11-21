@@ -1,7 +1,6 @@
 import { motion } from "framer-motion";
 import SearchResult from "../SearchResult";
 import SearchListResult from "../SearchListResult";
-import useViewport from "../../hooks/useViewport";
 
 const SearchResultsSection = ({
   movies,

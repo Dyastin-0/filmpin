@@ -10,7 +10,7 @@ const SearchResult = ({ result, setVisible, type }) => {
       transition-all duration-300 max-h-[145.07px]
 			border border-secondary-accent outline-none
 			hover:cursor-pointer hover:border-primary-highlight focus:border-primary-highlight"
-      to={`/${type}?id=${result.id}_${result.name || result.title}`}
+      to={`/${type}/${result.id}`}
       onClick={() => setVisible(false)}
     >
       <img

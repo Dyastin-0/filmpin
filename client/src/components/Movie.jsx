@@ -45,7 +45,7 @@ const Movie = ({ info }) => {
       className="flex flex-col rounded-lg drop-shadow-none gap-1 p-4 w-[200px] h-[370px]
         text-primary-foreground border border-secondary-accent
         hover:cursor-pointer hover:border-primary-highlight duration-300"
-      to={`/movies?id=${details.id}_${details.title}`}
+      to={`/movies/${details.id}`}
     >
       {imageLoaded ? (
         <img

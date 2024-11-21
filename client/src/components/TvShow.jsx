@@ -44,7 +44,7 @@ const TvShow = ({ info }) => {
       className="flex flex-col rounded-lg drop-shadow-none gap-1 p-4 w-[200px] h-[370px]
         text-primary-foreground border border-secondary-accent
         hover:cursor-pointer hover:border-primary-highlight duration-300"
-      to={`/tvshows?id=${details?.id}_${details?.name}`}
+      to={`/tvshows/${details?.id}`}
     >
       {imageLoaded ? (
         <img

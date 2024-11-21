@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { useSearchParams } from "react-router-dom";
+import { useParams } from "react-router-dom";
 import { motion } from "framer-motion";
 import { MovieSection } from "../components/sections/MovieSection";
 import { LoadingMovieSection } from "../components/loaders/MovieLoaders";
@@ -17,11 +17,11 @@ import ReviewSection from "../components/sections/ReviewSection";
 import useSimilar from "../hooks/useSimilar";
 
 const MovieSlug = () => {
-  const [searchParams] = useSearchParams();
+  const params = useParams();
   const { api, isAxiosReady } = useAxios();
   const [trailerYoutubeKey, setTrailerYoutubeKey] = useState(null);
 
-  const id = searchParams.get("id").split("_")[0];
+  const id = params["id"].split("_")[0];
 
   const { data: details } = useSWR(
     isAxiosReady ? `/movies/details?movie_id=${id}` : null,

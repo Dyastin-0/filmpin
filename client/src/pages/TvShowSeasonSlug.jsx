@@ -1,4 +1,4 @@
-import { useSearchParams } from "react-router-dom";
+import { useLocation, useParams } from "react-router-dom";
 import { motion } from "framer-motion";
 import { LoadingMovieSection } from "../components/loaders/MovieLoaders";
 import { MovieSlugLoader } from "../components/loaders/MovieSlugLoader";
@@ -12,20 +12,19 @@ import { Helmet } from "react-helmet";
 import TvShowSeasonSection from "../components/sections/TvShowSeasonSection";
 
 const TvShowSeasonSlug = () => {
-  const [searchParams] = useSearchParams();
+  const params = useParams();
+  const location = useLocation();
   const { api, isAxiosReady } = useAxios();
   const [trailerYoutubeKey, setTrailerYoutubeKey] = useState(null);
 
-  const id = searchParams.get("id")?.split("_")[0];
-  const seasonNumber = searchParams.get("season_number");
-  const title = searchParams.get("title");
-  const backdropPath = searchParams.get("backdrop_path");
+  const { title, backdropPath } = location.state;
+  const { season_number, show_id: id } = params;
 
   const { data: details, isLoading } = useSWR(
     isAxiosReady
-      ? `/tvshows/season?tvshow_id=${id}&season_number=${seasonNumber}`
+      ? `/tvshows/season?tvshow_id=${id}&season_number=${season_number}`
       : null,
-    () => fetchTvShowSeason(api, id, seasonNumber),
+    () => fetchTvShowSeason(api, id, season_number),
     {
       dedupingInterval: 60000,
     }
@@ -33,9 +32,9 @@ const TvShowSeasonSlug = () => {
 
   const { data: videos } = useSWR(
     isAxiosReady
-      ? `/tvshows/season/videos?tvshow_id=${id}&tvshow_season=${seasonNumber}`
+      ? `/tvshows/season/videos?tvshow_id=${id}&tvshow_season=${season_number}`
       : null,
-    () => fetchTvShowSeasonVideos(api, id, seasonNumber),
+    () => fetchTvShowSeasonVideos(api, id, season_number),
     {
       dedupingInterval: 60000,
       onSuccess: (data) => setTrailerYoutubeKey(data[0].key),
@@ -70,7 +69,7 @@ const TvShowSeasonSlug = () => {
         {details?.episodes ? (
           <EpisodeSection
             episodes={details.episodes}
-            seasonNumber={seasonNumber}
+            season_number={season_number}
             showId={id}
             backdropPath={backdropPath}
             title={title}

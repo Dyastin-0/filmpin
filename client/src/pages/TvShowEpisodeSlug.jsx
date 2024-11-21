@@ -1,4 +1,4 @@
-import { useSearchParams } from "react-router-dom";
+import { useLocation, useParams, useSearchParams } from "react-router-dom";
 import { motion } from "framer-motion";
 import { MovieSlugLoader } from "../components/loaders/MovieSlugLoader";
 import { useEffect, useState } from "react";
@@ -16,25 +16,19 @@ import TvShowEpisodeInfoSection from "../components/sections/TvShowEpisodeInfoSe
 import CreditsSection from "../components/sections/CreditsSection";
 
 const TvShowEpisodeSlug = () => {
-  const [searchParams] = useSearchParams();
+  const params = useParams();
+  const location = useLocation();
   const { api, isAxiosReady } = useAxios();
   const [trailerYoutubeKey, setTrailerYoutubeKey] = useState(null);
 
-  const id = searchParams.get("id")?.split("_")[0] || "";
-  const seasonNumber = searchParams.get("season_number") || "";
-  const episodeNumber = searchParams.get("episode_number") || "";
-  const title = searchParams.get("title") || "";
-  const backdrop_path = searchParams.get("backdrop_path") || "";
+  const { show_id: id, season_number, episode_number } = params;
+  const { backdropPath, title } = location.state;
 
-  const {
-    data: details,
-    isLoading,
-    isError,
-  } = useSWR(
+  const { data: details, isLoading } = useSWR(
     isAxiosReady
-      ? `/tvshows/season/episode?tvshow_id=${id}&season_number=${seasonNumber}&episode_number=${episodeNumber}`
+      ? `/tvshows/season/episode?tvshow_id=${id}&season_number=${season_number}&episode_number=${episode_number}`
       : null,
-    () => fetchTvShowEpisodeDetails(api, id, seasonNumber, episodeNumber),
+    () => fetchTvShowEpisodeDetails(api, id, season_number, episode_number),
     {
       dedupingInterval: 60000,
     }
@@ -42,9 +36,9 @@ const TvShowEpisodeSlug = () => {
 
   const { data: videos } = useSWR(
     isAxiosReady
-      ? `/tvshows/season/episode/videos?tvshow_id=${id}&tvshow_season=${seasonNumber}&episode_number=${episodeNumber}`
+      ? `/tvshows/season/episode/videos?tvshow_id=${id}&tvshow_season=${season_number}&episode_number=${episode_number}`
       : null,
-    () => fetchTvShowEpisodeVideos(api, id, seasonNumber, episodeNumber),
+    () => fetchTvShowEpisodeVideos(api, id, season_number, episode_number),
     {
       dedupingInterval: 60000,
       onSuccess: (data) => setTrailerYoutubeKey(data[0].key),
@@ -72,14 +66,14 @@ const TvShowEpisodeSlug = () => {
             <img
               loading="lazy"
               className="w-full h-full object-cover"
-              src={`https://image.tmdb.org/t/p/original/${backdrop_path}`}
+              src={`https://image.tmdb.org/t/p/original/${backdropPath}`}
               alt={`${details?.name} backdrop`}
             />
           </div>
           <TvShowEpisodeInfoSection
             details={details}
             title={title}
-            seasonNumber={seasonNumber}
+            seasonNumber={season_number}
             trailerYoutubeKey={trailerYoutubeKey}
           />
           <motion.div

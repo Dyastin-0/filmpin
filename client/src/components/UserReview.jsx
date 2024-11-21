@@ -39,7 +39,7 @@ const UserReview = ({ review }) => {
               <Link
                 className="text-xs text-primary-foreground font-semibold
                 transition-all duration-300 hover:text-primary-highlight"
-                to={`/movies?id=${review.id}${review.title}`}
+                to={`/movies/${review.id}${review.title}`}
               >
                 {review.title}
               </Link>

@@ -9,7 +9,6 @@ import {
 } from "./loaders/MovieLoaders";
 
 const Season = ({ info, showId, title, backdropPath }) => {
-  const navigate = useNavigate();
   const [imageLoaded, setImageLoaded] = useState(false);
 
   useEffect(() => {
@@ -25,7 +24,8 @@ const Season = ({ info, showId, title, backdropPath }) => {
       className="flex flex-col rounded-lg drop-shadow-none gap-1 p-4 w-[200px] h-[370px]
 			text-primary-foreground border border-secondary-accent
 			hover:cursor-pointer hover:border-primary-highlight duration-300"
-      to={`/tvshows/${showId}/season?id=${showId}_${info.name}&season_number=${info.season_number}&title=${title}&backdrop_path=${backdropPath}`}
+      to={`/tvshows/${showId}/${info.season_number}`}
+      state={{ title, backdropPath }}
     >
       {imageLoaded ? (
         <img

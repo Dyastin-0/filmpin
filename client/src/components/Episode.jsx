@@ -24,7 +24,8 @@ const Episode = ({ info, showId, title, backdropPath, seasonNumber }) => {
       className="flex flex-col rounded-lg drop-shadow-none gap-1 p-4 w-[200px] h-[370px]
 			text-primary-foreground border border-secondary-accent
 			hover:cursor-pointer duration-300"
-      to={`/tvshows/${showId}/${seasonNumber}/episode?id=${showId}_${info.name}&season_number=${seasonNumber}&title=${title}&episode_number=${info.episode_number}&backdrop_path=${backdropPath}`}
+      to={`/tvshows/${showId}/${info.season_number}/${info.episode_number}`}
+      state={{ backdropPath, title }}
     >
       {imageLoaded ? (
         <img

@@ -22,7 +22,7 @@ const SliderMovie = ({ movie }) => {
   }, []);
 
   const handleClick = () => {
-    navigate(`/movies?id=${movie.id}_${movie.title}`);
+    navigate(`/movies/${movie.id}`);
   };
 
   return (

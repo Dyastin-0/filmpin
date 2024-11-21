@@ -75,19 +75,19 @@ function App() {
             <Route path="/:username" element={<Profile />} />
             <Route path="/home" element={<Home />} />
             <Route path="/search" element={<SearchSlug />} />
-            <Route path="/movies" element={<MovieSlug />} />
-            <Route path="/tvshows" element={<TvShowSlug />} />
+            <Route path="/movies/:id" element={<MovieSlug />} />
+            <Route path="/tvshows/:id" element={<TvShowSlug />} />
             <Route path="/discover" element={<Discover />} />
             <Route path="/discover/movies" element={<DiscoverMovieSlug />} />
             <Route path="/discover/tvshows" element={<DiscoverTvShowSlug />} />
             <Route path="/settings" element={<Settings />} />
             <Route path="/settings/profile" element={<ProfileSettings />} />
             <Route
-              path="/tvshows/:show_id/season"
+              path="/tvshows/:show_id/:season_number"
               element={<TvShowSeasonSlug />}
             />
             <Route
-              path="/tvshows/:show_id/:season/episode"
+              path="/tvshows/:show_id/:season_number/:episode_number"
               element={<TvShowEpisodeSlug />}
             />
             <Route path="/lists/:list_id" element={<ListSlug />} />
