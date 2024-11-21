@@ -22,8 +22,14 @@ passport.use(
           return done(null, user);
         }
 
-        if (await Users.findOne({ email: profile.emails[0].value })) {
-          return done(null, false, { message: "Email is already used." });
+        const isEmailUsed = await Users.findOne({
+          email: profile.emails[0].value,
+        });
+
+        if (isEmailUsed) {
+          return done(null, false, {
+            message: "An account with this email already exists.",
+          });
         }
 
         user = await Users.create({

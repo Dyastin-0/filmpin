@@ -23,10 +23,12 @@ const handleGetProfile = async (req, res) => {
 
     const {
       password,
+      refreshToken,
       verificationToken,
       recoveryToken,
-      refreshToken,
       passwordResetToken,
+      googleId,
+      __v,
       ...userData
     } = user.toJSON();
 

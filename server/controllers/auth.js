@@ -174,6 +174,8 @@ const handleGoogleAuth = async (req, res) => {
     refreshToken,
     verificationToken,
     recoveryToken,
+    passwordResetToken,
+    googleId,
     __v,
     ...userData
   } = user.toJSON();

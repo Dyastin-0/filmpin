@@ -77,24 +77,30 @@ const handleRefreshAccessToken = async (req, res) => {
         process.env.REFRESH_TOKEN_SECRET,
         { expiresIn: "1d" }
       );
+
       await Users.updateOne(
         { email: user.email },
         { $set: { refreshToken: [...newRefreshTokens, newRefreshToken] } }
       );
+
       res.cookie("jwt", newRefreshToken, {
         httpOnly: true,
         sameSite: "None",
         secure: true,
         maxAge: 1 * 24 * 60 * 60 * 1000,
       });
+
       const {
         password,
+        refreshToken,
         verificationToken,
         recoveryToken,
+        passwordResetToken,
+        googleId,
         __v,
-        refreshToken,
         ...userData
       } = user.toJSON();
+
       res.json({
         accessToken,
         user: userData,
