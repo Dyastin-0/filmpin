@@ -9,7 +9,7 @@ export const fetchList = async (api, id) => {
 };
 
 export const fetchMovie = async (api, id) => {
-  const response = await api.get(`/movies/details?movie_id=${id}`);
+  const response = await api.get(`/movies/${id}`);
   return response.data;
 };
 

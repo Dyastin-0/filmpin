@@ -36,7 +36,7 @@ const handleGetCategory = async (req, res) => {
  * @throws {Error} If the request fails, returns a 500 status.
  */
 const handleGetDetails = async (req, res) => {
-  const { movie_id } = req.query;
+  const { movie_id } = req.params;
 
   if (!movie_id) return res.status(400).json({ message: "Missing movie ID" });
 
@@ -58,7 +58,7 @@ const handleGetDetails = async (req, res) => {
  * @throws {Error} If the request fails, returns a 500 status.
  */
 const handleGetCredits = async (req, res) => {
-  const { movie_id } = req.query;
+  const { movie_id } = req.params;
 
   if (!movie_id) return res.status(400).json({ message: "Missing movie ID." });
 
@@ -108,7 +108,7 @@ const handleSearch = async (req, res) => {
  * @throws {Error} If the request fails, returns a 500 status.
  */
 const handleGetVideo = async (req, res) => {
-  const { movie_id } = req.query;
+  const { movie_id } = req.params;
 
   if (!movie_id) return res.status(400).json({ message: "Missing movie ID." });
 

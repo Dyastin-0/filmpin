@@ -18,16 +18,12 @@ const cache = cacheService.cache;
 router.use(verifyRoles(userRoles.user, userRoles.admin));
 
 router.route("/list").get(cache("10 minutes"), handleGetCategory);
-
-router.route("/details").get(cache("10 minutes"), handleGetDetails);
-
-router.route("/credits").get(cache("10 minutes"), handleGetCredits);
-
 router.route("/search").get(cache("10 minutes"), handleSearch);
-
-router.route("/videos").get(cache("10 minutes"), handleGetVideo);
-
 router.route("/discover").get(cache("10 minutes"), handleDiscover);
+
+router.route("/:movie_id/credits").get(cache("10 minutes"), handleGetCredits);
+router.route("/:movie_id/videos").get(cache("10 minutes"), handleGetVideo);
+router.route("/:movie_id").get(cache("10 minutes"), handleGetDetails);
 
 router
   .route("/watch-provider")
