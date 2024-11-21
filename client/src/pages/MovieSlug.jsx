@@ -24,7 +24,7 @@ const MovieSlug = () => {
   const id = params["id"].split("_")[0];
 
   const { data: details } = useSWR(
-    isAxiosReady ? `/movies/details?movie_id=${id}` : null,
+    isAxiosReady ? `/movies/${id}` : null,
     () => fetchMovie(api, id),
     {
       dedupingInterval: 60000,
@@ -44,8 +44,8 @@ const MovieSlug = () => {
   });
 
   const { data: videos } = useSWR(
-    isAxiosReady ? `/movies/videos?movie_id=${id}` : null,
-    () => fetchVideos(api, "movies", "movie_id", id),
+    isAxiosReady ? `/movies/${id}/videos` : null,
+    () => fetchVideos(api, "movies", id),
     {
       dedupingInterval: 60000,
       onSuccess: (data) =>
@@ -56,7 +56,7 @@ const MovieSlug = () => {
   );
 
   const { data: credits } = useSWR(
-    isAxiosReady ? `/movies/credits?movie_id=${id}` : null,
+    isAxiosReady ? `/movies/${id}/credits` : null,
     () => fetchCredits(api, "movies", id),
     {
       dedupingInterval: 60000,

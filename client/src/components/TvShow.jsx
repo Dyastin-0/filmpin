@@ -21,7 +21,7 @@ const TvShow = ({ info }) => {
     isLoading,
     isError,
   } = useSWR(
-    isAxiosReady ? `/tvshows/details?show_id=${info.id}` : null,
+    isAxiosReady ? `/tvshows/${info.id}` : null,
     () => fetchShow(api, info.id),
     {
       dedupingInterval: 60000,

@@ -11,7 +11,7 @@ const MovieTrailer = ({ id, title }) => {
   const [imageLoaded, setImageLoaded] = useState(false);
 
   const { data: videos } = useSWR(
-    isAxiosReady ? `/movies/videos?movie_id=${id}` : null,
+    isAxiosReady ? `/movies/${id}/videos` : null,
     () => fetchVideos(api, "movies", id),
     {
       dedupingInterval: 60000,

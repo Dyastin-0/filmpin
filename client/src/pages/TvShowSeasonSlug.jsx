@@ -21,9 +21,7 @@ const TvShowSeasonSlug = () => {
   const { season_number, show_id: id } = params;
 
   const { data: details, isLoading } = useSWR(
-    isAxiosReady
-      ? `/tvshows/season?tvshow_id=${id}&season_number=${season_number}`
-      : null,
+    isAxiosReady ? `/tvshows/${id}/${season_number}` : null,
     () => fetchTvShowSeason(api, id, season_number),
     {
       dedupingInterval: 60000,
@@ -31,9 +29,7 @@ const TvShowSeasonSlug = () => {
   );
 
   const { data: videos } = useSWR(
-    isAxiosReady
-      ? `/tvshows/season/videos?tvshow_id=${id}&tvshow_season=${season_number}`
-      : null,
+    isAxiosReady ? `/tvshows/${id}/${season_number}/videos` : null,
     () => fetchTvShowSeasonVideos(api, id, season_number),
     {
       dedupingInterval: 60000,

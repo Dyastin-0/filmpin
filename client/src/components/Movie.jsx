@@ -22,7 +22,7 @@ const Movie = ({ info }) => {
     isError,
     isLoading,
   } = useSWR(
-    isAxiosReady ? `/movies/details?movie_id=${info.id}` : null,
+    isAxiosReady ? `/movies/${info.id}` : null,
     () => fetchMovie(api, info.id),
     {
       dedupingInterval: 60000,

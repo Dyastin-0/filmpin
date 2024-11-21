@@ -42,7 +42,7 @@ const TvShowSlug = () => {
   });
 
   const { data: videos } = useSWR(
-    isAxiosReady && details ? `/tvshows/videos?show_id=${id}` : null,
+    isAxiosReady && details ? `/tvshows/${id}/videos` : null,
     () => fetchTvShowVideos(api, id),
     {
       dedupingInterval: 60000,

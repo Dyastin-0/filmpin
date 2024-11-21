@@ -25,9 +25,7 @@ const TvShowEpisodeSlug = () => {
   const { backdropPath, title } = location.state;
 
   const { data: details, isLoading } = useSWR(
-    isAxiosReady
-      ? `/tvshows/season/episode?tvshow_id=${id}&season_number=${season_number}&episode_number=${episode_number}`
-      : null,
+    isAxiosReady ? `/tvshows/${id}/${season_number}/${episode_number}` : null,
     () => fetchTvShowEpisodeDetails(api, id, season_number, episode_number),
     {
       dedupingInterval: 60000,
@@ -36,7 +34,7 @@ const TvShowEpisodeSlug = () => {
 
   const { data: videos } = useSWR(
     isAxiosReady
-      ? `/tvshows/season/episode/videos?tvshow_id=${id}&tvshow_season=${season_number}&episode_number=${episode_number}`
+      ? `/tv/shows/${id}/${season_number}/${episode_number}/videos`
       : null,
     () => fetchTvShowEpisodeVideos(api, id, season_number, episode_number),
     {
