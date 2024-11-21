@@ -12,7 +12,7 @@ const MovieTrailer = ({ id, title }) => {
 
   const { data: videos } = useSWR(
     isAxiosReady ? `/movies/videos?movie_id=${id}` : null,
-    () => fetchVideos(api, "movies", "movie_id", id),
+    () => fetchVideos(api, "movies", id),
     {
       dedupingInterval: 60000,
     }

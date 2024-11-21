@@ -32,7 +32,7 @@ const handleGetCategory = async (req, res) => {
  * @throws {Error} If the request fails, returns a 500 status.
  */
 const handleGetDetails = async (req, res) => {
-  const { show_id } = req.query;
+  const { show_id } = req.params;
   try {
     const response = await api.get(`tv/${show_id}?language=en-US`);
     res.json(response.data);
@@ -51,7 +51,7 @@ const handleGetDetails = async (req, res) => {
  * @throws {Error} If the request fails, returns a 500 status.
  */
 const handleGetCredits = async (req, res) => {
-  const { show_id } = req.query;
+  const { show_id } = req.params;
   try {
     const response = await api.get(`tv/${show_id}/credits?language=en-US`);
     res.json(response.data);
@@ -92,7 +92,7 @@ const handleSearch = async (req, res) => {
  * @throws {Error} If the request fails, returns a 500 status.
  */
 const handleGetVideo = async (req, res) => {
-  const { show_id } = req.query;
+  const { show_id } = req.params;
   try {
     const response = await api.get(`tv/${show_id}/videos?language=en-US`);
     res.json(response.data);
@@ -131,18 +131,18 @@ const handleDiscover = async (req, res) => {
 /**
  * Fetches details for a specific season of a TV show.
  * @param {Object} req - The request object.
- * @param {number} req.query.tvshow_id - The ID of the TV show.
+ * @param {number} req.query.show_id - The ID of the TV show.
  * @param {number} req.query.season_number - The season number to fetch.
  * @param {Object} res - The response object.
  * @returns {Object} JSON object containing season details.
  * @throws {Error} If the request fails, returns a 500 status.
  */
 const handleGetSeason = async (req, res) => {
-  const { tvshow_id, season_number } = req.query;
+  const { show_id, season_number } = req.params;
 
   try {
     const response = await api.get(
-      `tv/${tvshow_id}/season/${season_number}?language=en-US`
+      `tv/${show_id}/season/${season_number}?language=en-US`
     );
     return res.json(response.data);
   } catch (error) {
@@ -154,7 +154,7 @@ const handleGetSeason = async (req, res) => {
 /**
  * Fetches details for a specific episode of a TV show season.
  * @param {Object} req - The request object.
- * @param {number} req.query.tvshow_id - The ID of the TV show.
+ * @param {number} req.query.show_id - The ID of the TV show.
  * @param {number} req.query.season_number - The season number.
  * @param {number} req.query.episode_number - The episode number to fetch.
  * @param {Object} res - The response object.
@@ -162,11 +162,11 @@ const handleGetSeason = async (req, res) => {
  * @throws {Error} If the request fails, returns a 500 status.
  */
 const handleGetEpisode = async (req, res) => {
-  const { tvshow_id, season_number, episode_number } = req.query;
+  const { show_id, season_number, episode_number } = req.params;
 
   try {
     const response = await api.get(
-      `tv/${tvshow_id}/season/${season_number}/episode/${episode_number}?language=en-US`
+      `tv/${show_id}/season/${season_number}/episode/${episode_number}?language=en-US`
     );
     return res.json(response.data);
   } catch (error) {
@@ -178,18 +178,18 @@ const handleGetEpisode = async (req, res) => {
 /**
  * Fetches videos for a specific season of a TV show.
  * @param {Object} req - The request object.
- * @param {number} req.query.tvshow_id - The ID of the TV show.
+ * @param {number} req.query.show_id - The ID of the TV show.
  * @param {number} req.query.tvshow_season - The season number to fetch videos for.
  * @param {Object} res - The response object.
  * @returns {Object} JSON object containing season videos.
  * @throws {Error} If the request fails, returns a 500 status.
  */
 const handleGetSeasonVideo = async (req, res) => {
-  const { tvshow_id, tvshow_season } = req.query;
-
+  const { show_id, season_number } = req.params;
+  console.log({ show_id, season_number });
   try {
     const response = await api.get(
-      `tv/${tvshow_id}/season/${tvshow_season}/videos?language=en-US`
+      `tv/${show_id}/season/${season_number}/videos?language=en-US`
     );
     return res.json(response.data);
   } catch (error) {
@@ -201,19 +201,19 @@ const handleGetSeasonVideo = async (req, res) => {
 /**
  * Fetches videos for a specific episode of a TV show season.
  * @param {Object} req - The request object.
- * @param {number} req.query.tvshow_id - The ID of the TV show.
- * @param {number} req.query.tvshow_season - The season number.
+ * @param {number} req.query.show_id - The ID of the TV show.
+ * @param {number} req.query.show_season - The season number.
  * @param {number} req.query.episode_number - The episode number to fetch videos for.
  * @param {Object} res - The response object.
  * @returns {Object} JSON object containing episode videos.
  * @throws {Error} If the request fails, returns a 500 status.
  */
 const handleGetEpisodeVideo = async (req, res) => {
-  const { tvshow_id, tvshow_season, episode_number } = req.query;
+  const { show_id, show_season, episode_number } = req.params;
 
   try {
     const response = await api.get(
-      `tv/${tvshow_id}/season/${tvshow_season}/episode/${episode_number}/videos?language=en-US`
+      `tv/${show_id}/season/${show_season}/episode/${episode_number}/videos?language=en-US`
     );
     res.json(response.data);
   } catch (error) {

@@ -21,25 +21,22 @@ const cache = cacheService.cache;
 router.use(verifyRoles(userRoles.user, userRoles.admin));
 
 router.route("/list").get(cache("10 minutes"), handleGetCategory);
-
-router.route("/details").get(cache("10 minutes"), handleGetDetails);
-
-router.route("/credits").get(cache("10 minutes"), handleGetCredits);
-
-router.route("/search").get(cache("10 minutes"), handleSearch);
-
-router.route("/videos").get(cache("10 minutes"), handleGetVideo);
-
 router.route("/discover").get(cache("10 minutes"), handleDiscover);
-
-router.route("/season").get(cache("10 minutes"), handleGetSeason);
-
-router.route("/season/episode").get(cache("10 minutes"), handleGetEpisode);
-
-router.route("/season/videos").get(cache("10 minutes"), handleGetSeasonVideo);
-
+router.route("/search").get(cache("10 minutes"), handleSearch);
+router.route("/:show_id/videos").get(cache("10 minutes"), handleGetVideo);
 router
-  .route("/season/episode/videos")
+  .route("/:show_id/:season_number")
+  .get(cache("10 minutes"), handleGetSeason);
+router.route("/:show_id").get(cache("10 minutes"), handleGetDetails);
+router.route("/:show_id/credits").get(cache("10 minutes"), handleGetCredits);
+router
+  .route("/:show_id/:season_number/videos")
+  .get(cache("10 minutes"), handleGetSeasonVideo);
+router
+  .route("/:show_id/:season_number/:episode_number/videos")
   .get(cache("10 minutes"), handleGetEpisodeVideo);
+router
+  .route("/:show_id/:season_number/:episode_number")
+  .get(cache("10 minutes"), handleGetEpisode);
 
 module.exports = router;

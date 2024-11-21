@@ -14,7 +14,7 @@ export const fetchMovie = async (api, id) => {
 };
 
 export const fetchShow = async (api, id) => {
-  const response = await api.get(`/tvshows/details?show_id=${id}`);
+  const response = await api.get(`/tvshows/${id}`);
   return response.data;
 };
 
@@ -62,13 +62,13 @@ export const fetchCategory = async (api, target, category, page = "1") => {
   return response.data.results;
 };
 
-export const fetchVideos = async (api, target, queryParam, id) => {
-  const response = await api.get(`/${target}/videos?${queryParam}=${id}`);
+export const fetchVideos = async (api, target, id) => {
+  const response = await api.get(`/${target}/${id}/videos`);
   return response.data.results;
 };
 
 export const fetchCredits = async (api, target, id) => {
-  const response = await api.get(`/${target}/credits?movie_id=${id}`);
+  const response = await api.get(`/${target}/${id}/credits`);
   return response.data;
 };
 
@@ -80,7 +80,7 @@ export const fetchSearchQueryResults = async (api, target, query, page) => {
 };
 
 export const fetchTvShowVideos = async (api, id) => {
-  const response = await api.get(`/tvshows/videos?show_id=${id}`);
+  const response = await api.get(`/tvshows/${id}/videos`);
   return response.data.results;
 };
 
@@ -91,9 +91,7 @@ export const fetchTvShowEpisodeVideos = async (
   episodeNumber
 ) => {
   const response = await api
-    .get(
-      `/tvshows/season/episode/videos?tvshow_id=${id}&tvshow_season=${seasonNumber}&episode_number=${episodeNumber}`
-    )
+    .get(`/tvshows/${id}/${seasonNumber}/${episodeNumber}/videos`)
     .then((res) => res.data.results);
   return response;
 };
@@ -105,22 +103,18 @@ export const fetchTvShowEpisodeDetails = async (
   episodeNumber
 ) => {
   const response = await api.get(
-    `/tvshows/season/episode?tvshow_id=${id}&season_number=${seasonNumber}&episode_number=${episodeNumber}`
+    `/tvshows/${id}/${seasonNumber}/${episodeNumber}`
   );
   return response.data;
 };
 
 export const fetchTvShowSeason = async (api, id, seasonNumber) => {
-  const response = await api.get(
-    `/tvshows/season?tvshow_id=${id}&season_number=${seasonNumber}`
-  );
+  const response = await api.get(`/tvshows/${id}/${seasonNumber}`);
   return response.data;
 };
 
 export const fetchTvShowSeasonVideos = async (api, id, seasonNumber) => {
-  const response = await api.get(
-    `/tvshows/season/videos?tvshow_id=${id}&tvshow_season=${seasonNumber}`
-  );
+  const response = await api.get(`/tvshows/${id}/${seasonNumber}/videos`);
   return response.data.results;
 };
 
