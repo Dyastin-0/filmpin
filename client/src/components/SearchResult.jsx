@@ -1,7 +1,7 @@
 import { useNavigate } from "react-router";
 import { Link } from "react-router-dom";
 
-const SearchResult = ({ result, setVisible }) => {
+const SearchResult = ({ result, setVisible, type }) => {
   const navigate = useNavigate();
 
   return (
@@ -10,13 +10,13 @@ const SearchResult = ({ result, setVisible }) => {
       transition-all duration-300 max-h-[145.07px]
 			border border-secondary-accent outline-none
 			hover:cursor-pointer hover:border-primary-highlight focus:border-primary-highlight"
-      to={`/movies?id=${result.id}_${result.title}`}
+      to={`/${type}?id=${result.id}_${result.name || result.title}`}
       onClick={() => setVisible(false)}
     >
       <img
         className="rounded-md w-[45px] object-cover"
         src={`https://image.tmdb.org/t/p/w200/${result.poster_path}`}
-        alt={result.title}
+        alt={result.name || result.title}
       />
       <p className="font-semibold text-ellipsis line-clamp-4">
         {result.title || result.name}

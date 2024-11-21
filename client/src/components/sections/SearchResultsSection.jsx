@@ -39,6 +39,7 @@ const SearchResultsSection = ({
                   key={index}
                   result={result}
                   setVisible={setVisible}
+                  type={"movies"}
                 />
               ))}
         </div>
@@ -54,6 +55,7 @@ const SearchResultsSection = ({
                   key={index}
                   result={result}
                   setVisible={setVisible}
+                  type={"tvshows"}
                 />
               ))}
         </div>
