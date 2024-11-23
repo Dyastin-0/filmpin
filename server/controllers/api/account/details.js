@@ -3,6 +3,8 @@ const Users = require("../../../models/user");
 const Lists = require("../../../models/list");
 const Reviews = require("../../../models/review");
 const { uploadImage, deleteImage } = require("../../../helpers/cloudinaryApi");
+const { sendHtmlEmail } = require("../../../helpers/email");
+const { emailTemplate } = require("../../../templates/email");
 
 /**
  * Sets the profile image for a user by uploading it to Cloudinary.
@@ -26,6 +28,15 @@ const handleSetProfile = async (req, res) => {
 
     const publicId = `${id}-profile`;
     const result = await uploadImage(file.buffer, publicId);
+
+    sendHtmlEmail(
+      user.email,
+      "Profile Image Updated",
+      emailTemplate(
+        "Profile Image Updated",
+        `Hello, ${user.username}! Your profile photo has been recently updated.`
+      )
+    );
 
     const profileURL = result.secure_url;
     await Users.updateOne(
@@ -52,6 +63,15 @@ const handleDeleteProfile = async (req, res) => {
 
     await Users.updateOne({ _id: id }, { $set: { profileImageURL: null } });
 
+    sendHtmlEmail(
+      user.email,
+      "Profile Image Deleted",
+      emailTemplate(
+        "Profile Image Deleted",
+        `Hello, ${user.username}! Your profile photo has been recently deleted.`
+      )
+    );
+
     res.sendStatus(200);
   } catch (error) {
     console.error("Failed to delete profile.", error);
@@ -70,6 +90,15 @@ const handleUpdateUsername = async (req, res) => {
     if (!user) return res.status(404).json({ message: "User not found." });
 
     await Users.updateOne({ _id: id }, { $set: { username } });
+
+    sendHtmlEmail(
+      user.email,
+      "Username Updated",
+      emailTemplate(
+        `Hello, ${username}!`,
+        `Your username has been recently updated, previously ${user.username}.`
+      )
+    );
 
     res.sendStatus(200);
   } catch (error) {
@@ -104,6 +133,15 @@ const handleDelete = async (req, res) => {
       sameSite: "None",
       secure: true,
     });
+
+    sendHtmlEmail(
+      user.email,
+      "Account Deletion",
+      emailTemplate(
+        "Account Deleted",
+        "Your account has been successfully deleted."
+      )
+    );
 
     res.status(200).json({ message: "Account deleted successfully." });
   } catch (error) {

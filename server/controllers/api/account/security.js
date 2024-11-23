@@ -1,5 +1,4 @@
 const Users = require("../../../models/user");
-const dotenv = require("dotenv").config();
 const jwt = require("jsonwebtoken");
 const { sendHtmlEmail } = require("../../../helpers/email");
 const { emailTemplate } = require("../../../templates/email");
@@ -112,6 +111,16 @@ const handleVerifyEmail = async (req, res) => {
           { email: decoded.email },
           { $set: { verificationToken: null, verified: true } }
         );
+
+        sendHtmlEmail(
+          decoded.email,
+          "Account Verified",
+          emailTemplate(
+            `Hello, ${user.username}!`,
+            "Your account has been successfully verified. Thank you for joining us!"
+          )
+        );
+
         res
           .status(200)
           .json({ message: "Your account has been successfully verified!" });
@@ -162,6 +171,16 @@ const handleRecoverAccount = async (req, res) => {
           { email: decoded.email },
           { $set: { recoveryToken: null, password: hashedPassword } }
         );
+
+        sendHtmlEmail(
+          decoded.email,
+          "Account Recovered",
+          emailTemplate(
+            `Hello, ${user.username}!`,
+            "Your account has been successfully recovered. If you did not make this change, please contact us immediately."
+          )
+        );
+
         res
           .status(200)
           .json({ message: "Your account has been successfully recovered!" });
@@ -330,6 +349,15 @@ const handleUpdatePassword = async (req, res) => {
         await Users.updateOne(
           { email: email },
           { $set: { password: hashedPassword, passwordResetToken: null } }
+        );
+
+        sendHtmlEmail(
+          email,
+          "Password Updated",
+          emailTemplate(
+            `Hello, ${user.username}!`,
+            "Your password has been recently updated. If you did not make this change, please contact us immediately."
+          )
         );
 
         res.status(200).json({ message: "Password updated successfully." });
