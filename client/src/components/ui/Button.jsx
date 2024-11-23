@@ -36,9 +36,9 @@ const Button = ({
       onBlur={onBlur}
       onFocus={onFocus}
     >
-      {text}{" "}
+      {text}
       {icon && (
-        <div className="flex items-center justify-center w-[14px] h-[14px]">
+        <div className="flex items-center justify-center w-fit h-fit aspect-square">
           {icon}
         </div>
       )}

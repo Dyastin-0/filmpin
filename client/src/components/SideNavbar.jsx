@@ -39,7 +39,7 @@ const SideNavbar = ({ isOpen, close, routes, authRoutes }) => {
           visibility: isOpen ? "visible" : "hidden",
         }}
         onClick={close}
-        className="fixed inset-0 bg-black opacity-30 z-40 rounded-md"
+        className="fixed inset-0 bg-black opacity-30 z-40"
       />
       <motion.div
         onBlur={close}

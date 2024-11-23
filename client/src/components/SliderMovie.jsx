@@ -64,8 +64,8 @@ const SliderMovie = ({ movie }) => {
               <h1 className="text-lg font-bold">{movie.title}</h1>
               <Button
                 variant="default_rounded"
-                icon={<FontAwesomeIcon icon={faInfoCircle} />}
-                className="w-fit font-semibold p-[0] text-[1rem]"
+                icon={<FontAwesomeIcon size="xl" icon={faInfoCircle} />}
+                className="w-fit font-semibold"
                 onClick={handleClick}
               />
             </div>
