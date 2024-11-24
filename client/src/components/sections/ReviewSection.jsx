@@ -20,7 +20,7 @@ const ReviewSection = ({ details }) => {
   const { api } = useAxios();
   const [currentPage, setCurrentPage] = useState(1);
 
-  const [data, setData] = useState(null);
+  const [data, setData] = useState([]);
 
   useEffect(() => {
     details &&
@@ -54,7 +54,9 @@ const ReviewSection = ({ details }) => {
         if (change.type === "insert")
           setData((prevReviews) => ({
             ...prevReviews,
-            reviews: [...prevReviews.reviews, change.newReview],
+            reviews: prevReviews?.reviews
+              ? [...prevReviews.reviews, change.newReview]
+              : [change.newReview],
           }));
         if (change.type === "update") {
           setData((prevReviews) => ({

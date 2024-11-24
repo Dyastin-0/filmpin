@@ -23,11 +23,11 @@ const handlePostReview = async (req, res) => {
   if (!user_id) return res.status(400).json({ message: "Missing user ID." });
 
   try {
-    const hasReviewed = false;
+    const hasReviewed = await Reviews.findOne({ id, title, owner: user_id });
     if (hasReviewed)
       return res
         .status(409)
-        .json({ message: `You have already posted a reviewed for ${title}.` });
+        .json({ message: `You have already posted a review for ${title}.` });
 
     const newReview = await Reviews.create({
       id,
@@ -197,9 +197,35 @@ const handleSearchReviews = async (req, res) => {
   }
 };
 
+const handleDeleteReview = async (req, res) => {
+  const { id: _id } = req.query;
+  const { id: user_id } = req;
+
+  if (!_id) return res.status(400).json({ message: "Missing ID." });
+
+  try {
+    const review = await Reviews.findById(_id);
+    if (!review) return res.status(404).json({ message: "Review not found." });
+
+    if (review.owner !== user_id) {
+      return res
+        .status(403)
+        .json({ message: "Unauthorized to delete review." });
+    }
+
+    await Reviews.deleteOne({ _id });
+
+    res.json({ message: "Review deleted." });
+  } catch (error) {
+    console.error(error);
+    res.status(500).send("Error deleting review.");
+  }
+};
+
 module.exports = {
   handleGetReview,
   handlePostReview,
+  handleDeleteReview,
   handleLike,
   handleGetUserReviews,
   handleSearchReviews,

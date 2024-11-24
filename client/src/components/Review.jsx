@@ -3,7 +3,10 @@ import useSWR from "swr";
 import { fetchOwner } from "../helpers/api";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faHeart as faRegularHeart } from "@fortawesome/free-regular-svg-icons";
-import { faHeart as faSolidHeart } from "@fortawesome/free-solid-svg-icons";
+import {
+  faEllipsisV,
+  faHeart as faSolidHeart,
+} from "@fortawesome/free-solid-svg-icons";
 import { useAuth } from "../hooks/useAuth";
 import { Link } from "react-router-dom";
 import useAxios from "../hooks/useAxios";
@@ -11,6 +14,8 @@ import { useToast } from "./hooks/useToast";
 import dayjs from "dayjs";
 import relativeTime from "dayjs/plugin/relativeTime";
 import { useState, useRef, useEffect } from "react";
+import { Dropdown, DropdownItem } from "./ui/Dropdown";
+import useConfirm from "./hooks/useConfirm";
 
 dayjs.extend(relativeTime);
 
@@ -18,6 +23,7 @@ const Review = ({ review, details }) => {
   const { api } = useAxios();
   const { user } = useAuth();
   const { toastInfo } = useToast();
+  const confirm = useConfirm();
   const { created_on, content, owner, hearts } = review;
   const [isExpanded, setIsExpanded] = useState(false);
   const contentRef = useRef(null);
@@ -49,18 +55,32 @@ const Review = ({ review, details }) => {
     }
   };
 
+  const handleDelete = () => {
+    confirm({
+      message: "Are you sure you want to delete this review?",
+      onConfirm: async () => {
+        try {
+          await api.delete(`/reviews?id=${review._id}`);
+          toastInfo("Review deleted.");
+        } catch (error) {
+          toastInfo(error.response.data.message);
+        }
+      },
+    });
+  };
+
   const isOwner = ownerData?.username === user?.username;
   const hasLiked = hearts?.includes(user?._id);
 
   return (
-    <div className="flex lg:w-1/2 md:w-1/2 w-full flex-col gap-2">
-      <div className="tex-xs p-4 rounded-md w-fit max-w-full border border-secondary-accent">
+    <div className="relative flex lg:w-1/2 md:w-1/2 w-full flex-col gap-2">
+      <div className="tex-xs rounded-md w-fit max-w-full">
         <div className="flex gap-2">
           <img
             src={ownerData?.profileImageURL}
             className="w-[30px] h-[30px] rounded-full object-cover"
           />
-          <div className="flex flex-col items-start gap-2">
+          <div className="flex flex-col items-start gap-2 p-4 bg-secondary rounded-md">
             <div className="flex flex-col rounded-md gap-2">
               <div className="flex gap-2">
                 <Link
@@ -94,30 +114,39 @@ const Review = ({ review, details }) => {
           </div>
         </div>
       </div>
-      {!isOwner && ownerData && user ? (
-        <div className="flex gap-2">
-          <button
-            className="flex text-primary-foreground items-center outline-none
+      <div className="flex items-center justify-between">
+        {!isOwner && ownerData && user ? (
+          <div className="flex gap-2">
+            <button
+              className="flex text-primary-foreground items-center outline-none
             transition-all duration-300
             hover:text-primary-highligh focus:text-primary-highlightt hover:cursor-pointer"
-            onClick={handleLike}
-          >
-            <FontAwesomeIcon icon={hasLiked ? faSolidHeart : faRegularHeart} />
-          </button>
-          <span className="text-xs text-primary-foreground">
-            {hearts?.length}
-          </span>
-        </div>
-      ) : (
-        <div className="flex gap-2">
-          <span className="flex text-primary-foreground">
-            <FontAwesomeIcon icon={faSolidHeart} />
-          </span>
-          <span className="text-xs text-primary-foreground">
-            {hearts?.length}
-          </span>
-        </div>
-      )}
+              onClick={handleLike}
+            >
+              <FontAwesomeIcon
+                icon={hasLiked ? faSolidHeart : faRegularHeart}
+              />
+            </button>
+            <span className="text-xs text-primary-foreground">
+              {hearts?.length}
+            </span>
+          </div>
+        ) : (
+          <div className="flex gap-2">
+            <span className="flex text-primary-foreground">
+              <FontAwesomeIcon icon={faSolidHeart} />
+            </span>
+            <span className="text-xs text-primary-foreground">
+              {hearts?.length}
+            </span>
+          </div>
+        )}
+        {isOwner && (
+          <Dropdown icon={<FontAwesomeIcon icon={faEllipsisV} />}>
+            <DropdownItem onClick={handleDelete}>Delete</DropdownItem>
+          </Dropdown>
+        )}
+      </div>
     </div>
   );
 };
