@@ -74,7 +74,7 @@ const startListStream = (socket, mongoose, owner, randomId) => {
     console.error("List stream error:", error);
   }
 
-  handleDisconnect(socket, changeStream);
+  // handleDisconnect(socket, changeStream);
 };
 
 /**
@@ -107,7 +107,7 @@ const startUserStream = (socket, mongoose, randomId) => {
     });
   });
 
-  handleDisconnect(socket, changeStream);
+  // handleDisconnect(socket, changeStream);
 };
 
 const startReviewStream = (socket, mongoose, randomId, itemId) => {
@@ -140,7 +140,7 @@ const startReviewStream = (socket, mongoose, randomId, itemId) => {
     });
   });
 
-  handleDisconnect(socket, changeStream);
+  // handleDisconnect(socket, changeStream);
 };
 
 module.exports = {
