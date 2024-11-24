@@ -13,7 +13,7 @@ const TrashArea = ({ deletedItems, setDeletedItems, setListItems }) => {
       const newItems = [...prevItems];
       newItems.splice(item.originalIndex, 0, item);
       return newItems;
-    });
+    }, false);
     setDeletedItems((prevDeleted) =>
       prevDeleted.filter((listItem) => listItem.id !== item.id)
     );

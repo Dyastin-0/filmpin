@@ -23,7 +23,7 @@ const ListSlug = () => {
   const { user } = useAuth();
   const { list_id: id } = useParams();
 
-  const { listInfo } = useListInfo({ id });
+  const { listInfo, mutate: setListInfo } = useListInfo({ id });
   const { ownerInfo } = useOwnerInfo({ id: listInfo?.owner });
 
   const isOwner = user && ownerInfo && user._id === ownerInfo._id;
@@ -36,7 +36,7 @@ const ListSlug = () => {
     deletedItems,
     setDeletedItems,
     handleSave,
-  } = useListItems({ listInfo, ownerInfo, isOwner });
+  } = useListItems({ listInfo, ownerInfo, setListInfo });
 
   const randomItem = listItems
     ? listItems[Math.floor(Math.random() * listItems.length)]

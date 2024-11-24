@@ -62,12 +62,12 @@ const startListStream = (socket, mongoose, owner, randomId) => {
           ? change.documentKey._id
           : type === "insert"
             ? change.fullDocument
-            : change.updateDescription.updatedFields.list;
+            : change.updateDescription.updatedFields;
 
       socket.emit(`stream/list/${owner}/${id}/${randomId}`, {
         type: type,
         _id: change.documentKey._id,
-        list: changeData,
+        ...changeData,
       });
     });
   } catch (error) {

@@ -5,12 +5,15 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   faEdit,
   faEllipsisV,
+  faGear,
   faRemove,
 } from "@fortawesome/free-solid-svg-icons";
 import ListPoster from "../ListPoster";
 import useConfirm from "../hooks/useConfirm";
 import useAxios from "../../hooks/useAxios";
 import { useToast } from "../hooks/useToast";
+import { useModal } from "../hooks/useModal";
+import ListSettings from "../ListSettings";
 
 const ListTitleSection = ({
   listInfo,
@@ -21,6 +24,7 @@ const ListTitleSection = ({
 }) => {
   const confirm = useConfirm();
   const { toastInfo } = useToast();
+  const { setModal, setOpen } = useModal();
   const { api } = useAxios();
   const navigate = useNavigate();
 
@@ -38,6 +42,11 @@ const ListTitleSection = ({
         }
       },
     });
+  };
+
+  const handleOpenSettings = () => {
+    setModal(<ListSettings list={listInfo} />);
+    setOpen(true);
   };
 
   return (
@@ -87,6 +96,9 @@ const ListTitleSection = ({
               </DropdownItem>
               <DropdownItem onClick={handleDeleteList}>
                 Delete <FontAwesomeIcon icon={faRemove} />
+              </DropdownItem>
+              <DropdownItem onClick={handleOpenSettings}>
+                Settings <FontAwesomeIcon icon={faGear} />
               </DropdownItem>
             </Dropdown>
           </div>

@@ -10,6 +10,7 @@ const useListInfo = ({ id }) => {
     error,
     isLoading,
     isValidating,
+    mutate,
   } = useSWR(
     isAxiosReady && id ? `/lists/${id}` : null,
     () => fetchList(api, id),
@@ -23,6 +24,7 @@ const useListInfo = ({ id }) => {
     error,
     isLoading,
     isValidating,
+    mutate,
   };
 };
 

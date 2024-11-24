@@ -8,7 +8,7 @@ import useAxios from "../hooks/useAxios";
 import useSWR from "swr";
 import useConfirm from "../components/hooks/useConfirm";
 
-export const useListItems = ({ listInfo, ownerInfo, isOwner }) => {
+export const useListItems = ({ listInfo, setListInfo, ownerInfo }) => {
   const { token, user } = useAuth();
   const { api, isAxiosReady } = useAxios();
   const { toastInfo } = useToast();
@@ -52,19 +52,36 @@ export const useListItems = ({ listInfo, ownerInfo, isOwner }) => {
         (change) => {
           if (change.type === "delete") {
             mutate(
-              (prevList) => prevList.filter((item) => item._id !== change.list),
+              (prevList) => prevList.filter((item) => item._id !== change._id),
               false
             );
           }
           if (change.type === "update") {
-            const hasChanges =
-              JSON.stringify(listItems) !== JSON.stringify(change.list);
-            if (hasChanges) {
-              mutate(change.list, false);
-              toastInfo(
-                isOwner
-                  ? `Your list has been updated.`
-                  : `${ownerInfo.username} updated this list.`
+            if (change.list) {
+              mutate(
+                (prevList) =>
+                  prevList.map((item) =>
+                    item._id === change.list._id ? change.list : item
+                  ),
+                false
+              );
+            }
+            if (change.name) {
+              setListInfo(
+                (prevListInfo) => ({
+                  ...prevListInfo,
+                  name: change.name,
+                }),
+                false
+              );
+            }
+            if (change.description) {
+              setListInfo(
+                (prevListInfo) => ({
+                  ...prevListInfo,
+                  description: change.description,
+                }),
+                false
               );
             }
           }

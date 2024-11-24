@@ -233,6 +233,28 @@ const handleDeleteList = async (req, res) => {
   }
 };
 
+const handleUpdateList = async (req, res) => {
+  const { list_id } = req.params;
+  const { name, description } = req.body;
+
+  if (!list_id) return res.status(400).json({ message: "Missing list ID." });
+
+  try {
+    const list = await Lists.findOne({ _id: list_id });
+
+    if (!list) return res.status(400).json({ message: "List does not exist." });
+
+    if (name) await Lists.updateOne({ _id: list_id }, { $set: { name } });
+    if (description)
+      await Lists.updateOne({ _id: list_id }, { $set: { description } });
+
+    res.json({ message: "List updated." });
+  } catch (error) {
+    console.error("Failed to update list.", error);
+    res.sendStatus(500);
+  }
+};
+
 module.exports = {
   handleGeUserLists,
   handleCreateList,
@@ -241,4 +263,5 @@ module.exports = {
   handlePatchList,
   handleSearchList,
   handleDeleteList,
+  handleUpdateList,
 };
