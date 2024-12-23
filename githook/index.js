@@ -18,12 +18,6 @@ const hasChangesInDirectory = (commits, directory) => {
 const updateAndRestartServices = (commits) => {
   const commands = ["cd .. && git pull"];
 
-  if (hasChangesInDirectory(commits, "githook/")) {
-    console.log("githook/");
-    commands.push("cd githook && npm install && cd ..");
-    commands.push("sudo systemctl restart filmpingithook.service");
-  }
-
   if (hasChangesInDirectory(commits, "client/")) {
     console.log("client/");
     commands.push("cd client && npm install && npm run build && cd ..");
