@@ -11,18 +11,19 @@ const useSimilar = ({
 }) => {
   const { api, isAxiosReady } = useAxios();
 
+  console.log("useSimilar", type, genres, page, sortBy, isResultOnly);
+
   const { data: similar, isLoading } = useSWR(
-    type && isAxiosReady && genres && page
+    type && isAxiosReady && genres
       ? `/${type}/discover?genres=${genres}&sort_by=${sortBy}&page=${page}`
       : null,
     () =>
-      fetchDiscovery(api, type, genres).then((data) =>
+      fetchDiscovery(api, type, genres, sortBy, page).then((data) =>
         isResultOnly ? data.results : data
-      ),
-    {
-      dedupingInterval: 60000,
-    }
+      )
   );
+
+  console.log("useSimilar", similar, isLoading);
 
   return { similar, isLoading };
 };
