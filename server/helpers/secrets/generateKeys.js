@@ -36,6 +36,7 @@ const generateKeys = async () => {
       `BASE_CLIENT_URL=https://filmpin.dyastin.tech`,
       `GOOGLE_CLIENT_ID=${googleClientId}`,
       `GOOGLE_CLIENT_SECRET=${googleClientSecret}`,
+      "PORT=5001",
     ];
 
     const fileContent = fs.readFileSync(envFilePath, { encoding: "utf8" });
