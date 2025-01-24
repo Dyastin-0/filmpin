@@ -50,7 +50,6 @@ export const useListItems = ({ listInfo, setListInfo, ownerInfo }) => {
       newSocket.on(
         `stream/list/${listInfo.owner}/${user._id}/${randomId}`,
         (change) => {
-          console.log(change);
           if (change.type == "delete") {
             mutate(
               (prevList) => prevList.filter((item) => item._id !== change._id),
@@ -58,7 +57,6 @@ export const useListItems = ({ listInfo, setListInfo, ownerInfo }) => {
             );
           }
           if (change.type == "update") {
-            console.log("update");
             if (change.list) {
               mutate(change.list, false);
             }
