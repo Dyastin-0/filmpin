@@ -11,8 +11,6 @@ const useSimilar = ({
 }) => {
   const { api, isAxiosReady } = useAxios();
 
-  console.log("useSimilar", type, genres, page, sortBy, isResultOnly);
-
   const { data: similar, isLoading } = useSWR(
     type && isAxiosReady && genres
       ? `/${type}/discover?genres=${genres}&sort_by=${sortBy}&page=${page}`
@@ -22,8 +20,6 @@ const useSimilar = ({
         isResultOnly ? data.results : data
       )
   );
-
-  console.log("useSimilar", similar, isLoading);
 
   return { similar, isLoading };
 };
