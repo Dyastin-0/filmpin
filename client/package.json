@@ -20,7 +20,6 @@
     "@fortawesome/free-regular-svg-icons": "^6.6.0",
     "@fortawesome/free-solid-svg-icons": "^6.6.0",
     "@fortawesome/react-fontawesome": "^0.2.2",
-    "@google/generative-ai": "^0.21.0",
     "autoprefixer": "^10.4.20",
     "axios": "^1.7.3",
     "clsx": "^2.1.1",
