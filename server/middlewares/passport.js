@@ -5,7 +5,7 @@ const Users = require("../models/user");
 const callbackURL =
   process.env.NODE_ENV == "development"
     ? "/auth/google/callback"
-    : `${process.env.BASE_CLIENT_URL}/auth/google/callback`;
+    : `${process.env.BASE_CLIENT_URL}/api/auth/google/callback`;
 
 passport.use(
   new GoogleStrategy(
