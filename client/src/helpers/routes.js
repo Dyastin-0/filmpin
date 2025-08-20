@@ -5,6 +5,6 @@ export const routes = [
   { path: "/discover", name: "Discover", icon: faCompass },
 ];
 export const authRoutes = [
-  { path: "/sign-in", name: "Sign in" },
-  { path: "/sign-up", name: "Sign up" },
+  { path: "/sign-in", name: "Sign In" },
+  { path: "/sign-up", name: "Sign Up" },
 ];

@@ -15,7 +15,7 @@ import Separtor from "../ui/Separator";
 import { faGoogle } from "@fortawesome/free-brands-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
-const SigninForm = ({}) => {
+const SigninForm = ({ }) => {
   const emailRef = useRef(null);
   const navigate = useNavigate();
   const location = useLocation();
@@ -124,7 +124,7 @@ const SigninForm = ({}) => {
       <Button
         type="submit"
         disabled={signingIn}
-        text={`${signingIn ? "Signing in..." : "Sign in"}`}
+        text={`${signingIn ? "Signing in..." : "Sign In"}`}
       />
       <div className="flex flex-col gap-2 mt-2">
         <Separtor />

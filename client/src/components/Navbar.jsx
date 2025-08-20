@@ -135,7 +135,7 @@ const Navbar = ({ toggleSideNavbar }) => {
               </DomLink>
             </DropdownItem>
             <DropdownItem onClick={handleSignout}>
-              Sign out
+              Sign Out
               <FontAwesomeIcon size="xs" icon={faSignOutAlt} className="ml-1" />
             </DropdownItem>
           </Dropdown>

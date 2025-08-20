@@ -112,11 +112,10 @@ const SignupForm = () => {
         required
         type="email"
         autoComplete="on"
-        className={`${
-          !testEmail(credentials.email) && credentials.email !== ""
-            ? "shadow-[0px_2px_0_0] shadow-error"
-            : ""
-        }`}
+        className={`${!testEmail(credentials.email) && credentials.email !== ""
+          ? "shadow-[0px_2px_0_0] shadow-error"
+          : ""
+          }`}
         value={credentials.email}
         onChange={(e) =>
           setCredentials({ ...credentials, email: e.target.value })
@@ -131,11 +130,10 @@ const SignupForm = () => {
           id="password"
           type={showPassword ? "text" : "password"}
           value={credentials.password}
-          className={`${
-            !isPasswordmatched && credentials.password
-              ? "shadow-[2px_2px_0_0] shadow-error"
-              : ""
-          }`}
+          className={`${!isPasswordmatched && credentials.password
+            ? "shadow-[2px_2px_0_0] shadow-error"
+            : ""
+            }`}
           onChange={(e) =>
             setCredentials({ ...credentials, password: e.target.value })
           }
@@ -162,11 +160,10 @@ const SignupForm = () => {
           id="confirm_password"
           type={showConfirmPassword ? "text" : "password"}
           value={confirmedPassword}
-          className={`${
-            !isPasswordmatched && confirmedPassword
-              ? "shadow-[2px_2px_0_0] shadow-error"
-              : ""
-          }`}
+          className={`${!isPasswordmatched && confirmedPassword
+            ? "shadow-[2px_2px_0_0] shadow-error"
+            : ""
+            }`}
           onChange={(e) => setConfirmedPassword(e.target.value)}
         />
         {confirmedPassword && (
@@ -179,7 +176,7 @@ const SignupForm = () => {
       <Button
         type="submit"
         disabled={signingUp}
-        text={`${signingUp ? "Signing up..." : "Sign up"}`}
+        text={`${signingUp ? "Signing up..." : "Sign Up"}`}
       />
       <div className="flex flex-col gap-2 mt-2">
         <Separator />
