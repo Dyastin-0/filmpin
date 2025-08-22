@@ -29,6 +29,30 @@ const handleSignup = async (req, res) => {
 
   if (!password) return res.status(400).json({ message: "Password missing." });
 
+  const verificationToken = jwt.sign(
+    { email: email },
+    process.env.EMAIL_TOKEN_SECRET,
+    { expiresIn: "5m" }
+  );
+
+  try {
+    sendHtmlEmail(
+      email,
+      "Verify your Filmpin account",
+      emailTemplate(
+        `Welcome to Filmpin, ${username}!`,
+        "To proceed with accessing our app, please click the link below. You may disregard this email if you did not sign up to our up.",
+        `${process.env.BASE_CLIENT_URL}/account/verification?verificationToken=${verificationToken}`,
+        "Verify your account"
+      )
+    );
+  } catch (error) {
+    res
+      .sendStatus(400)
+      .json({ message: "Non-existent email address." });
+    return
+  }
+
   try {
     const usernameExist = await Users.findOne({ username: username });
 
@@ -52,32 +76,18 @@ const handleSignup = async (req, res) => {
       password: hashedPassword,
     });
 
-    const verificationToken = jwt.sign(
-      { email: email },
-      process.env.EMAIL_TOKEN_SECRET,
-      { expiresIn: "5m" }
-    );
 
     await Users.updateOne(
       { email: email },
       { $set: { verificationToken: verificationToken } }
     );
 
-    sendHtmlEmail(
-      email,
-      "Verify your Filmpin account",
-      emailTemplate(
-        `Welcome to Filmpin, ${username}!`,
-        "To proceed with accessing our app, please click the link below. You may disregard this email if you did not sign up to our up.",
-        `${process.env.BASE_CLIENT_URL}/account/verification?verificationToken=${verificationToken}`,
-        "Verify your account"
-      )
-    );
-
     res.sendStatus(200);
   } catch (error) {
     console.error(error);
-    throw error;
+    res
+      .sendStatus(500)
+      .json({ message: "internal server error" });
   }
 };
 
