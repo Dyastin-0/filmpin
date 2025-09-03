@@ -5,7 +5,8 @@ After=network.target multi-user.target
 User=mrps
 
 WorkingDirectory=/home/mrps/prod/filmpin/client
-ExecStart=npm start
+ExecStart=node index.cjs
+Environment=PORT=5175
 StandardOutput=journal
 StandardError=journal
 SyslogIdentifier=filmpinf
