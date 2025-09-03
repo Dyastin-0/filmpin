@@ -1,7 +1,6 @@
 const allowedOrigins = [
   "http://localhost:5173",
-  "https://filmpin.dyastin.me",
-  "https://filmpin.dyastin.tech",
+  "https://filmpin.dyastin.dev",
 ];
 
 module.exports = allowedOrigins;

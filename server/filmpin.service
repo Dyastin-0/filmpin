@@ -1,0 +1,14 @@
+Description=filmpin server
+After=network.target multi-user.target
+
+[Service]
+User=mrps
+
+WorkingDirectory=/home/mrps/prod/filmpin/server
+ExecStart=npm start
+StandardOutput=journal
+StandardError=journal
+SyslogIdentifier=filmpin
+
+[Install]
+WantedBy=multi-user.target

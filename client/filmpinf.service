@@ -1,0 +1,15 @@
+Description=filmpin frontend 
+After=network.target multi-user.target
+
+[Service]
+User=mrps
+
+WorkingDirectory=/home/mrps/prod/filmpin/client
+ExecStart=npm start
+StandardOutput=journal
+StandardError=journal
+SyslogIdentifier=filmpinf
+Restart=Never
+
+[Install]
+WantedBy=multi-user.target
