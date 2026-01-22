@@ -2,10 +2,13 @@ import Button from "../ui/Button";
 import useConfirm from "../hooks/useConfirm";
 import { useToast } from "../hooks/useToast";
 import Separator from "../ui/Separator";
+import axios from "axios";
+import { useAuth } from "../../hooks/useAuth";
 
 const PasswordSection = () => {
   const confirm = useConfirm();
   const { toastInfo } = useToast();
+  const { user } = useAuth();
 
   return (
     <div
